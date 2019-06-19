@@ -1157,6 +1157,9 @@ class CSiteCheckerTest
 			$l = strlen("\xd0\xa2");
 			if (!($retVal = $bUtf && $l == 1 || !$bUtf && $l == 2))
 				$text = GetMessage('SC_STRLEN_FAIL_PHP56');
+
+			if (!$bUtf && LANG_CHARSET == 'windows-1251' && !($retVal = strtoupper("\xe0") == "\xc0"))
+				$text = GetMessage('SC_STRTOUPPER_FAIL');
 		}
 
 		return $this->Result($retVal, ($retVal ? GetMessage("MAIN_SC_CORRECT").'. ':'').$text);
@@ -1282,25 +1285,35 @@ class CSiteCheckerTest
 			$id = CPullChannel::SignChannel(md5($text));
 			if (CPullOptions::GetQueueServerStatus())
 			{
-				if (!$ar = parse_url(str_replace('#DOMAIN#', $this->host, CPullOptions::GetPublishUrl($id))))
-					return $this->Result(false, GetMessage("MAIN_SC_PATH_PUB"));
+				if(method_exists("CPullOptions", "IsServerShared") && CPullOptions::IsServerShared())
+				{
+					if(!\Bitrix\Pull\SharedServer\Config::isRegistered())
+					{
+						return $this->Result(false, GetMessage("MAIN_SC_PULL_NOT_REGISTERED"));
+					}
+				}
+				else
+				{
+					if (!$ar = parse_url(str_replace('#DOMAIN#', $this->host, \Bitrix\Pull\Config::getPublishUrl($id))))
+						return $this->Result(false, GetMessage("MAIN_SC_PATH_PUB"));
 
-				$pub_domain = $ar['host'];
-				$pub_host = ($ar['scheme'] == 'https' ? 'ssl://' : '').$pub_domain;
-				$pub = $ar['path'].'?'.$ar['query'];
-				$pub_port = $ar['port'];
-				if (!$pub_port)
-					$pub_port = $ar['scheme'] == 'https' ? 443 : 80;
+					$pub_domain = $ar['host'];
+					$pub_host = ($ar['scheme'] == 'https' ? 'ssl://' : '').$pub_domain;
+					$pub = $ar['path'].'?'.$ar['query'];
+					$pub_port = $ar['port'];
+					if (!$pub_port)
+						$pub_port = $ar['scheme'] == 'https' ? 443 : 80;
 
-				if (!$ar = parse_url(str_replace('#DOMAIN#', $this->host, $this->ssl ? CPullOptions::GetListenSecureUrl($id) : CPullOptions::GetListenUrl($id))))
-					return $this->Result(false, GetMessage("MAIN_SC_PATH_SUB"));
+					if (!$ar = parse_url(str_replace('#DOMAIN#', $this->host, $this->ssl ? CPullOptions::GetListenSecureUrl($id) : CPullOptions::GetListenUrl($id))))
+						return $this->Result(false, GetMessage("MAIN_SC_PATH_SUB"));
 
-				$sub_domain = $ar['host'];
-				$sub_host = ($ar['scheme'] == 'https' ? 'ssl://' : '').$sub_domain;
-				$sub = $ar['path'].'?'.$ar['query'];
-				$sub_port = $ar['port'];
-				if (!$sub_port)
-					$sub_port = $ar['scheme'] == 'https' ? 443 : 80;
+					$sub_domain = $ar['host'];
+					$sub_host = ($ar['scheme'] == 'https' ? 'ssl://' : '').$sub_domain;
+					$sub = $ar['path'].'?'.$ar['query'];
+					$sub_port = $ar['port'];
+					if (!$sub_port)
+						$sub_port = $ar['scheme'] == 'https' ? 443 : 80;
+				}
 			}
 			else
 			{
@@ -1348,6 +1361,7 @@ class CSiteCheckerTest
 			return $this->Result(false, GetMessage("MAIN_SC_NO_SUB_CONNECTION"));
 		}
 		fwrite($res1, $strRequest1);
+		sleep(1); // we need some time to create channel
 
 		// POST - message
 		if (!$res0 = $this->ConnectToHost($pub_host, $pub_port))
@@ -1368,7 +1382,7 @@ class CSiteCheckerTest
 			PrintHTTP($strRequest0, $strHeaders0, $strRes0);
 			PrintHTTP($strRequest1, $strHeaders1, $strRes1);
 			$this->arTestVars['push_stream_fail'] = true;
-			$retVal = $this->Result(false, GetMessage("MAIN_SC_PUSH_INCORRECT"));
+			$retVal = $this->Result(false, GetMessage("MAIN_SC_PUSH_INCORRECT", ['#MODULE#' => $bNodeJS ? 'Bitrix Push server' : 'nginx-push-stream-module']));
 		}
 	
 		// DELETE
@@ -2265,7 +2279,7 @@ class CSiteCheckerTest
 					}
 					elseif ($this->force_repair)
 						$arFix[] = ' MODIFY `'.$f0['Field'].'` '.$f0['Type'].' CHARACTER SET '.$charset.($f0['Null'] == 'YES' ? ' NULL' : ' NOT NULL').
-							($f0['Default'] === NULL ? ($f0['Null'] == 'YES' ? ' DEFAULT NULL ' : '') : ' DEFAULT '.($f0['Type'] == 'timestamp' && $f0['Default'] == 'CURRENT_TIMESTAMP' ? $f0['Default'] : '"'.$DB->ForSQL($f0['Default']).'"')).' '.$f0['Extra'];
+							($f0['Default'] === NULL ? ($f0['Null'] == 'YES' ? ' DEFAULT NULL ' : '') : ' DEFAULT '.($f0['Type'] == 'timestamp' && $f0['Default'] ? $f0['Default'] : '"'.$DB->ForSQL($f0['Default']).'"')).' '.$f0['Extra'];
 				}
 				elseif ($collation != $f_collation)
 				{
@@ -2281,7 +2295,7 @@ class CSiteCheckerTest
 					}
 					else
 						$arFix[] = ' MODIFY `'.$f0['Field'].'` '.$f0['Type'].' COLLATE '.$collation.($f0['Null'] == 'YES' ? ' NULL' : ' NOT NULL').
-							($f0['Default'] === NULL ? ($f0['Null'] == 'YES' ? ' DEFAULT NULL ' : '') : ' DEFAULT '.($f0['Type'] == 'timestamp' && $f0['Default'] == 'CURRENT_TIMESTAMP' ? $f0['Default'] : '"'.$DB->ForSQL($f0['Default']).'"')).' '.$f0['Extra'];
+							($f0['Default'] === NULL ? ($f0['Null'] == 'YES' ? ' DEFAULT NULL ' : '') : ' DEFAULT '.($f0['Type'] == 'timestamp' && $f0['Default'] ? $f0['Default'] : '"'.$DB->ForSQL($f0['Default']).'"')).' '.$f0['Extra'];
 				}
 			}
 
@@ -2328,6 +2342,8 @@ class CSiteCheckerTest
 
 		if ($this->arTestVars['table_charset_fail'])
 			return $this->Result(null, GetMessage('SC_TABLE_COLLATION_NA'));
+
+		$DB->Query("SET SQL_MODE=''");
 
 		$f = $DB->Query('SELECT VERSION() v')->Fetch();
 		$this->db_ver = $f['v'];
@@ -3071,7 +3087,7 @@ function InitPureDB()
 function TableFieldConstruct($f0)
 {
 	global $DB;
-	$tmp = '`'.$f0['Field'].'` '.$f0['Type'].($f0['Null'] == 'YES' ? ' NULL' : ' NOT NULL').($f0['Default'] === NULL ? ($f0['Null'] == 'YES' ? ' DEFAULT NULL ' : '') : ' DEFAULT '.($f0['Type'] == 'timestamp' && $f0['Default'] == 'CURRENT_TIMESTAMP' ? $f0['Default'] : '"'.$DB->ForSQL($f0['Default']).'"')).' '.$f0['Extra'];
+	$tmp = '`'.$f0['Field'].'` '.$f0['Type'].($f0['Null'] == 'YES' ? ' NULL' : ' NOT NULL').($f0['Default'] === NULL ? ($f0['Null'] == 'YES' ? ' DEFAULT NULL ' : '') : ' DEFAULT '.($f0['Type'] == 'timestamp' && $f0['Default'] ? $f0['Default'] : '"'.$DB->ForSQL($f0['Default']).'"')).' '.$f0['Extra'];
 	return trim($tmp);
 }
 

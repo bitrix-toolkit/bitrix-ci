@@ -77,38 +77,38 @@ class UserIndexTable extends Main\Entity\DataManager
 	}
 
 	public static function merge(array $data)
-    {
-        $result = new Entity\AddResult();
+	{
+		$result = new Entity\AddResult();
 
-        $helper = Application::getConnection()->getSqlHelper();
-        $insertData = $data;
-        $updateData = $data;
-        $mergeFields = static::getMergeFields();
+		$helper = Application::getConnection()->getSqlHelper();
+		$insertData = $data;
+		$updateData = $data;
+		$mergeFields = static::getMergeFields();
 
-        foreach ($mergeFields as $field)
-        {
-            unset($updateData[$field]);
-        }
+		foreach ($mergeFields as $field)
+		{
+			unset($updateData[$field]);
+		}
 
-        $merge = $helper->prepareMerge(
-            static::getTableName(),
-            static::getMergeFields(),
-            $insertData,
-            $updateData
-        );
+		$merge = $helper->prepareMerge(
+			static::getTableName(),
+			static::getMergeFields(),
+			$insertData,
+			$updateData
+		);
 
-        if ($merge[0] != "")
-        {
-            Application::getConnection()->query($merge[0]);
-            $id = Application::getConnection()->getInsertedId();
-            $result->setId($id);
-            $result->setData($data);
-        }
-        else
-        {
-            $result->addError(new Error('Error constructing query'));
-        }
+		if ($merge[0] != "")
+		{
+			Application::getConnection()->query($merge[0]);
+			$id = Application::getConnection()->getInsertedId();
+			$result->setId($id);
+			$result->setData($data);
+		}
+		else
+		{
+			$result->addError(new Error('Error constructing query'));
+		}
 
-        return $result;
-    }
+		return $result;
+	}
 }

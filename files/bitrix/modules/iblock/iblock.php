@@ -64,7 +64,6 @@ $arClasses = array(
 	'\Bitrix\Iblock\IblockRssTable' => "lib/iblockrss.php",
 	'\Bitrix\Iblock\IblockSiteTable' => "lib/iblocksite.php",
 	'\Bitrix\Iblock\InheritedPropertyTable' => "lib/inheritedproperty.php",
-	'\Bitrix\Iblock\PropertyTable' => "lib/property.php",
 	'\Bitrix\Iblock\PropertyEnumerationTable' => "lib/propertyenumeration.php",
 	'\Bitrix\Iblock\PropertyFeatureTable' => 'lib/propertyfeature.php',
 	'\Bitrix\Iblock\SequenceTable' => "lib/sequence.php",

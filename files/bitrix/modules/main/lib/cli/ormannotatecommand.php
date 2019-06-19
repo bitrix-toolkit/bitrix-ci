@@ -33,6 +33,7 @@ use Bitrix\Main\ORM\Objectify\Collection;
 use Bitrix\Main\ORM\Fields\Relations\Reference;
 use Bitrix\Main\ORM\Fields\ScalarField;
 use Bitrix\Main\ORM\Query\Query;
+use Bitrix\Main\Text\StringHelper;
 use Bitrix\Main\Type\Date;
 use Bitrix\Main\Type\DateTime;
 use Symfony\Component\Console\Command\Command;
@@ -412,6 +413,9 @@ class OrmAnnotateCommand extends Command
 		$code[] = "\tclass {$objectDefaultClassName} {";
 		$code[] = "\t\t/* @var {$dataClass} */";
 		$code[] = "\t\tstatic public \$dataClass = '{$dataClass}';";
+		$code[] = "\t\t/**";
+		$code[] = "\t\t * @param bool|array \$setDefaultValues";
+		$code[] = "\t\t */";
 		$code[] = "\t\tpublic function __construct(\$setDefaultValues = true) {}";
 		$code[] = "\t}"; // end class
 
@@ -771,7 +775,7 @@ class OrmAnnotateCommand extends Command
 
 	protected static function getFieldNameCamelCase($fieldName)
 	{
-		$upperFirstName = Entity::snake2camel($fieldName);
+		$upperFirstName = StringHelper::snake2camel($fieldName);
 		$lowerFirstName = lcfirst($upperFirstName);
 
 		return [$lowerFirstName, $upperFirstName];

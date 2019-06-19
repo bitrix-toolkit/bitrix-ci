@@ -64,7 +64,7 @@ abstract class ScalarField extends Field implements IStorable
 	 *
 	 * @return $this
 	 */
-	public function configurePrimary($value)
+	public function configurePrimary($value = true)
 	{
 		$this->is_primary = (bool) $value;
 		return $this;
@@ -80,7 +80,7 @@ abstract class ScalarField extends Field implements IStorable
 	 *
 	 * @return $this
 	 */
-	public function configureRequired($value)
+	public function configureRequired($value = true)
 	{
 		$this->is_required = (bool) $value;
 		return $this;
@@ -96,7 +96,7 @@ abstract class ScalarField extends Field implements IStorable
 	 *
 	 * @return $this
 	 */
-	public function configureUnique($value)
+	public function configureUnique($value = true)
 	{
 		$this->is_unique = (bool) $value;
 		return $this;
@@ -112,7 +112,7 @@ abstract class ScalarField extends Field implements IStorable
 	 *
 	 * @return $this
 	 */
-	public function configureAutocomplete($value)
+	public function configureAutocomplete($value = true)
 	{
 		$this->is_autocomplete = (bool) $value;
 		return $this;

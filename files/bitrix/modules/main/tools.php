@@ -6,6 +6,8 @@
  * @copyright 2001-2014 Bitrix
  */
 
+use Bitrix\Main\Page\Asset;
+use Bitrix\Main\Page\AssetLocation;
 use Bitrix\Main\UI\Extension;
 
 /**
@@ -3846,10 +3848,7 @@ function LocalRedirect($url, $skip_security_check=false, $status="302 Found")
 
 	$_SESSION["BX_REDIRECT_TIME"] = time();
 
-	\Bitrix\Main\Context::getCurrent()->getResponse()->flush();
-
-	CMain::ForkActions();
-	exit;
+	\Bitrix\Main\Application::getInstance()->end();
 }
 
 function WriteFinalMessage($message = "")
@@ -4263,11 +4262,9 @@ function InitURLParam($url=false)
 
 function _ShowHtmlspec($str)
 {
-	$str = str_replace("<br>", "\n", $str);
-	$str = str_replace("<br />", "\n", $str);
-	$str = htmlspecialcharsbx($str);
+	$str = str_replace(["<br>", "<br />", "<BR>", "<BR />"], "\n", $str);
+	$str = htmlspecialcharsbx($str, ENT_COMPAT, false);
 	$str = nl2br($str);
-	$str = str_replace("&amp;", "&", $str);
 	return $str;
 }
 
@@ -4496,7 +4493,6 @@ class CJSCore
 	const USE_PUBLIC = 'public';
 
 	private static $arRegisteredExt = array();
-	private static $arAutoloadQueue = array();
 	private static $arCurrentlyLoadedExt = array();
 
 	private static $bInited = false;
@@ -4536,11 +4532,6 @@ class CJSCore
 		}
 
 		self::$arRegisteredExt[$name] = $arPaths;
-
-		if (isset($arPaths['autoload']))
-		{
-			self::$arAutoloadQueue[$name] = $arPaths;
-		}
 	}
 
 	public static function Init($arExt = array(), $bReturn = false)
@@ -4580,23 +4571,61 @@ class CJSCore
 		}
 
 		$ret = '';
-		if ($bNeedCore && !self::$arCurrentlyLoadedExt['core'])
+
+		if ($bNeedCore && !self::isCoreLoaded())
 		{
-			$config = self::GetCoreConfig();
+			$config = self::getCoreConfig();
+			
+			self::markExtensionLoaded('core');
+			self::markExtensionLoaded('main.core');
 
-			$ret .= self::_loadCSS($config['css'], $bReturn);
-			$ret .= self::_loadJS($config['js'], $bReturn);
-			$ret .= self::_loadLang($config['lang'], $bReturn);
+			$includes = '';
+			if (is_array($config['includes']))
+            {
+                foreach ($config['includes'] as $key => $item)
+                {
+					self::markExtensionLoaded($item);
+                }
 
-			self::$arCurrentlyLoadedExt['core'] = true;
-		}
+				$assets = Extension::getAssets($config['includes']);
+                $includes .= static::registerAssetsAsLoaded($assets);
+            }
 
-		if (self::$arCurrentlyLoadedExt['core'])
-		{
-			foreach (self::$arAutoloadQueue as $extCode => $extParams)
+			$relativities = '';
+
+			if (is_array($config['rel']))
+            {
+                $return = true;
+                $relativities .= self::init($config['rel'], $return);
+            }
+
+			$coreLang = self::_loadLang($config['lang'], true);
+            $coreJs = self::_loadJS($config['js'], true);
+			$coreCss = self::_loadCSS($config['css'], true);
+
+			if ($bReturn)
 			{
-				$ret .= self::_loadExt($extCode, $bReturn);
-				unset(self::$arAutoloadQueue[$extCode]);
+			    $ret .= $coreLang;
+				$ret .= $relativities;
+			    $ret .= $coreJs;
+			    $ret .= $coreCss;
+			    $ret .= $includes;
+            }
+
+			$asset = Asset::getInstance();
+			$asset->addString($coreLang, true, AssetLocation::AFTER_CSS);
+            $asset->addString($relativities, true, AssetLocation::AFTER_CSS);
+            $asset->addString($coreJs, true, AssetLocation::AFTER_CSS);
+            $asset->addString($includes, true, AssetLocation::AFTER_CSS);
+
+			// Asset addString before_css doesn't works in admin section
+            if (!defined('ADMIN_SECTION') || ADMIN_SECTION !== true)
+			{
+				$asset->addString($coreCss, true, AssetLocation::BEFORE_CSS);
+			}
+            else
+			{
+				self::_loadCSS($config['css'], false);
 			}
 		}
 
@@ -4611,15 +4640,48 @@ class CJSCore
 		return $bReturn ? $ret : true;
 	}
 
+	protected static function registerAssetsAsLoaded($assets)
+    {
+        if (is_array($assets))
+        {
+            $result = '';
+
+            if (isset($assets['js']) && is_array($assets['js']) && !empty($assets['js']))
+            {
+                $result .= "BX.setJSList(".\CUtil::phpToJSObject($assets['js']).");\n";
+            }
+
+			if (isset($assets['css']) && is_array($assets['css']) && !empty($assets['css']))
+			{
+				$result .= "BX.setCSSList(".\CUtil::phpToJSObject($assets['css']).");";
+			}
+
+            return '<script>'.$result.'</script>';
+        }
+
+        return '';
+    }
+	
+	/**
+	 * @param $code - name of extension
+	 */
+	public static function markExtensionLoaded($code)
+	{
+		self::$arCurrentlyLoadedExt[$code] = true;
+	}
+
 	/**
 	 * Returns true if Core JS was inited
 	 * @return bool
 	 */
 	public static function IsCoreLoaded()
 	{
-		return isset(self::$arCurrentlyLoadedExt["core"]);
+		return (
+			self::isExtensionLoaded("core")
+			|| self::isExtensionLoaded("main.core")
+        );
 	}
-
+	
 	/**
 	 * Returns true if JS extension was loaded.
 	 * @param string $code Code of JS extension.
@@ -4627,7 +4689,7 @@ class CJSCore
 	 */
 	public static function isExtensionLoaded($code)
 	{
-		return isset(self::$arCurrentlyLoadedExt[$code]);
+		return isset(self::$arCurrentlyLoadedExt[$code]) && self::$arCurrentlyLoadedExt[$code];
 	}
 
 	public static function GetCoreMessagesScript($compositeMode = false)
@@ -4839,11 +4901,7 @@ JS;
 
 	public static function GetCoreConfig()
 	{
-		return Array(
-			'css' => '/bitrix/js/main/core/css/core.css',
-			'js' => '/bitrix/js/main/core/core.js',
-			'lang' => BX_ROOT.'/modules/main/js_core.php',
-		);
+		return Extension::getConfig('main.core');
 	}
 
 	private static function _loadExt($ext, $bReturn)
@@ -4872,7 +4930,7 @@ JS;
 			}
 		}
 
-		if (isset(self::$arCurrentlyLoadedExt[$ext]) && self::$arCurrentlyLoadedExt[$ext])
+		if (self::isExtensionLoaded($ext))
 		{
 			return "";
 		}
@@ -4909,7 +4967,7 @@ JS;
 			unset(self::$arRegisteredExt[$ext]['oninit']);
 		}
 
-		self::$arCurrentlyLoadedExt[$ext] = true;
+		self::markExtensionLoaded($ext);
 
 		if (isset(self::$arRegisteredExt[$ext]['rel']) && is_array(self::$arRegisteredExt[$ext]['rel']))
 		{
@@ -4987,21 +5045,6 @@ JS;
 	public static function getExtInfo($ext)
 	{
 		return self::$arRegisteredExt[$ext];
-	}
-
-	public static function getAutoloadExtInfo()
-	{
-		$result = Array();
-
-		foreach(self::$arRegisteredExt as $ext => $info)
-		{
-			if ($info['autoload'])
-			{
-				$result[$ext] = $info;
-			}
-		}
-
-		return $result;
 	}
 
 	private static function _RegisterStandardExt()
@@ -5101,14 +5144,14 @@ JS;
 	{
 		$files = is_array($files) ? $files : array($files);
 
-		\Bitrix\Main\Page\Asset::getInstance()->addJsKernelInfo($bundleName, $files);
+		Asset::getInstance()->addJsKernelInfo($bundleName, $files);
 	}
 
 	private static function registerCssBundle($bundleName, $files)
 	{
 		$files = is_array($files) ? $files : array($files);
 
-		\Bitrix\Main\Page\Asset::getInstance()->addCssKernelInfo($bundleName, $files);
+		Asset::getInstance()->addCssKernelInfo($bundleName, $files);
 	}
 }
 

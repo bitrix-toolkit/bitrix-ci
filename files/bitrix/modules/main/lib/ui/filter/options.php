@@ -430,11 +430,19 @@ class Options
 					$result["rows"][] = $id;
 				}
 			}
-			else if ($type == "custom_entity" || $type == "dest_selector")
+			else if ($type == "custom_entity")
 			{
 				if ($request[$id] !== null && ($request[$nameId] !== null || $request[$labelId]))
 				{
 					$result["fields"][$labelId] = $request[$nameId] !== null ? $request[$nameId] : $request[$labelId];
+					$result["fields"][$id] = $request[$id];
+					$result["rows"][] = $id;
+				}
+			}
+			else if ($type == "dest_selector")
+			{
+				if ($request[$id] !== null)
+				{
 					$result["fields"][$id] = $request[$id];
 					$result["rows"][] = $id;
 				}
@@ -657,7 +665,6 @@ class Options
 	{
 		$filterFields = self::fetchFieldsFromFilterSettings($filterSettings, $additionalFields);
 		$resultFields = array();
-
 		foreach ($filterFields as $key => $field)
 		{
 			$isStrictField = false;
@@ -733,10 +740,23 @@ class Options
 				$result["FIND"] = $this->getSearchString();
 			}
 		}
-
 		return $result;
 	}
 
+	/**
+	 * Gets current filter values that available for DB seach
+	 * @param array $sourceFields Filter fields $arParams["FILTER"]
+	 * @return array
+	 */
+	public function getFilterLogic($sourceFields = array())
+	{
+		$filter = $this->getFilter($sourceFields);
+		if ($filter["FILTER_APPLIED"] === true)
+		{
+			return Type::getLogicFilter($filter, $sourceFields);
+		}
+		return [];
+	}
 
 	/**
 	 * Gets filter search string

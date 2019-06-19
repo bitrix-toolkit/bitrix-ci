@@ -45,10 +45,10 @@ return array (
       'default' => 
       array (
         'className' => '\\Bitrix\\Main\\DB\\MysqliConnection',
-        'host' => getenv('MYSQL_HOST'),
-        'database' => getenv('MYSQL_DATABASE'),
-        'login' => getenv('MYSQL_USER'),
-        'password' => getenv('MYSQL_PASSWORD'),
+        'host' => getenv('MYSQL_HOST', true) ?: getenv('MYSQL_HOST'),
+        'database' => getenv('MYSQL_DATABASE', true) ?: getenv('MYSQL_DATABASE'),
+        'login' => getenv('MYSQL_USER', true) ?: getenv('MYSQL_USER'),
+        'password' => getenv('MYSQL_PASSWORD', true) ?: getenv('MYSQL_PASSWORD'),
         'options' => 2,
       ),
     ),
@@ -58,7 +58,7 @@ return array (
   array (
     'value' => 
     array (
-      'crypto_key' => 'bf7b5c08707caf917315ea6f4a12ca21',
+      'crypto_key' => '61d5a201bf247bd7919e0f4f23605082',
     ),
     'readonly' => true,
   ),

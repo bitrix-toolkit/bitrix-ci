@@ -191,6 +191,7 @@ abstract class Collection implements \ArrayAccess, \Iterator, \Countable
 	/**
 	 * @param EntityObject $object
 	 *
+	 * @return void
 	 * @throws ArgumentException
 	 * @throws SystemException
 	 */
@@ -205,7 +206,13 @@ abstract class Collection implements \ArrayAccess, \Iterator, \Countable
 			));
 		}
 
-		return $this->removeByPrimary($object->primary);
+		// ignore deleted objects
+		if ($object->state === State::DELETED)
+		{
+			return;
+		}
+
+		$this->removeByPrimary($object->primary);
 	}
 
 	/**
@@ -372,7 +379,7 @@ abstract class Collection implements \ArrayAccess, \Iterator, \Countable
 			// get only scalar & uf data and check its uniqueness
 			foreach ($updateObjects as $object)
 			{
-				$objectData = $updateObjects[0]->collectValues(Values::CURRENT, FieldTypeMask::SCALAR | FieldTypeMask::USERTYPE);
+				$objectData = $object->collectValues(Values::CURRENT, FieldTypeMask::SCALAR | FieldTypeMask::USERTYPE);
 				asort($objectData);
 
 				if ($dataSample !== $objectData)
@@ -668,6 +675,21 @@ abstract class Collection implements \ArrayAccess, \Iterator, \Countable
 
 		$this->_objectsChanges = [];
 		$this->_objectsRemoved = [];
+	}
+
+	/**
+	 * @internal For internal system usage only.
+	 */
+	public function sysReviseDeletedObjects()
+	{
+		// clear from deleted objects
+		foreach ($this->_objects as $k => $object)
+		{
+			if ($object->state === State::DELETED)
+			{
+				unset($this->_objects[$k]);
+			}
+		}
 	}
 
 	/**

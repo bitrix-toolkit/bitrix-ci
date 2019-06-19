@@ -50,6 +50,9 @@ abstract class DataManager
 	/** @var Collection[] Cache of class names */
 	protected static $collectionClass;
 
+	/** @var Entity */
+	protected static $entityClass = Entity::class;
+
 	/** @var array Restricted words for object class name */
 	protected static $reservedWords = [
 		// keywords
@@ -74,12 +77,17 @@ abstract class DataManager
 	 */
 	public static function getEntity()
 	{
-		$class = get_called_class();
-		$class = Entity::normalizeEntityClass($class);
+		// TODO PHP7 ONLY
+		//$class = static::$entityClass::normalizeEntityClass(get_called_class());
+		$entityClass = static::$entityClass;
+		$class = $entityClass::normalizeEntityClass(get_called_class());
 
 		if (!isset(static::$entity[$class]))
 		{
-			static::$entity[$class] = Entity::getInstance($class);
+			// TODO PHP7 ONLY
+			//static::$entity[$class] = static::$entityClass::getInstance($class);
+			$entityClass = static::$entityClass;
+			static::$entity[$class] = $entityClass::getInstance($class);
 		}
 
 		return static::$entity[$class];
@@ -87,7 +95,10 @@ abstract class DataManager
 
 	public static function unsetEntity($class)
 	{
-		$class = Entity::normalizeEntityClass($class);
+		// TODO PHP7 ONLY
+		//$class = static::$entityClass::normalizeEntityClass($class);
+		$entityClass = static::$entityClass;
+		$class = $entityClass::normalizeEntityClass($class);
 
 		if (isset(static::$entity[$class]))
 		{
@@ -124,31 +135,7 @@ abstract class DataManager
 	{
 		if (!isset(static::$objectClass[get_called_class()]))
 		{
-			$objectClass = Entity::normalizeName(get_called_class());
-
-			// make class name more unique
-			$namespace = substr($objectClass, 0, strrpos($objectClass, '\\')+1);
-			$className = substr($objectClass, strrpos($objectClass, '\\') + 1);
-
-			$className = Entity::getDefaultObjectClassName($className);
-
-
-
-			// with prefix EO_ it's not actual anymore
-			/*if (in_array(strtolower($className), static::$reservedWords))
-			{
-				// add postfix to reserved word
-				$className .= 'Object';
-			}*/
-
-			// the same reason
-			/*if (class_exists($objectClass) && !is_subclass_of($objectClass, EntityObject::class))
-			{
-				// add unique postfix to existing class
-				$className .= substr(md5($objectClass), 0, 6);
-			}*/
-
-			static::$objectClass[get_called_class()] = $namespace.$className;
+			static::$objectClass[get_called_class()] = static::getObjectClassByDataClass(get_called_class());
 		}
 
 		return static::$objectClass[get_called_class()];
@@ -165,6 +152,25 @@ abstract class DataManager
 		return substr($class, strrpos($class, '\\')+1);
 	}
 
+	protected static function getObjectClassByDataClass($dataClass)
+	{
+		// TODO PHP7 ONLY
+		//$objectClass = static::$entityClass::normalizeName($dataClass);
+		$entityClass = static::$entityClass;
+		$objectClass = $entityClass::normalizeName($dataClass);
+
+		// make class name more unique
+		$namespace = substr($objectClass, 0, strrpos($objectClass, '\\')+1);
+		$className = substr($objectClass, strrpos($objectClass, '\\') + 1);
+
+		// TODO PHP7 ONLY
+		//$className = static::$entityClass::getDefaultObjectClassName($className);
+		$entityClass = static::$entityClass;
+		$className = $entityClass::getDefaultObjectClassName($className);
+
+		return $namespace.$className;
+	}
+
 	/**
 	 * Returns class of Object collection for current entity.
 	 *
@@ -174,15 +180,7 @@ abstract class DataManager
 	{
 		if (!isset(static::$collectionClass[get_called_class()]))
 		{
-			$objectClass = Entity::normalizeName(get_called_class());
-
-			// make class name more unique
-			$namespace = substr($objectClass, 0, strrpos($objectClass, '\\')+1);
-			$className = substr($objectClass, strrpos($objectClass, '\\') + 1);
-
-			$className = Entity::getDefaultCollectionClassName($className);
-
-			static::$collectionClass[get_called_class()] = $namespace.$className;
+			static::$collectionClass[get_called_class()] = static::getCollectionClassByDataClass(get_called_class());
 		}
 
 		return static::$collectionClass[get_called_class()];
@@ -197,6 +195,25 @@ abstract class DataManager
 	{
 		$class = static::getCollectionClass();
 		return substr($class, strrpos($class, '\\')+1);
+	}
+
+	protected static function getCollectionClassByDataClass($dataClass)
+	{
+		// TODO PHP7 ONLY
+		//$objectClass = static::$entityClass::normalizeName($dataClass);
+		$entityClass = static::$entityClass;
+		$objectClass = $entityClass::normalizeName($dataClass);
+
+		// make class name more unique
+		$namespace = substr($objectClass, 0, strrpos($objectClass, '\\')+1);
+		$className = substr($objectClass, strrpos($objectClass, '\\') + 1);
+
+		// TODO PHP7 ONLY
+		//$className = static::$entityClass::getDefaultCollectionClassName($className);
+		$entityClass = static::$entityClass;
+		$className = $entityClass::getDefaultCollectionClassName($className);
+
+		return $namespace.$className;
 	}
 
 	/**
@@ -251,7 +268,7 @@ abstract class DataManager
 
 	/**
 	 * Returns entity map definition.
-	 * To get initialized fields @see \Bitrix\Main\ORM\Entity::getFields() and \Bitrix\Main\ORM\Base::getField()
+	 * To get initialized fields @see \Bitrix\Main\ORM\Entity::getFields() and \Bitrix\Main\ORM\Entity::getField()
 	 */
 	public static function getMap()
 	{
@@ -749,7 +766,14 @@ abstract class DataManager
 					{
 						if ($entity->getField($fieldName) instanceof ScalarField && $entity->getField($fieldName)->isPrimary())
 						{
-							// and ignore primary
+							// ignore old primary
+							if (array_key_exists($fieldName, $primary) && $primary[$fieldName] == $value)
+							{
+								unset($fields[$fieldName]);
+								continue;
+							}
+
+							// but prevent primary changing
 							trigger_error(sprintf(
 								'Primary of %s %s can not be changed. You can delete this row and add a new one',
 								static::getObjectClass(), Main\Web\Json::encode($object->primary)

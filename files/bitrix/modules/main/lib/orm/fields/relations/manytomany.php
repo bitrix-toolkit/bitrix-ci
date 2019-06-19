@@ -14,6 +14,7 @@ use Bitrix\Main\ORM\Fields\FieldTypeMask;
 use Bitrix\Main\ORM\Query\Query;
 use Bitrix\Main\ORM\Fields\Relations\Reference;
 use Bitrix\Main\SystemException;
+use Bitrix\Main\Text\StringHelper;
 
 /**
  * Performs many to many relation through mediator entity
@@ -220,7 +221,7 @@ class ManyToMany extends Relation
 				{
 					$localEntityName = $this->getEntity()->getName();
 					$remoteEntityName = $this->getRefEntity()->getName();
-					$fieldToClassName = Entity::snake2camel($this->name);
+					$fieldToClassName = StringHelper::snake2camel($this->name);
 
 					// each field has its own entity in case of ManyToMany definitions will be different
 					$this->mediatorEntityName = "MediatorFrom{$localEntityName}To{$remoteEntityName}Via{$fieldToClassName}Table";
@@ -309,7 +310,7 @@ class ManyToMany extends Relation
 	{
 		if (empty($this->localReferenceName))
 		{
-			$this->localReferenceName = strtoupper(Entity::camel2snake($this->getEntity()->getName()));
+			$this->localReferenceName = strtoupper(StringHelper::camel2snake($this->getEntity()->getName()));
 		}
 
 		return $this->localReferenceName;
@@ -336,7 +337,7 @@ class ManyToMany extends Relation
 	{
 		if (empty($this->remoteReferenceName))
 		{
-			$this->remoteReferenceName = strtoupper(Entity::camel2snake($this->getRefEntity()->getName()));
+			$this->remoteReferenceName = strtoupper(StringHelper::camel2snake($this->getRefEntity()->getName()));
 		}
 
 		return $this->remoteReferenceName;

@@ -76,7 +76,7 @@ class Asset
 	private $siteTemplateID = '';
 	private $templatePath = '';
 	private $documentRoot = '';
-	private $dbType = '';
+	private $dbType = 'MYSQL';
 	private $assetCSSCnt = 0;
 	private $assetJSCnt = 0;
 
@@ -119,7 +119,6 @@ class Asset
 
 		$this->target = &$this->targetList['TEMPLATE'];
 		$this->documentRoot = Main\Loader::getDocumentRoot();
-		$this->dbType = ToUpper(\Bitrix\Main\Application::getInstance()->getConnection()->getType());
 	}
 
 	/**
@@ -980,7 +979,11 @@ class Asset
 	 */
 	public static function replaceUrlCss($url, $quote, $path)
 	{
-		if (strpos($url, "://") !== false || strpos($url, "data:") !== false)
+		if (
+			strpos($url, "://") !== false
+			|| strpos($url, "data:") !== false
+			|| substr($url, 0, 1) == "#"
+		)
 		{
 			return $quote.$url.$quote;
 		}

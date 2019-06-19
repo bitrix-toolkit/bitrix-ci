@@ -2,6 +2,7 @@
 
 namespace Bitrix\Main\Search;
 
+use Bitrix\Main\PhoneNumber;
 class MapBuilder
 {
 	/** @var array [search_token => true] */
@@ -70,6 +71,14 @@ class MapBuilder
 
 		$altPhone = str_replace(' ', '', $phone);
 		$this->tokens[$altPhone] = true;
+
+		$convertedPhone = PhoneNumber\Parser::getInstance()
+			->parse($altPhone)
+			->format(PhoneNumber\Format::E164);
+		if ($convertedPhone != $altPhone)
+		{
+			$this->tokens[$convertedPhone] = true;
+		}
 
 		$length = strlen($value);
 		if($length >= 10 && substr($value, 0, 1) === '7')

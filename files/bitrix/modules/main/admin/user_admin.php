@@ -41,13 +41,21 @@ if($_REQUEST["action"] == "authorize" && check_bitrix_sessid() && $USER->CanDoOp
 {
 	$USER->Logout();
 	$USER->Authorize(intval($_REQUEST["ID"]));
-	$USER->CheckAuthActions();
+	LocalRedirect("user_admin.php?lang=".LANGUAGE_ID);
+}
+
+//logout user
+if($_REQUEST["action"] == "logout_user" && check_bitrix_sessid() && $USER->CanDoOperation('edit_php'))
+{
+	\Bitrix\Main\UserAuthActionTable::addLogoutAction($_REQUEST["ID"]);
 	LocalRedirect("user_admin.php?lang=".LANGUAGE_ID);
 }
 
 $sTableID = "tbl_user";
 
-$oSort = new CAdminSorting($sTableID, "ID", "desc");
+$excelMode = ($_REQUEST["mode"] == "excel");
+
+$oSort = new CAdminUiSorting($sTableID, "ID", "desc");
 $lAdmin = new CAdminUiList($sTableID, $oSort);
 
 $bIntranetEdition = IsModuleInstalled("intranet");//(defined("INTRANET_EDITION") && INTRANET_EDITION == "Y");
@@ -446,7 +454,7 @@ if ($totalCountRequest)
 	$userQuery->countTotal(true);
 }
 $userQuery->setOffset($nav->getOffset());
-if ($_REQUEST["mode"] !== "excel")
+if (!$excelMode)
 	$userQuery->setLimit($nav->getLimit() + 1);
 
 $filterOption = new Bitrix\Main\UI\Filter\Options($sTableID);
@@ -641,7 +649,7 @@ $pageSize = $lAdmin->getNavSize();
 while ($userData = $result->fetch())
 {
 	$n++;
-	if ($n > $pageSize)
+	if ($n > $pageSize && !$excelMode)
 	{
 		break;
 	}
@@ -727,6 +735,12 @@ while ($userData = $result->fetch())
 			"TEXT" => GetMessage("MAIN_ADMIN_AUTH"),
 			"TITLE" => GetMessage("MAIN_ADMIN_AUTH_TITLE"),
 			"LINK" => "user_admin.php?lang=".LANGUAGE_ID."&ID=".$userId."&action=authorize&".bitrix_sessid_get()
+		);
+		$arActions[] = array(
+			"ICON" => "",
+			"TEXT" => GetMessage("main_user_admin_logout"),
+			"TITLE" => GetMessage("main_user_admin_logout_title"),
+			"LINK" => "user_admin.php?lang=".LANGUAGE_ID."&ID=".$userId."&action=logout_user&".bitrix_sessid_get()
 		);
 	}
 
