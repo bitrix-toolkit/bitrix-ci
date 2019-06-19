@@ -17,11 +17,11 @@ composer require --dev sheerockoff/bitrix-ci:dev-master
 ```php
 require __DIR__ . '/vendor/autoload.php';
 
-$pdo = new PDO('mysql:host=localhost;dbname=bitrix_ci', 'user', 'password');
+$db = mysqli_connect('localhost', 'user', 'password', 'db');
 
-$sqlDump = new Sheerockoff\BitrixCi\SqlDump(__DIR__ . '/vendor/sheerockoff/bitrix-ci/dump.sql');
+$sqlDump = new \Sheerockoff\BitrixCi\SqlDump(__DIR__ . '/vendor/sheerockoff/bitrix-ci/dump.sql');
 foreach ($sqlDump->parse() as $query) {
-    $pdo->exec($query);
+    mysqli_query($db, $query);
 }
 ```
 

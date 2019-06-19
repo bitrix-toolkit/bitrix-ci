@@ -10,7 +10,7 @@ variables:
 
 before_script:
   - apt-get update -yqq && apt-get install -yqq zip unzip
-  - docker-php-ext-install pdo_mysql
+  - docker-php-ext-install mysqli
   - curl https://getcomposer.org/installer | php --
   - php composer.phar install --no-interaction
 
