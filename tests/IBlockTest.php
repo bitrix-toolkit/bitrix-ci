@@ -11,14 +11,15 @@ use CModule;
 
 class IBlockTest extends TestCase
 {
-    public function testCanLoadModule()
-    {
-        $this->assertTrue(CModule::IncludeModule('iblock'));
-    }
-
     public static function tearDownAfterClass()
     {
         CIBlockType::Delete('bitrix_ci_test');
+    }
+
+    public function testCanLoadModule()
+    {
+        global $APPLICATION;
+        $this->assertTrue(CModule::IncludeModule('iblock'), $APPLICATION->LAST_ERROR);
     }
 
     /**
