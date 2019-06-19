@@ -1,6 +1,7 @@
 # Bitrix CI Build
 
-[![pipeline status](https://gitlab.com/sheerockoff/bitrix-ci/badges/master/pipeline.svg)](https://gitlab.com/sheerockoff/bitrix-ci/commits/master)
+[![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/sheerockoff/bitrix-ci.svg)](https://gitlab.com/sheerockoff/bitrix-ci/-/jobs)
+[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/sheerockoff/bitrix-ci.svg)](https://github.com/sheerockoff/bitrix-ci/archive/master.zip)
 
 Минимальный сборка Bitrix для использования в тестировании.
 
