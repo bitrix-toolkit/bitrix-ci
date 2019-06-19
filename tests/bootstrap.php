@@ -2,23 +2,24 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$db = mysqli_connect(
-    getenv('MYSQL_HOST'),
+$pdo = new PDO(
+    sprintf('mysql:host=%s;dbname=%s;charset=%s', getenv('MYSQL_HOST'), getenv('MYSQL_DATABASE'), 'utf8'),
     getenv('MYSQL_USER'),
     getenv('MYSQL_PASSWORD'),
-    getenv('MYSQL_DATABASE')
+    [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+    ]
 );
 
-if (!$db) {
+if (!$pdo) {
     throw new InvalidArgumentException('Mysql connection error.');
 }
 
 $sqlDump = new \Sheerockoff\BitrixCi\SqlDump(__DIR__ . '/../dump.sql');
 foreach ($sqlDump->parse() as $query) {
-    mysqli_query($db, $query);
+    $pdo->exec($query);
 }
-
-mysqli_close($db);
 
 define('NOT_CHECK_PERMISSIONS', true);
 define('NO_AGENT_CHECK', true);
