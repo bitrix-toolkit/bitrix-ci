@@ -1,7 +1,7 @@
 # Bitrix CI Build
 
-[![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/sheerockoff/bitrix-ci.svg)](https://gitlab.com/sheerockoff/bitrix-ci/-/jobs)
-[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/sheerockoff/bitrix-ci.svg)](https://github.com/sheerockoff/bitrix-ci/archive/master.zip)
+[![pipeline status](https://gitlab.com/sheerockoff/bitrix-ci/badges/master/pipeline.svg)](https://gitlab.com/sheerockoff/bitrix-ci/commits/master)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/sheerockoff/bitrix-ci.svg?style=flat-square)
 
 Минимальный сборка Bitrix для использования в тестировании.
 
@@ -13,25 +13,34 @@
 composer require --dev sheerockoff/bitrix-ci:dev-master
 ```
 
+Подключаем зависимости.
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+```
+
+Подключение к базе данных настраивается переменными окружения `MYSQL_HOST`, `MYSQL_DATABASE`, `MYSQL_USER` и `MYSQL_PASSWORD`.
+Они могут быть переопределены в PHP.
+
+```php
+putenv('MYSQL_HOST=localhost');
+putenv('MYSQL_DATABASE=bitrix_ci');
+putenv('MYSQL_USER=user');
+putenv('MYSQL_PASSWORD=password');
+```
+
 Разворачиваем дамп MySQL.
 
 ```php
-require __DIR__ . '/vendor/autoload.php';
-
-$db = mysqli_connect('localhost', 'user', 'password', 'db');
-
-$sqlDump = new \Sheerockoff\BitrixCi\SqlDump(__DIR__ . '/vendor/sheerockoff/bitrix-ci/dump.sql');
-foreach ($sqlDump->parse() as $query) {
-    mysqli_query($db, $query);
-}
+\Sheerockoff\BitrixCi\Bootstrap::migrate();
 ```
 
 Подключаем Bitrix.
 
 ```php
-$_SERVER['DOCUMENT_ROOT'] = __DIR__ . '/vendor/sheerockoff/bitrix-ci/files/';
-require $_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/prolog_before.php';
-CModule::IncludeModule('iblock');
+\Sheerockoff\BitrixCi\Bootstrap::bootstrap();
 ```
 
 Тестируем код, который зависит от API Bitrix.
@@ -71,7 +80,7 @@ public function testCanSaveNewObject()
 }
 ```
 
-## Список включенных модулей
+## Список подключенных модулей
 
-* main
-* iblock
+* [Главный модуль](https://dev.1c-bitrix.ru/api_help/main/index.php)
+* [Информационные блоки](https://dev.1c-bitrix.ru/api_help/iblock/index.php)
