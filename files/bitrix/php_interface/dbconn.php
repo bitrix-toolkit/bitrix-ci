@@ -2,10 +2,10 @@
 define("BX_USE_MYSQLI", true);
 define("DBPersistent", false);
 $DBType = "mysql";
-$DBHost = getenv('MYSQL_HOST');
-$DBLogin = getenv('MYSQL_USER');
-$DBPassword = getenv('MYSQL_PASSWORD');
-$DBName = getenv('MYSQL_DATABASE');
+$DBHost = getenv('MYSQL_HOST', true) ?: getenv('MYSQL_HOST');
+$DBLogin = getenv('MYSQL_USER', true) ?: getenv('MYSQL_USER');
+$DBPassword = getenv('MYSQL_PASSWORD', true) ?: getenv('MYSQL_PASSWORD');
+$DBName = getenv('MYSQL_DATABASE', true) ?: getenv('MYSQL_DATABASE');
 $DBDebug = false;
 $DBDebugToFile = false;
 
