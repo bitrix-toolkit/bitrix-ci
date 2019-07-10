@@ -40,6 +40,10 @@ class Bootstrap
 
         $_SERVER['DOCUMENT_ROOT'] = realpath(__DIR__ . '/../files/');
         require_once __DIR__ . '/../files/bitrix/modules/main/include/prolog_before.php';
+
+        CModule::IncludeModule('main');
         CModule::IncludeModule('iblock');
+        CModule::IncludeModule('catalog');
+        CModule::IncludeModule('currency');
     }
 }
