@@ -84,3 +84,5 @@ public function testCanSaveNewObject()
 
 * [Главный модуль](https://dev.1c-bitrix.ru/api_help/main/index.php)
 * [Информационные блоки](https://dev.1c-bitrix.ru/api_help/iblock/index.php)
+* [Торговый каталог](https://dev.1c-bitrix.ru/api_help/catalog/index.php)
+* [Валюты](https://dev.1c-bitrix.ru/api_help/currency/index.php)
