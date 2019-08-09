@@ -3,7 +3,7 @@
 [![pipeline status](https://gitlab.com/sheerockoff/bitrix-ci/badges/master/pipeline.svg)](https://gitlab.com/sheerockoff/bitrix-ci/pipelines)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/sheerockoff/bitrix-ci.svg)](https://packagist.org/packages/sheerockoff/bitrix-ci)
 
-Минимальный сборка Bitrix для использования в тестировании.
+Минимальный сборка [Bitrix](https://www.1c-bitrix.ru/products/cms/index.php) для использования в тестировании.
 
 ## Быстрый старт
 
@@ -84,5 +84,6 @@ public function testCanSaveNewObject()
 
 * [Главный модуль](https://dev.1c-bitrix.ru/api_help/main/index.php)
 * [Информационные блоки](https://dev.1c-bitrix.ru/api_help/iblock/index.php)
+* [Highload-блоки](https://dev.1c-bitrix.ru/api_help/hlblock/index.php)
 * [Торговый каталог](https://dev.1c-bitrix.ru/api_help/catalog/index.php)
 * [Валюты](https://dev.1c-bitrix.ru/api_help/currency/index.php)

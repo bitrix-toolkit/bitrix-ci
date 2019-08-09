@@ -45,5 +45,6 @@ class Bootstrap
         CModule::IncludeModule('iblock');
         CModule::IncludeModule('catalog');
         CModule::IncludeModule('currency');
+        CModule::IncludeModule('highloadblock');
     }
 }
