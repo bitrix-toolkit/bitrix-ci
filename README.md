@@ -10,7 +10,7 @@
 Устанавливаем.
 
 ```bash
-composer require --dev sheerockoff/bitrix-ci:dev-master
+composer require --dev sheerockoff/bitrix-ci
 ```
 
 Подключаем зависимости.
