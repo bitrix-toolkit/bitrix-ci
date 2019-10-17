@@ -3012,12 +3012,10 @@ class CIBlockDocument
 
 		$arResult = array();
 
-		$arFilter = array("ACTIVE" => "Y");
+		$arFilter = ['ACTIVE' => 'Y', 'IS_REAL_USER' => true];
 		if ($group != 2)
-			$arFilter["GROUPS_ID"] = $group;
-		else
 		{
-			$arFilter['EXTERNAL_AUTH_ID'] = '';
+			$arFilter["GROUPS_ID"] = $group;
 		}
 
 		$dbUsersList = CUser::GetList(($b = "ID"), ($o = "ASC"), $arFilter);

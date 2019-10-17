@@ -23,6 +23,7 @@ use Bitrix\Main\ORM\Fields\ScalarField;
 use Bitrix\Main\ORM\Fields\FieldTypeMask;
 use Bitrix\Main\SystemException;
 use Bitrix\Main\ArgumentException;
+use Bitrix\Main\Text\StringHelper;
 
 /**
  * Entity object
@@ -88,17 +89,40 @@ abstract class EntityObject implements \ArrayAccess
 	 */
 	static protected $_snakeToCamelCache = [];
 
+	/**
+	 * EntityObject constructor
+	 *
+	 * @param bool|array $setDefaultValues
+	 *
+	 * @throws ArgumentException
+	 * @throws SystemException
+	 */
 	final public function __construct($setDefaultValues = true)
 	{
-		if ($setDefaultValues)
+		if (is_array($setDefaultValues))
+		{
+			// we have custom default values
+			foreach ($setDefaultValues as $fieldName => $defaultValue)
+			{
+				$this->set($fieldName, $defaultValue);
+			}
+		}
+
+		if ($setDefaultValues || is_array($setDefaultValues))
 		{
 			foreach ($this->entity->getScalarFields() as $fieldName => $field)
 			{
+				if ($this->sysHasValue($fieldName))
+				{
+					// already set custom default value
+					continue;
+				}
+
 				$defaultValue = $field->getDefaultValue($this);
 
 				if ($defaultValue !== null)
 				{
-					$this->sysSetValue($fieldName, $defaultValue);
+					$this->set($fieldName, $defaultValue);
 				}
 			}
 		}
@@ -276,7 +300,7 @@ abstract class EntityObject implements \ArrayAccess
 			unset($this->_actualValues[$primaryName]);
 		}
 
-		$this->sysChangeState(State::RAW);
+		$this->sysChangeState(State::DELETED);
 
 		return $result;
 	}
@@ -702,7 +726,7 @@ abstract class EntityObject implements \ArrayAccess
 
 			if (!strlen($fieldName))
 			{
-				$fieldName = strtoupper($arguments[0]);
+				$fieldName = StringHelper::strtoupper($arguments[0]);
 
 				// check runtime
 				if (array_key_exists($fieldName, $this->_runtimeValues))
@@ -737,7 +761,7 @@ abstract class EntityObject implements \ArrayAccess
 
 			if (!strlen($fieldName))
 			{
-				$fieldName = strtoupper($arguments[0]);
+				$fieldName = StringHelper::strtoupper($arguments[0]);
 				$value = $arguments[1];
 
 				// check for runtime field
@@ -781,7 +805,7 @@ abstract class EntityObject implements \ArrayAccess
 
 			if (!strlen($fieldName))
 			{
-				$fieldName = strtoupper($arguments[0]);
+				$fieldName = StringHelper::strtoupper($arguments[0]);
 
 				// check if custom method exists
 				$personalMethodName = $name.static::sysFieldToMethodCase($fieldName);
@@ -824,7 +848,7 @@ abstract class EntityObject implements \ArrayAccess
 
 			if (!strlen($fieldName))
 			{
-				$fieldName = strtoupper($arguments[0]);
+				$fieldName = StringHelper::strtoupper($arguments[0]);
 				$value = $arguments[1];
 
 				// check if custom method exists
@@ -849,7 +873,7 @@ abstract class EntityObject implements \ArrayAccess
 
 			if (!strlen($fieldName))
 			{
-				$fieldName = strtoupper($arguments[0]);
+				$fieldName = StringHelper::strtoupper($arguments[0]);
 
 				// check if custom method exists
 				$personalMethodName = $name.static::sysFieldToMethodCase($fieldName);
@@ -873,7 +897,7 @@ abstract class EntityObject implements \ArrayAccess
 
 			if (!strlen($fieldName))
 			{
-				$fieldName = strtoupper($arguments[0]);
+				$fieldName = StringHelper::strtoupper($arguments[0]);
 
 				// check if custom method exists
 				$personalMethodName = $name.static::sysFieldToMethodCase($fieldName);
@@ -908,7 +932,7 @@ abstract class EntityObject implements \ArrayAccess
 
 			if (!strlen($fieldName))
 			{
-				$fieldName = strtoupper($arguments[0]);
+				$fieldName = StringHelper::strtoupper($arguments[0]);
 
 				// check if custom method exists
 				$personalMethodName = $name.static::sysFieldToMethodCase($fieldName);
@@ -935,7 +959,7 @@ abstract class EntityObject implements \ArrayAccess
 
 			if (!strlen($fieldName))
 			{
-				$fieldName = strtoupper($arguments[0]);
+				$fieldName = StringHelper::strtoupper($arguments[0]);
 				$value = $arguments[1];
 
 				// check if custom method exists
@@ -962,7 +986,7 @@ abstract class EntityObject implements \ArrayAccess
 
 			if (!strlen($fieldName))
 			{
-				$fieldName = strtoupper($arguments[0]);
+				$fieldName = StringHelper::strtoupper($arguments[0]);
 
 				// check if custom method exists
 				$personalMethodName = $name.static::sysFieldToMethodCase($fieldName);
@@ -992,7 +1016,7 @@ abstract class EntityObject implements \ArrayAccess
 
 			if (!strlen($fieldName))
 			{
-				$fieldName = strtoupper($arguments[0]);
+				$fieldName = StringHelper::strtoupper($arguments[0]);
 
 				// check if custom method exists
 				$personalMethodName = $name.static::sysFieldToMethodCase($fieldName);
@@ -1023,7 +1047,7 @@ abstract class EntityObject implements \ArrayAccess
 
 			if (!strlen($fieldName))
 			{
-				$fieldName = strtoupper($arguments[0]);
+				$fieldName = StringHelper::strtoupper($arguments[0]);
 
 				// check if custom method exists
 				$personalMethodName = $first2.static::sysFieldToMethodCase($fieldName).$last6;
@@ -1058,7 +1082,7 @@ abstract class EntityObject implements \ArrayAccess
 
 			if (!strlen($fieldName))
 			{
-				$fieldName = strtoupper($arguments[0]);
+				$fieldName = StringHelper::strtoupper($arguments[0]);
 
 				// check if custom method exists
 				$personalMethodName = $first2.static::sysFieldToMethodCase($fieldName).$last7;
@@ -1163,7 +1187,7 @@ abstract class EntityObject implements \ArrayAccess
 	 */
 	public function sysSetActual($fieldName, $value)
 	{
-		$this->_actualValues[strtoupper($fieldName)] = $value;
+		$this->_actualValues[StringHelper::strtoupper($fieldName)] = $value;
 	}
 
 	/**
@@ -1220,7 +1244,7 @@ abstract class EntityObject implements \ArrayAccess
 	 */
 	public function sysGetValue($fieldName, $require = false)
 	{
-		$fieldName = strtoupper($fieldName);
+		$fieldName = StringHelper::strtoupper($fieldName);
 
 		if (array_key_exists($fieldName, $this->_currentValues))
 		{
@@ -1254,7 +1278,7 @@ abstract class EntityObject implements \ArrayAccess
 	 */
 	public function sysSetValue($fieldName, $value)
 	{
-		$fieldName = strtoupper($fieldName);
+		$fieldName = StringHelper::strtoupper($fieldName);
 		$field = $this->entity->getField($fieldName);
 
 		// system validations
@@ -1300,7 +1324,11 @@ abstract class EntityObject implements \ArrayAccess
 		{
 			if ($field instanceof IReadable)
 			{
-				if ($field->cast($value) === $this->_actualValues[$fieldName])
+				if ($field->cast($value) === $this->_actualValues[$fieldName]
+					// double check if value objects are different, but db values are the same
+					|| $field->convertValueToDb($field->modifyValueBeforeSave($value, []))
+						=== $field->convertValueToDb($field->modifyValueBeforeSave($this->_actualValues[$fieldName], []))
+				)
 				{
 					// forget previous runtime change
 					unset($this->_currentValues[$fieldName]);
@@ -1368,7 +1396,7 @@ abstract class EntityObject implements \ArrayAccess
 	 */
 	public function sysHasValue($fieldName)
 	{
-		$fieldName = strtoupper($fieldName);
+		$fieldName = StringHelper::strtoupper($fieldName);
 
 		return $this->sysIsFilled($fieldName) || $this->sysIsChanged($fieldName);
 	}
@@ -1382,7 +1410,7 @@ abstract class EntityObject implements \ArrayAccess
 	 */
 	public function sysIsFilled($fieldName)
 	{
-		$fieldName = strtoupper($fieldName);
+		$fieldName = StringHelper::strtoupper($fieldName);
 
 		return array_key_exists($fieldName, $this->_actualValues);
 	}
@@ -1396,7 +1424,7 @@ abstract class EntityObject implements \ArrayAccess
 	 */
 	public function sysIsChanged($fieldName)
 	{
-		$fieldName = strtoupper($fieldName);
+		$fieldName = StringHelper::strtoupper($fieldName);
 
 		return array_key_exists($fieldName, $this->_currentValues);
 	}
@@ -1454,7 +1482,7 @@ abstract class EntityObject implements \ArrayAccess
 	 */
 	public function sysUnset($fieldName)
 	{
-		$fieldName = strtoupper($fieldName);
+		$fieldName = StringHelper::strtoupper($fieldName);
 
 		unset($this->_currentValues[$fieldName]);
 		unset($this->_actualValues[$fieldName]);
@@ -1471,7 +1499,7 @@ abstract class EntityObject implements \ArrayAccess
 	 */
 	public function sysReset($fieldName)
 	{
-		$fieldName = strtoupper($fieldName);
+		$fieldName = StringHelper::strtoupper($fieldName);
 
 		unset($this->_currentValues[$fieldName]);
 
@@ -1487,7 +1515,7 @@ abstract class EntityObject implements \ArrayAccess
 	 */
 	public function sysResetRelation($fieldName)
 	{
-		$fieldName = strtoupper($fieldName);
+		$fieldName = StringHelper::strtoupper($fieldName);
 
 		if (isset($this->_actualValues[$fieldName]))
 		{
@@ -1548,7 +1576,7 @@ abstract class EntityObject implements \ArrayAccess
 
 		foreach ($fields as $fieldName)
 		{
-			if (!isset($this->_actualValues[strtoupper($fieldName)]))
+			if (!isset($this->_actualValues[StringHelper::strtoupper($fieldName)]))
 			{
 				$list[] = $fieldName;
 			}
@@ -1574,7 +1602,7 @@ abstract class EntityObject implements \ArrayAccess
 		{
 			$fieldMask = $field->getTypeMask();
 
-			if (!isset($this->_actualValues[strtoupper($field->getName())])
+			if (!isset($this->_actualValues[StringHelper::strtoupper($field->getName())])
 				&& ($mask & $fieldMask)
 			)
 			{
@@ -1656,6 +1684,12 @@ abstract class EntityObject implements \ArrayAccess
 				// forget collection changes
 				$collection->sysResetChanges();
 			}
+
+			// remove deleted objects from collections
+			if ($value instanceof Collection)
+			{
+				$value->sysReviseDeletedObjects();
+			}
 		}
 	}
 
@@ -1679,7 +1713,7 @@ abstract class EntityObject implements \ArrayAccess
 	 */
 	public function sysAddToCollection($fieldName, $remoteObject)
 	{
-		$fieldName = strtoupper($fieldName);
+		$fieldName = StringHelper::strtoupper($fieldName);
 
 		/** @var OneToMany $field */
 		$field = $this->entity->getField($fieldName);
@@ -1730,7 +1764,7 @@ abstract class EntityObject implements \ArrayAccess
 	 */
 	public function sysRemoveFromCollection($fieldName, $remoteObject)
 	{
-		$fieldName = strtoupper($fieldName);
+		$fieldName = StringHelper::strtoupper($fieldName);
 
 		/** @var OneToMany $field */
 		$field = $this->entity->getField($fieldName);
@@ -1780,7 +1814,7 @@ abstract class EntityObject implements \ArrayAccess
 	 */
 	public function sysRemoveAllFromCollection($fieldName)
 	{
-		$fieldName = strtoupper($fieldName);
+		$fieldName = StringHelper::strtoupper($fieldName);
 
 		/** @var OneToMany|ManyToMany $field */
 		$field = $this->entity->getField($fieldName);

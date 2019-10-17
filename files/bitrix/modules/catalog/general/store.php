@@ -112,7 +112,7 @@ class CAllCatalogStore
 
 	public static function Delete($id)
 	{
-		global $DB;
+		global $DB, $USER_FIELD_MANAGER;
 		$id = intval($id);
 		if($id > 0)
 		{
@@ -131,6 +131,8 @@ class CAllCatalogStore
 
 			$DB->Query("delete from b_catalog_store_product where STORE_ID = ".$id, true);
 			$DB->Query("delete from b_catalog_store where ID = ".$id, true);
+
+			$USER_FIELD_MANAGER->Delete(Catalog\StoreTable::getUfId(), $id);
 
 			foreach(GetModuleEvents("catalog", "OnCatalogStoreDelete", true) as $arEvent)
 				ExecuteModuleEventEx($arEvent, array($id));

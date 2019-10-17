@@ -7,6 +7,11 @@ IncludeModuleLangFile(__FILE__);
 
 class CIBlockCMLImport
 {
+	const IBLOCK_CACHE_FREEZE = 'D';
+	const IBLOCK_CACHE_FINAL = 'F';
+	const IBLOCK_CACHE_HIT = 'H';
+	const IBLOCK_CACHE_NORMAL = 'N';
+
 	var $LAST_ERROR = "";
 	/** @var bool|array */
 	var $next_step = false;
@@ -48,6 +53,10 @@ class CIBlockCMLImport
 	var $skip_root_section = false;
 	var $disable_change_price_name = false;
 
+	protected $activeStores = array();
+
+	protected $iblockCacheMode = self::IBLOCK_CACHE_NORMAL;
+
 	function InitEx(&$next_step, $params)
 	{
 		$defaultParams = array(
@@ -69,7 +78,8 @@ class CIBlockCMLImport
 				"delete_repeat_replace" => true,
 			),
 			"skip_root_section" => false,
-			"disable_change_price_name" => false
+			"disable_change_price_name" => false,
+			"iblock_cache_mode" => self::IBLOCK_CACHE_NORMAL
 		);
 		foreach($defaultParams as $key => $value)
 			if(!array_key_exists($key, $params))
@@ -94,6 +104,16 @@ class CIBlockCMLImport
 
 		$this->skip_root_section = ($params["skip_root_section"] === true);
 		$this->force_offers = ($params["force_offers"] === true);
+
+		if (
+			$params['iblock_cache_mode'] == self::IBLOCK_CACHE_FREEZE
+			|| $params['iblock_cache_mode'] == self::IBLOCK_CACHE_FINAL
+			|| $params['iblock_cache_mode'] == self::IBLOCK_CACHE_HIT
+			|| $params['iblock_cache_mode'] == self::IBLOCK_CACHE_NORMAL
+		)
+		{
+			$this->iblockCacheMode = $params['iblock_cache_mode'];
+		}
 	}
 
 	function Init(&$next_step, $files_dir = false, $use_crc = true, $preview = false, $detail = false, $use_offers = false, $use_iblock_type_id = false, $table_name = "b_xml_tree")
@@ -1451,12 +1471,7 @@ class CIBlockCMLImport
 	{
 		$error = '';
 		$ID = 0;
-		$arDBStores = array();
-		$rsStore = CCatalogStore::GetList(array(), array(), false, false, array("ID", "XML_ID"));
-		while ($arIDStore = $rsStore->Fetch())
-		{
-			$arDBStores[$arIDStore["XML_ID"]] = $arIDStore["ID"];
-		}
+		$arDBStores = $this->getStoreList();
 
 		$arXMLStores = $this->_xml_file->GetAllChildrenArray($XML_STORES_PARENT);
 		foreach($arXMLStores as $arXMLStore)
@@ -1524,12 +1539,7 @@ class CIBlockCMLImport
 		static $arStoreResult = false;
 		if ($arStoreResult === false)
 		{
-			$arStoreResult = array();
-			$resStore =  CCatalogStore::GetList(array(), array(), false, false, array("ID", "XML_ID"));
-			while($arStore = $resStore->Fetch())
-			{
-				$arStoreResult[$arStore["XML_ID"]] = $arStore["ID"];
-			}
+			$arStoreResult = $this->getStoreList();
 		}
 
 		foreach($arElement as $xmlID => $amount)
@@ -2487,6 +2497,7 @@ class CIBlockCMLImport
 			Iblock\PropertyIndex\Manager::enableDeferredIndexing();
 			if ($this->bCatalog)
 				Catalog\Product\Sku::enableDeferredCalculation();
+			$this->activeStores = $this->getActiveStores();
 
 			$obElement = new CIBlockElement();
 			$obElement->CancelWFSetMove();
@@ -2901,18 +2912,18 @@ class CIBlockCMLImport
 			{
 				$p = strpos($arXMLElement[$this->mess["IBLOCK_XML2_ID"]], "#");
 				if ($p !== false)
-				{
 					$link_xml_id = substr($arXMLElement[$this->mess["IBLOCK_XML2_ID"]], 0, $p);
-					$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_LINK"]] = array(
-						"n0" => array(
-							"VALUE" => $this->GetElementByXML_ID(
-								$this->arProperties[$this->PROPERTY_MAP["CML2_LINK"]]["LINK_IBLOCK_ID"],
-								$link_xml_id
-							),
-							"DESCRIPTION" => false,
+				else
+					$link_xml_id = $arXMLElement[$this->mess["IBLOCK_XML2_ID"]];
+				$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_LINK"]] = array(
+					"n0" => array(
+						"VALUE" => $this->GetElementByXML_ID(
+							$this->arProperties[$this->PROPERTY_MAP["CML2_LINK"]]["LINK_IBLOCK_ID"],
+							$link_xml_id
 						),
-					);
-				}
+						"DESCRIPTION" => false,
+					),
+				);
 			}
 
 			if(isset($arXMLElement[$this->mess["IBLOCK_XML2_NAME"]]))
@@ -3761,7 +3772,7 @@ class CIBlockCMLImport
 			if(isset($arElement["QUANTITY"]))
 				$arProduct["QUANTITY"] = $arElement["QUANTITY"];
 			elseif(isset($arElement["STORE_AMOUNT"]) && !empty($arElement["STORE_AMOUNT"]))
-				$arProduct["QUANTITY"] = array_sum($arElement["STORE_AMOUNT"]);
+				$arProduct["QUANTITY"] = $this->countTotalQuantity($arElement["STORE_AMOUNT"]);
 
 			$CML_LINK_ELEMENT = $arElement["PROPERTY_VALUES"][$CML_LINK];
 			if (is_array($CML_LINK_ELEMENT) && isset($CML_LINK_ELEMENT["n0"]))
@@ -4111,7 +4122,7 @@ class CIBlockCMLImport
 				if(isset($arElement["QUANTITY"]))
 					$arProduct["QUANTITY"] = $arElement["QUANTITY"];
 				elseif(isset($arElement["STORE_AMOUNT"]) && !empty($arElement["STORE_AMOUNT"]))
-					$arProduct["QUANTITY"] = array_sum($arElement["STORE_AMOUNT"]);
+					$arProduct["QUANTITY"] = $this->countTotalQuantity($arElement["STORE_AMOUNT"]);
 
 				$rsWeight = CIBlockElement::GetProperty($IBLOCK_ID, $arElement["ID"], array(), array("CODE" => "CML2_TRAITS"));
 				while($arWeight = $rsWeight->Fetch())
@@ -4282,7 +4293,7 @@ class CIBlockCMLImport
 					$internalFields = [];
 					if (isset($arElement["STORE_AMOUNT"]) && !empty($arElement["STORE_AMOUNT"]))
 					{
-						$internalFields['QUANTITY'] = array_sum($arElement["STORE_AMOUNT"]);
+						$internalFields['QUANTITY'] = $this->countTotalQuantity($arElement["STORE_AMOUNT"]);
 					}
 					elseif (isset($arElement["QUANTITY"]))
 					{
@@ -4384,9 +4395,17 @@ class CIBlockCMLImport
 	function SetProductPrice($PRODUCT_ID, $arPrices, $arDiscounts = false)
 	{
 		$arDBPrices = array();
-		$rsPrice = CPrice::GetList(array(), array("PRODUCT_ID" => $PRODUCT_ID));
-		while($ar = $rsPrice->Fetch())
-			$arDBPrices[$ar["CATALOG_GROUP_ID"].":".$ar["QUANTITY_FROM"].":".$ar["QUANTITY_TO"]] = $ar["ID"];
+		$iterator = Catalog\Model\Price::getList(array(
+			'select' => array(
+				'ID', 'PRODUCT_ID', 'CATALOG_GROUP_ID',
+				'QUANTITY_FROM', 'QUANTITY_TO'
+			),
+			'filter' => array('=PRODUCT_ID' => $PRODUCT_ID)
+		));
+		while ($row = $iterator->fetch())
+		{
+			$arDBPrices[$row["CATALOG_GROUP_ID"].":".$row["QUANTITY_FROM"].":".$row["QUANTITY_TO"]] = $row["ID"];
+		}
 
 		$arToDelete = $arDBPrices;
 
@@ -4414,9 +4433,10 @@ class CIBlockCMLImport
 				$arPrice["QUANTITY_FROM"] = $price[$this->mess["IBLOCK_XML2_QUANTITY_FROM"]];
 				$arPrice["QUANTITY_TO"] = $price[$this->mess["IBLOCK_XML2_QUANTITY_TO"]];
 				$arPrice["PRICE"] = $arPrice["^PRICE"];
+				unset($arPrice["^PRICE"]);
 
 				$id = $arPrice["CATALOG_GROUP_ID"].":".$arPrice["QUANTITY_FROM"].":".$arPrice["QUANTITY_TO"];
-				if(array_key_exists($id, $arDBPrices))
+				if(isset($arDBPrices[$id]))
 				{
 					CPrice::Update($arDBPrices[$id], $arPrice);
 					unset($arToDelete[$id]);
@@ -4436,9 +4456,10 @@ class CIBlockCMLImport
 						$arPrice["PRICE"] = $arPrice["^PRICE"] - $arPrice["^PRICE"]/100*$arDiscount["PERCENT"];
 					else
 						$arPrice["PRICE"] = $arPrice["^PRICE"];
+					unset($arPrice["^PRICE"]);
 
 					$id = $arPrice["CATALOG_GROUP_ID"].":".$arPrice["QUANTITY_FROM"].":".$arPrice["QUANTITY_TO"];
-					if(array_key_exists($id, $arDBPrices))
+					if(isset($arDBPrices[$id]))
 					{
 						CPrice::Update($arDBPrices[$id], $arPrice);
 						unset($arToDelete[$id]);
@@ -4876,6 +4897,189 @@ class CIBlockCMLImport
 		unset($index, $value);
 
 		return $result;
+	}
+
+	/**
+	 * @param bool $description
+	 * @return array
+	 */
+	public static function getIblockCacheModeList($description = false)
+	{
+		if ($description)
+		{
+			return array(
+				self::IBLOCK_CACHE_NORMAL => GetMessage('IBLOCK_XML2_IBLOCK_CACHE_MODE_NORMAL'),
+				self::IBLOCK_CACHE_HIT => GetMessage('IBLOCK_XML2_IBLOCK_CACHE_MODE_HIT'),
+				self::IBLOCK_CACHE_FINAL => GetMessage('IBLOCK_XML2_IBLOCK_CACHE_MODE_FINAL'),
+				self::IBLOCK_CACHE_FREEZE => GetMessage('IBLOCK_XML2_IBLOCK_CACHE_MODE_FREEZE')
+			);
+		}
+		return array(
+			self::IBLOCK_CACHE_NORMAL,
+			self::IBLOCK_CACHE_HIT,
+			self::IBLOCK_CACHE_FINAL,
+			self::IBLOCK_CACHE_FREEZE
+		);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function freezeIblockCache()
+	{
+		if (
+			isset($this->next_step['IBLOCK_ID'])
+			&& $this->next_step['IBLOCK_ID'] > 0
+			&& !$this->isIblockCacheModeNormal()
+		)
+			CIblock::disableClearTagCache();
+	}
+
+	/**
+	 * @return void
+	 */
+	public function unFreezeIblockCache()
+	{
+		if (
+			isset($this->next_step['IBLOCK_ID'])
+			&& $this->next_step['IBLOCK_ID'] > 0
+			&& !$this->isIblockCacheModeNormal()
+		)
+			CIblock::enableClearTagCache();
+	}
+
+	/**
+	 * @return void
+	 */
+	public function clearIblockCacheOnHit()
+	{
+		if (
+			!isset($this->next_step['IBLOCK_ID'])
+			|| $this->next_step['IBLOCK_ID'] <= 0
+			|| !$this->isIblockCacheModeHit()
+		)
+			return;
+		CIBlock::clearIblockTagCache($this->next_step['IBLOCK_ID']);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function clearIblockCacheAfterFinal()
+	{
+		if (
+			!isset($this->next_step['IBLOCK_ID'])
+			|| $this->next_step['IBLOCK_ID'] <= 0
+			|| !$this->isIblockCacheModeFinal()
+		)
+			return;
+		CIBlock::clearIblockTagCache($this->next_step['IBLOCK_ID']);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getIblockCacheMode()
+	{
+		return $this->iblockCacheMode;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isIblockCacheModeNormal()
+	{
+		return $this->getIblockCacheMode() == self::IBLOCK_CACHE_NORMAL;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isIblockCacheModeHit()
+	{
+		return $this->getIblockCacheMode() == self::IBLOCK_CACHE_HIT;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isIblockCacheModeFinal()
+	{
+		return $this->getIblockCacheMode() == self::IBLOCK_CACHE_FINAL;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isIblockCacheModeFreeze()
+	{
+		return $this->getIblockCacheMode() == self::IBLOCK_CACHE_FREEZE;
+	}
+
+	/**
+	 * Returns a external codes list of warehouses.
+	 *
+	 * @return array
+	 */
+	protected function getStoreList()
+	{
+		$result = array();
+		if ($this->bCatalog)
+		{
+			$iterator = Catalog\StoreTable::getList(array(
+				'select' => array('ID', 'XML_ID')
+			));
+			while ($row = $iterator->fetch())
+			{
+				$result[$row['XML_ID']] = $row['ID'];
+			}
+			unset($row);
+			unset($iterator);
+		}
+		return $result;
+	}
+
+	/**
+	 * Returns a external codes list of active warehouses.
+	 *
+	 * @return array
+	 */
+	protected function getActiveStores()
+	{
+		$result = array();
+		if ($this->bCatalog)
+		{
+			$iterator = Catalog\StoreTable::getList(array(
+				'select' => array('ID', 'XML_ID'),
+				'filter' => array('=ACTIVE' => 'Y')
+			));
+			while ($row = $iterator->fetch())
+			{
+				$result[$row['XML_ID']] = $row['ID'];
+			}
+			unset($row);
+			unset($iterator);
+		}
+		return $result;
+	}
+
+	/**
+	 * Count total product quantity.
+	 *
+	 * @param array $stores
+	 * @return int|float
+	 */
+	protected function countTotalQuantity(array $stores)
+	{
+		$totalQuantity = 0;
+		foreach ($stores as $xmlId => $quantity)
+		{
+			if (isset($this->activeStores[$xmlId]))
+			{
+				$totalQuantity += $quantity;
+			}
+		}
+		return $totalQuantity;
 	}
 }
 

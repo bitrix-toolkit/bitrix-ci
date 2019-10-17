@@ -4560,7 +4560,6 @@ if (Main\Loader::includeModule('sale'))
 					continue;
 				$priceResultList[$basketCode]['PRODUCT_PRICE_ID'] = $priceData['PRICE']['ID'];
 				$priceResultList[$basketCode]['NOTES'] = $priceData['PRICE']['CATALOG_GROUP_NAME'];
-				$priceResultList[$basketCode]['VAT_RATE'] = $priceData['PRICE']['VAT_RATE'];
 				$priceResultList[$basketCode]['DISCOUNT_NAME'] = null;
 				$priceResultList[$basketCode]['DISCOUNT_COUPON'] = null;
 				$priceResultList[$basketCode]['DISCOUNT_VALUE'] = null;
@@ -4582,6 +4581,8 @@ if (Main\Loader::includeModule('sale'))
 					$priceResultList[$basketCode]['DISCOUNT_VALUE'] = ($priceData['RESULT_PRICE']['PERCENT'] > 0
 						? $priceData['RESULT_PRICE']['PERCENT'] . '%' : null);
 				}
+				$priceResultList[$basketCode]['VAT_RATE'] = $priceData['RESULT_PRICE']['VAT_RATE'];
+				$priceResultList[$basketCode]['VAT_INCLUDED'] = $priceData['RESULT_PRICE']['VAT_INCLUDED'];
 
 				if (!empty($discount))
 				{

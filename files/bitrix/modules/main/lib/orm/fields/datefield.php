@@ -9,6 +9,8 @@
 namespace Bitrix\Main\ORM\Fields;
 
 use Bitrix\Main;
+use Bitrix\Main\ArgumentException;
+use Bitrix\Main\ArgumentTypeException;
 use Bitrix\Main\Type;
 
 /**
@@ -107,6 +109,15 @@ class DateField extends ScalarField
 	 */
 	public function convertValueToDb($value)
 	{
-		return $this->getConnection()->getSqlHelper()->convertToDbDate($value);
+		try
+		{
+			return $this->getConnection()->getSqlHelper()->convertToDbDate($value);
+		}
+		catch (ArgumentTypeException $e)
+		{
+			throw new ArgumentException(
+				"Type error in `{$this->name}` of `{$this->entity->getFullName()}`: ".$e->getMessage()
+			);
+		}
 	}
 }

@@ -326,15 +326,17 @@ class CCatalogProductSet extends CCatalogProductSetAll
 		if (self::TYPE_SET != $intSetType && self::TYPE_GROUP != $intSetType)
 			return false;
 
-		$arEmptySet = self::getEmptySet($intSetType);
+		$arEmptySet = static::getEmptySet($intSetType);
 
 		$boolSet = self::TYPE_SET == $intSetType;
 
 		$arResult = array();
-		$strSql = "select ID, SET_ID, ACTIVE, OWNER_ID, ITEM_ID, SORT, QUANTITY, MEASURE";
+		$strSql = "select CPS.ID, CPS.SET_ID, CPS.ACTIVE, CPS.OWNER_ID, CPS.ITEM_ID, CPS.SORT, CPS.QUANTITY, CP.MEASURE";
 		if ($boolSet)
-			$strSql .= ", DISCOUNT_PERCENT";
-		$strSql .= " from b_catalog_product_sets where OWNER_ID=".$intProductID." AND TYPE=".$intSetType;
+			$strSql .= ", CPS.DISCOUNT_PERCENT";
+		$strSql .= " from b_catalog_product_sets CPS".
+			" left join b_catalog_product CP on (CP.ID = CPS.ITEM_ID)".
+			" where CPS.OWNER_ID=".$intProductID." and CPS.TYPE=".$intSetType;
 		$rsItems = $DB->Query($strSql, false, 'File: '.__FILE__.'<br>Line: '.__LINE__);
 		while ($arItem = $rsItems->Fetch())
 		{
@@ -348,9 +350,9 @@ class CCatalogProductSet extends CCatalogProductSetAll
 			$intSetID = ($boolProduct ? $arItem['ID'] : $arItem['SET_ID']);
 			if ($boolSet)
 			{
-				$arItem['QUANTITY'] = (is_null($arItem['QUANTITY']) ? false : doubleval($arItem['QUANTITY']));
-				$arItem['MEASURE'] = (is_null($arItem['MEASURE']) ? false : (int)$arItem['MEASURE']);
-				$arItem['DISCOUNT_PERCENT'] = (is_null($arItem['DISCOUNT_PERCENT']) ? false : $arItem['DISCOUNT_PERCENT']);
+				$arItem['QUANTITY'] = ($arItem['QUANTITY'] === null ? false : (float)$arItem['QUANTITY']);
+				$arItem['MEASURE'] = ($arItem['MEASURE'] === null ? false : (int)$arItem['MEASURE']);
+				$arItem['DISCOUNT_PERCENT'] = ($arItem['DISCOUNT_PERCENT'] === null ? false : $arItem['DISCOUNT_PERCENT']);
 			}
 			if ($boolProduct)
 			{
@@ -392,35 +394,43 @@ class CCatalogProductSet extends CCatalogProductSetAll
 			return false;
 
 		$arResult = array();
-		$arItemList = array();
-		$arOwner = array();
-		$strSql = "select * from b_catalog_product_sets where ID=".$intID;
+		$strSql = "select CPS.ID, CPS.SET_ID, CPS.ACTIVE, CPS.OWNER_ID, CPS.ITEM_ID, CPS.SORT, CPS.QUANTITY, CP.MEASURE".
+			", CPS.DISCOUNT_PERCENT, CPS.TYPE";
+		$strSql .= " from b_catalog_product_sets CPS".
+			" left join b_catalog_product CP on (CP.ID = CPS.ITEM_ID)".
+			" where CPS.ID=".$intID;
 		$rsItems = $DB->Query($strSql, false, 'File: '.__FILE__.'<br>Line: '.__LINE__);
 		if ($arItem = $rsItems->Fetch())
 		{
 			$arItem['ID'] = (int)$arItem['ID'];
+			$arItem['TYPE'] = (int)$arItem['TYPE'];
 			$arItem['SET_ID'] = (int)$arItem['SET_ID'];
 			$arItem['OWNER_ID'] = (int)$arItem['OWNER_ID'];
 			$arItem['ITEM_ID'] = (int)$arItem['ITEM_ID'];
 			$arItem['SORT'] = (int)$arItem['SORT'];
-			$arItem['QUANTITY'] = (is_null($arItem['QUANTITY']) ? false : doubleval($arItem['QUANTITY']));
-			$arItem['MEASURE'] =  (is_null($arItem['MEASURE']) ? false : (int)$arItem['MEASURE']);
-			$arItem['DISCOUNT_PERCENT'] =  (is_null($arItem['DISCOUNT_PERCENT']) ? false : doubleval($arItem['DISCOUNT_PERCENT']));
+			$arItem['QUANTITY'] = ($arItem['QUANTITY'] === null ? false : (float)$arItem['QUANTITY']);
+			$arItem['MEASURE'] =  ($arItem['MEASURE'] === null ? false : (int)$arItem['MEASURE']);
+			$arItem['DISCOUNT_PERCENT'] =  ($arItem['DISCOUNT_PERCENT'] === null ? false : (float)$arItem['DISCOUNT_PERCENT']);
 
 			$arResult = $arItem;
 			$arResult['ITEMS'] = array();
-			$strSql = "select * from b_catalog_product_sets where SET_ID=".$intID;
+			$strSql = "select CPS.ID, CPS.SET_ID, CPS.ACTIVE, CPS.OWNER_ID, CPS.ITEM_ID, CPS.SORT, CPS.QUANTITY, CP.MEASURE".
+				", CPS.DISCOUNT_PERCENT, CPS.TYPE";
+			$strSql .= " from b_catalog_product_sets CPS".
+				" left join b_catalog_product CP on (CP.ID = CPS.ITEM_ID)".
+				" where CPS.SET_ID=".$intID;
 			$rsSubs = $DB->Query($strSql, false, 'File: '.__FILE__.'<br>Line: '.__LINE__);
 			while ($arSub = $rsSubs->Fetch())
 			{
 				$arSub['ID'] = (int)$arSub['ID'];
+				$arSub['TYPE'] = (int)$arSub['TYPE'];
 				$arSub['SET_ID'] = (int)$arSub['SET_ID'];
 				$arSub['OWNER_ID'] = (int)$arSub['OWNER_ID'];
 				$arSub['ITEM_ID'] = (int)$arSub['ITEM_ID'];
 				$arSub['SORT'] = (int)$arSub['SORT'];
-				$arSub['QUANTITY'] = (is_null($arSub['QUANTITY']) ? false: doubleval($arSub['QUANTITY']));
-				$arSub['MEASURE'] = (is_null($arSub['MEASURE']) ? false: (int)$arSub['MEASURE']);
-				$arSub['DISCOUNT_PERCENT'] = (is_null($arSub['DISCOUNT_PERCENT']) ? false : doubleval($arSub['DISCOUNT_PERCENT']));
+				$arSub['QUANTITY'] = ($arSub['QUANTITY'] === null ? false: (float)$arSub['QUANTITY']);
+				$arSub['MEASURE'] = ($arSub['MEASURE'] === null ? false: (int)$arSub['MEASURE']);
+				$arSub['DISCOUNT_PERCENT'] = ($arSub['DISCOUNT_PERCENT'] === null ? false : (float)$arSub['DISCOUNT_PERCENT']);
 
 				$arResult['ITEMS'][$arSub['ID']] = $arSub;
 			}

@@ -2397,7 +2397,9 @@ REQ
 					elseif($cOperationType=="FTL")
 					{
 						$sqlWhere = new CSQLWhere();
-						$res[] = $sqlWhere->matchLike($fname, $val);
+						$condition = $sqlWhere->matchLike($fname, $val);
+						if ($condition != '')
+							$res[] = $condition;
 					}
 					else
 					{
@@ -2461,12 +2463,16 @@ REQ
 					if($cOperationType=="FT" || $cOperationType=="FTI")
 					{
 						$sqlWhere = new CSQLWhere();
-						$res[] = $sqlWhere->match($fname, $val, $cOperationType=="FT");
+						$condition = $sqlWhere->match($fname, $val, $cOperationType=="FT");
+						if ($condition != '')
+							$res[] = $condition;
 					}
 					elseif($cOperationType=="FTL")
 					{
 						$sqlWhere = new CSQLWhere();
-						$res[] = $sqlWhere->matchLike($fname, $val);
+						$condition = $sqlWhere->matchLike($fname, $val);
+						if ($condition != '')
+							$res[] = $condition;
 					}
 					elseif($cOperationType=="?")
 					{

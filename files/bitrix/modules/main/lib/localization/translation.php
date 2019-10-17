@@ -22,6 +22,8 @@ class Translation
 	/** @var array */
 	private static $map = array();
 
+	const CACHE_ID = 'TranslationLoadMapCache';
+	const CACHE_TTL = 3600;
 
 	/**
 	 * Returns true if language translation is one of the default translation.
@@ -505,6 +507,15 @@ class Translation
 	{
 		if (empty(self::$map))
 		{
+			$cacheManager = Main\Application::getInstance()->getManagedCache();
+			if ($cacheManager->read(static::CACHE_TTL, static::CACHE_ID))
+			{
+				self::$map = $cacheManager->get(static::CACHE_ID);
+			}
+		}
+
+		if (empty(self::$map))
+		{
 			$testForExistence = array(
 				'templates',
 				'components',
@@ -558,6 +569,8 @@ class Translation
 					}
 				}
 			}
+
+			$cacheManager->set(static::CACHE_ID, static::$map);
 		}
 
 		return self::$map;

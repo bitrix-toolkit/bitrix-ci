@@ -17,6 +17,7 @@ use Bitrix\Main\ORM\Fields\ScalarField;
 use Bitrix\Main\ORM\Objectify\EntityObject;
 use Bitrix\Main\ORM\Objectify\Collection;
 use Bitrix\Main\ORM\Query\Query;
+use Bitrix\Main\Text\StringHelper;
 
 /**
  * Base entity
@@ -176,7 +177,7 @@ class Entity
 			}
 			else
 			{
-				$fieldClass = Entity::snake2camel($fieldInfo['data_type']) . 'Field';
+				$fieldClass = StringHelper::snake2camel($fieldInfo['data_type']) . 'Field';
 				$fieldClass = '\\Bitrix\\Main\\Entity\\'.$fieldClass;
 
 				if (strlen($fieldInfo['data_type']) && class_exists($fieldClass))
@@ -265,7 +266,7 @@ class Entity
 			// add class
 			if ($this->name !== end($_classPath))
 			{
-				$this->dbTableName .= Entity::camel2snake($this->name);
+				$this->dbTableName .= StringHelper::camel2snake($this->name);
 			}
 			else
 			{
@@ -430,7 +431,7 @@ class Entity
 	 */
 	protected function appendField(Field $field)
 	{
-		if (isset($this->fields[strtoupper($field->getName())]) && !$this->isClone)
+		if (isset($this->fields[StringHelper::strtoupper($field->getName())]) && !$this->isClone)
 		{
 			trigger_error(sprintf(
 				'Entity `%s` already has Field with name `%s`.', $this->getFullName(), $field->getName()
@@ -445,7 +446,7 @@ class Entity
 			$this->references[$field->getRefEntityName()][] = $field;
 		}
 
-		$this->fields[strtoupper($field->getName())] = $field;
+		$this->fields[StringHelper::strtoupper($field->getName())] = $field;
 
 		if ($field instanceof ScalarField && $field->isPrimary())
 		{
@@ -479,7 +480,7 @@ class Entity
 			$newRefField = new Reference($refFieldName, $newFieldInfo['data_type'], $newFieldInfo['reference'][0], $newFieldInfo['reference'][1]);
 			$newRefField->setEntity($this);
 
-			$this->fields[strtoupper($refFieldName)] = $newRefField;
+			$this->fields[StringHelper::strtoupper($refFieldName)] = $newRefField;
 		}
 
 		return true;
@@ -537,7 +538,7 @@ class Entity
 	{
 		if ($this->hasField($name))
 		{
-			return $this->fields[strtoupper($name)];
+			return $this->fields[StringHelper::strtoupper($name)];
 		}
 
 		throw new Main\ArgumentException(sprintf(
@@ -547,7 +548,7 @@ class Entity
 
 	public function hasField($name)
 	{
-		return isset($this->fields[strtoupper($name)]);
+		return isset($this->fields[StringHelper::strtoupper($name)]);
 	}
 
 	/**
@@ -794,7 +795,7 @@ class Entity
 			}
 
 			// glue entity name
-			$this->code .= strtoupper(Entity::camel2snake($this->getName()));
+			$this->code .= strtoupper(StringHelper::camel2snake($this->getName()));
 		}
 
 		return $this->code;
@@ -805,11 +806,25 @@ class Entity
 		return $this->getCode().'_ENTITY';
 	}
 
+	/**
+	 * @deprecated Use Bitrix\StringHelper::camel2snake instead
+	 *
+	 * @param $str
+	 *
+	 * @return string
+	 */
 	public static function camel2snake($str)
 	{
 		return strtolower(preg_replace('/(.)([A-Z])/', '$1_$2', $str));
 	}
 
+	/**
+	 * @deprecated Use Bitrix\StringHelper::snake2camel instead
+	 *
+	 * @param $str
+	 *
+	 * @return mixed
+	 */
 	public static function snake2camel($str)
 	{
 		$str = str_replace('_', ' ', strtolower($str));
@@ -1028,15 +1043,23 @@ class Entity
 	public function compileDbTableStructureDump()
 	{
 		$fields = $this->getScalarFields();
+
+		/** @var Main\DB\MysqlCommonConnection $connection */
 		$connection = $this->getConnection();
 
-		$autocomplete = array();
+		$autocomplete = [];
+		$unique = [];
 
 		foreach ($fields as $field)
 		{
 			if ($field->isAutocomplete())
 			{
 				$autocomplete[] = $field->getName();
+			}
+
+			if ($field->isUnique())
+			{
+				$unique[] = $field->getName();
 			}
 		}
 
@@ -1045,6 +1068,13 @@ class Entity
 
 		// create table
 		$connection->createTable($this->getDBTableName(), $fields, $this->getPrimaryArray(), $autocomplete);
+
+		// create indexes
+		foreach ($unique as $fieldName)
+		{
+			$connection->createIndex($this->getDBTableName(), $fieldName, [$fieldName], null,
+				Main\DB\MysqlCommonConnection::INDEX_UNIQUE);
+		}
 
 		// stop collecting queries
 		$connection->enableQueryExecuting();
@@ -1289,7 +1319,7 @@ class Entity
 		{
 			$options = unserialize($optionString);
 		}
-		$options[strtoupper($field)] = $mode;
+		$options[StringHelper::strtoupper($field)] = $mode;
 		Main\Config\Option::set("main", "~ft_".$table, serialize($options));
 	}
 
@@ -1308,7 +1338,7 @@ class Entity
 		$optionString = Main\Config\Option::get("main", "~ft_".$table);
 		if($optionString <> '')
 		{
-			$field = strtoupper($field);
+			$field = StringHelper::strtoupper($field);
 			$options = unserialize($optionString);
 			if(isset($options[$field]) && $options[$field] === true)
 			{

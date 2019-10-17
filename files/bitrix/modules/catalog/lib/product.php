@@ -644,6 +644,7 @@ class ProductTable extends Main\Entity\DataManager
 				self::TYPE_PRODUCT => Loc::getMessage('PRODUCT_ENTITY_TYPE_PRODUCT'),
 				self::TYPE_SET => Loc::getMessage('PRODUCT_ENTITY_TYPE_SET'),
 				self::TYPE_SKU => Loc::getMessage('PRODUCT_ENTITY_TYPE_SKU'),
+				self::TYPE_EMPTY_SKU => Loc::getMessage('PRODUCT_ENTITY_TYPE_EMPTY_SKU'),
 				self::TYPE_OFFER => Loc::getMessage('PRODUCT_ENTITY_TYPE_OFFER'),
 				self::TYPE_FREE_OFFER => Loc::getMessage('PRODUCT_ENTITY_TYPE_FREE_OFFER')
 			);
@@ -653,7 +654,8 @@ class ProductTable extends Main\Entity\DataManager
 			self::TYPE_SET,
 			self::TYPE_SKU,
 			self::TYPE_OFFER,
-			self::TYPE_FREE_OFFER
+			self::TYPE_FREE_OFFER,
+			self::TYPE_EMPTY_SKU
 		);
 	}
 

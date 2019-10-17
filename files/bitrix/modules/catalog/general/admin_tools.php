@@ -683,11 +683,13 @@ class CCatalogAdminToolsAll
 				Catalog\ProductTable::TYPE_PRODUCT
 			),
 			CCatalogSku::TYPE_PRODUCT => array(
-				Catalog\ProductTable::TYPE_SKU
+				Catalog\ProductTable::TYPE_SKU,
+				Catalog\ProductTable::TYPE_EMPTY_SKU
 			),
 			CCatalogSku::TYPE_FULL => array(
 				Catalog\ProductTable::TYPE_PRODUCT,
-				Catalog\ProductTable::TYPE_SKU
+				Catalog\ProductTable::TYPE_SKU,
+				Catalog\ProductTable::TYPE_EMPTY_SKU
 			),
 			CCatalogSku::TYPE_OFFERS => array(
 				Catalog\ProductTable::TYPE_OFFER,

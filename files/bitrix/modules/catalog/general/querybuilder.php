@@ -685,7 +685,7 @@ class CProductQueryBuilder
 					'NAME' => 'PRICE_SCALE',
 					'ALIAS' => 'SCALED_PRICE_#ENTITY_ID#',
 					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER|self::FIELD_ALLOWED_ORDER,
+					'ALLOWED' => self::FIELD_ALLOWED_ALL,
 					'ORDER_NULLABLE' => true,
 				],
 				'EXTRA_ID' => [

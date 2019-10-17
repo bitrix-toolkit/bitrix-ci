@@ -12,6 +12,7 @@ use Bitrix\Main\Config as Config;
 use Bitrix\Main\IO\File;
 use Bitrix\Main\Application;
 use Bitrix\Main\Web\Uri;
+use Bitrix\Main\Text\BinaryString;
 
 class Mail
 {
@@ -49,6 +50,8 @@ class Mail
 	protected $context;
 	/** @var  Multipart */
 	protected $multipart;
+	/** @var  Multipart */
+	protected $multipartRelated;
 	/** @var  array */
 	protected $blacklistedEmails = [];
 	/** @var  array */
@@ -312,6 +315,13 @@ class Mail
 
 		if ($htmlPart)
 		{
+			if ($this->hasImageAttachment())
+			{
+				$this->multipartRelated = (new Multipart())->setContentType(Multipart::RELATED)->setEol($this->eol);
+				$this->multipartRelated->addPart($htmlPart);
+				$htmlPart = $this->multipartRelated;
+			}
+
 			if ($this->generateTextVersion)
 			{
 				$alternative = (new Multipart())->setContentType(Multipart::ALTERNATIVE)->setEol($this->eol);
@@ -351,6 +361,35 @@ class Mail
 	}
 
 	/**
+	 * Return true if mail has image attachment.
+	 *
+	 * @return bool
+	 */
+	public function hasImageAttachment()
+	{
+		if (!$this->hasAttachment())
+		{
+			return false;
+		}
+
+		$files = $this->attachment;
+		if(is_array($this->filesReplacedFromBody))
+		{
+			$files = array_merge($files, array_values($this->filesReplacedFromBody));
+		}
+
+		foreach($files as $attachment)
+		{
+			if ($this->isAttachmentImage($attachment))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Set attachment.
 	 *
 	 * @return void
@@ -363,17 +402,48 @@ class Mail
 			$files = array_merge($files, array_values($this->filesReplacedFromBody));
 		}
 
+		$summarySize = 0;
 		if(count($files)>0)
 		{
 			foreach($files as $attachment)
 			{
-				try
+				$isLimitExceeded = $this->isFileLimitExceeded(
+					!empty($attachment["SIZE"]) ? $attachment["SIZE"] : 0,
+					$summarySize
+				);
+
+				if (!$isLimitExceeded)
 				{
-					$fileContent = File::getFileContents($attachment["PATH"]);
+					try
+					{
+						$fileContent = File::getFileContents($attachment["PATH"]);
+					}
+					catch (\Exception $exception)
+					{
+						$fileContent = '';
+					}
 				}
-				catch (\Exception $exception)
+				else
 				{
 					$fileContent = '';
+				}
+
+				$isLimitExceeded = $this->isFileLimitExceeded(
+					BinaryString::getLength($fileContent),
+					$summarySize
+				);
+				if ($isLimitExceeded)
+				{
+					$attachment["NAME"] = $attachment["NAME"] . '.txt';
+					$attachment['CONTENT_TYPE'] = 'text/plain';
+					$fileContent = str_replace(
+						['%name%', '%limit%'],
+						[
+							$attachment["NAME"],
+							(int) $this->settingMaxFileSize / 1000000
+						],
+						'This is not the original file. The size of the original file `%name%` exceeded the limit of %limit% MB.'
+					);
 				}
 
 				$name = $this->encodeSubject($attachment["NAME"], $this->charset);
@@ -383,9 +453,42 @@ class Mail
 					->addHeader('Content-Transfer-Encoding', 'base64')
 					->addHeader('Content-ID', "<{$attachment['ID']}>")
 					->setBody($fileContent);
-				$this->multipart->addPart($part);
+
+				if ($this->multipartRelated && $this->isAttachmentImage($attachment))
+				{
+					$this->multipartRelated->addPart($part);
+				}
+				else
+				{
+					$this->multipart->addPart($part);
+				}
 			}
 		}
+	}
+
+	private function isAttachmentImage(&$attachment)
+	{
+		if (empty($attachment['CONTENT_TYPE']))
+		{
+			return false;
+		}
+
+		if (strpos($attachment['CONTENT_TYPE'], 'image/') === 0)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	private function isFileLimitExceeded($fileSize, &$summarySize)
+	{
+		$magicMultiplier = 1.3; // magic for length after base64
+		$summarySize += $fileSize * $magicMultiplier;
+
+		return $this->settingMaxFileSize > 0
+			&& $summarySize > 0
+			&& $summarySize > $this->settingMaxFileSize;
 	}
 
 	/**

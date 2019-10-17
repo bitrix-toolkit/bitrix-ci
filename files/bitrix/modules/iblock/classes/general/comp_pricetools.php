@@ -1183,6 +1183,10 @@ class CIBlockPriceTools
 		if (self::$catalogIncluded)
 		{
 			$iblockInfo = CCatalogSku::GetInfoByProductIBlock($iblockID);
+			if (empty($iblockInfo))
+			{
+				$iblockInfo = CCatalogSku::GetInfoByOfferIBlock($iblockID);
+			}
 		}
 		if (empty($iblockInfo))
 			return $result;

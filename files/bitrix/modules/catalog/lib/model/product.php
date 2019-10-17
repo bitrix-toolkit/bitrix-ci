@@ -260,6 +260,8 @@ class Product extends Entity
 				if ($fields['AVAILABLE'] === null)
 					$fields['AVAILABLE'] = Catalog\ProductTable::STATUS_NO;
 			}
+			if ($fields['TYPE'] === Catalog\ProductTable::TYPE_OFFER)
+				$data['actions']['PARENT_TYPE'] = true;
 		}
 
 		if ($result->isSuccess())
@@ -505,25 +507,31 @@ class Product extends Entity
 
 	protected static function runAddExternalActions($id, array $data)
 	{
-		if (isset($data['actions']['SKU_AVAILABLE']))
+		switch ($data['fields']['TYPE'])
 		{
-			switch ($data['fields']['TYPE'])
-			{
-				case Catalog\ProductTable::TYPE_OFFER:
+			case Catalog\ProductTable::TYPE_OFFER:
+				if (
+					isset($data['actions']['SKU_AVAILABLE'])
+					|| isset($data['actions']['PARENT_TYPE'])
+				)
+				{
 					Catalog\Product\Sku::calculateComplete(
 						$id,
 						$data['external_fields']['IBLOCK_ID'],
 						Catalog\ProductTable::TYPE_OFFER
 					);
-					break;
-				case Catalog\ProductTable::TYPE_SKU:
+				}
+				break;
+			case Catalog\ProductTable::TYPE_SKU:
+				if (isset($data['actions']['SKU_AVAILABLE']))
+				{
 					Catalog\Product\Sku::calculateComplete(
 						$id,
 						$data['external_fields']['IBLOCK_ID'],
 						Catalog\ProductTable::TYPE_SKU
 					);
-					break;
-			}
+				}
+				break;
 		}
 	}
 

@@ -1069,6 +1069,15 @@ class CAllCatalogDiscount
 				$basketItem = null;
 			}
 		}
+		if ($basket !== null)
+		{
+			$orderedBasket = $basket->getOrder() !== null;
+			if ($orderedBasket !== $isRenewal)
+			{
+				$basket = null;
+				$basketItem = null;
+			}
+		}
 		if ($basket === null)
 		{
 			$basket = Sale\Basket::create($siteId);

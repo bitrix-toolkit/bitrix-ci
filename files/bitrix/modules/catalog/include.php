@@ -1509,7 +1509,7 @@ function Add2Basket($PRICE_ID, $QUANTITY = 1, $arRewriteFields = array(), $arPro
 
 /**
  * @deprecated deprecated since catalog 17.5.9
- * @see \Bitrix\Catalog\Product\Basket::add
+ * @see \Bitrix\Catalog\Product\Basket::addProduct
  *
  * @param int $productId
  * @param float|int $quantity

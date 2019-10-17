@@ -925,15 +925,18 @@ abstract class ElementList extends Base
 			$sortFields['AVAILABLE'] = 'desc,nulls';
 		}
 
-		if (!isset($sortFields[$this->arParams['ELEMENT_SORT_FIELD']]))
+		$field = strtoupper($this->arParams['ELEMENT_SORT_FIELD']);
+		if (!isset($sortFields[$field]))
 		{
-			$sortFields[$this->arParams['ELEMENT_SORT_FIELD']] = $this->arParams['ELEMENT_SORT_ORDER'];
+			$sortFields[$field] = $this->arParams['ELEMENT_SORT_ORDER'];
 		}
 
-		if (!isset($sortFields[$this->arParams['ELEMENT_SORT_FIELD2']]))
+		$field = strtoupper($this->arParams['ELEMENT_SORT_FIELD2']);
+		if (!isset($sortFields[$field]))
 		{
-			$sortFields[$this->arParams['ELEMENT_SORT_FIELD2']] = $this->arParams['ELEMENT_SORT_ORDER2'];
+			$sortFields[$field] = $this->arParams['ELEMENT_SORT_ORDER2'];
 		}
+		unset($field);
 
 		return $sortFields;
 	}

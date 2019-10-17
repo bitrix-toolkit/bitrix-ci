@@ -111,8 +111,13 @@ class ArrayField extends ScalarField
 	 */
 	public function decode($value)
 	{
-		$callback = $this->decodeFunction;
-		return $callback($value);
+		if (strlen($value))
+		{
+			$callback = $this->decodeFunction;
+			return $callback($value);
+		}
+
+		return [];
 	}
 
 	/**

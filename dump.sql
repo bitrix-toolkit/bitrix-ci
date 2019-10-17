@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.26, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.27, for Linux (x86_64)
 --
 -- Host: localhost    Database: bitrix-ci
 -- ------------------------------------------------------
--- Server version	5.7.26
+-- Server version	5.7.27
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -108,452 +108,6 @@ LOCK TABLES `b_admin_notify_lang` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `b_adv_banner`
---
-
-DROP TABLE IF EXISTS `b_adv_banner`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_adv_banner` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `CONTRACT_ID` int(18) NOT NULL DEFAULT '1',
-  `TYPE_SID` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `STATUS_SID` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'PUBLISHED',
-  `STATUS_COMMENTS` text COLLATE utf8_unicode_ci,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `GROUP_SID` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FIRST_SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `WEIGHT` int(18) NOT NULL DEFAULT '100',
-  `MAX_SHOW_COUNT` int(18) DEFAULT NULL,
-  `SHOW_COUNT` int(18) NOT NULL DEFAULT '0',
-  `FIX_CLICK` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `FIX_SHOW` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `MAX_CLICK_COUNT` int(18) DEFAULT NULL,
-  `CLICK_COUNT` int(18) NOT NULL DEFAULT '0',
-  `MAX_VISITOR_COUNT` int(18) DEFAULT NULL,
-  `VISITOR_COUNT` int(18) NOT NULL DEFAULT '0',
-  `SHOWS_FOR_VISITOR` int(18) DEFAULT NULL,
-  `DATE_LAST_SHOW` datetime DEFAULT NULL,
-  `DATE_LAST_CLICK` datetime DEFAULT NULL,
-  `DATE_SHOW_FROM` datetime DEFAULT NULL,
-  `DATE_SHOW_TO` datetime DEFAULT NULL,
-  `IMAGE_ID` int(18) DEFAULT NULL,
-  `IMAGE_ALT` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `URL` text COLLATE utf8_unicode_ci,
-  `URL_TARGET` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `CODE` text COLLATE utf8_unicode_ci,
-  `CODE_TYPE` varchar(5) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'html',
-  `STAT_EVENT_1` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `STAT_EVENT_2` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `STAT_EVENT_3` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FOR_NEW_GUEST` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `KEYWORDS` text COLLATE utf8_unicode_ci,
-  `COMMENTS` text COLLATE utf8_unicode_ci,
-  `DATE_CREATE` datetime DEFAULT NULL,
-  `CREATED_BY` int(18) DEFAULT NULL,
-  `DATE_MODIFY` datetime DEFAULT NULL,
-  `MODIFIED_BY` int(18) DEFAULT NULL,
-  `SHOW_USER_GROUP` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `NO_URL_IN_FLASH` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `FLYUNIFORM` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `DATE_SHOW_FIRST` datetime DEFAULT NULL,
-  `AD_TYPE` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FLASH_TRANSPARENT` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FLASH_IMAGE` int(18) DEFAULT NULL,
-  `FLASH_JS` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `FLASH_VER` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `STAT_TYPE` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `STAT_COUNT` int(18) DEFAULT NULL,
-  `TEMPLATE` text COLLATE utf8_unicode_ci,
-  `TEMPLATE_FILES` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_ACTIVE_TYPE_SID` (`ACTIVE`,`TYPE_SID`),
-  KEY `IX_CONTRACT_TYPE` (`CONTRACT_ID`,`TYPE_SID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_adv_banner`
---
-
-LOCK TABLES `b_adv_banner` WRITE;
-/*!40000 ALTER TABLE `b_adv_banner` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_adv_banner` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_adv_banner_2_country`
---
-
-DROP TABLE IF EXISTS `b_adv_banner_2_country`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_adv_banner_2_country` (
-  `BANNER_ID` int(18) NOT NULL DEFAULT '0',
-  `COUNTRY_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  `REGION` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `CITY_ID` int(18) DEFAULT NULL,
-  KEY `ix_b_adv_banner_2_country_1` (`COUNTRY_ID`,`REGION`(50),`BANNER_ID`),
-  KEY `ix_b_adv_banner_2_country_2` (`CITY_ID`,`BANNER_ID`),
-  KEY `ix_b_adv_banner_2_country_3` (`BANNER_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_adv_banner_2_country`
---
-
-LOCK TABLES `b_adv_banner_2_country` WRITE;
-/*!40000 ALTER TABLE `b_adv_banner_2_country` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_adv_banner_2_country` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_adv_banner_2_day`
---
-
-DROP TABLE IF EXISTS `b_adv_banner_2_day`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_adv_banner_2_day` (
-  `DATE_STAT` date NOT NULL,
-  `BANNER_ID` int(18) NOT NULL DEFAULT '0',
-  `SHOW_COUNT` int(18) NOT NULL DEFAULT '0',
-  `CLICK_COUNT` int(18) NOT NULL DEFAULT '0',
-  `VISITOR_COUNT` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`BANNER_ID`,`DATE_STAT`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_adv_banner_2_day`
---
-
-LOCK TABLES `b_adv_banner_2_day` WRITE;
-/*!40000 ALTER TABLE `b_adv_banner_2_day` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_adv_banner_2_day` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_adv_banner_2_group`
---
-
-DROP TABLE IF EXISTS `b_adv_banner_2_group`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_adv_banner_2_group` (
-  `BANNER_ID` int(18) NOT NULL DEFAULT '0',
-  `GROUP_ID` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`BANNER_ID`,`GROUP_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_adv_banner_2_group`
---
-
-LOCK TABLES `b_adv_banner_2_group` WRITE;
-/*!40000 ALTER TABLE `b_adv_banner_2_group` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_adv_banner_2_group` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_adv_banner_2_page`
---
-
-DROP TABLE IF EXISTS `b_adv_banner_2_page`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_adv_banner_2_page` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `BANNER_ID` int(18) NOT NULL DEFAULT '0',
-  `PAGE` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `SHOW_ON_PAGE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  PRIMARY KEY (`ID`),
-  KEY `IX_BANNER_ID` (`BANNER_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_adv_banner_2_page`
---
-
-LOCK TABLES `b_adv_banner_2_page` WRITE;
-/*!40000 ALTER TABLE `b_adv_banner_2_page` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_adv_banner_2_page` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_adv_banner_2_site`
---
-
-DROP TABLE IF EXISTS `b_adv_banner_2_site`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_adv_banner_2_site` (
-  `BANNER_ID` int(18) NOT NULL DEFAULT '0',
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`BANNER_ID`,`SITE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_adv_banner_2_site`
---
-
-LOCK TABLES `b_adv_banner_2_site` WRITE;
-/*!40000 ALTER TABLE `b_adv_banner_2_site` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_adv_banner_2_site` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_adv_banner_2_stat_adv`
---
-
-DROP TABLE IF EXISTS `b_adv_banner_2_stat_adv`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_adv_banner_2_stat_adv` (
-  `BANNER_ID` int(18) NOT NULL DEFAULT '0',
-  `STAT_ADV_ID` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`BANNER_ID`,`STAT_ADV_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_adv_banner_2_stat_adv`
---
-
-LOCK TABLES `b_adv_banner_2_stat_adv` WRITE;
-/*!40000 ALTER TABLE `b_adv_banner_2_stat_adv` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_adv_banner_2_stat_adv` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_adv_banner_2_weekday`
---
-
-DROP TABLE IF EXISTS `b_adv_banner_2_weekday`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_adv_banner_2_weekday` (
-  `BANNER_ID` int(18) NOT NULL DEFAULT '0',
-  `C_WEEKDAY` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `C_HOUR` int(2) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`BANNER_ID`,`C_WEEKDAY`,`C_HOUR`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_adv_banner_2_weekday`
---
-
-LOCK TABLES `b_adv_banner_2_weekday` WRITE;
-/*!40000 ALTER TABLE `b_adv_banner_2_weekday` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_adv_banner_2_weekday` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_adv_contract`
---
-
-DROP TABLE IF EXISTS `b_adv_contract`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_adv_contract` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `KEYWORDS` text COLLATE utf8_unicode_ci,
-  `ADMIN_COMMENTS` text COLLATE utf8_unicode_ci,
-  `WEIGHT` int(18) NOT NULL DEFAULT '100',
-  `SORT` int(18) DEFAULT NULL,
-  `MAX_SHOW_COUNT` int(18) DEFAULT NULL,
-  `SHOW_COUNT` int(18) NOT NULL DEFAULT '0',
-  `MAX_CLICK_COUNT` int(18) DEFAULT NULL,
-  `CLICK_COUNT` int(18) NOT NULL DEFAULT '0',
-  `MAX_VISITOR_COUNT` int(18) DEFAULT NULL,
-  `VISITOR_COUNT` int(18) NOT NULL DEFAULT '0',
-  `DATE_SHOW_FROM` datetime DEFAULT NULL,
-  `DATE_SHOW_TO` datetime DEFAULT NULL,
-  `DEFAULT_STATUS_SID` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'PUBLISHED',
-  `EMAIL_COUNT` int(18) NOT NULL DEFAULT '0',
-  `DATE_CREATE` datetime DEFAULT NULL,
-  `CREATED_BY` int(18) DEFAULT NULL,
-  `DATE_MODIFY` datetime DEFAULT NULL,
-  `MODIFIED_BY` int(18) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_adv_contract`
---
-
-LOCK TABLES `b_adv_contract` WRITE;
-/*!40000 ALTER TABLE `b_adv_contract` DISABLE KEYS */;
-INSERT INTO `b_adv_contract` VALUES (1,'Y','Default','all site without any restrictions',NULL,NULL,100,10000,NULL,0,NULL,0,NULL,0,NULL,NULL,'PUBLISHED',0,'2019-07-10 13:45:19',0,'2019-07-10 13:45:19',0);
-/*!40000 ALTER TABLE `b_adv_contract` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_adv_contract_2_page`
---
-
-DROP TABLE IF EXISTS `b_adv_contract_2_page`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_adv_contract_2_page` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `CONTRACT_ID` int(18) NOT NULL DEFAULT '0',
-  `PAGE` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `SHOW_ON_PAGE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  PRIMARY KEY (`ID`),
-  KEY `IX_CONTRACT_ID` (`CONTRACT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_adv_contract_2_page`
---
-
-LOCK TABLES `b_adv_contract_2_page` WRITE;
-/*!40000 ALTER TABLE `b_adv_contract_2_page` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_adv_contract_2_page` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_adv_contract_2_site`
---
-
-DROP TABLE IF EXISTS `b_adv_contract_2_site`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_adv_contract_2_site` (
-  `CONTRACT_ID` int(18) NOT NULL DEFAULT '0',
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`CONTRACT_ID`,`SITE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_adv_contract_2_site`
---
-
-LOCK TABLES `b_adv_contract_2_site` WRITE;
-/*!40000 ALTER TABLE `b_adv_contract_2_site` DISABLE KEYS */;
-INSERT INTO `b_adv_contract_2_site` VALUES (1,'s1');
-/*!40000 ALTER TABLE `b_adv_contract_2_site` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_adv_contract_2_type`
---
-
-DROP TABLE IF EXISTS `b_adv_contract_2_type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_adv_contract_2_type` (
-  `CONTRACT_ID` int(18) NOT NULL DEFAULT '0',
-  `TYPE_SID` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`CONTRACT_ID`,`TYPE_SID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_adv_contract_2_type`
---
-
-LOCK TABLES `b_adv_contract_2_type` WRITE;
-/*!40000 ALTER TABLE `b_adv_contract_2_type` DISABLE KEYS */;
-INSERT INTO `b_adv_contract_2_type` VALUES (1,'ALL');
-/*!40000 ALTER TABLE `b_adv_contract_2_type` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_adv_contract_2_user`
---
-
-DROP TABLE IF EXISTS `b_adv_contract_2_user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_adv_contract_2_user` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `CONTRACT_ID` int(18) NOT NULL DEFAULT '0',
-  `USER_ID` int(18) NOT NULL DEFAULT '1',
-  `PERMISSION` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_CONTRACT_ID` (`CONTRACT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_adv_contract_2_user`
---
-
-LOCK TABLES `b_adv_contract_2_user` WRITE;
-/*!40000 ALTER TABLE `b_adv_contract_2_user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_adv_contract_2_user` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_adv_contract_2_weekday`
---
-
-DROP TABLE IF EXISTS `b_adv_contract_2_weekday`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_adv_contract_2_weekday` (
-  `CONTRACT_ID` int(18) NOT NULL DEFAULT '0',
-  `C_WEEKDAY` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `C_HOUR` int(2) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`CONTRACT_ID`,`C_WEEKDAY`,`C_HOUR`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_adv_contract_2_weekday`
---
-
-LOCK TABLES `b_adv_contract_2_weekday` WRITE;
-/*!40000 ALTER TABLE `b_adv_contract_2_weekday` DISABLE KEYS */;
-INSERT INTO `b_adv_contract_2_weekday` VALUES (1,'FRIDAY',0),(1,'FRIDAY',1),(1,'FRIDAY',2),(1,'FRIDAY',3),(1,'FRIDAY',4),(1,'FRIDAY',5),(1,'FRIDAY',6),(1,'FRIDAY',7),(1,'FRIDAY',8),(1,'FRIDAY',9),(1,'FRIDAY',10),(1,'FRIDAY',11),(1,'FRIDAY',12),(1,'FRIDAY',13),(1,'FRIDAY',14),(1,'FRIDAY',15),(1,'FRIDAY',16),(1,'FRIDAY',17),(1,'FRIDAY',18),(1,'FRIDAY',19),(1,'FRIDAY',20),(1,'FRIDAY',21),(1,'FRIDAY',22),(1,'FRIDAY',23),(1,'MONDAY',0),(1,'MONDAY',1),(1,'MONDAY',2),(1,'MONDAY',3),(1,'MONDAY',4),(1,'MONDAY',5),(1,'MONDAY',6),(1,'MONDAY',7),(1,'MONDAY',8),(1,'MONDAY',9),(1,'MONDAY',10),(1,'MONDAY',11),(1,'MONDAY',12),(1,'MONDAY',13),(1,'MONDAY',14),(1,'MONDAY',15),(1,'MONDAY',16),(1,'MONDAY',17),(1,'MONDAY',18),(1,'MONDAY',19),(1,'MONDAY',20),(1,'MONDAY',21),(1,'MONDAY',22),(1,'MONDAY',23),(1,'SATURDAY',0),(1,'SATURDAY',1),(1,'SATURDAY',2),(1,'SATURDAY',3),(1,'SATURDAY',4),(1,'SATURDAY',5),(1,'SATURDAY',6),(1,'SATURDAY',7),(1,'SATURDAY',8),(1,'SATURDAY',9),(1,'SATURDAY',10),(1,'SATURDAY',11),(1,'SATURDAY',12),(1,'SATURDAY',13),(1,'SATURDAY',14),(1,'SATURDAY',15),(1,'SATURDAY',16),(1,'SATURDAY',17),(1,'SATURDAY',18),(1,'SATURDAY',19),(1,'SATURDAY',20),(1,'SATURDAY',21),(1,'SATURDAY',22),(1,'SATURDAY',23),(1,'SUNDAY',0),(1,'SUNDAY',1),(1,'SUNDAY',2),(1,'SUNDAY',3),(1,'SUNDAY',4),(1,'SUNDAY',5),(1,'SUNDAY',6),(1,'SUNDAY',7),(1,'SUNDAY',8),(1,'SUNDAY',9),(1,'SUNDAY',10),(1,'SUNDAY',11),(1,'SUNDAY',12),(1,'SUNDAY',13),(1,'SUNDAY',14),(1,'SUNDAY',15),(1,'SUNDAY',16),(1,'SUNDAY',17),(1,'SUNDAY',18),(1,'SUNDAY',19),(1,'SUNDAY',20),(1,'SUNDAY',21),(1,'SUNDAY',22),(1,'SUNDAY',23),(1,'THURSDAY',0),(1,'THURSDAY',1),(1,'THURSDAY',2),(1,'THURSDAY',3),(1,'THURSDAY',4),(1,'THURSDAY',5),(1,'THURSDAY',6),(1,'THURSDAY',7),(1,'THURSDAY',8),(1,'THURSDAY',9),(1,'THURSDAY',10),(1,'THURSDAY',11),(1,'THURSDAY',12),(1,'THURSDAY',13),(1,'THURSDAY',14),(1,'THURSDAY',15),(1,'THURSDAY',16),(1,'THURSDAY',17),(1,'THURSDAY',18),(1,'THURSDAY',19),(1,'THURSDAY',20),(1,'THURSDAY',21),(1,'THURSDAY',22),(1,'THURSDAY',23),(1,'TUESDAY',0),(1,'TUESDAY',1),(1,'TUESDAY',2),(1,'TUESDAY',3),(1,'TUESDAY',4),(1,'TUESDAY',5),(1,'TUESDAY',6),(1,'TUESDAY',7),(1,'TUESDAY',8),(1,'TUESDAY',9),(1,'TUESDAY',10),(1,'TUESDAY',11),(1,'TUESDAY',12),(1,'TUESDAY',13),(1,'TUESDAY',14),(1,'TUESDAY',15),(1,'TUESDAY',16),(1,'TUESDAY',17),(1,'TUESDAY',18),(1,'TUESDAY',19),(1,'TUESDAY',20),(1,'TUESDAY',21),(1,'TUESDAY',22),(1,'TUESDAY',23),(1,'WEDNESDAY',0),(1,'WEDNESDAY',1),(1,'WEDNESDAY',2),(1,'WEDNESDAY',3),(1,'WEDNESDAY',4),(1,'WEDNESDAY',5),(1,'WEDNESDAY',6),(1,'WEDNESDAY',7),(1,'WEDNESDAY',8),(1,'WEDNESDAY',9),(1,'WEDNESDAY',10),(1,'WEDNESDAY',11),(1,'WEDNESDAY',12),(1,'WEDNESDAY',13),(1,'WEDNESDAY',14),(1,'WEDNESDAY',15),(1,'WEDNESDAY',16),(1,'WEDNESDAY',17),(1,'WEDNESDAY',18),(1,'WEDNESDAY',19),(1,'WEDNESDAY',20),(1,'WEDNESDAY',21),(1,'WEDNESDAY',22),(1,'WEDNESDAY',23);
-/*!40000 ALTER TABLE `b_adv_contract_2_weekday` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_adv_type`
---
-
-DROP TABLE IF EXISTS `b_adv_type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_adv_type` (
-  `SID` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `SORT` int(18) NOT NULL DEFAULT '100',
-  `NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `DATE_CREATE` datetime DEFAULT NULL,
-  `CREATED_BY` int(18) DEFAULT NULL,
-  `DATE_MODIFY` datetime DEFAULT NULL,
-  `MODIFIED_BY` int(18) DEFAULT NULL,
-  PRIMARY KEY (`SID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_adv_type`
---
-
-LOCK TABLES `b_adv_type` WRITE;
-/*!40000 ALTER TABLE `b_adv_type` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_adv_type` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `b_agent`
 --
 
@@ -577,7 +131,7 @@ CREATE TABLE `b_agent` (
   KEY `ix_act_next_exec` (`ACTIVE`,`NEXT_EXEC`),
   KEY `ix_agent_user_id` (`USER_ID`),
   KEY `ix_agent_name` (`NAME`(100))
-) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -586,7 +140,7 @@ CREATE TABLE `b_agent` (
 
 LOCK TABLES `b_agent` WRITE;
 /*!40000 ALTER TABLE `b_agent` DISABLE KEYS */;
-INSERT INTO `b_agent` VALUES (1,'main',100,'\\Bitrix\\Main\\Analytics\\CounterDataTable::submitData();','Y','2019-07-10 13:48:30','2019-07-10 13:49:30',NULL,60,'N',NULL,'N'),(2,'main',100,'CCaptchaAgent::DeleteOldCaptcha(3600);','Y','2019-07-10 13:48:30','2019-07-10 14:48:30',NULL,3600,'N',NULL,'N'),(3,'main',100,'CSiteCheckerTest::CommonTest();','Y',NULL,'2019-07-11 03:00:00',NULL,86400,'N',NULL,'N'),(4,'main',100,'CEvent::CleanUpAgent();','Y',NULL,'2019-07-11 03:10:00',NULL,86400,'N',NULL,'N'),(5,'main',100,'CUser::CleanUpHitAuthAgent();','Y',NULL,'2019-07-11 03:15:00',NULL,86400,'N',NULL,'N'),(6,'main',100,'CUndo::CleanUpOld();','Y',NULL,'2019-07-11 03:20:00',NULL,86400,'N',NULL,'N'),(7,'main',100,'CUserCounter::DeleteOld();','Y',NULL,'2019-07-11 03:25:00',NULL,86400,'N',NULL,'N'),(8,'main',100,'\\Bitrix\\Main\\UI\\Viewer\\FilePreviewTable::deleteOldAgent();','Y',NULL,'2019-07-11 03:30:00',NULL,86400,'N',NULL,'N'),(9,'main',100,'CUser::AuthActionsCleanUpAgent();','Y',NULL,'2019-07-11 04:15:00',NULL,86400,'N',NULL,'N'),(10,'main',100,'CUser::CleanUpAgent();','Y',NULL,'2019-07-11 04:20:00',NULL,86400,'N',NULL,'N'),(11,'main',100,'CUser::DeactivateAgent();','Y',NULL,'2019-07-11 04:25:00',NULL,86400,'N',NULL,'N'),(12,'main',100,'CEventLog::CleanUpAgent();','Y',NULL,'2019-07-11 04:30:00',NULL,86400,'N',NULL,'N'),(13,'advertising',100,'CAdvContract::SendInfo();','Y','2019-07-10 13:48:30','2019-07-10 15:48:30',NULL,7200,'N',NULL,'N'),(14,'advertising',100,'CAdvBanner::CleanUpDynamics();','Y','2019-07-10 13:48:30','2019-07-11 13:48:30',NULL,86400,'N',NULL,'N'),(15,'calendar',100,'CCalendarSync::doSync();','Y','2019-07-10 13:48:30','2019-07-10 13:50:30',NULL,120,'N',NULL,'N'),(16,'catalog',100,'\\Bitrix\\Catalog\\CatalogViewedProductTable::clearAgent();','Y','2019-07-10 13:48:30','2019-07-15 13:48:30',NULL,432000,'N',NULL,'N'),(17,'currency',100,'\\Bitrix\\Currency\\CurrencyManager::currencyBaseRateAgent();','Y',NULL,'2019-07-11 00:01:00',NULL,86400,'Y',NULL,'N'),(18,'forum',100,'CForumStat::CleanUp();','Y','2019-07-10 13:48:30','2019-07-11 13:48:30',NULL,86400,'N',NULL,'N'),(19,'forum',100,'CForumFiles::CleanUp();','Y','2019-07-10 13:48:30','2019-07-11 13:48:30',NULL,86400,'N',NULL,'N'),(20,'im',100,'CIMMail::MailNotifyAgent();','Y','2019-07-10 13:48:30','2019-07-10 13:58:30',NULL,600,'N',NULL,'N'),(21,'im',100,'CIMMail::MailMessageAgent();','Y','2019-07-10 13:48:30','2019-07-10 13:58:30',NULL,600,'N',NULL,'N'),(22,'im',100,'CIMDisk::RemoveTmpFileAgent();','Y','2019-07-10 13:48:30','2019-07-11 01:48:30',NULL,43200,'N',NULL,'N'),(23,'im',100,'\\Bitrix\\Im\\Bot::deleteExpiredTokenAgent();','Y','2019-07-10 13:48:30','2019-07-11 13:48:30',NULL,86400,'N',NULL,'N'),(24,'im',100,'\\Bitrix\\Im\\Disk\\NoRelationPermission::cleaningAgent();','Y','2019-07-10 13:48:30','2019-07-10 14:48:30',NULL,3600,'N',NULL,'N'),(25,'mail',100,'CMailbox::CleanUp();','Y','2019-07-10 13:48:30','2019-07-11 13:48:30',NULL,86400,'N',NULL,'N'),(26,'mail',100,'Bitrix\\Mail\\Helper::resyncDomainUsersAgent();','Y','2019-07-10 13:48:30','2019-07-11 13:48:30',NULL,86400,'N',NULL,'N'),(27,'messageservice',100,'\\Bitrix\\MessageService\\Queue::cleanUpAgent();','Y','2019-07-10 13:48:30','2019-07-11 00:00:00',NULL,86400,'Y',NULL,'N'),(31,'rest',100,'Bitrix\\Rest\\Marketplace\\Client::getNumUpdates();','Y','2019-07-10 13:48:30','2019-07-11 13:48:30',NULL,86400,'N',NULL,'N'),(32,'rest',100,'\\Bitrix\\Rest\\EventOfflineTable::cleanProcessAgent();','Y','2019-07-10 13:48:30','2019-07-11 13:48:30',NULL,86400,'N',NULL,'N'),(33,'rest',100,'\\Bitrix\\Rest\\StatTable::cleanUpAgent();','Y','2019-07-10 13:48:30','2019-07-11 13:48:30',NULL,86400,'N',NULL,'N'),(35,'sale',100,'\\Bitrix\\Sale\\Product2ProductTable::deleteOldProducts(10);','Y','2019-07-10 13:48:31','2019-07-20 13:48:31',NULL,864000,'N',NULL,'N'),(36,'sale',100,'CSaleRecurring::AgentCheckRecurring();','Y','2019-07-10 13:48:31','2019-07-10 15:48:31',NULL,7200,'N',NULL,'N'),(37,'sale',100,'CSaleOrder::RemindPayment();','Y','2019-07-10 13:48:31','2019-07-11 13:48:31',NULL,86400,'N',NULL,'N'),(38,'sale',100,'CSaleViewedProduct::ClearViewed();','Y','2019-07-10 13:48:31','2019-07-11 13:48:31',NULL,86400,'N',NULL,'N'),(39,'sale',100,'CSaleOrder::ClearProductReservedQuantity();','Y','2019-07-10 13:48:31','2019-07-11 13:48:31',NULL,86400,'N',NULL,'N'),(42,'search',10,'CSearchSuggest::CleanUpAgent();','Y','2019-07-10 13:48:32','2019-07-11 13:48:32',NULL,86400,'N',NULL,'N'),(43,'search',10,'CSearchStatistic::CleanUpAgent();','Y','2019-07-10 13:48:32','2019-07-11 13:48:32',NULL,86400,'N',NULL,'N'),(45,'security',100,'CSecuritySession::CleanUpAgent();','Y','2019-07-10 13:48:31','2019-07-10 14:18:31',NULL,1800,'N',NULL,'N'),(46,'security',100,'CSecurityIPRule::CleanUpAgent();','Y','2019-07-10 13:48:31','2019-07-10 14:48:31',NULL,3600,'N',NULL,'N'),(49,'seo',100,'Bitrix\\Seo\\Engine\\YandexDirect::updateAgent();','Y','2019-07-10 13:48:31','2019-07-10 14:48:31',NULL,3600,'N',NULL,'N'),(50,'seo',100,'Bitrix\\Seo\\Adv\\LogTable::clean();','Y','2019-07-10 13:48:31','2019-07-11 13:48:31',NULL,86400,'N',NULL,'N'),(51,'seo',100,'Bitrix\\Seo\\Adv\\Auto::checkQuantityAgent();','Y','2019-07-10 13:48:31','2019-07-10 14:48:31',NULL,3600,'N',NULL,'N'),(53,'socialnetwork',100,'CSocNetMessages::SendEventAgent();','Y','2019-07-10 13:48:31','2019-07-10 13:58:31',NULL,600,'N',NULL,'N'),(56,'statistic',200,'CStatistics::SetNewDay();','Y','2019-07-10 13:48:30','2019-07-11 00:01:00',NULL,86400,'Y',NULL,'N'),(57,'statistic',50,'CStatistics::CleanUpStatistics_1();','Y','2019-07-10 13:48:31','2019-07-11 03:00:00',NULL,86400,'Y',NULL,'N'),(58,'statistic',30,'CStatistics::CleanUpStatistics_2();','Y','2019-07-10 13:48:31','2019-07-11 04:00:00',NULL,86400,'Y',NULL,'N'),(59,'statistic',100,'CStatistics::CleanUpSessionData();','Y','2019-07-10 13:48:31','2019-07-10 15:48:31',NULL,7200,'N',NULL,'N'),(60,'statistic',100,'CStatistics::CleanUpPathCache();','Y','2019-07-10 13:48:31','2019-07-10 14:48:31',NULL,3600,'N',NULL,'N'),(61,'statistic',25,'SendDailyStatistics();','Y','2019-07-10 13:48:32','2019-07-11 09:00:00',NULL,86400,'Y',NULL,'N'),(63,'storeassist',100,'CStoreAssist::AgentCountDayOrders();','Y',NULL,'2019-07-11 00:00:00',NULL,86400,'N',NULL,'N'),(65,'subscribe',100,'CSubscription::CleanUp();','Y',NULL,'2019-07-11 03:00:00',NULL,86400,'Y',NULL,'N'),(72,'workflow',100,'CWorkflow::CleanUp();','Y','2019-07-10 13:48:31','2019-07-11 13:48:31',NULL,86400,'N',NULL,'N'),(73,'pull',100,'CPullChannel::CheckOnlineChannel();','Y',NULL,'2019-07-10 13:50:13',NULL,240,'N',NULL,'N'),(74,'pull',100,'CPullChannel::CheckExpireAgent();','Y',NULL,'2019-07-11 01:48:33',NULL,43200,'N',NULL,'N'),(75,'pull',100,'CPullStack::CheckExpireAgent();','Y',NULL,'2019-07-11 13:48:33',NULL,86400,'N',NULL,'N'),(76,'pull',100,'CPullWatch::CheckExpireAgent();','Y',NULL,'2019-07-10 13:58:33',NULL,600,'N',NULL,'N'),(78,'main',100,'CRatings::Calculate(3);','Y','2019-07-10 13:49:02','2019-07-10 14:49:02',NULL,3600,'N',NULL,'N'),(79,'main',100,'CRatings::Calculate(4);','Y','2019-07-10 13:49:02','2019-07-10 14:49:02',NULL,3600,'N',NULL,'N');
+INSERT INTO `b_agent` VALUES (1,'main',100,'\\Bitrix\\Main\\Analytics\\CounterDataTable::submitData();','Y','2019-10-17 11:09:07','2019-10-17 11:10:07',NULL,60,'N',NULL,'N'),(2,'main',100,'CCaptchaAgent::DeleteOldCaptcha(3600);','Y','2019-10-17 11:06:54','2019-10-17 12:06:54',NULL,3600,'N',NULL,'N'),(3,'main',100,'CSiteCheckerTest::CommonTest();','Y',NULL,'2019-10-18 03:00:00',NULL,86400,'N',NULL,'N'),(4,'main',100,'CEvent::CleanUpAgent();','Y',NULL,'2019-10-18 03:10:00',NULL,86400,'N',NULL,'N'),(5,'main',100,'CUser::CleanUpHitAuthAgent();','Y',NULL,'2019-10-18 03:15:00',NULL,86400,'N',NULL,'N'),(6,'main',100,'CUndo::CleanUpOld();','Y',NULL,'2019-10-18 03:20:00',NULL,86400,'N',NULL,'N'),(7,'main',100,'CUserCounter::DeleteOld();','Y',NULL,'2019-10-18 03:25:00',NULL,86400,'N',NULL,'N'),(8,'main',100,'\\Bitrix\\Main\\UI\\Viewer\\FilePreviewTable::deleteOldAgent();','Y',NULL,'2019-10-18 03:30:00',NULL,86400,'N',NULL,'N'),(9,'main',100,'CUser::AuthActionsCleanUpAgent();','Y',NULL,'2019-10-18 04:15:00',NULL,86400,'N',NULL,'N'),(10,'main',100,'CUser::CleanUpAgent();','Y',NULL,'2019-10-18 04:20:00',NULL,86400,'N',NULL,'N'),(11,'main',100,'CUser::DeactivateAgent();','Y',NULL,'2019-10-18 04:25:00',NULL,86400,'N',NULL,'N'),(12,'main',100,'CEventLog::CleanUpAgent();','Y',NULL,'2019-10-18 04:30:00',NULL,86400,'N',NULL,'N'),(13,'catalog',100,'\\Bitrix\\Catalog\\CatalogViewedProductTable::clearAgent();','Y','2019-10-17 11:06:54','2019-10-22 11:06:54',NULL,432000,'N',NULL,'N'),(14,'currency',100,'\\Bitrix\\Currency\\CurrencyManager::currencyBaseRateAgent();','Y',NULL,'2019-10-18 00:01:00',NULL,86400,'Y',NULL,'N'),(15,'forum',100,'CForumStat::CleanUp();','Y','2019-10-17 11:06:54','2019-10-18 11:06:54',NULL,86400,'N',NULL,'N'),(16,'forum',100,'CForumFiles::CleanUp();','Y','2019-10-17 11:06:54','2019-10-18 11:06:54',NULL,86400,'N',NULL,'N'),(17,'messageservice',100,'\\Bitrix\\MessageService\\Queue::cleanUpAgent();','Y','2019-10-17 11:06:54','2019-10-18 00:00:00',NULL,86400,'Y',NULL,'N'),(21,'rest',100,'Bitrix\\Rest\\Marketplace\\Client::getNumUpdates();','Y','2019-10-17 11:06:54','2019-10-18 11:06:54',NULL,86400,'N',NULL,'N'),(22,'rest',100,'\\Bitrix\\Rest\\EventOfflineTable::cleanProcessAgent();','Y','2019-10-17 11:06:54','2019-10-18 11:06:54',NULL,86400,'N',NULL,'N'),(23,'rest',100,'\\Bitrix\\Rest\\StatTable::cleanUpAgent();','Y','2019-10-17 11:06:54','2019-10-18 11:06:54',NULL,86400,'N',NULL,'N'),(25,'sale',100,'\\Bitrix\\Sale\\Product2ProductTable::deleteOldProducts(10);','Y','2019-10-17 11:06:54','2019-10-27 11:06:54',NULL,864000,'N',NULL,'N'),(26,'sale',100,'CSaleRecurring::AgentCheckRecurring();','Y','2019-10-17 11:06:54','2019-10-17 13:06:54',NULL,7200,'N',NULL,'N'),(27,'sale',100,'CSaleOrder::RemindPayment();','Y','2019-10-17 11:06:54','2019-10-18 11:06:54',NULL,86400,'N',NULL,'N'),(28,'sale',100,'CSaleViewedProduct::ClearViewed();','Y','2019-10-17 11:06:54','2019-10-18 11:06:54',NULL,86400,'N',NULL,'N'),(29,'sale',100,'CSaleOrder::ClearProductReservedQuantity();','Y','2019-10-17 11:06:54','2019-10-18 11:06:54',NULL,86400,'N',NULL,'N'),(32,'search',10,'CSearchSuggest::CleanUpAgent();','Y','2019-10-17 11:06:55','2019-10-18 11:06:55',NULL,86400,'N',NULL,'N'),(33,'search',10,'CSearchStatistic::CleanUpAgent();','Y','2019-10-17 11:06:55','2019-10-18 11:06:55',NULL,86400,'N',NULL,'N'),(35,'security',100,'CSecuritySession::CleanUpAgent();','Y','2019-10-17 11:06:54','2019-10-17 11:36:54',NULL,1800,'N',NULL,'N'),(36,'security',100,'CSecurityIPRule::CleanUpAgent();','Y','2019-10-17 11:06:54','2019-10-17 12:06:54',NULL,3600,'N',NULL,'N'),(39,'seo',100,'Bitrix\\Seo\\Engine\\YandexDirect::updateAgent();','Y','2019-10-17 11:06:55','2019-10-17 12:06:55',NULL,3600,'N',NULL,'N'),(40,'seo',100,'Bitrix\\Seo\\Adv\\LogTable::clean();','Y','2019-10-17 11:06:55','2019-10-18 11:06:55',NULL,86400,'N',NULL,'N'),(41,'seo',100,'Bitrix\\Seo\\Adv\\Auto::checkQuantityAgent();','Y','2019-10-17 11:06:55','2019-10-17 12:06:55',NULL,3600,'N',NULL,'N'),(44,'storeassist',100,'CStoreAssist::AgentCountDayOrders();','Y',NULL,'2019-10-18 00:00:00',NULL,86400,'N',NULL,'N'),(46,'subscribe',100,'CSubscription::CleanUp();','Y',NULL,'2019-10-18 03:00:00',NULL,86400,'Y',NULL,'N'),(51,'pull',100,'CPullChannel::CheckOnlineChannel();','Y','2019-10-17 11:09:04','2019-10-17 11:13:04',NULL,240,'N',NULL,'N'),(52,'pull',100,'CPullChannel::CheckExpireAgent();','Y',NULL,'2019-10-17 23:06:55',NULL,43200,'N',NULL,'N'),(53,'pull',100,'CPullStack::CheckExpireAgent();','Y',NULL,'2019-10-18 11:06:55',NULL,86400,'N',NULL,'N'),(54,'pull',100,'CPullWatch::CheckExpireAgent();','Y',NULL,'2019-10-17 11:16:55',NULL,600,'N',NULL,'N'),(56,'main',100,'CRatings::Calculate(3);','Y','2019-10-17 11:08:08','2019-10-17 12:08:08',NULL,3600,'N',NULL,'N'),(57,'main',100,'CRatings::Calculate(4);','Y','2019-10-17 11:08:08','2019-10-17 12:08:08',NULL,3600,'N',NULL,'N');
 /*!40000 ALTER TABLE `b_agent` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -674,7 +228,7 @@ CREATE TABLE `b_bitrixcloud_option` (
 
 LOCK TABLES `b_bitrixcloud_option` WRITE;
 /*!40000 ALTER TABLE `b_bitrixcloud_option` DISABLE KEYS */;
-INSERT INTO `b_bitrixcloud_option` VALUES (1,'backup_quota',0,'0','0'),(2,'backup_total_size',0,'0','0'),(3,'backup_last_backup_time',0,'0','1562766553'),(4,'monitoring_expire_time',0,'0','1562768359');
+INSERT INTO `b_bitrixcloud_option` VALUES (1,'backup_quota',0,'0','0'),(2,'backup_total_size',0,'0','0'),(3,'backup_last_backup_time',0,'0','1571310552'),(4,'monitoring_expire_time',0,'0','1571312359');
 /*!40000 ALTER TABLE `b_bitrixcloud_option` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1034,7 +588,8 @@ CREATE TABLE `b_blog_socnet_rights` (
   `ENTITY_ID` int(11) NOT NULL,
   `ENTITY` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`ID`),
-  KEY `IX_BLOG_SR_1` (`POST_ID`)
+  KEY `IX_BLOG_SR_1` (`POST_ID`),
+  KEY `IX_BLOG_SR_2` (`ENTITY`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1219,452 +774,6 @@ LOCK TABLES `b_blog_user_group_perms` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `b_bp_automation_trigger`
---
-
-DROP TABLE IF EXISTS `b_bp_automation_trigger`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_bp_automation_trigger` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `CODE` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `MODULE_ID` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `ENTITY` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `DOCUMENT_TYPE` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `DOCUMENT_STATUS` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `APPLY_RULES` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_bp_automation_trigger`
---
-
-LOCK TABLES `b_bp_automation_trigger` WRITE;
-/*!40000 ALTER TABLE `b_bp_automation_trigger` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_bp_automation_trigger` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_bp_global_const`
---
-
-DROP TABLE IF EXISTS `b_bp_global_const`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_bp_global_const` (
-  `ID` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `NAME` text COLLATE utf8_unicode_ci NOT NULL,
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `PROPERTY_TYPE` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `IS_REQUIRED` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `IS_MULTIPLE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `PROPERTY_OPTIONS` text COLLATE utf8_unicode_ci,
-  `PROPERTY_SETTINGS` text COLLATE utf8_unicode_ci,
-  `PROPERTY_VALUE` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_bp_global_const`
---
-
-LOCK TABLES `b_bp_global_const` WRITE;
-/*!40000 ALTER TABLE `b_bp_global_const` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_bp_global_const` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_bp_history`
---
-
-DROP TABLE IF EXISTS `b_bp_history`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_bp_history` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `MODULE_ID` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ENTITY` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `DOCUMENT_ID` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `DOCUMENT` blob,
-  `MODIFIED` datetime NOT NULL,
-  `USER_ID` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `ix_bp_history_doc` (`DOCUMENT_ID`,`ENTITY`,`MODULE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_bp_history`
---
-
-LOCK TABLES `b_bp_history` WRITE;
-/*!40000 ALTER TABLE `b_bp_history` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_bp_history` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_bp_rest_activity`
---
-
-DROP TABLE IF EXISTS `b_bp_rest_activity`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_bp_rest_activity` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `APP_ID` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `APP_NAME` text COLLATE utf8_unicode_ci,
-  `CODE` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `INTERNAL_CODE` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `HANDLER` varchar(1000) COLLATE utf8_unicode_ci NOT NULL,
-  `AUTH_USER_ID` int(11) NOT NULL DEFAULT '0',
-  `USE_SUBSCRIPTION` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `USE_PLACEMENT` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `NAME` text COLLATE utf8_unicode_ci,
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `PROPERTIES` text COLLATE utf8_unicode_ci,
-  `RETURN_PROPERTIES` text COLLATE utf8_unicode_ci,
-  `DOCUMENT_TYPE` text COLLATE utf8_unicode_ci,
-  `FILTER` text COLLATE utf8_unicode_ci,
-  `IS_ROBOT` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `ix_bp_ra_ic` (`INTERNAL_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_bp_rest_activity`
---
-
-LOCK TABLES `b_bp_rest_activity` WRITE;
-/*!40000 ALTER TABLE `b_bp_rest_activity` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_bp_rest_activity` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_bp_rest_provider`
---
-
-DROP TABLE IF EXISTS `b_bp_rest_provider`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_bp_rest_provider` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `APP_ID` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `APP_NAME` text COLLATE utf8_unicode_ci,
-  `CODE` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `TYPE` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `HANDLER` varchar(1000) COLLATE utf8_unicode_ci NOT NULL,
-  `NAME` text COLLATE utf8_unicode_ci,
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_bp_rest_provider`
---
-
-LOCK TABLES `b_bp_rest_provider` WRITE;
-/*!40000 ALTER TABLE `b_bp_rest_provider` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_bp_rest_provider` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_bp_scheduler_event`
---
-
-DROP TABLE IF EXISTS `b_bp_scheduler_event`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_bp_scheduler_event` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `WORKFLOW_ID` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `HANDLER` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `EVENT_MODULE` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `EVENT_TYPE` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `ENTITY_ID` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `EVENT_PARAMETERS` mediumtext COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`ID`),
-  KEY `ix_b_bp_se_2` (`EVENT_MODULE`,`EVENT_TYPE`,`ENTITY_ID`),
-  KEY `ix_b_bp_se_3` (`WORKFLOW_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_bp_scheduler_event`
---
-
-LOCK TABLES `b_bp_scheduler_event` WRITE;
-/*!40000 ALTER TABLE `b_bp_scheduler_event` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_bp_scheduler_event` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_bp_task`
---
-
-DROP TABLE IF EXISTS `b_bp_task`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_bp_task` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `WORKFLOW_ID` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `ACTIVITY` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `ACTIVITY_NAME` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `MODIFIED` datetime NOT NULL,
-  `OVERDUE_DATE` datetime DEFAULT NULL,
-  `NAME` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `PARAMETERS` text COLLATE utf8_unicode_ci,
-  `STATUS` int(11) NOT NULL DEFAULT '0',
-  `IS_INLINE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `DELEGATION_TYPE` int(11) NOT NULL DEFAULT '0',
-  `DOCUMENT_NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `ix_bp_tasks_sort` (`OVERDUE_DATE`,`MODIFIED`),
-  KEY `ix_bp_tasks_wf` (`WORKFLOW_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_bp_task`
---
-
-LOCK TABLES `b_bp_task` WRITE;
-/*!40000 ALTER TABLE `b_bp_task` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_bp_task` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_bp_task_user`
---
-
-DROP TABLE IF EXISTS `b_bp_task_user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_bp_task_user` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `USER_ID` int(11) NOT NULL,
-  `TASK_ID` int(11) NOT NULL,
-  `STATUS` int(11) NOT NULL DEFAULT '0',
-  `DATE_UPDATE` datetime DEFAULT NULL,
-  `ORIGINAL_USER_ID` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `ix_bp_task_user` (`USER_ID`,`TASK_ID`),
-  KEY `ix_bp_task_user_2` (`TASK_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_bp_task_user`
---
-
-LOCK TABLES `b_bp_task_user` WRITE;
-/*!40000 ALTER TABLE `b_bp_task_user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_bp_task_user` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_bp_tracking`
---
-
-DROP TABLE IF EXISTS `b_bp_tracking`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_bp_tracking` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `WORKFLOW_ID` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `TYPE` int(11) NOT NULL,
-  `MODIFIED` datetime NOT NULL,
-  `ACTION_NAME` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `ACTION_TITLE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `EXECUTION_STATUS` int(11) NOT NULL DEFAULT '0',
-  `EXECUTION_RESULT` int(11) NOT NULL DEFAULT '0',
-  `ACTION_NOTE` text COLLATE utf8_unicode_ci,
-  `MODIFIED_BY` int(11) DEFAULT NULL,
-  `COMPLETED` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  PRIMARY KEY (`ID`),
-  KEY `ix_bp_tracking_wf` (`WORKFLOW_ID`),
-  KEY `ix_bp_tracking_md` (`MODIFIED`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_bp_tracking`
---
-
-LOCK TABLES `b_bp_tracking` WRITE;
-/*!40000 ALTER TABLE `b_bp_tracking` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_bp_tracking` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_bp_workflow_instance`
---
-
-DROP TABLE IF EXISTS `b_bp_workflow_instance`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_bp_workflow_instance` (
-  `ID` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `MODULE_ID` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ENTITY` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `DOCUMENT_ID` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `WORKFLOW_TEMPLATE_ID` int(11) NOT NULL,
-  `WORKFLOW` mediumblob,
-  `STARTED` datetime DEFAULT NULL,
-  `STARTED_BY` int(11) DEFAULT NULL,
-  `STARTED_EVENT_TYPE` tinyint(4) NOT NULL DEFAULT '0',
-  `STATUS` int(11) DEFAULT NULL,
-  `MODIFIED` datetime NOT NULL,
-  `OWNER_ID` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `OWNED_UNTIL` datetime DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `ix_bp_wi_document` (`DOCUMENT_ID`,`ENTITY`,`MODULE_ID`,`STARTED_EVENT_TYPE`),
-  KEY `ix_bp_wi_started_by` (`STARTED_BY`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_bp_workflow_instance`
---
-
-LOCK TABLES `b_bp_workflow_instance` WRITE;
-/*!40000 ALTER TABLE `b_bp_workflow_instance` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_bp_workflow_instance` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_bp_workflow_permissions`
---
-
-DROP TABLE IF EXISTS `b_bp_workflow_permissions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_bp_workflow_permissions` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `WORKFLOW_ID` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `OBJECT_ID` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `PERMISSION` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `ix_bp_wf_permissions_wt` (`WORKFLOW_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_bp_workflow_permissions`
---
-
-LOCK TABLES `b_bp_workflow_permissions` WRITE;
-/*!40000 ALTER TABLE `b_bp_workflow_permissions` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_bp_workflow_permissions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_bp_workflow_state`
---
-
-DROP TABLE IF EXISTS `b_bp_workflow_state`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_bp_workflow_state` (
-  `ID` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `MODULE_ID` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ENTITY` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `DOCUMENT_ID` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `DOCUMENT_ID_INT` int(11) NOT NULL,
-  `WORKFLOW_TEMPLATE_ID` int(11) NOT NULL,
-  `STATE` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `STATE_TITLE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `STATE_PARAMETERS` text COLLATE utf8_unicode_ci,
-  `MODIFIED` datetime NOT NULL,
-  `STARTED` datetime DEFAULT NULL,
-  `STARTED_BY` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `ix_bp_ws_document_id` (`DOCUMENT_ID`,`ENTITY`,`MODULE_ID`),
-  KEY `ix_bp_ws_document_id1` (`DOCUMENT_ID_INT`,`ENTITY`,`MODULE_ID`,`STATE`),
-  KEY `ix_bp_ws_started_by` (`STARTED_BY`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_bp_workflow_state`
---
-
-LOCK TABLES `b_bp_workflow_state` WRITE;
-/*!40000 ALTER TABLE `b_bp_workflow_state` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_bp_workflow_state` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_bp_workflow_state_identify`
---
-
-DROP TABLE IF EXISTS `b_bp_workflow_state_identify`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_bp_workflow_state_identify` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `WORKFLOW_ID` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `ix_bp_wsi_wf` (`WORKFLOW_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_bp_workflow_state_identify`
---
-
-LOCK TABLES `b_bp_workflow_state_identify` WRITE;
-/*!40000 ALTER TABLE `b_bp_workflow_state_identify` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_bp_workflow_state_identify` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_bp_workflow_template`
---
-
-DROP TABLE IF EXISTS `b_bp_workflow_template`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_bp_workflow_template` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `MODULE_ID` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ENTITY` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `DOCUMENT_TYPE` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `DOCUMENT_STATUS` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `AUTO_EXECUTE` int(11) NOT NULL DEFAULT '0',
-  `NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `TEMPLATE` mediumblob,
-  `PARAMETERS` blob,
-  `VARIABLES` blob,
-  `CONSTANTS` mediumblob,
-  `MODIFIED` datetime NOT NULL,
-  `IS_MODIFIED` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `USER_ID` int(11) DEFAULT NULL,
-  `SYSTEM_CODE` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  PRIMARY KEY (`ID`),
-  KEY `ix_bp_wf_template_mo` (`MODULE_ID`,`ENTITY`,`DOCUMENT_TYPE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_bp_workflow_template`
---
-
-LOCK TABLES `b_bp_workflow_template` WRITE;
-/*!40000 ALTER TABLE `b_bp_workflow_template` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_bp_workflow_template` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `b_cache_tag`
 --
 
@@ -1687,307 +796,8 @@ CREATE TABLE `b_cache_tag` (
 
 LOCK TABLES `b_cache_tag` WRITE;
 /*!40000 ALTER TABLE `b_cache_tag` DISABLE KEYS */;
-INSERT INTO `b_cache_tag` VALUES (NULL,NULL,'0:1562766544','**'),('s1','/e25','/s1/bitrix/menu/06f','bitrix:menu'),('s1','/e25','/s1/bitrix/menu/345','bitrix:menu');
+INSERT INTO `b_cache_tag` VALUES (NULL,NULL,'0:1571310488','**'),('s1','/e25','/s1/bitrix/menu/06f','bitrix:menu'),('s1','/e25','/s1/bitrix/menu/345','bitrix:menu');
 /*!40000 ALTER TABLE `b_cache_tag` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_calendar_access`
---
-
-DROP TABLE IF EXISTS `b_calendar_access`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_calendar_access` (
-  `ACCESS_CODE` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `TASK_ID` int(11) NOT NULL,
-  `SECT_ID` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`ACCESS_CODE`,`TASK_ID`,`SECT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_calendar_access`
---
-
-LOCK TABLES `b_calendar_access` WRITE;
-/*!40000 ALTER TABLE `b_calendar_access` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_calendar_access` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_calendar_attendees`
---
-
-DROP TABLE IF EXISTS `b_calendar_attendees`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_calendar_attendees` (
-  `EVENT_ID` int(11) NOT NULL,
-  `USER_KEY` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `USER_ID` int(11) DEFAULT NULL,
-  `USER_EMAIL` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `USER_NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `STATUS` char(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Q',
-  `DESCRIPTION` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ACCESSIBILITY` char(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `REMIND` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SECT_ID` int(11) DEFAULT NULL,
-  `COLOR` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `TEXT_COLOR` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`EVENT_ID`,`USER_KEY`),
-  KEY `ix_cal_attendees_0` (`USER_KEY`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_calendar_attendees`
---
-
-LOCK TABLES `b_calendar_attendees` WRITE;
-/*!40000 ALTER TABLE `b_calendar_attendees` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_calendar_attendees` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_calendar_event`
---
-
-DROP TABLE IF EXISTS `b_calendar_event`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_calendar_event` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `PARENT_ID` int(11) DEFAULT NULL,
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `DELETED` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `CAL_TYPE` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `OWNER_ID` int(11) NOT NULL,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `DATE_FROM` datetime DEFAULT NULL,
-  `DATE_TO` datetime DEFAULT NULL,
-  `TZ_FROM` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `TZ_TO` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `TZ_OFFSET_FROM` int(11) DEFAULT NULL,
-  `TZ_OFFSET_TO` int(11) DEFAULT NULL,
-  `DATE_FROM_TS_UTC` int(18) DEFAULT NULL,
-  `DATE_TO_TS_UTC` int(18) DEFAULT NULL,
-  `DT_SKIP_TIME` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `DT_LENGTH` bigint(20) DEFAULT NULL,
-  `EVENT_TYPE` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `CREATED_BY` int(11) NOT NULL,
-  `DATE_CREATE` datetime DEFAULT NULL,
-  `TIMESTAMP_X` datetime DEFAULT NULL,
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `DT_FROM` datetime DEFAULT NULL,
-  `DT_TO` datetime DEFAULT NULL,
-  `PRIVATE_EVENT` char(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ACCESSIBILITY` char(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `IMPORTANCE` char(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `IS_MEETING` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `MEETING_STATUS` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `MEETING_HOST` int(11) DEFAULT NULL,
-  `MEETING` text COLLATE utf8_unicode_ci,
-  `LOCATION` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `REMIND` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `COLOR` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `TEXT_COLOR` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `RRULE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `EXDATE` text COLLATE utf8_unicode_ci,
-  `DAV_XML_ID` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `DAV_EXCH_LABEL` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `CAL_DAV_LABEL` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `VERSION` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ATTENDEES_CODES` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `RECURRENCE_ID` int(11) DEFAULT NULL,
-  `RELATIONS` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SEARCHABLE_CONTENT` text COLLATE utf8_unicode_ci,
-  `SECTION_ID` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `ix_cal_event_date_utc` (`DATE_FROM_TS_UTC`,`DATE_TO_TS_UTC`),
-  KEY `ix_cal_event_owner_id_date` (`OWNER_ID`,`DATE_FROM_TS_UTC`,`DATE_TO_TS_UTC`),
-  KEY `ix_cal_event_parent_id` (`PARENT_ID`),
-  KEY `ix_cal_event_created_by` (`CREATED_BY`),
-  KEY `ix_cal_event_owner_id_accessibility` (`ACCESSIBILITY`,`DATE_FROM_TS_UTC`,`DATE_TO_TS_UTC`),
-  FULLTEXT KEY `IXF_B_CALENDAR_EVENT_SEARCHABLE_CONTENT` (`SEARCHABLE_CONTENT`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_calendar_event`
---
-
-LOCK TABLES `b_calendar_event` WRITE;
-/*!40000 ALTER TABLE `b_calendar_event` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_calendar_event` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_calendar_event_sect`
---
-
-DROP TABLE IF EXISTS `b_calendar_event_sect`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_calendar_event_sect` (
-  `EVENT_ID` int(11) NOT NULL,
-  `SECT_ID` int(11) NOT NULL,
-  `REL` char(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`EVENT_ID`,`SECT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_calendar_event_sect`
---
-
-LOCK TABLES `b_calendar_event_sect` WRITE;
-/*!40000 ALTER TABLE `b_calendar_event_sect` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_calendar_event_sect` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_calendar_push`
---
-
-DROP TABLE IF EXISTS `b_calendar_push`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_calendar_push` (
-  `ENTITY_TYPE` varchar(24) COLLATE utf8_unicode_ci NOT NULL,
-  `ENTITY_ID` int(11) NOT NULL,
-  `CHANNEL_ID` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `RESOURCE_ID` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `EXPIRES` datetime NOT NULL,
-  `NOT_PROCESSED` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `FIRST_PUSH_DATE` datetime DEFAULT NULL,
-  PRIMARY KEY (`ENTITY_TYPE`,`ENTITY_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_calendar_push`
---
-
-LOCK TABLES `b_calendar_push` WRITE;
-/*!40000 ALTER TABLE `b_calendar_push` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_calendar_push` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_calendar_resource`
---
-
-DROP TABLE IF EXISTS `b_calendar_resource`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_calendar_resource` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `EVENT_ID` int(11) DEFAULT NULL,
-  `CAL_TYPE` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `RESOURCE_ID` int(11) NOT NULL,
-  `PARENT_TYPE` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `PARENT_ID` int(11) NOT NULL,
-  `UF_ID` int(11) DEFAULT NULL,
-  `DATE_FROM_UTC` datetime DEFAULT NULL,
-  `DATE_TO_UTC` datetime DEFAULT NULL,
-  `DATE_FROM` datetime DEFAULT NULL,
-  `DATE_TO` datetime DEFAULT NULL,
-  `DURATION` bigint(20) DEFAULT NULL,
-  `SKIP_TIME` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `TZ_FROM` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `TZ_TO` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `TZ_OFFSET_FROM` int(11) DEFAULT NULL,
-  `TZ_OFFSET_TO` int(11) DEFAULT NULL,
-  `CREATED_BY` int(11) NOT NULL,
-  `DATE_CREATE` datetime DEFAULT NULL,
-  `TIMESTAMP_X` datetime DEFAULT NULL,
-  `SERVICE_NAME` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `ix_ufid_parenttype_parentid` (`UF_ID`,`PARENT_TYPE`,`PARENT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_calendar_resource`
---
-
-LOCK TABLES `b_calendar_resource` WRITE;
-/*!40000 ALTER TABLE `b_calendar_resource` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_calendar_resource` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_calendar_section`
---
-
-DROP TABLE IF EXISTS `b_calendar_section`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_calendar_section` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `XML_ID` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `EXTERNAL_ID` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `GAPI_CALENDAR_ID` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `COLOR` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `TEXT_COLOR` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `EXPORT` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SORT` int(11) NOT NULL DEFAULT '100',
-  `CAL_TYPE` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `OWNER_ID` int(11) DEFAULT NULL,
-  `CREATED_BY` int(11) NOT NULL,
-  `PARENT_ID` int(11) DEFAULT NULL,
-  `DATE_CREATE` datetime DEFAULT NULL,
-  `TIMESTAMP_X` datetime DEFAULT NULL,
-  `DAV_EXCH_CAL` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `DAV_EXCH_MOD` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `CAL_DAV_CON` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `CAL_DAV_CAL` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `CAL_DAV_MOD` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `IS_EXCHANGE` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SYNC_TOKEN` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `ix_cal_sect_owner` (`CAL_TYPE`,`OWNER_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_calendar_section`
---
-
-LOCK TABLES `b_calendar_section` WRITE;
-/*!40000 ALTER TABLE `b_calendar_section` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_calendar_section` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_calendar_type`
---
-
-DROP TABLE IF EXISTS `b_calendar_type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_calendar_type` (
-  `XML_ID` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `EXTERNAL_ID` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  PRIMARY KEY (`XML_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_calendar_type`
---
-
-LOCK TABLES `b_calendar_type` WRITE;
-/*!40000 ALTER TABLE `b_calendar_type` DISABLE KEYS */;
-INSERT INTO `b_calendar_type` VALUES ('events','События',NULL,NULL,'Y');
-/*!40000 ALTER TABLE `b_calendar_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -2083,7 +893,7 @@ CREATE TABLE `b_catalog_currency` (
 
 LOCK TABLES `b_catalog_currency` WRITE;
 /*!40000 ALTER TABLE `b_catalog_currency` DISABLE KEYS */;
-INSERT INTO `b_catalog_currency` VALUES ('BYN',1,32.2000,500,'2019-07-10 13:45:48','933','N',NULL,'2019-07-10 13:45:48',NULL,32.200000000000),('EUR',1,78.3200,300,'2019-07-10 13:45:48','978','N',NULL,'2019-07-10 13:45:48',NULL,78.320000000000),('RUB',1,1.0000,100,'2019-07-10 13:45:48','643','Y',NULL,'2019-07-10 13:45:48',NULL,1.000000000000),('UAH',10,25.1100,400,'2019-07-10 13:45:48','980','N',NULL,'2019-07-10 13:45:48',NULL,2.511000000000),('USD',1,68.7900,200,'2019-07-10 13:45:48','840','N',NULL,'2019-07-10 13:45:48',NULL,68.790000000000);
+INSERT INTO `b_catalog_currency` VALUES ('BYN',1,32.2000,500,'2019-10-17 11:03:07','933','N',NULL,'2019-10-17 11:03:07',NULL,32.200000000000),('EUR',1,78.3200,300,'2019-10-17 11:03:07','978','N',NULL,'2019-10-17 11:03:07',NULL,78.320000000000),('RUB',1,1.0000,100,'2019-10-17 11:03:07','643','Y',NULL,'2019-10-17 11:03:07',NULL,1.000000000000),('UAH',10,25.1100,400,'2019-10-17 11:03:07','980','N',NULL,'2019-10-17 11:03:07',NULL,2.511000000000),('USD',1,68.7900,200,'2019-10-17 11:03:07','840','N',NULL,'2019-10-17 11:03:07',NULL,68.790000000000);
 /*!40000 ALTER TABLE `b_catalog_currency` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2118,7 +928,7 @@ CREATE TABLE `b_catalog_currency_lang` (
 
 LOCK TABLES `b_catalog_currency_lang` WRITE;
 /*!40000 ALTER TABLE `b_catalog_currency_lang` DISABLE KEYS */;
-INSERT INTO `b_catalog_currency_lang` VALUES ('BYN','en','Br#','Belarusian Ruble','.',NULL,2,'C','Y',NULL,'2019-07-10 13:45:49',NULL,'2019-07-10 13:45:49'),('BYN','ru','# руб.','Белорусский рубль','.',NULL,2,'B','Y',NULL,'2019-07-10 13:45:49',NULL,'2019-07-10 13:45:49'),('EUR','en','&euro;#','Euro','.',NULL,2,'C','Y',NULL,'2019-07-10 13:45:49',NULL,'2019-07-10 13:45:49'),('EUR','ru','# &euro;','Евро','.',NULL,2,'B','Y',NULL,'2019-07-10 13:45:49',NULL,'2019-07-10 13:45:49'),('RUB','en','&#8381;#','Russian Ruble','.',NULL,2,'C','Y',NULL,'2019-07-10 13:45:48',NULL,'2019-07-10 13:45:48'),('RUB','ru','# руб.','Российский рубль','.',NULL,2,'B','Y',NULL,'2019-07-10 13:45:48',NULL,'2019-07-10 13:45:48'),('UAH','en','&#8372;#','Hryvnia','.',NULL,2,'C','Y',NULL,'2019-07-10 13:45:49',NULL,'2019-07-10 13:45:49'),('UAH','ru','# грн.','Гривна','.',NULL,2,'B','Y',NULL,'2019-07-10 13:45:49',NULL,'2019-07-10 13:45:49'),('USD','en','$#','US Dollar','.',NULL,2,'C','Y',NULL,'2019-07-10 13:45:48',NULL,'2019-07-10 13:45:48'),('USD','ru','$#','Доллар США','.',NULL,2,'C','Y',NULL,'2019-07-10 13:45:49',NULL,'2019-07-10 13:45:49');
+INSERT INTO `b_catalog_currency_lang` VALUES ('BYN','en','Br#','Belarusian Ruble','.',NULL,2,'C','Y',NULL,'2019-10-17 11:03:07',NULL,'2019-10-17 11:03:07'),('BYN','ru','# руб.','Белорусский рубль','.',NULL,2,'B','Y',NULL,'2019-10-17 11:03:07',NULL,'2019-10-17 11:03:07'),('EUR','en','&euro;#','Euro','.',NULL,2,'C','Y',NULL,'2019-10-17 11:03:07',NULL,'2019-10-17 11:03:07'),('EUR','ru','# &euro;','Евро','.',NULL,2,'B','Y',NULL,'2019-10-17 11:03:07',NULL,'2019-10-17 11:03:07'),('RUB','en','&#8381;#','Russian Ruble','.',NULL,2,'C','Y',NULL,'2019-10-17 11:03:07',NULL,'2019-10-17 11:03:07'),('RUB','ru','# руб.','Российский рубль','.',NULL,2,'B','Y',NULL,'2019-10-17 11:03:07',NULL,'2019-10-17 11:03:07'),('UAH','en','&#8372;#','Hryvnia','.',NULL,2,'C','Y',NULL,'2019-10-17 11:03:07',NULL,'2019-10-17 11:03:07'),('UAH','ru','# грн.','Гривна','.',NULL,2,'B','Y',NULL,'2019-10-17 11:03:07',NULL,'2019-10-17 11:03:07'),('USD','en','$#','US Dollar','.',NULL,2,'C','Y',NULL,'2019-10-17 11:03:07',NULL,'2019-10-17 11:03:07'),('USD','ru','$#','Доллар США','.',NULL,2,'C','Y',NULL,'2019-10-17 11:03:07',NULL,'2019-10-17 11:03:07');
 /*!40000 ALTER TABLE `b_catalog_currency_lang` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2654,7 +1464,7 @@ CREATE TABLE `b_catalog_group` (
 
 LOCK TABLES `b_catalog_group` WRITE;
 /*!40000 ALTER TABLE `b_catalog_group` DISABLE KEYS */;
-INSERT INTO `b_catalog_group` VALUES (1,'BASE','Y',100,NULL,'2019-07-10 13:49:04',1,'2019-07-10 13:49:04',1),(2,'WHOLESALE','N',200,NULL,'2019-07-10 13:49:04',1,'2019-07-10 13:49:04',1),(3,'RETAIL','N',300,NULL,'2019-07-10 13:49:04',1,'2019-07-10 13:49:04',1);
+INSERT INTO `b_catalog_group` VALUES (1,'BASE','Y',100,NULL,'2019-10-17 11:09:05',1,'2019-10-17 11:09:05',1),(2,'WHOLESALE','N',200,NULL,'2019-10-17 11:09:05',1,'2019-10-17 11:09:05',1),(3,'RETAIL','N',300,NULL,'2019-10-17 11:09:05',1,'2019-10-17 11:09:05',1);
 /*!40000 ALTER TABLE `b_catalog_group` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2681,7 +1491,7 @@ CREATE TABLE `b_catalog_group2group` (
 
 LOCK TABLES `b_catalog_group2group` WRITE;
 /*!40000 ALTER TABLE `b_catalog_group2group` DISABLE KEYS */;
-INSERT INTO `b_catalog_group2group` VALUES (1,1,1,'N'),(2,1,1,'Y'),(3,2,6,'N'),(4,2,6,'Y'),(5,3,2,'N'),(6,3,2,'Y');
+INSERT INTO `b_catalog_group2group` VALUES (1,1,1,'N'),(2,1,1,'Y'),(3,2,2,'N'),(4,2,2,'Y'),(5,3,2,'N'),(6,3,2,'Y');
 /*!40000 ALTER TABLE `b_catalog_group2group` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3226,7 +2036,7 @@ CREATE TABLE `b_catalog_vat` (
 
 LOCK TABLES `b_catalog_vat` WRITE;
 /*!40000 ALTER TABLE `b_catalog_vat` DISABLE KEYS */;
-INSERT INTO `b_catalog_vat` VALUES (1,'2019-07-10 13:49:05','Y',100,'Без НДС',0.00),(2,'2019-07-10 13:49:05','Y',200,'НДС 18%',18.00);
+INSERT INTO `b_catalog_vat` VALUES (1,'2019-10-17 11:09:05','Y',100,'Без НДС',0.00),(2,'2019-10-17 11:09:05','Y',200,'НДС 18%',18.00);
 /*!40000 ALTER TABLE `b_catalog_vat` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3247,7 +2057,6 @@ CREATE TABLE `b_catalog_viewed_product` (
   `VIEW_COUNT` int(11) NOT NULL DEFAULT '1',
   `RECOMMENDATION` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  KEY `IX_CAT_V_PR_FUSER_ID` (`FUSER_ID`),
   KEY `IX_CAT_V_PR_VISIT` (`FUSER_ID`,`SITE_ID`,`DATE_VISIT`),
   KEY `IX_CAT_V_PR_PRODUCT` (`FUSER_ID`,`SITE_ID`,`ELEMENT_ID`),
   KEY `IX_CAT_V_PR_PRODUCT_VISIT` (`ELEMENT_ID`,`DATE_VISIT`)
@@ -3302,6 +2111,65 @@ LOCK TABLES `b_checklist` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `b_clouds_copy_queue`
+--
+
+DROP TABLE IF EXISTS `b_clouds_copy_queue`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `b_clouds_copy_queue` (
+  `ID` int(32) NOT NULL AUTO_INCREMENT,
+  `TIMESTAMP_X` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `OP` char(1) COLLATE utf8_unicode_ci NOT NULL,
+  `SOURCE_BUCKET_ID` int(11) NOT NULL,
+  `SOURCE_FILE_PATH` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+  `TARGET_BUCKET_ID` int(11) NOT NULL,
+  `TARGET_FILE_PATH` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+  `FILE_SIZE` int(11) NOT NULL DEFAULT '-1',
+  `FILE_POS` int(11) NOT NULL DEFAULT '0',
+  `FAIL_COUNTER` int(11) NOT NULL DEFAULT '0',
+  `STATUS` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
+  `ERROR_MESSAGE` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `b_clouds_copy_queue`
+--
+
+LOCK TABLES `b_clouds_copy_queue` WRITE;
+/*!40000 ALTER TABLE `b_clouds_copy_queue` DISABLE KEYS */;
+/*!40000 ALTER TABLE `b_clouds_copy_queue` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `b_clouds_delete_queue`
+--
+
+DROP TABLE IF EXISTS `b_clouds_delete_queue`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `b_clouds_delete_queue` (
+  `ID` int(32) NOT NULL AUTO_INCREMENT,
+  `TIMESTAMP_X` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `BUCKET_ID` int(11) NOT NULL,
+  `FILE_PATH` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `ix_b_clouds_delete_queue_1` (`BUCKET_ID`,`FILE_PATH`(100))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `b_clouds_delete_queue`
+--
+
+LOCK TABLES `b_clouds_delete_queue` WRITE;
+/*!40000 ALTER TABLE `b_clouds_delete_queue` DISABLE KEYS */;
+/*!40000 ALTER TABLE `b_clouds_delete_queue` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `b_clouds_file_bucket`
 --
 
@@ -3318,11 +2186,16 @@ CREATE TABLE `b_clouds_file_bucket` (
   `LOCATION` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `CNAME` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `FILE_COUNT` int(11) DEFAULT '0',
-  `FILE_SIZE` float DEFAULT '0',
+  `FILE_SIZE` double DEFAULT '0',
   `LAST_FILE_ID` int(11) DEFAULT NULL,
   `PREFIX` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `SETTINGS` text COLLATE utf8_unicode_ci,
   `FILE_RULES` text COLLATE utf8_unicode_ci,
+  `FAILOVER_ACTIVE` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
+  `FAILOVER_BUCKET_ID` int(11) DEFAULT NULL,
+  `FAILOVER_COPY` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
+  `FAILOVER_DELETE` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
+  `FAILOVER_DELETE_DELAY` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -3378,13 +2251,13 @@ CREATE TABLE `b_clouds_file_upload` (
   `ID` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `TIMESTAMP_X` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `FILE_PATH` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
-  `FILE_SIZE` int(11) DEFAULT NULL,
+  `FILE_SIZE` bigint(20) DEFAULT NULL,
   `TMP_FILE` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
   `BUCKET_ID` int(11) NOT NULL,
   `PART_SIZE` int(11) NOT NULL,
   `PART_NO` int(11) NOT NULL,
   `PART_FAIL_COUNTER` int(11) NOT NULL,
-  `NEXT_STEP` text COLLATE utf8_unicode_ci,
+  `NEXT_STEP` mediumtext COLLATE utf8_unicode_ci,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -3662,7 +2535,7 @@ CREATE TABLE `b_conv_context_counter_day` (
 
 LOCK TABLES `b_conv_context_counter_day` WRITE;
 /*!40000 ALTER TABLE `b_conv_context_counter_day` DISABLE KEYS */;
-INSERT INTO `b_conv_context_counter_day` VALUES ('2019-07-10',1,'conversion_visit_day',1);
+INSERT INTO `b_conv_context_counter_day` VALUES ('2019-10-17',1,'conversion_visit_day',1);
 /*!40000 ALTER TABLE `b_conv_context_counter_day` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3723,14 +2596,26 @@ DROP TABLE IF EXISTS `b_culture`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `b_culture` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `CODE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `CODE` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FORMAT_DATE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FORMAT_DATETIME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FORMAT_NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `FORMAT_DATE` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `FORMAT_DATETIME` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `FORMAT_NAME` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `WEEK_START` int(1) DEFAULT '1',
-  `CHARSET` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `CHARSET` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `DIRECTION` char(1) COLLATE utf8_unicode_ci DEFAULT 'Y',
+  `SHORT_DATE_FORMAT` varchar(50) COLLATE utf8_unicode_ci DEFAULT 'n/j/Y',
+  `MEDIUM_DATE_FORMAT` varchar(50) COLLATE utf8_unicode_ci DEFAULT 'M j, Y',
+  `LONG_DATE_FORMAT` varchar(50) COLLATE utf8_unicode_ci DEFAULT 'F j, Y',
+  `FULL_DATE_FORMAT` varchar(50) COLLATE utf8_unicode_ci DEFAULT 'l, F j, Y',
+  `DAY_MONTH_FORMAT` varchar(50) COLLATE utf8_unicode_ci DEFAULT 'M j',
+  `SHORT_TIME_FORMAT` varchar(50) COLLATE utf8_unicode_ci DEFAULT 'g:i a',
+  `LONG_TIME_FORMAT` varchar(50) COLLATE utf8_unicode_ci DEFAULT 'g:i:s a',
+  `AM_VALUE` varchar(20) COLLATE utf8_unicode_ci DEFAULT 'am',
+  `PM_VALUE` varchar(20) COLLATE utf8_unicode_ci DEFAULT 'pm',
+  `NUMBER_THOUSANDS_SEPARATOR` varchar(10) COLLATE utf8_unicode_ci DEFAULT ',',
+  `NUMBER_DECIMAL_SEPARATOR` varchar(10) COLLATE utf8_unicode_ci DEFAULT '.',
+  `NUMBER_DECIMALS` tinyint(4) DEFAULT '2',
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -3741,7 +2626,7 @@ CREATE TABLE `b_culture` (
 
 LOCK TABLES `b_culture` WRITE;
 /*!40000 ALTER TABLE `b_culture` DISABLE KEYS */;
-INSERT INTO `b_culture` VALUES (1,'ru','ru','DD.MM.YYYY','DD.MM.YYYY HH:MI:SS','#NAME# #LAST_NAME#',1,'UTF-8','Y'),(2,'en','en','MM/DD/YYYY','MM/DD/YYYY H:MI:SS T','#NAME# #LAST_NAME#',0,'UTF-8','Y');
+INSERT INTO `b_culture` VALUES (1,'ru','ru','DD.MM.YYYY','DD.MM.YYYY HH:MI:SS','#NAME# #LAST_NAME#',1,'UTF-8','Y','d.m.Y','j M Y','j F Y','l, j F  Y','j F','H:i','H:i:s','am','pm',' ',',',2),(2,'en','en','MM/DD/YYYY','MM/DD/YYYY H:MI:SS T','#NAME# #LAST_NAME#',0,'UTF-8','Y','n/j/Y','M j, Y','F j, Y','l, F j, Y','M j','g:i a','g:i:s a','am','pm',',','.',2);
 /*!40000 ALTER TABLE `b_culture` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3766,7 +2651,7 @@ CREATE TABLE `b_event` (
   PRIMARY KEY (`ID`),
   KEY `ix_success` (`SUCCESS_EXEC`),
   KEY `ix_b_event_date_exec` (`DATE_EXEC`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3775,7 +2660,6 @@ CREATE TABLE `b_event` (
 
 LOCK TABLES `b_event` WRITE;
 /*!40000 ALTER TABLE `b_event` DISABLE KEYS */;
-INSERT INTO `b_event` VALUES (1,'STATISTIC_DAILY_REPORT',NULL,'s1','a:10:{s:11:\"SERVER_TIME\";s:19:\"10.07.2019 13:48:31\";s:11:\"HTML_HEADER\";s:1737:\"\n			<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n			<html>\n			<head>\n			<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n			<style>\n			.tablehead1 {background-color:#C2DBED; padding:2px; border-top: 1px solid #A8C2D7; border-bottom: 1px solid #A8C2D7; border-left: 1px solid #A8C2D7;}\n			.tablehead2 {background-color:#C2DBED; padding:2px; border-top: 1px solid #A8C2D7; border-bottom: 1px solid #A8C2D7;}\n			.tablehead3 {background-color:#C2DBED; padding:2px; border-top: 1px solid #A8C2D7; border-bottom: 1px solid #A8C2D7; border-right: 1px solid #A8C2D7;}\n			.tablebody1 {background-color:#F0F1F2; padding:2px; border-left:#B9D3E6 solid 1px; border-bottom:#B9D3E6 solid 1px;}\n			.tablebody2 {background-color:#F0F1F2; padding:2px; border-bottom:#B9D3E6 solid 1px;}\n			.tablebody3 {background-color:#F0F1F2; padding:2px; border-right:#B9D3E6 solid 1px; border-bottom:#B9D3E6 solid 1px;}\n			.tablebodytext {font-family: Arial, Helvetica, sans-serif; font-size:12px; color:#000000;}\n			.tableheadtext {font-family: Arial, Helvetica, sans-serif; font-size:12px; color:#000000;}\n			.tablelinebottom {border-bottom:1pt solid #D1D1D1}\n			.notesmall {font-family: Arial, Helvetica, sans-serif; font-size:11px; color:#008400; font-weight:normal;}\n			.tablebody1_sel {background-color:#E0EBF1; padding:2px; border-left:#B9D3E6 solid 1px; border-bottom:#B9D3E6 solid 1px;}\n			.tablebody2_sel {background-color:#E0EBF1; padding:2px; border-bottom:#B9D3E6 solid 1px;}\n			.tablebody3_sel {background-color:#E0EBF1; padding:2px; border-right:#B9D3E6 solid 1px; border-bottom:#B9D3E6 solid 1px;}\n			</style>\n			</head>\n			<body bgcolor=\"FFFFFF\" leftmargin=\"2\" topmargin=\"2\" marginwidth=\"2\" marginheight=\"2\">\n			\";s:11:\"HTML_FOOTER\";s:26:\"\n			</body>\n			</html>\n			\";s:11:\"HTML_COMMON\";s:5792:\"\n					<table border=\"0\" cellspacing=\"1\" cellpadding=\"3\" width=\"100%\">\n						<tr>\n							<td valign=\"top\" align=\"center\" class=\"tablehead1\" width=\"48%\" nowrap><font class=\"tableheadtext\">Посещаемость</font></td>\n							<td valign=\"top\" align=\"center\" class=\"tablehead2\" width=\"13%\" nowrap><font class=\"tableheadtext\">Сегодня</font><br><font class=\"notesmall\">10.07.2019</font></td>\n							<td valign=\"top\" align=\"center\" class=\"tablehead2\" width=\"13%\" nowrap><font class=\"tableheadtext\">Вчера</font><br><font class=\"notesmall\">09.07.2019</font></td>\n							<td valign=\"top\" align=\"center\" class=\"tablehead2\" width=\"13%\" nowrap><font class=\"tableheadtext\">Позавчера</font><br><font class=\"notesmall\">08.07.2019</font></td>\n							<td valign=\"top\" align=\"center\" class=\"tablehead3\" width=\"13%\" nowrap><font class=\"tableheadtext\">Всего</font></td>\n						</tr>\n						<tr valign=\"top\">\n							<td valign=\"top\" class=\"tablebody1\" width=\"48%\" nowrap><font class=\"tablebodytext\">Хитов</font></td>\n							<td valign=\"top\" align=\"right\" class=\"tablebody2\" width=\"13%\" nowrap><font class=\"tablebodytext\">0</font></td>\n							<td valign=\"top\" align=\"right\" class=\"tablebody2\" width=\"13%\" nowrap><font class=\"tablebodytext\">0</font></td>\n							<td valign=\"top\" align=\"right\" class=\"tablebody2\" width=\"13%\" nowrap><font class=\"tablebodytext\">0</font></td>\n							<td valign=\"top\" align=\"right\" class=\"tablebody3\" width=\"13%\" nowrap><font class=\"tablebodytext\">0&nbsp;&nbsp;</font></td>\n						</tr>\n						<tr valign=\"top\">\n							<td valign=\"top\" class=\"tablebody1\" width=\"48%\" nowrap><font class=\"tablebodytext\">Хостов</font></td>\n							<td valign=\"top\" align=\"right\" class=\"tablebody2\" width=\"13%\" nowrap><font class=\"tablebodytext\">0</font></td>\n							<td valign=\"top\" align=\"right\" class=\"tablebody2\" width=\"13%\" nowrap><font class=\"tablebodytext\">0</font></td>\n							<td valign=\"top\" align=\"right\" class=\"tablebody2\" width=\"13%\" nowrap><font class=\"tablebodytext\">0</font></td>\n							<td valign=\"top\" align=\"right\" class=\"tablebody3\" width=\"13%\" nowrap><font class=\"tablebodytext\">0&nbsp;&nbsp;</font></td>\n						</tr>\n						<tr valign=\"top\">\n							<td valign=\"top\" class=\"tablebody1\" width=\"48%\" nowrap><font class=\"tablebodytext\">Сессий</font></td>\n							<td valign=\"top\" align=\"right\" class=\"tablebody2\" width=\"13%\" nowrap><font class=\"tablebodytext\">0</font></td>\n							<td valign=\"top\" align=\"right\" class=\"tablebody2\" width=\"13%\" nowrap><font class=\"tablebodytext\">0</font></td>\n							<td valign=\"top\" align=\"right\" class=\"tablebody2\" width=\"13%\" nowrap><font class=\"tablebodytext\">0</font></td>\n							<td valign=\"top\" align=\"right\" class=\"tablebody3\" width=\"13%\" nowrap><font class=\"tablebodytext\">0&nbsp;&nbsp;</font></td>\n						</tr>\n						<tr valign=\"top\">\n							<td valign=\"top\" class=\"tablebody1\" width=\"48%\" nowrap><font class=\"tablebodytext\">Событий</font></td>\n							<td valign=\"top\" align=\"right\" class=\"tablebody2\" width=\"13%\" nowrap><font class=\"tablebodytext\">0</font></td>\n							<td valign=\"top\" align=\"right\" class=\"tablebody2\" width=\"13%\" nowrap><font class=\"tablebodytext\">0</font></td>\n							<td valign=\"top\" align=\"right\" class=\"tablebody2\" width=\"13%\" nowrap><font class=\"tablebodytext\">0</font></td>\n							<td valign=\"top\" align=\"right\" class=\"tablebody3\" width=\"13%\" nowrap><font class=\"tablebodytext\">0&nbsp;&nbsp;</font></td>\n						</tr>\n						<tr valign=\"top\">\n							<td valign=\"top\" class=\"tablebody1\" width=\"48%\" nowrap>\n								<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\">\n									<tr>\n										<td width=\"100%\"><font class=\"tablebodytext\">Посетителей</font></td>\n										<td width=\"0%\" align=\"right\" class=\"tablelinebottom\" nowrap><font class=\"tablebodytext\">Всего</font></td>\n									</tr>\n									<tr>\n										<td></td>\n										<td class=\"tablelinebottom\" align=\"right\" nowrap><font class=\"tablebodytext\">Новых</font></td>\n									</tr>\n									<tr>\n										<td></td>\n										<td align=\"right\" nowrap><font class=\"tablebodytext\">Online</font></td>\n									</tr>\n								</table></td>\n							<td valign=\"top\" align=\"right\" class=\"tablebody2\" width=\"13%\" nowrap>\n								<table cellspacing=0 cellpadding=0 width=\"100%\">\n									<tr><td class=\"tablelinebottom\" align=\"right\" width=\"100%\"><font class=\"tablebodytext\">0</font></td></tr>\n									<tr><td class=\"tablelinebottom\" align=\"right\"><font class=\"tablebodytext\">0</font></td></tr>\n									<tr><td align=\"right\"><font class=\"tablebodytext\">0</font></td></tr>\n								</table></td>\n							<td valign=\"top\" align=\"right\" class=\"tablebody2\" width=\"13%\" nowrap>\n								<table cellspacing=0 cellpadding=0 width=\"100%\">\n									<tr><td class=\"tablelinebottom\" align=\"right\" width=\"100%\"><font class=\"tablebodytext\">0</font></td></tr>\n									<tr><td class=\"tablelinebottom\" align=\"right\"><font class=\"tablebodytext\">0</font></td></tr>\n								</table></td>\n							<td valign=\"top\" align=\"right\" class=\"tablebody2\" width=\"13%\" nowrap>\n								<table cellspacing=0 cellpadding=0 width=\"100%\">\n									<tr><td align=\"right\" class=\"tablelinebottom\" width=\"100%\"><font class=\"tablebodytext\">0</font></td></tr>\n									<tr><td class=\"tablelinebottom\" align=\"right\"><font class=\"tablebodytext\">0</font></td></tr>\n								</table></td>\n							<td valign=\"top\" align=\"right\" class=\"tablebody3\" width=\"13%\" nowrap>\n								<table cellspacing=0 cellpadding=0 width=\"100%\">\n									<tr><td class=\"tablelinebottom\" align=\"right\" width=\"100%\"><font class=\"tablebodytext\">0&nbsp;&nbsp;</font></td></tr>\n									<tr><td class=\"tablelinebottom\" align=\"right\"><font class=\"tablebodytext\">&nbsp;</font></td></tr>\n								</table></td>\n						</tr>\n					</table>\n				</td>\n			</tr>\n			</table>\n			\";s:8:\"HTML_ADV\";s:6207:\"\n			<font class=\"tablebodytext\">Рекламные кампании (переходы) (Top 10):</font><br>\n			<table border=\"0\" cellspacing=\"1\" cellpadding=\"3\" width=\"100%\">\n				<tr>\n					<td valign=\"top\" align=\"center\" class=\"tablehead1\" width=\"48%\" nowrap><font class=\"tableheadtext\">Рекламная кампания</font></td>\n					<td valign=\"top\" align=\"center\" class=\"tablehead2\" width=\"13%\" nowrap><font class=\"tableheadtext\">Сегодня</font><br><font class=\"notesmall\">10.07.2019</font></td>\n					<td valign=\"top\" align=\"center\" class=\"tablehead2\" width=\"13%\" nowrap><font class=\"tableheadtext\">Вчера</font><br><font class=\"notesmall\">09.07.2019</font></td>\n					<td valign=\"top\" align=\"center\" class=\"tablehead2\" width=\"13%\" nowrap><font class=\"tableheadtext\">Позавчера</font><br><font class=\"notesmall\">08.07.2019</font></td>\n					<td valign=\"top\" align=\"center\" class=\"tablehead3\" width=\"13%\" nowrap><font class=\"tableheadtext\">Всего</font></td>\n				</tr>\n			\n				<tr>\n					<td valign=\"top\" class=\"tablebody1\"><font class=\"tablebodytext\">[1]&nbsp;aport&nbsp;/&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody3\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n				</tr>\n				\n				<tr>\n					<td valign=\"top\" class=\"tablebody1\"><font class=\"tablebodytext\">[2]&nbsp;altavista&nbsp;/&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody3\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n				</tr>\n				\n				<tr>\n					<td valign=\"top\" class=\"tablebody1\"><font class=\"tablebodytext\">[3]&nbsp;aol&nbsp;/&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody3\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n				</tr>\n				\n				<tr>\n					<td valign=\"top\" class=\"tablebody1\"><font class=\"tablebodytext\">[5]&nbsp;google&nbsp;/&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody3\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n				</tr>\n				\n				<tr>\n					<td valign=\"top\" class=\"tablebody1\"><font class=\"tablebodytext\">[6]&nbsp;rambler&nbsp;/&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody3\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n				</tr>\n				\n				<tr>\n					<td valign=\"top\" class=\"tablebody1\"><font class=\"tablebodytext\">[7]&nbsp;yandex&nbsp;/&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody3\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n				</tr>\n				\n				<tr>\n					<td valign=\"top\" class=\"tablebody1\"><font class=\"tablebodytext\">[8]&nbsp;yahoo&nbsp;/&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody3\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n				</tr>\n				\n				<tr>\n					<td valign=\"top\" class=\"tablebody1\"><font class=\"tablebodytext\">[10]&nbsp;msn&nbsp;/&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody3\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n				</tr>\n				\n				<tr>\n					<td valign=\"top\" align=\"right\" class=\"tablebody1_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">Всего</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody2_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n					<td valign=\"top\" align=\"right\" class=\"tablebody3_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">&nbsp;&nbsp;</font></td>\n			</table>\n			\";s:11:\"HTML_EVENTS\";s:1574:\"\n			<font class=\"tablebodytext\">Типы событий (Top 10):</font><br>\n			<table border=\"0\" cellspacing=\"1\" cellpadding=\"3\" width=\"100%\">\n				<tr>\n					<td valign=\"top\" align=\"center\" class=\"tablehead1\" width=\"48%\" nowrap><font class=\"tableheadtext\">Имя</font></td>\n					<td valign=\"top\" align=\"center\" class=\"tablehead2\" width=\"13%\" nowrap>\n						<font class=\"tablebodytext\">Сегодня</font><br><font class=\"notesmall\">10.07.2019</font></td>\n					<td valign=\"top\" align=\"center\" class=\"tablehead2\" width=\"13%\" nowrap>\n						<font class=\"tablebodytext\">Вчера</font><br><font class=\"notesmall\">09.07.2019</font></td>\n					<td valign=\"top\" align=\"center\" class=\"tablehead2\" width=\"13%\" nowrap>\n						<font class=\"tablebodytext\">Позавчера</font><br><font class=\"notesmall\">08.07.2019</font></td>\n					<td valign=\"top\" align=\"center\" class=\"tablehead3\" width=\"13%\" nowrap>\n						<font class=\"tablebodytext\">Всего</font></td>\n				</tr>\n			\n				<tr valign=\"top\">\n					<td align=\"right\" class=\"tablebody1_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">Всего</font></td>\n					<td align=\"right\" class=\"tablebody2_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody3_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">&nbsp;</font></td>\n			</table>\n			\";s:13:\"HTML_REFERERS\";s:1558:\"\n			<font class=\"tablebodytext\">Ссылающиеся сайты (Top 10):</font><br>\n			<table border=\"0\" cellspacing=\"1\" cellpadding=\"3\" width=\"100%\">\n				<tr>\n					<td valign=\"top\" align=\"center\" class=\"tablehead1\" width=\"48%\" nowrap><font class=\"tableheadtext\">Сайт</font></td>\n					<td valign=\"top\" align=\"center\" class=\"tablehead2\" width=\"13%\" nowrap><font class=\"tablebodytext\">Сегодня</font><br><font class=\"notesmall\">10.07.2019</font></td>\n					<td valign=\"top\" align=\"center\" class=\"tablehead2\" width=\"13%\" nowrap><font class=\"tablebodytext\">Вчера</font><br><font class=\"notesmall\">09.07.2019</font></td>\n					<td valign=\"top\" align=\"center\" class=\"tablehead2\" width=\"13%\" nowrap><font class=\"tablebodytext\">Позавчера</font><br><font class=\"notesmall\">08.07.2019</font></td>\n					<td valign=\"top\" align=\"center\" class=\"tablehead3\" width=\"13%\" nowrap><font class=\"tablebodytext\">Всего</font></td>\n				</tr>\n			\n				<tr valign=\"top\">\n					<td align=\"right\" class=\"tablebody1_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">Всего</font></td>\n					<td align=\"right\" class=\"tablebody2_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody3_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">&nbsp;</font></td>\n			</table>\n			\";s:12:\"HTML_PHRASES\";s:1549:\"\n			<font class=\"tablebodytext\">Поисковые фразы (Top 10):</font><br>\n			<table border=\"0\" cellspacing=\"1\" cellpadding=\"3\" width=\"100%\">\n				<tr>\n					<td valign=\"top\" align=\"center\" class=\"tablehead1\" width=\"48%\" nowrap><font class=\"tableheadtext\">Фраза</td>\n					<td valign=\"top\" align=\"center\" class=\"tablehead2\" width=\"13%\" nowrap><font class=\"tablebodytext\">Сегодня</font><br><font class=\"notesmall\">10.07.2019</font></td>\n					<td valign=\"top\" align=\"center\" class=\"tablehead2\" width=\"13%\" nowrap><font class=\"tablebodytext\">Вчера</font><br><font class=\"notesmall\">09.07.2019</font></td>\n					<td valign=\"top\" align=\"center\" class=\"tablehead2\" width=\"13%\" nowrap><font class=\"tablebodytext\">Позавчера</font><br><font class=\"notesmall\">08.07.2019</font></td>\n					<td valign=\"top\" align=\"center\" class=\"tablehead3\" width=\"13%\" nowrap><font class=\"tablebodytext\">Всего</font></td>\n				</tr>\n			\n				<tr valign=\"top\">\n					<td align=\"right\" class=\"tablebody1_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">Всего</font></td>\n					<td align=\"right\" class=\"tablebody2_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody3_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">&nbsp;</font></td>\n			</table>\n			\";s:14:\"HTML_SEARCHERS\";s:6561:\"\n			<font class=\"tablebodytext\">Индексация сайта (Top 10):</font><br>\n			<table border=\"0\" cellspacing=\"1\" cellpadding=\"3\" width=\"100%\">\n				<tr>\n					<td valign=\"top\" align=\"center\" class=\"tablehead1\" width=\"48%\" nowrap><font class=\"tableheadtext\">Имя поисковика</font></td>\n					<td valign=\"top\" align=\"center\" class=\"tablehead2\" width=\"13%\" nowrap><font class=\"tablebodytext\">Сегодня</font><br><font class=\"notesmall\">10.07.2019</font></td>\n					<td valign=\"top\" align=\"center\" class=\"tablehead2\" width=\"13%\" nowrap><font class=\"tablebodytext\">Вчера</font><br><font class=\"notesmall\">09.07.2019</font></td>\n					<td valign=\"top\" align=\"center\" class=\"tablehead2\" width=\"13%\" nowrap><font class=\"tablebodytext\">Позавчера</font><br><font class=\"notesmall\">08.07.2019</font></td>\n					<td valign=\"top\" align=\"center\" class=\"tablehead3\" width=\"13%\" nowrap><font class=\"tablebodytext\">Всего</font></td>\n				</tr>\n			\n				<tr valign=\"top\">\n					<td valign=\"top\" class=\"tablebody1\" width=\"0%\" nowrap><font class=\"tablebodytext\">Google</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody3\"><font class=\"tablebodytext\">&nbsp;</font></td>\n				</tr>\n				\n				<tr valign=\"top\">\n					<td valign=\"top\" class=\"tablebody1\" width=\"0%\" nowrap><font class=\"tablebodytext\">Yandex</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody3\"><font class=\"tablebodytext\">&nbsp;</font></td>\n				</tr>\n				\n				<tr valign=\"top\">\n					<td valign=\"top\" class=\"tablebody1\" width=\"0%\" nowrap><font class=\"tablebodytext\">Rambler</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody3\"><font class=\"tablebodytext\">&nbsp;</font></td>\n				</tr>\n				\n				<tr valign=\"top\">\n					<td valign=\"top\" class=\"tablebody1\" width=\"0%\" nowrap><font class=\"tablebodytext\">Mail.ru</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody3\"><font class=\"tablebodytext\">&nbsp;</font></td>\n				</tr>\n				\n				<tr valign=\"top\">\n					<td valign=\"top\" class=\"tablebody1\" width=\"0%\" nowrap><font class=\"tablebodytext\">Aport</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody3\"><font class=\"tablebodytext\">&nbsp;</font></td>\n				</tr>\n				\n				<tr valign=\"top\">\n					<td valign=\"top\" class=\"tablebody1\" width=\"0%\" nowrap><font class=\"tablebodytext\">MSN</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody3\"><font class=\"tablebodytext\">&nbsp;</font></td>\n				</tr>\n				\n				<tr valign=\"top\">\n					<td valign=\"top\" class=\"tablebody1\" width=\"0%\" nowrap><font class=\"tablebodytext\">Yahoo</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody3\"><font class=\"tablebodytext\">&nbsp;</font></td>\n				</tr>\n				\n				<tr valign=\"top\">\n					<td valign=\"top\" class=\"tablebody1\" width=\"0%\" nowrap><font class=\"tablebodytext\">Altavista</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody3\"><font class=\"tablebodytext\">&nbsp;</font></td>\n				</tr>\n				\n				<tr valign=\"top\">\n					<td valign=\"top\" class=\"tablebody1\" width=\"0%\" nowrap><font class=\"tablebodytext\">AOL</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody3\"><font class=\"tablebodytext\">&nbsp;</font></td>\n				</tr>\n				\n				<tr valign=\"top\">\n					<td valign=\"top\" class=\"tablebody1\" width=\"0%\" nowrap><font class=\"tablebodytext\">NIGMA</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody3\"><font class=\"tablebodytext\">&nbsp;</font></td>\n				</tr>\n				\n				<tr valign=\"top\">\n					<td align=\"right\" class=\"tablebody1_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">Всего</font></td>\n					<td align=\"right\" class=\"tablebody2_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody2_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">&nbsp;</font></td>\n					<td align=\"right\" class=\"tablebody3_sel\" style=\"padding:3px\"><font class=\"tablebodytext\">&nbsp;</font></td>\n			</table>\n			\";s:8:\"EMAIL_TO\";s:16:\"mail@example.com\";}','2019-07-10 13:48:31','2019-07-10 13:48:32','Y','Y','ru');
 /*!40000 ALTER TABLE `b_event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3826,7 +2710,7 @@ CREATE TABLE `b_event_log` (
   `DESCRIPTION` mediumtext COLLATE utf8_unicode_ci,
   PRIMARY KEY (`ID`),
   KEY `ix_b_event_log_time` (`TIMESTAMP_X`),
-  KEY `ix_b_event_log_audit_type` (`AUDIT_TYPE_ID`)
+  KEY `ix_b_event_log_audit_type_time` (`AUDIT_TYPE_ID`,`TIMESTAMP_X`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3872,7 +2756,7 @@ CREATE TABLE `b_event_message` (
   `LANGUAGE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `ix_b_event_message_name` (`EVENT_NAME`(50))
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3881,7 +2765,7 @@ CREATE TABLE `b_event_message` (
 
 LOCK TABLES `b_event_message` WRITE;
 /*!40000 ALTER TABLE `b_event_message` DISABLE KEYS */;
-INSERT INTO `b_event_message` VALUES (1,'2019-07-10 13:45:12','NEW_USER','s1','Y','#DEFAULT_EMAIL_FROM#','#DEFAULT_EMAIL_FROM#','#SITE_NAME#: Зарегистрировался новый пользователь','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nНа сайте #SERVER_NAME# успешно зарегистрирован новый пользователь.\n\nДанные пользователя:\nID пользователя: #USER_ID#\n\nИмя: #NAME#\nФамилия: #LAST_NAME#\nE-Mail: #EMAIL#\n\nLogin: #LOGIN#\n\nПисьмо сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nНа сайте <?=$arParams[\"SERVER_NAME\"];?> успешно зарегистрирован новый пользователь.\n\nДанные пользователя:\nID пользователя: <?=$arParams[\"USER_ID\"];?>\n\n\nИмя: <?=$arParams[\"NAME\"];?>\n\nФамилия: <?=$arParams[\"LAST_NAME\"];?>\n\nE-Mail: <?=$arParams[\"EMAIL\"];?>\n\n\nLogin: <?=$arParams[\"LOGIN\"];?>\n\n\nПисьмо сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ru'),(2,'2019-07-10 13:45:12','USER_INFO','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL#','#SITE_NAME#: Регистрационная информация','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n#NAME# #LAST_NAME#,\n\n#MESSAGE#\n\nВаша регистрационная информация:\n\nID пользователя: #USER_ID#\nСтатус профиля: #STATUS#\nLogin: #LOGIN#\n\nВы можете изменить пароль, перейдя по следующей ссылке:\nhttp://#SERVER_NAME#/auth/index.php?change_password=yes&lang=ru&USER_CHECKWORD=#CHECKWORD#&USER_LOGIN=#URL_LOGIN#\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n<?=$arParams[\"NAME\"];?> <?=$arParams[\"LAST_NAME\"];?>,\n\n<?=$arParams[\"MESSAGE\"];?>\n\n\nВаша регистрационная информация:\n\nID пользователя: <?=$arParams[\"USER_ID\"];?>\n\nСтатус профиля: <?=$arParams[\"STATUS\"];?>\n\nLogin: <?=$arParams[\"LOGIN\"];?>\n\n\nВы можете изменить пароль, перейдя по следующей ссылке:\nhttp://<?=$arParams[\"SERVER_NAME\"];?>/auth/index.php?change_password=yes&lang=ru&USER_CHECKWORD=<?=$arParams[\"CHECKWORD\"];?>&USER_LOGIN=<?=$arParams[\"URL_LOGIN\"];?>\n\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ru'),(3,'2019-07-10 13:45:12','USER_PASS_REQUEST','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL#','#SITE_NAME#: Запрос на смену пароля','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n#NAME# #LAST_NAME#,\n\n#MESSAGE#\n\nДля смены пароля перейдите по следующей ссылке:\nhttp://#SERVER_NAME#/auth/index.php?change_password=yes&lang=ru&USER_CHECKWORD=#CHECKWORD#&USER_LOGIN=#URL_LOGIN#\n\nВаша регистрационная информация:\n\nID пользователя: #USER_ID#\nСтатус профиля: #STATUS#\nLogin: #LOGIN#\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n<?=$arParams[\"NAME\"];?> <?=$arParams[\"LAST_NAME\"];?>,\n\n<?=$arParams[\"MESSAGE\"];?>\n\n\nДля смены пароля перейдите по следующей ссылке:\nhttp://<?=$arParams[\"SERVER_NAME\"];?>/auth/index.php?change_password=yes&lang=ru&USER_CHECKWORD=<?=$arParams[\"CHECKWORD\"];?>&USER_LOGIN=<?=$arParams[\"URL_LOGIN\"];?>\n\n\nВаша регистрационная информация:\n\nID пользователя: <?=$arParams[\"USER_ID\"];?>\n\nСтатус профиля: <?=$arParams[\"STATUS\"];?>\n\nLogin: <?=$arParams[\"LOGIN\"];?>\n\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ru'),(4,'2019-07-10 13:45:13','USER_PASS_CHANGED','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL#','#SITE_NAME#: Подтверждение смены пароля','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n#NAME# #LAST_NAME#,\n\n#MESSAGE#\n\nВаша регистрационная информация:\n\nID пользователя: #USER_ID#\nСтатус профиля: #STATUS#\nLogin: #LOGIN#\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n<?=$arParams[\"NAME\"];?> <?=$arParams[\"LAST_NAME\"];?>,\n\n<?=$arParams[\"MESSAGE\"];?>\n\n\nВаша регистрационная информация:\n\nID пользователя: <?=$arParams[\"USER_ID\"];?>\n\nСтатус профиля: <?=$arParams[\"STATUS\"];?>\n\nLogin: <?=$arParams[\"LOGIN\"];?>\n\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ru'),(5,'2019-07-10 13:45:13','NEW_USER_CONFIRM','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL#','#SITE_NAME#: Подтверждение регистрации нового пользователя','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nЗдравствуйте,\n\nВы получили это сообщение, так как ваш адрес был использован при регистрации нового пользователя на сервере #SERVER_NAME#.\n\nВаш код для подтверждения регистрации: #CONFIRM_CODE#\n\nДля подтверждения регистрации перейдите по следующей ссылке:\nhttp://#SERVER_NAME#/auth/index.php?confirm_registration=yes&confirm_user_id=#USER_ID#&confirm_code=#CONFIRM_CODE#\n\nВы также можете ввести код для подтверждения регистрации на странице:\nhttp://#SERVER_NAME#/auth/index.php?confirm_registration=yes&confirm_user_id=#USER_ID#\n\nВнимание! Ваш профиль не будет активным, пока вы не подтвердите свою регистрацию.\n\n---------------------------------------------------------------------\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nЗдравствуйте,\n\nВы получили это сообщение, так как ваш адрес был использован при регистрации нового пользователя на сервере <?=$arParams[\"SERVER_NAME\"];?>.\n\nВаш код для подтверждения регистрации: <?=$arParams[\"CONFIRM_CODE\"];?>\n\n\nДля подтверждения регистрации перейдите по следующей ссылке:\nhttp://<?=$arParams[\"SERVER_NAME\"];?>/auth/index.php?confirm_registration=yes&confirm_user_id=<?=$arParams[\"USER_ID\"];?>&confirm_code=<?=$arParams[\"CONFIRM_CODE\"];?>\n\n\nВы также можете ввести код для подтверждения регистрации на странице:\nhttp://<?=$arParams[\"SERVER_NAME\"];?>/auth/index.php?confirm_registration=yes&confirm_user_id=<?=$arParams[\"USER_ID\"];?>\n\n\nВнимание! Ваш профиль не будет активным, пока вы не подтвердите свою регистрацию.\n\n---------------------------------------------------------------------\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ru'),(6,'2019-07-10 13:45:13','USER_INVITE','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL#','#SITE_NAME#: Приглашение на сайт','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\nЗдравствуйте, #NAME# #LAST_NAME#!\n\nАдминистратором сайта вы добавлены в число зарегистрированных пользователей.\n\nПриглашаем Вас на наш сайт.\n\nВаша регистрационная информация:\n\nID пользователя: #ID#\nLogin: #LOGIN#\n\nРекомендуем вам сменить установленный автоматически пароль.\n\nДля смены пароля перейдите по следующей ссылке:\nhttp://#SERVER_NAME#/auth.php?change_password=yes&USER_LOGIN=#URL_LOGIN#&USER_CHECKWORD=#CHECKWORD#\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\nЗдравствуйте, <?=$arParams[\"NAME\"];?> <?=$arParams[\"LAST_NAME\"];?>!\n\nАдминистратором сайта вы добавлены в число зарегистрированных пользователей.\n\nПриглашаем Вас на наш сайт.\n\nВаша регистрационная информация:\n\nID пользователя: <?=$arParams[\"ID\"];?>\n\nLogin: <?=$arParams[\"LOGIN\"];?>\n\n\nРекомендуем вам сменить установленный автоматически пароль.\n\nДля смены пароля перейдите по следующей ссылке:\nhttp://<?=$arParams[\"SERVER_NAME\"];?>/auth.php?change_password=yes&USER_LOGIN=<?=$arParams[\"URL_LOGIN\"];?>&USER_CHECKWORD=<?=$arParams[\"CHECKWORD\"];?>\n\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ru'),(7,'2019-07-10 13:45:13','FEEDBACK_FORM','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: Сообщение из формы обратной связи','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nВам было отправлено сообщение через форму обратной связи\n\nАвтор: #AUTHOR#\nE-mail автора: #AUTHOR_EMAIL#\n\nТекст сообщения:\n#TEXT#\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nВам было отправлено сообщение через форму обратной связи\n\nАвтор: <?=$arParams[\"AUTHOR\"];?>\n\nE-mail автора: <?=$arParams[\"AUTHOR_EMAIL\"];?>\n\n\nТекст сообщения:\n<?=$arParams[\"TEXT\"];?>\n\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ru'),(8,'2019-07-10 13:45:13','MAIN_MAIL_CONFIRM_CODE','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#MESSAGE_SUBJECT#','<? EventMessageThemeCompiler::includeComponent(\'bitrix:main.mail.confirm\', \'\', $arParams); ?>','<? EventMessageThemeCompiler::includeComponent(\'bitrix:main.mail.confirm\', \'\', $arParams); ?>','html',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'mail_join',NULL,NULL),(9,'2019-07-10 13:45:20','ADV_BANNER_STATUS_CHANGE','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','[BID##ID#] #SITE_NAME#: Изменился статус баннера - [#STATUS#]','Статус баннера # #ID# изменился на [#STATUS#].\n\n>=================== Параметры баннера ===============================\n\nБаннер   - [#ID#] #NAME#\nКонтракт - [#CONTRACT_ID#] #CONTRACT_NAME#\nТип      - [#TYPE_SID#] #TYPE_NAME#\nГруппа   - #GROUP_SID#\n\n----------------------------------------------------------------------\n\nАктивность: #INDICATOR#\n\nПериод    - [#DATE_SHOW_FROM# - #DATE_SHOW_TO#]\nПоказан   - #SHOW_COUNT# / #MAX_SHOW_COUNT# [#DATE_LAST_SHOW#]\nКликнули  - #CLICK_COUNT# / #MAX_CLICK_COUNT# [#DATE_LAST_CLICK#]\nФлаг акт. - [#ACTIVE#]\nСтатус    - [#STATUS#]\nКомментарий:\n#STATUS_COMMENTS#\n----------------------------------------------------------------------\n\nИзображение - [#IMAGE_ALT#] #IMAGE_LINK#\nURL         - [#URL_TARGET#] #URL#\n\nКод: [#CODE_TYPE#]\n#CODE#\n\n>=====================================================================\n\nСоздан  - #CREATED_BY# [#DATE_CREATE#]\nИзменен - #MODIFIED_BY# [#DATE_MODIFY#]\n\nДля просмотра параметров баннера воспользуйтесь ссылкой:\nhttp://#SERVER_NAME#/bitrix/admin/adv_banner_edit.php?ID=#ID#&CONTRACT_ID=#CONTRACT_ID#&lang=ru\n\nПисьмо сгенерировано автоматически.\n','Статус баннера # <?=$arParams[\"ID\"];?> изменился на [<?=$arParams[\"STATUS\"];?>].\n\n>=================== Параметры баннера ===============================\n\nБаннер   - [<?=$arParams[\"ID\"];?>] <?=$arParams[\"NAME\"];?>\n\nКонтракт - [<?=$arParams[\"CONTRACT_ID\"];?>] <?=$arParams[\"CONTRACT_NAME\"];?>\n\nТип      - [<?=$arParams[\"TYPE_SID\"];?>] <?=$arParams[\"TYPE_NAME\"];?>\n\nГруппа   - <?=$arParams[\"GROUP_SID\"];?>\n\n\n----------------------------------------------------------------------\n\nАктивность: <?=$arParams[\"INDICATOR\"];?>\n\n\nПериод    - [<?=$arParams[\"DATE_SHOW_FROM\"];?> - <?=$arParams[\"DATE_SHOW_TO\"];?>]\nПоказан   - <?=$arParams[\"SHOW_COUNT\"];?> / <?=$arParams[\"MAX_SHOW_COUNT\"];?> [<?=$arParams[\"DATE_LAST_SHOW\"];?>]\nКликнули  - <?=$arParams[\"CLICK_COUNT\"];?> / <?=$arParams[\"MAX_CLICK_COUNT\"];?> [<?=$arParams[\"DATE_LAST_CLICK\"];?>]\nФлаг акт. - [<?=$arParams[\"ACTIVE\"];?>]\nСтатус    - [<?=$arParams[\"STATUS\"];?>]\nКомментарий:\n<?=$arParams[\"STATUS_COMMENTS\"];?>\n\n----------------------------------------------------------------------\n\nИзображение - [<?=$arParams[\"IMAGE_ALT\"];?>] <?=$arParams[\"IMAGE_LINK\"];?>\n\nURL         - [<?=$arParams[\"URL_TARGET\"];?>] <?=$arParams[\"URL\"];?>\n\n\nКод: [<?=$arParams[\"CODE_TYPE\"];?>]\n<?=$arParams[\"CODE\"];?>\n\n\n>=====================================================================\n\nСоздан  - <?=$arParams[\"CREATED_BY\"];?> [<?=$arParams[\"DATE_CREATE\"];?>]\nИзменен - <?=$arParams[\"MODIFIED_BY\"];?> [<?=$arParams[\"DATE_MODIFY\"];?>]\n\nДля просмотра параметров баннера воспользуйтесь ссылкой:\nhttp://<?=$arParams[\"SERVER_NAME\"];?>/bitrix/admin/adv_banner_edit.php?ID=<?=$arParams[\"ID\"];?>&CONTRACT_ID=<?=$arParams[\"CONTRACT_ID\"];?>&lang=ru\n\nПисьмо сгенерировано автоматически.\n','text','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(10,'2019-07-10 13:45:20','ADV_CONTRACT_INFO','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','[CID##ID#] #SITE_NAME#: Параметры рекламного контракта','#MESSAGE#\nКонтракт: [#ID#] #NAME#\n#DESCRIPTION#\n>================== Параметры контракта ==============================\n\nАктивность: #INDICATOR#\n\nПериод    - [#DATE_SHOW_FROM# - #DATE_SHOW_TO#]\nПоказано  - #SHOW_COUNT# / #MAX_SHOW_COUNT#\nКликнули  - #CLICK_COUNT# / #MAX_CLICK_COUNT#\nФлаг акт. - [#ACTIVE#]\n\nБаннеров  - #BANNERS#\n>=====================================================================\n\nСоздан  - #CREATED_BY# [#DATE_CREATE#]\nИзменен - #MODIFIED_BY# [#DATE_MODIFY#]\n\nДля просмотра параметров контракта воспользуйтесь ссылкой:\nhttp://#SERVER_NAME#/bitrix/admin/adv_contract_edit.php?ID=#ID#&lang=ru\n\nПисьмо сгенерировано автоматически.\n','<?=$arParams[\"MESSAGE\"];?>\n\nКонтракт: [<?=$arParams[\"ID\"];?>] <?=$arParams[\"NAME\"];?>\n\n<?=$arParams[\"DESCRIPTION\"];?>\n\n>================== Параметры контракта ==============================\n\nАктивность: <?=$arParams[\"INDICATOR\"];?>\n\n\nПериод    - [<?=$arParams[\"DATE_SHOW_FROM\"];?> - <?=$arParams[\"DATE_SHOW_TO\"];?>]\nПоказано  - <?=$arParams[\"SHOW_COUNT\"];?> / <?=$arParams[\"MAX_SHOW_COUNT\"];?>\n\nКликнули  - <?=$arParams[\"CLICK_COUNT\"];?> / <?=$arParams[\"MAX_CLICK_COUNT\"];?>\n\nФлаг акт. - [<?=$arParams[\"ACTIVE\"];?>]\n\nБаннеров  - <?=$arParams[\"BANNERS\"];?>\n\n>=====================================================================\n\nСоздан  - <?=$arParams[\"CREATED_BY\"];?> [<?=$arParams[\"DATE_CREATE\"];?>]\nИзменен - <?=$arParams[\"MODIFIED_BY\"];?> [<?=$arParams[\"DATE_MODIFY\"];?>]\n\nДля просмотра параметров контракта воспользуйтесь ссылкой:\nhttp://<?=$arParams[\"SERVER_NAME\"];?>/bitrix/admin/adv_contract_edit.php?ID=<?=$arParams[\"ID\"];?>&lang=ru\n\nПисьмо сгенерировано автоматически.\n','text','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(11,'2019-07-10 13:45:29','BIZPROC_MAIL_TEMPLATE','s1','Y','#SENDER#','#RECEIVER#','#TITLE#','#MESSAGE#','<?=$arParams[\"MESSAGE\"];?>','text',NULL,'#REPLY_TO#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(12,'2019-07-10 13:45:29','BIZPROC_HTML_MAIL_TEMPLATE','s1','Y','#SENDER#','#RECEIVER#','#TITLE#','#MESSAGE#','<?=$arParams[\"MESSAGE\"];?>','html',NULL,'#REPLY_TO#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(13,'2019-07-10 13:45:34','NEW_BLOG_MESSAGE','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: [B] #BLOG_NAME# : #MESSAGE_TITLE#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nНовое сообщение в блоге \"#BLOG_NAME#\"\n\nТема:\n#MESSAGE_TITLE#\n\nАвтор: #AUTHOR#\nДата: #MESSAGE_DATE#\n\nТекст сообщения:\n#MESSAGE_TEXT#\n\nАдрес сообщения:\n#MESSAGE_PATH#\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nНовое сообщение в блоге \"<?=$arParams[\"BLOG_NAME\"];?>\"\n\nТема:\n<?=$arParams[\"MESSAGE_TITLE\"];?>\n\n\nАвтор: <?=$arParams[\"AUTHOR\"];?>\n\nДата: <?=$arParams[\"MESSAGE_DATE\"];?>\n\n\nТекст сообщения:\n<?=$arParams[\"MESSAGE_TEXT\"];?>\n\n\nАдрес сообщения:\n<?=$arParams[\"MESSAGE_PATH\"];?>\n\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(14,'2019-07-10 13:45:34','NEW_BLOG_COMMENT','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: [B] #MESSAGE_TITLE# : #COMMENT_TITLE#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nНовый комментарий в блоге \"#BLOG_NAME#\" на сообщение \"#MESSAGE_TITLE#\"\n\nТема:\n#COMMENT_TITLE#\nАвтор: #AUTHOR#\nДата: #COMMENT_DATE#\n\nТекст сообщения:\n#COMMENT_TEXT#\n\nАдрес сообщения:\n#COMMENT_PATH#\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nНовый комментарий в блоге \"<?=$arParams[\"BLOG_NAME\"];?>\" на сообщение \"<?=$arParams[\"MESSAGE_TITLE\"];?>\"\n\nТема:\n<?=$arParams[\"COMMENT_TITLE\"];?>\n\nАвтор: <?=$arParams[\"AUTHOR\"];?>\n\nДата: <?=$arParams[\"COMMENT_DATE\"];?>\n\n\nТекст сообщения:\n<?=$arParams[\"COMMENT_TEXT\"];?>\n\n\nАдрес сообщения:\n<?=$arParams[\"COMMENT_PATH\"];?>\n\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(15,'2019-07-10 13:45:34','NEW_BLOG_COMMENT2COMMENT','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: [B] #MESSAGE_TITLE# : #COMMENT_TITLE#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nНовый комментарий на ваш комментарий в блоге \"#BLOG_NAME#\" на сообщение \"#MESSAGE_TITLE#\".\n\nТема:\n#COMMENT_TITLE#\nАвтор: #AUTHOR#\nДата: #COMMENT_DATE#\n\nТекст сообщения:\n#COMMENT_TEXT#\n\nАдрес сообщения:\n#COMMENT_PATH#\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nНовый комментарий на ваш комментарий в блоге \"<?=$arParams[\"BLOG_NAME\"];?>\" на сообщение \"<?=$arParams[\"MESSAGE_TITLE\"];?>\".\n\nТема:\n<?=$arParams[\"COMMENT_TITLE\"];?>\n\nАвтор: <?=$arParams[\"AUTHOR\"];?>\n\nДата: <?=$arParams[\"COMMENT_DATE\"];?>\n\n\nТекст сообщения:\n<?=$arParams[\"COMMENT_TEXT\"];?>\n\n\nАдрес сообщения:\n<?=$arParams[\"COMMENT_PATH\"];?>\n\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(16,'2019-07-10 13:45:34','NEW_BLOG_COMMENT_WITHOUT_TITLE','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: [B] #MESSAGE_TITLE#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nНовый комментарий в блоге \"#BLOG_NAME#\" на сообщение \"#MESSAGE_TITLE#\"\n\nАвтор: #AUTHOR#\nДата: #COMMENT_DATE#\n\nТекст сообщения:\n#COMMENT_TEXT#\n\nАдрес сообщения:\n#COMMENT_PATH#\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nНовый комментарий в блоге \"<?=$arParams[\"BLOG_NAME\"];?>\" на сообщение \"<?=$arParams[\"MESSAGE_TITLE\"];?>\"\n\nАвтор: <?=$arParams[\"AUTHOR\"];?>\n\nДата: <?=$arParams[\"COMMENT_DATE\"];?>\n\n\nТекст сообщения:\n<?=$arParams[\"COMMENT_TEXT\"];?>\n\n\nАдрес сообщения:\n<?=$arParams[\"COMMENT_PATH\"];?>\n\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(17,'2019-07-10 13:45:34','NEW_BLOG_COMMENT2COMMENT_WITHOUT_TITLE','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: [B] #MESSAGE_TITLE#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nНовый комментарий на ваш комментарий в блоге \"#BLOG_NAME#\" на сообщение \"#MESSAGE_TITLE#\".\n\nАвтор: #AUTHOR#\nДата: #COMMENT_DATE#\n\nТекст сообщения:\n#COMMENT_TEXT#\n\nАдрес сообщения:\n#COMMENT_PATH#\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nНовый комментарий на ваш комментарий в блоге \"<?=$arParams[\"BLOG_NAME\"];?>\" на сообщение \"<?=$arParams[\"MESSAGE_TITLE\"];?>\".\n\nАвтор: <?=$arParams[\"AUTHOR\"];?>\n\nДата: <?=$arParams[\"COMMENT_DATE\"];?>\n\n\nТекст сообщения:\n<?=$arParams[\"COMMENT_TEXT\"];?>\n\n\nАдрес сообщения:\n<?=$arParams[\"COMMENT_PATH\"];?>\n\n\nСообщение сгенерировано автоматически.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(18,'2019-07-10 13:45:34','BLOG_YOUR_BLOG_TO_USER','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: [B] Ваш блог \"#BLOG_NAME#\" был добавлен в друзья к #USER#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nВаш блог \"#BLOG_NAME#\" был добавлен в друзья к #USER#.\n\nПрофиль пользователя: #USER_URL#\n\nАдрес вашего блога: #BLOG_ADR#\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nВаш блог \"<?=$arParams[\"BLOG_NAME\"];?>\" был добавлен в друзья к <?=$arParams[\"USER\"];?>.\n\nПрофиль пользователя: <?=$arParams[\"USER_URL\"];?>\n\n\nАдрес вашего блога: <?=$arParams[\"BLOG_ADR\"];?>\n\n\nСообщение сгенерировано автоматически.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(19,'2019-07-10 13:45:34','BLOG_YOU_TO_BLOG','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: [B] Вы были добавлены в друзья блога \"#BLOG_NAME#\"','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nВы были добавлены в друзья блога \"#BLOG_NAME#\".\n\nАдрес блога: #BLOG_ADR#\n\nВаш профиль: #USER_URL#\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nВы были добавлены в друзья блога \"<?=$arParams[\"BLOG_NAME\"];?>\".\n\nАдрес блога: <?=$arParams[\"BLOG_ADR\"];?>\n\n\nВаш профиль: <?=$arParams[\"USER_URL\"];?>\n\n\nСообщение сгенерировано автоматически.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(20,'2019-07-10 13:45:35','BLOG_BLOG_TO_YOU','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: [B] К вам в друзья был добавлен блог \"#BLOG_NAME#\"','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nК вам в друзья был добавлен блог \"#BLOG_NAME#\".\n\nАдрес блога: #BLOG_ADR#\n\nВаш профиль: #USER_URL#\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nК вам в друзья был добавлен блог \"<?=$arParams[\"BLOG_NAME\"];?>\".\n\nАдрес блога: <?=$arParams[\"BLOG_ADR\"];?>\n\n\nВаш профиль: <?=$arParams[\"USER_URL\"];?>\n\n\nСообщение сгенерировано автоматически.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(21,'2019-07-10 13:45:35','BLOG_USER_TO_YOUR_BLOG','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: [B] В ваш блог \"#BLOG_NAME#\" был добавлен друг #USER#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nВ ваш блог \"#BLOG_NAME#\" был добавлен друг #USER#.\n\nПрофиль пользователя: #USER_URL#\n\nАдрес вашего блога: #BLOG_ADR#\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nВ ваш блог \"<?=$arParams[\"BLOG_NAME\"];?>\" был добавлен друг <?=$arParams[\"USER\"];?>.\n\nПрофиль пользователя: <?=$arParams[\"USER_URL\"];?>\n\n\nАдрес вашего блога: <?=$arParams[\"BLOG_ADR\"];?>\n\n\nСообщение сгенерировано автоматически.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(22,'2019-07-10 13:45:35','BLOG_SONET_NEW_POST','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#POST_TITLE#','<?EventMessageThemeCompiler::includeComponent(\"bitrix:socialnetwork.blog.post.mail\",\"\",Array(\"EMAIL_TO\" => \"{#EMAIL_TO#}\",\"RECIPIENT_ID\" => \"{#RECIPIENT_ID#}\",\"POST_ID\" => \"{#POST_ID#}\",\"URL\" => \"{#URL#}\"));?>','<?EventMessageThemeCompiler::includeComponent(\"bitrix:socialnetwork.blog.post.mail\",\"\",Array(\"EMAIL_TO\" => \"{$arParams[\'EMAIL_TO\']}\",\"RECIPIENT_ID\" => \"{$arParams[\'RECIPIENT_ID\']}\",\"POST_ID\" => \"{$arParams[\'POST_ID\']}\",\"URL\" => \"{$arParams[\'URL\']}\"));?>','html',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'mail_user',NULL,NULL),(23,'2019-07-10 13:45:35','BLOG_SONET_NEW_COMMENT','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','Re: #POST_TITLE#','<?EventMessageThemeCompiler::includeComponent(\"bitrix:socialnetwork.blog.post.comment.mail\",\"\",Array(\"COMMENT_ID\" => \"{#COMMENT_ID#}\",\"RECIPIENT_ID\" => \"{#RECIPIENT_ID#}\",\"EMAIL_TO\" => \"{#EMAIL_TO#}\",\"POST_ID\" => \"{#POST_ID#}\",\"URL\" => \"{#URL#}\"));?>','<?EventMessageThemeCompiler::includeComponent(\"bitrix:socialnetwork.blog.post.comment.mail\",\"\",Array(\"COMMENT_ID\" => \"{$arParams[\'COMMENT_ID\']}\",\"RECIPIENT_ID\" => \"{$arParams[\'RECIPIENT_ID\']}\",\"EMAIL_TO\" => \"{$arParams[\'EMAIL_TO\']}\",\"POST_ID\" => \"{$arParams[\'POST_ID\']}\",\"URL\" => \"{$arParams[\'URL\']}\"));?>','html',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'mail_user',NULL,NULL),(24,'2019-07-10 13:45:35','BLOG_SONET_POST_SHARE','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#POST_TITLE#','<?EventMessageThemeCompiler::includeComponent(\"bitrix:socialnetwork.blog.post_share.mail\",\"\",Array(\"EMAIL_TO\" => \"{#EMAIL_TO#}\",\"RECIPIENT_ID\" => \"{#RECIPIENT_ID#}\",\"POST_ID\" => \"{#POST_ID#}\",\"URL\" => \"{#URL#}\"));?>','<?EventMessageThemeCompiler::includeComponent(\"bitrix:socialnetwork.blog.post_share.mail\",\"\",Array(\"EMAIL_TO\" => \"{$arParams[\'EMAIL_TO\']}\",\"RECIPIENT_ID\" => \"{$arParams[\'RECIPIENT_ID\']}\",\"POST_ID\" => \"{$arParams[\'POST_ID\']}\",\"URL\" => \"{$arParams[\'URL\']}\"));?>','html',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'mail_user',NULL,NULL),(25,'2019-07-10 13:45:35','BLOG_POST_BROADCAST','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: #MESSAGE_TITLE#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nНа сайте добавлено новое сообщение.\n\nТема:\n#MESSAGE_TITLE#\n\nАвтор: #AUTHOR#\n\nТекст сообщения:\n#MESSAGE_TEXT#\n\nАдрес сообщения:\n#MESSAGE_PATH#\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nНа сайте добавлено новое сообщение.\n\nТема:\n<?=$arParams[\"MESSAGE_TITLE\"];?>\n\n\nАвтор: <?=$arParams[\"AUTHOR\"];?>\n\n\nТекст сообщения:\n<?=$arParams[\"MESSAGE_TEXT\"];?>\n\n\nАдрес сообщения:\n<?=$arParams[\"MESSAGE_PATH\"];?>\n\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(26,'2019-07-10 13:45:38','CALENDAR_INVITATION','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#TITLE#','#MESSAGE#\n\n---------------------------------------------------------------------\n\nСообщение сгенерировано автоматически.','<?=$arParams[\"MESSAGE\"];?>\n\n\n---------------------------------------------------------------------\n\nСообщение сгенерировано автоматически.','text','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(27,'2019-07-10 13:45:43','CATALOG_PRODUCT_SUBSCRIBE_LIST_CONFIRM','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: Код подтверждения','\n			<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n			<html xmlns=\"http://www.w3.org/1999/xhtml\">\n			<head>\n				<style>\n					body\n					{\n						font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n						font-size: 14px;\n						color: #000;\n					}\n				</style>\n			</head>\n			<body>\n			<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; \n				border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n				<tr>\n					<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; \n						padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n						<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n							<tr>\n								<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: \n								center; font-size: 26px; color: #0b3961;\">Информационное сообщение сайта #SITE_NAME#</td>\n							</tr>\n							<tr>\n								<td bgcolor=\"#bad3df\" height=\"11\"></td>\n							</tr>\n						</table>\n					</td>\n				</tr>\n				<tr>\n					<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n						<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый, #USER_NAME#!</p>\n						<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">\nВы получили это сообщение, так как на ваш адрес был запрошен код подтверждения для доступа к подпискам сайта #SERVER_NAME#. <br><br> \nВаш код для подтверждения подписки: #TOKEN# <br><br> \nДля получения доступа к подпискам перейдите по следующей ссылке: #TOKEN_URL# <br><br>\nВы также можете ввести код на странице: #LIST_SUBSCRIBES# <br><br>\nПисьмо содержит информацию для авторизации.<br>\nИспользуя код подтверждения, вы cможете получить доступ к списку подписок.<br>\nНе отвечайте на письмо, оно сформировано автоматически.<br><br>\nСпасибо, что вы с нами!<br>\n</p>\n					</td>\n				</tr>\n				<tr>\n					<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n						<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; \n							line-height:21px;\">С уважением, администрация \n							<a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n							E-mail: <a href=\"mailto:#DEFAULT_EMAIL_FROM#\" style=\"color:#2e6eb6;\">#DEFAULT_EMAIL_FROM#</a>\n							\n						</p>\n					</td>\n				</tr>\n			</table>\n			</body>\n			</html>\n		','\n			<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n			<html xmlns=\"http://www.w3.org/1999/xhtml\">\n			<head>\n				<style>\n					body\n					{\n						font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n						font-size: 14px;\n						color: #000;\n					}\n				</style>\n			</head>\n			<body>\n			<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; \n				border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n				<tr>\n					<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; \n						padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n						<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n							<tr>\n								<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: \n								center; font-size: 26px; color: #0b3961;\">Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?></td>\n							</tr>\n							<tr>\n								<td bgcolor=\"#bad3df\" height=\"11\"></td>\n							</tr>\n						</table>\n					</td>\n				</tr>\n				<tr>\n					<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n						<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый, <?=$arParams[\"USER_NAME\"];?>!</p>\n						<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">\nВы получили это сообщение, так как на ваш адрес был запрошен код подтверждения для доступа к подпискам сайта <?=$arParams[\"SERVER_NAME\"];?>. <br><br> \nВаш код для подтверждения подписки: <?=$arParams[\"TOKEN\"];?> <br><br> \nДля получения доступа к подпискам перейдите по следующей ссылке: <?=$arParams[\"TOKEN_URL\"];?> <br><br>\nВы также можете ввести код на странице: <?=$arParams[\"LIST_SUBSCRIBES\"];?> <br><br>\nПисьмо содержит информацию для авторизации.<br>\nИспользуя код подтверждения, вы cможете получить доступ к списку подписок.<br>\nНе отвечайте на письмо, оно сформировано автоматически.<br><br>\nСпасибо, что вы с нами!<br>\n</p>\n					</td>\n				</tr>\n				<tr>\n					<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n						<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; \n							line-height:21px;\">С уважением, администрация \n							<a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n							E-mail: <a href=\"mailto:<?=$arParams[\"DEFAULT_EMAIL_FROM\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"DEFAULT_EMAIL_FROM\"];?></a>\n							\n						</p>\n					</td>\n				</tr>\n			</table>\n			</body>\n			</html>\n		','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(28,'2019-07-10 13:45:43','CATALOG_PRODUCT_SUBSCRIBE_NOTIFY','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: Уведомление о поступлении товара','\n			<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n			<html xmlns=\"http://www.w3.org/1999/xhtml\">\n			<head>\n				<style>\n					body\n					{\n						font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n						font-size: 14px;\n						color: #000;\n					}\n				</style>\n			</head>\n			<body>\n			<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; \n				border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n				<tr>\n					<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; \n						padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n						<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n							<tr>\n								<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: \n								center; font-size: 26px; color: #0b3961;\">Уведомление о поступлении товара в магазин #SITE_NAME#</td>\n							</tr>\n							<tr>\n								<td bgcolor=\"#bad3df\" height=\"11\"></td>\n							</tr>\n						</table>\n					</td>\n				</tr>\n				<tr>\n					<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n						<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый, #USER_NAME#!</p>\n						<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">\nТовар \"#NAME#\" (#PAGE_URL#) поступил на склад.<br><br>\nВы просили оповестить вас о поступление товара.<br><br>\nТовар поступил к нам в магазин, вы можете оформить заказ прямо сейчас: (#CHECKOUT_URL#)<br><br>\nНе отвечайте на письмо, оно сформировано автоматически.<br><br>\nСпасибо, что вы с нами!<br>\n</p>\n					</td>\n				</tr>\n				<tr>\n					<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n						<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; \n							line-height:21px;\">С уважением, администрация \n							<a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n							E-mail: <a href=\"mailto:#DEFAULT_EMAIL_FROM#\" style=\"color:#2e6eb6;\">#DEFAULT_EMAIL_FROM#</a>\n							<br><a href=\"#UNSUBSCRIBE_URL#\">Отписаться</a>\n						</p>\n					</td>\n				</tr>\n			</table>\n			</body>\n			</html>\n		','\n			<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n			<html xmlns=\"http://www.w3.org/1999/xhtml\">\n			<head>\n				<style>\n					body\n					{\n						font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n						font-size: 14px;\n						color: #000;\n					}\n				</style>\n			</head>\n			<body>\n			<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; \n				border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n				<tr>\n					<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; \n						padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n						<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n							<tr>\n								<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: \n								center; font-size: 26px; color: #0b3961;\">Уведомление о поступлении товара в магазин <?=$arParams[\"SITE_NAME\"];?></td>\n							</tr>\n							<tr>\n								<td bgcolor=\"#bad3df\" height=\"11\"></td>\n							</tr>\n						</table>\n					</td>\n				</tr>\n				<tr>\n					<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n						<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый, <?=$arParams[\"USER_NAME\"];?>!</p>\n						<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">\nТовар \"<?=$arParams[\"NAME\"];?>\" (<?=$arParams[\"PAGE_URL\"];?>) поступил на склад.<br><br>\nВы просили оповестить вас о поступление товара.<br><br>\nТовар поступил к нам в магазин, вы можете оформить заказ прямо сейчас: (<?=$arParams[\"CHECKOUT_URL\"];?>)<br><br>\nНе отвечайте на письмо, оно сформировано автоматически.<br><br>\nСпасибо, что вы с нами!<br>\n</p>\n					</td>\n				</tr>\n				<tr>\n					<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n						<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; \n							line-height:21px;\">С уважением, администрация \n							<a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n							E-mail: <a href=\"mailto:<?=$arParams[\"DEFAULT_EMAIL_FROM\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"DEFAULT_EMAIL_FROM\"];?></a>\n							<br><a href=\"<?=$arParams[\"UNSUBSCRIBE_URL\"];?>\">Отписаться</a>\n						</p>\n					</td>\n				</tr>\n			</table>\n			</body>\n			</html>\n		','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(29,'2019-07-10 13:45:43','CATALOG_PRODUCT_SUBSCRIBE_NOTIFY_REPEATED','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','Уведомление о товаре в магазине #SITE_NAME#','\n			<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n			<html xmlns=\"http://www.w3.org/1999/xhtml\">\n			<head>\n				<style>\n					body\n					{\n						font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n						font-size: 14px;\n						color: #000;\n					}\n				</style>\n			</head>\n			<body>\n			<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; \n				border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n				<tr>\n					<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; \n						padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n						<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n							<tr>\n								<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: \n								center; font-size: 26px; color: #0b3961;\">Уведомление о товаре в магазине #SITE_NAME#</td>\n							</tr>\n							<tr>\n								<td bgcolor=\"#bad3df\" height=\"11\"></td>\n							</tr>\n						</table>\n					</td>\n				</tr>\n				<tr>\n					<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n						<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый, #USER_NAME#!</p>\n						<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">\nТовар \"#NAME#\" (#PAGE_URL#) к сожалению снова закончился.<br><br>\nМы обязательно сообщим вам о поступлении товара.<br><br>\nНе отвечайте на письмо, оно сформировано автоматически.<br><br>\nСпасибо, что вы с нами!<br>\n</p>\n					</td>\n				</tr>\n				<tr>\n					<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n						<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; \n							line-height:21px;\">С уважением, администрация \n							<a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n							E-mail: <a href=\"mailto:#DEFAULT_EMAIL_FROM#\" style=\"color:#2e6eb6;\">#DEFAULT_EMAIL_FROM#</a>\n							<br><a href=\"#UNSUBSCRIBE_URL#\">Отписаться</a>\n						</p>\n					</td>\n				</tr>\n			</table>\n			</body>\n			</html>\n		','\n			<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n			<html xmlns=\"http://www.w3.org/1999/xhtml\">\n			<head>\n				<style>\n					body\n					{\n						font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n						font-size: 14px;\n						color: #000;\n					}\n				</style>\n			</head>\n			<body>\n			<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; \n				border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n				<tr>\n					<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; \n						padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n						<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n							<tr>\n								<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: \n								center; font-size: 26px; color: #0b3961;\">Уведомление о товаре в магазине <?=$arParams[\"SITE_NAME\"];?></td>\n							</tr>\n							<tr>\n								<td bgcolor=\"#bad3df\" height=\"11\"></td>\n							</tr>\n						</table>\n					</td>\n				</tr>\n				<tr>\n					<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n						<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый, <?=$arParams[\"USER_NAME\"];?>!</p>\n						<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">\nТовар \"<?=$arParams[\"NAME\"];?>\" (<?=$arParams[\"PAGE_URL\"];?>) к сожалению снова закончился.<br><br>\nМы обязательно сообщим вам о поступлении товара.<br><br>\nНе отвечайте на письмо, оно сформировано автоматически.<br><br>\nСпасибо, что вы с нами!<br>\n</p>\n					</td>\n				</tr>\n				<tr>\n					<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n						<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; \n							line-height:21px;\">С уважением, администрация \n							<a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n							E-mail: <a href=\"mailto:<?=$arParams[\"DEFAULT_EMAIL_FROM\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"DEFAULT_EMAIL_FROM\"];?></a>\n							<br><a href=\"<?=$arParams[\"UNSUBSCRIBE_URL\"];?>\">Отписаться</a>\n						</p>\n					</td>\n				</tr>\n			</table>\n			</body>\n			</html>\n		','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(30,'2019-07-10 13:46:01','NEW_FORUM_MESSAGE','s1','Y','#FROM_EMAIL#','#RECIPIENT#','#SITE_NAME#: [F] #TOPIC_TITLE# : #FORUM_NAME#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nНовое сообщение на форуме #SERVER_NAME#.\n\nТема:\n#TOPIC_TITLE#\n\nАвтор: #AUTHOR#\nДата : #MESSAGE_DATE#\nТекст сообщения:\n\n#MESSAGE_TEXT#\n\nАдрес сообщения:\nhttp://#SERVER_NAME##PATH2FORUM#\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nНовое сообщение на форуме <?=$arParams[\"SERVER_NAME\"];?>.\n\nТема:\n<?=$arParams[\"TOPIC_TITLE\"];?>\n\n\nАвтор: <?=$arParams[\"AUTHOR\"];?>\n\nДата : <?=$arParams[\"MESSAGE_DATE\"];?>\n\nТекст сообщения:\n\n<?=$arParams[\"MESSAGE_TEXT\"];?>\n\n\nАдрес сообщения:\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"PATH2FORUM\"];?>\n\n\nСообщение сгенерировано автоматически.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(31,'2019-07-10 13:46:01','NEW_FORUM_PRIV','s1','Y','#FROM_EMAIL#','#TO_EMAIL#','#SITE_NAME#: [private] #SUBJECT#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nВы получили персональное сообщение с форума на сайте #SERVER_NAME#.\n\nТема: #SUBJECT#\n\nАвтор: #FROM_NAME# #FROM_EMAIL#\nДата : #MESSAGE_DATE#\nСообщение:\n\n#MESSAGE#\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nВы получили персональное сообщение с форума на сайте <?=$arParams[\"SERVER_NAME\"];?>.\n\nТема: <?=$arParams[\"SUBJECT\"];?>\n\n\nАвтор: <?=$arParams[\"FROM_NAME\"];?> <?=$arParams[\"FROM_EMAIL\"];?>\n\nДата : <?=$arParams[\"MESSAGE_DATE\"];?>\n\nСообщение:\n\n<?=$arParams[\"MESSAGE\"];?>\n\n\nСообщение сгенерировано автоматически.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(32,'2019-07-10 13:46:01','NEW_FORUM_PRIVATE_MESSAGE','s1','Y','#FROM_EMAIL#','#TO_EMAIL#','#SITE_NAME#: [private] #SUBJECT#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nВы получили персональное сообщение с форума на сайте #SERVER_NAME#.\n\nТема: #SUBJECT#\n\nАвтор: #FROM_NAME#\nДата: #MESSAGE_DATE#\nСообщение:\n\n#MESSAGE#\n\nСсылка на сообщение: #MESSAGE_LINK#Сообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nВы получили персональное сообщение с форума на сайте <?=$arParams[\"SERVER_NAME\"];?>.\n\nТема: <?=$arParams[\"SUBJECT\"];?>\n\n\nАвтор: <?=$arParams[\"FROM_NAME\"];?>\n\nДата: <?=$arParams[\"MESSAGE_DATE\"];?>\n\nСообщение:\n\n<?=$arParams[\"MESSAGE\"];?>\n\n\nСсылка на сообщение: <?=$arParams[\"MESSAGE_LINK\"];?>Сообщение сгенерировано автоматически.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(33,'2019-07-10 13:46:01','EDIT_FORUM_MESSAGE','s1','Y','#FROM_EMAIL#','#RECIPIENT#','#SITE_NAME#: [F] #TOPIC_TITLE# : #FORUM_NAME#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nИзменение сообщения на форуме #SERVER_NAME#.\n\nТема:\n#TOPIC_TITLE#\n\nАвтор: #AUTHOR#\nДата : #MESSAGE_DATE#\nТекст сообщения:\n\n#MESSAGE_TEXT#\n\nАдрес сообщения:\nhttp://#SERVER_NAME##PATH2FORUM#\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nИзменение сообщения на форуме <?=$arParams[\"SERVER_NAME\"];?>.\n\nТема:\n<?=$arParams[\"TOPIC_TITLE\"];?>\n\n\nАвтор: <?=$arParams[\"AUTHOR\"];?>\n\nДата : <?=$arParams[\"MESSAGE_DATE\"];?>\n\nТекст сообщения:\n\n<?=$arParams[\"MESSAGE_TEXT\"];?>\n\n\nАдрес сообщения:\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"PATH2FORUM\"];?>\n\n\nСообщение сгенерировано автоматически.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(34,'2019-07-10 13:46:01','FORUM_NEW_MESSAGE_MAIL','s1','Y','#FROM_EMAIL#','#RECIPIENT#','#TOPIC_TITLE#','#MESSAGE_TEXT#\n\n------------------------------------------  \nВы получили это сообщение, так как выподписаны на форум #FORUM_NAME#.\n\nОтветить на сообщение можно по электронной почте или через форму на сайте:\nhttp://#SERVER_NAME##PATH2FORUM#\n\nНаписать новое сообщение: #FORUM_EMAIL#\n\nАвтор сообщения: #AUTHOR#\n\nСообщение сгенерировано автоматически на сайте #SITE_NAME#.\n','<?=$arParams[\"MESSAGE_TEXT\"];?>\n\n\n------------------------------------------  \nВы получили это сообщение, так как выподписаны на форум <?=$arParams[\"FORUM_NAME\"];?>.\n\nОтветить на сообщение можно по электронной почте или через форму на сайте:\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"PATH2FORUM\"];?>\n\n\nНаписать новое сообщение: <?=$arParams[\"FORUM_EMAIL\"];?>\n\n\nАвтор сообщения: <?=$arParams[\"AUTHOR\"];?>\n\n\nСообщение сгенерировано автоматически на сайте <?=$arParams[\"SITE_NAME\"];?>.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(35,'2019-07-10 13:46:09','ADD_IDEA_COMMENT','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: Добавлен новый комментарий к идее: #IDEA_TITLE#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nДобавлен новый комментарий к идее на сайте #SERVER_NAME#.\n\nТема идеи: #IDEA_TITLE#\n\nАвтор комментария: #AUTHOR#\n\nДата комментария: #DATE_CREATE#\n\nТекст комментария:\n#IDEA_COMMENT_TEXT#\n\nАдрес сообщения:\n#FULL_PATH#\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nДобавлен новый комментарий к идее на сайте <?=$arParams[\"SERVER_NAME\"];?>.\n\nТема идеи: <?=$arParams[\"IDEA_TITLE\"];?>\n\n\nАвтор комментария: <?=$arParams[\"AUTHOR\"];?>\n\n\nДата комментария: <?=$arParams[\"DATE_CREATE\"];?>\n\n\nТекст комментария:\n<?=$arParams[\"IDEA_COMMENT_TEXT\"];?>\n\n\nАдрес сообщения:\n<?=$arParams[\"FULL_PATH\"];?>\n\n\nСообщение сгенерировано автоматически.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(36,'2019-07-10 13:46:10','ADD_IDEA','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: Добавлена новая идея: #IDEA_TITLE#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nДобавлена новая идея в категории #CATEGORY# на сайте #SERVER_NAME#.\n\nТема: #TITLE#\n\nАвтор: #AUTHOR#\n\nДобавлена: #DATE_PUBLISH#\n\nОписание:\n#IDEA_TEXT#\n\nАдрес идеи:\n#FULL_PATH#\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nДобавлена новая идея в категории <?=$arParams[\"CATEGORY\"];?> на сайте <?=$arParams[\"SERVER_NAME\"];?>.\n\nТема: <?=$arParams[\"TITLE\"];?>\n\n\nАвтор: <?=$arParams[\"AUTHOR\"];?>\n\n\nДобавлена: <?=$arParams[\"DATE_PUBLISH\"];?>\n\n\nОписание:\n<?=$arParams[\"IDEA_TEXT\"];?>\n\n\nАдрес идеи:\n<?=$arParams[\"FULL_PATH\"];?>\n\n\nСообщение сгенерировано автоматически.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(37,'2019-07-10 13:46:12','IM_NEW_NOTIFY','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: Уведомление \"#MESSAGE_50#\"','Здравствуйте, #USER_NAME#!\n\nУ вас есть новое уведомление от пользователя #FROM_USER#\n\n------------------------------------------\n\n#MESSAGE#\n\n------------------------------------------\n\nПерейти к уведомлениям: http://#SERVER_NAME#/?IM_NOTIFY=Y\nВы можете изменить настройки уведомлений: http://#SERVER_NAME#/?IM_SETTINGS=NOTIFY\n\nЭто письмо сформировано автоматически.','Здравствуйте, <?=$arParams[\"USER_NAME\"];?>!\n\nУ вас есть новое уведомление от пользователя <?=$arParams[\"FROM_USER\"];?>\n\n\n------------------------------------------\n\n<?=$arParams[\"MESSAGE\"];?>\n\n\n------------------------------------------\n\nПерейти к уведомлениям: http://<?=$arParams[\"SERVER_NAME\"];?>/?IM_NOTIFY=Y\nВы можете изменить настройки уведомлений: http://<?=$arParams[\"SERVER_NAME\"];?>/?IM_SETTINGS=NOTIFY\n\nЭто письмо сформировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(38,'2019-07-10 13:46:13','IM_NEW_NOTIFY_GROUP','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: Уведомление \"#MESSAGE_50#\"','Здравствуйте, #USER_NAME#!\n\nУ вас есть новое уведомление от пользователей: #FROM_USERS#\n\n------------------------------------------\n\n#MESSAGE#\n\n------------------------------------------\n\nПерейти к уведомлениям: http://#SERVER_NAME#/?IM_NOTIFY=Y\nВы можете изменить настройки уведомлений: http://#SERVER_NAME#/?IM_SETTINGS=NOTIFY\n\nЭто письмо сформировано автоматически.','Здравствуйте, <?=$arParams[\"USER_NAME\"];?>!\n\nУ вас есть новое уведомление от пользователей: <?=$arParams[\"FROM_USERS\"];?>\n\n\n------------------------------------------\n\n<?=$arParams[\"MESSAGE\"];?>\n\n\n------------------------------------------\n\nПерейти к уведомлениям: http://<?=$arParams[\"SERVER_NAME\"];?>/?IM_NOTIFY=Y\nВы можете изменить настройки уведомлений: http://<?=$arParams[\"SERVER_NAME\"];?>/?IM_SETTINGS=NOTIFY\n\nЭто письмо сформировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(39,'2019-07-10 13:46:13','IM_NEW_MESSAGE','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: Мгновенные сообщения от #FROM_USER#','Здравствуйте, #USER_NAME#!\n\nУ вас есть новые мгновенные сообщения от пользователя #FROM_USER#.\n\n------------------------------------------\n#MESSAGES#\n------------------------------------------\n\nПерейти к диалогу с пользователем: http://#SERVER_NAME#/?IM_DIALOG=#USER_ID#\nВы можете изменить настройки уведомлений: http://#SERVER_NAME#/?IM_SETTINGS=NOTIFY\n\nЭто письмо сформировано автоматически.','Здравствуйте, <?=$arParams[\"USER_NAME\"];?>!\n\nУ вас есть новые мгновенные сообщения от пользователя <?=$arParams[\"FROM_USER\"];?>.\n\n------------------------------------------\n<?=$arParams[\"MESSAGES\"];?>\n\n------------------------------------------\n\nПерейти к диалогу с пользователем: http://<?=$arParams[\"SERVER_NAME\"];?>/?IM_DIALOG=<?=$arParams[\"USER_ID\"];?>\n\nВы можете изменить настройки уведомлений: http://<?=$arParams[\"SERVER_NAME\"];?>/?IM_SETTINGS=NOTIFY\n\nЭто письмо сформировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(40,'2019-07-10 13:46:13','IM_NEW_MESSAGE_GROUP','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: Мгновенные сообщения от #FROM_USERS#','Здравствуйте, #USER_NAME#!\n\nУ вас есть новые мгновенные сообщения от пользователей #FROM_USERS#.\n\n#MESSAGES#\n\nПерейти к диалогам: http://#SERVER_NAME#/?IM_DIALOG=Y\nВы можете изменить настройки уведомлений: http://#SERVER_NAME#/?IM_SETTINGS=NOTIFY\n\nЭто письмо сформировано автоматически.','Здравствуйте, <?=$arParams[\"USER_NAME\"];?>!\n\nУ вас есть новые мгновенные сообщения от пользователей <?=$arParams[\"FROM_USERS\"];?>.\n\n<?=$arParams[\"MESSAGES\"];?>\n\n\nПерейти к диалогам: http://<?=$arParams[\"SERVER_NAME\"];?>/?IM_DIALOG=Y\nВы можете изменить настройки уведомлений: http://<?=$arParams[\"SERVER_NAME\"];?>/?IM_SETTINGS=NOTIFY\n\nЭто письмо сформировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(41,'2019-07-10 13:46:16','LDAP_USER_CONFIRM','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL#','#SITE_NAME#: Подтвержение регистрации','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\nЗдравствуйте,\n\nВы получили это сообщение, так как ваш адрес был использован при регистрации нового пользователя на сервере #SERVER_NAME#.\n\nДля подтверждения регистрации необходимо авторизоваться (ввести логин и пароль, используемые в локальной сети) на следующей странице:\nhttp://#SERVER_NAME#/bitrix/admin/ldap_user_auth.php?ldap_user_id=#XML_ID#&back_url=#BACK_URL#\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\nЗдравствуйте,\n\nВы получили это сообщение, так как ваш адрес был использован при регистрации нового пользователя на сервере <?=$arParams[\"SERVER_NAME\"];?>.\n\nДля подтверждения регистрации необходимо авторизоваться (ввести логин и пароль, используемые в локальной сети) на следующей странице:\nhttp://<?=$arParams[\"SERVER_NAME\"];?>/bitrix/admin/ldap_user_auth.php?ldap_user_id=<?=$arParams[\"XML_ID\"];?>&back_url=<?=$arParams[\"BACK_URL\"];?>\n\n\nСообщение сгенерировано автоматически.','text','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(42,'2019-07-10 13:46:19','NEW_LEARNING_TEXT_ANSWER','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: #COURSE_NAME#: #MESSAGE_TITLE#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nКурс:#COURSE_NAME#\nТест:#TEST_NAME#\n\nПользователь: #USER#\nДата: #DATE#\n\nВопрос:\n------------------------------------------\n#QUESTION_TEXT#\n------------------------------------------\n\nОтвет:\n------------------------------------------\n#ANSWER_TEXT#\n------------------------------------------\n\nДля просмотра и редактирования ответа воспользуйтесь ссылкой:\nhttp://#SERVER_NAME#/bitrix/admin/learn_test_result_edit.php?lang=ru&ID=#ID#&ATTEMPT_ID=#ATTEMPT_ID#\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nКурс:<?=$arParams[\"COURSE_NAME\"];?>\n\nТест:<?=$arParams[\"TEST_NAME\"];?>\n\n\nПользователь: <?=$arParams[\"USER\"];?>\n\nДата: <?=$arParams[\"DATE\"];?>\n\n\nВопрос:\n------------------------------------------\n<?=$arParams[\"QUESTION_TEXT\"];?>\n\n------------------------------------------\n\nОтвет:\n------------------------------------------\n<?=$arParams[\"ANSWER_TEXT\"];?>\n\n------------------------------------------\n\nДля просмотра и редактирования ответа воспользуйтесь ссылкой:\nhttp://<?=$arParams[\"SERVER_NAME\"];?>/bitrix/admin/learn_test_result_edit.php?lang=ru&ID=<?=$arParams[\"ID\"];?>&ATTEMPT_ID=<?=$arParams[\"ATTEMPT_ID\"];?>\n\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(43,'2019-07-10 13:46:49','SALE_NEW_ORDER','s1','Y','#SALE_EMAIL#','#EMAIL#','#SITE_NAME#: Новый заказ N#ORDER_ID#','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Вами оформлен заказ в магазине #SITE_NAME#</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый #ORDER_USER#,</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Ваш заказ номер #ORDER_ID# от #ORDER_DATE# принят.<br />\n<br />\nСтоимость заказа: #PRICE#.<br />\n<br />\nСостав заказа:<br />\n#ORDER_LIST#<br />\n<br />\nВы можете следить за выполнением своего заказа (на какой стадии выполнения он находится), войдя в Ваш персональный раздел сайта #SITE_NAME#.<br />\n<br />\nОбратите внимание, что для входа в этот раздел Вам необходимо будет ввести логин и пароль пользователя сайта #SITE_NAME#.<br />\n<br />\nДля того, чтобы аннулировать заказ, воспользуйтесь функцией отмены заказа, которая доступна в Вашем персональном разделе сайта #SITE_NAME#.<br />\n<br />\nПожалуйста, при обращении к администрации сайта #SITE_NAME# ОБЯЗАТЕЛЬНО указывайте номер Вашего заказа - #ORDER_ID#.<br />\n<br />\nСпасибо за покупку!<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Вами оформлен заказ в магазине <?=$arParams[\"SITE_NAME\"];?></td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый <?=$arParams[\"ORDER_USER\"];?>,</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Ваш заказ номер <?=$arParams[\"ORDER_ID\"];?> от <?=$arParams[\"ORDER_DATE\"];?> принят.<br />\n<br />\nСтоимость заказа: <?=$arParams[\"PRICE\"];?>.<br />\n<br />\nСостав заказа:<br />\n<?=$arParams[\"ORDER_LIST\"];?><br />\n<br />\nВы можете следить за выполнением своего заказа (на какой стадии выполнения он находится), войдя в Ваш персональный раздел сайта <?=$arParams[\"SITE_NAME\"];?>.<br />\n<br />\nОбратите внимание, что для входа в этот раздел Вам необходимо будет ввести логин и пароль пользователя сайта <?=$arParams[\"SITE_NAME\"];?>.<br />\n<br />\nДля того, чтобы аннулировать заказ, воспользуйтесь функцией отмены заказа, которая доступна в Вашем персональном разделе сайта <?=$arParams[\"SITE_NAME\"];?>.<br />\n<br />\nПожалуйста, при обращении к администрации сайта <?=$arParams[\"SITE_NAME\"];?> ОБЯЗАТЕЛЬНО указывайте номер Вашего заказа - <?=$arParams[\"ORDER_ID\"];?>.<br />\n<br />\nСпасибо за покупку!<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(44,'2019-07-10 13:46:49','SALE_ORDER_CANCEL','s1','Y','#SALE_EMAIL#','#EMAIL#','#SITE_NAME#: Отмена заказа N#ORDER_ID#','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">#SITE_NAME#: Отмена заказа N#ORDER_ID#</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Заказ номер #ORDER_ID# от #ORDER_DATE# отменен.</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">#ORDER_CANCEL_DESCRIPTION#<br />\n<br />\nДля получения подробной информации по заказу пройдите на сайт http://#SERVER_NAME#/personal/order/#ORDER_ACCOUNT_NUMBER_ENCODE#/<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\"><?=$arParams[\"SITE_NAME\"];?>: Отмена заказа N<?=$arParams[\"ORDER_ID\"];?></td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Заказ номер <?=$arParams[\"ORDER_ID\"];?> от <?=$arParams[\"ORDER_DATE\"];?> отменен.</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\"><?=$arParams[\"ORDER_CANCEL_DESCRIPTION\"];?><br />\n<br />\nДля получения подробной информации по заказу пройдите на сайт http://<?=$arParams[\"SERVER_NAME\"];?>/personal/order/<?=$arParams[\"ORDER_ACCOUNT_NUMBER_ENCODE\"];?>/<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(45,'2019-07-10 13:46:50','SALE_ORDER_DELIVERY','s1','Y','#SALE_EMAIL#','#EMAIL#','#SITE_NAME#: Доставка заказа N#ORDER_ID# разрешена','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Доставка вашего заказа с сайта #SITE_NAME# разрешена</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Доставка заказа номер #ORDER_ID# от #ORDER_DATE# разрешена.</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Для получения подробной информации по заказу пройдите на сайт http://#SERVER_NAME#/personal/order/#ORDER_ACCOUNT_NUMBER_ENCODE#/<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Доставка вашего заказа с сайта <?=$arParams[\"SITE_NAME\"];?> разрешена</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Доставка заказа номер <?=$arParams[\"ORDER_ID\"];?> от <?=$arParams[\"ORDER_DATE\"];?> разрешена.</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Для получения подробной информации по заказу пройдите на сайт http://<?=$arParams[\"SERVER_NAME\"];?>/personal/order/<?=$arParams[\"ORDER_ACCOUNT_NUMBER_ENCODE\"];?>/<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(46,'2019-07-10 13:46:50','SALE_ORDER_PAID','s1','Y','#SALE_EMAIL#','#EMAIL#','#SITE_NAME#: Заказ N#ORDER_ID# оплачен','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Вы оплатили заказ на сайте #SITE_NAME#</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Заказ номер #ORDER_ID# от #ORDER_DATE# оплачен.</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Для получения подробной информации по заказу пройдите на сайт http://#SERVER_NAME#/personal/order/#ORDER_ACCOUNT_NUMBER_ENCODE#/</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Вы оплатили заказ на сайте <?=$arParams[\"SITE_NAME\"];?></td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Заказ номер <?=$arParams[\"ORDER_ID\"];?> от <?=$arParams[\"ORDER_DATE\"];?> оплачен.</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Для получения подробной информации по заказу пройдите на сайт http://<?=$arParams[\"SERVER_NAME\"];?>/personal/order/<?=$arParams[\"ORDER_ACCOUNT_NUMBER_ENCODE\"];?>/</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(47,'2019-07-10 13:46:50','SALE_ORDER_REMIND_PAYMENT','s1','Y','#SALE_EMAIL#','#EMAIL#','#SITE_NAME#: Напоминание об оплате заказа N#ORDER_ID# ','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Напоминаем вам об оплате заказа на сайте #SITE_NAME#</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый #ORDER_USER#,</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Вами был оформлен заказ N #ORDER_ID# от #ORDER_DATE# на сумму #PRICE#.<br />\n<br />\nК сожалению, на сегодняшний день средства по этому заказу не поступили к нам.<br />\n<br />\nВы можете следить за выполнением своего заказа (на какой стадии выполнения он находится), войдя в Ваш персональный раздел сайта #SITE_NAME#.<br />\n<br />\nОбратите внимание, что для входа в этот раздел Вам необходимо будет ввести логин и пароль пользователя сайта #SITE_NAME#.<br />\n<br />\nДля того, чтобы аннулировать заказ, воспользуйтесь функцией отмены заказа, которая доступна в Вашем персональном разделе сайта #SITE_NAME#.<br />\n<br />\nПожалуйста, при обращении к администрации сайта #SITE_NAME# ОБЯЗАТЕЛЬНО указывайте номер Вашего заказа - #ORDER_ID#.<br />\n<br />\nСпасибо за покупку!<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Напоминаем вам об оплате заказа на сайте <?=$arParams[\"SITE_NAME\"];?></td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый <?=$arParams[\"ORDER_USER\"];?>,</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Вами был оформлен заказ N <?=$arParams[\"ORDER_ID\"];?> от <?=$arParams[\"ORDER_DATE\"];?> на сумму <?=$arParams[\"PRICE\"];?>.<br />\n<br />\nК сожалению, на сегодняшний день средства по этому заказу не поступили к нам.<br />\n<br />\nВы можете следить за выполнением своего заказа (на какой стадии выполнения он находится), войдя в Ваш персональный раздел сайта <?=$arParams[\"SITE_NAME\"];?>.<br />\n<br />\nОбратите внимание, что для входа в этот раздел Вам необходимо будет ввести логин и пароль пользователя сайта <?=$arParams[\"SITE_NAME\"];?>.<br />\n<br />\nДля того, чтобы аннулировать заказ, воспользуйтесь функцией отмены заказа, которая доступна в Вашем персональном разделе сайта <?=$arParams[\"SITE_NAME\"];?>.<br />\n<br />\nПожалуйста, при обращении к администрации сайта <?=$arParams[\"SITE_NAME\"];?> ОБЯЗАТЕЛЬНО указывайте номер Вашего заказа - <?=$arParams[\"ORDER_ID\"];?>.<br />\n<br />\nСпасибо за покупку!<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(48,'2019-07-10 13:46:50','SALE_SUBSCRIBE_PRODUCT','s1','Y','#SALE_EMAIL#','#EMAIL#','#SITE_NAME#: Уведомление о поступлении товара','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Уведомление о поступлении товара в магазин #SITE_NAME#</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый, #USER_NAME#!</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Товар \"#NAME#\" (#PAGE_URL#) поступил на склад.<br />\n<br />\nВы можете Оформить заказ (http://#SERVER_NAME#/personal/cart/).<br />\n<br />\nНе забудьте авторизоваться!<br />\n<br />\nВы получили это сообщение по Вашей просьбе оповестить при появлении товара.<br />\nНе отвечайте на него - письмо сформировано автоматически.<br />\n<br />\nСпасибо за покупку!<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Уведомление о поступлении товара в магазин <?=$arParams[\"SITE_NAME\"];?></td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый, <?=$arParams[\"USER_NAME\"];?>!</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Товар \"<?=$arParams[\"NAME\"];?>\" (<?=$arParams[\"PAGE_URL\"];?>) поступил на склад.<br />\n<br />\nВы можете Оформить заказ (http://<?=$arParams[\"SERVER_NAME\"];?>/personal/cart/).<br />\n<br />\nНе забудьте авторизоваться!<br />\n<br />\nВы получили это сообщение по Вашей просьбе оповестить при появлении товара.<br />\nНе отвечайте на него - письмо сформировано автоматически.<br />\n<br />\nСпасибо за покупку!<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(49,'2019-07-10 13:46:50','SALE_ORDER_TRACKING_NUMBER','s1','Y','#SALE_EMAIL#','#EMAIL#','Номер идентификатора отправления вашего заказа на сайте #SITE_NAME#','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Номер идентификатора отправления вашего заказа на сайте #SITE_NAME#</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый #ORDER_USER#,</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Произошла почтовая отправка заказа N #ORDER_ID# от #ORDER_DATE#.<br />\n<br />\nНомер идентификатора отправления: #ORDER_TRACKING_NUMBER#.<br />\n<br />\nДля получения подробной информации по заказу пройдите на сайт http://#SERVER_NAME#/personal/order/detail/#ORDER_ACCOUNT_NUMBER_ENCODE#/<br />\n<br />\nE-mail: #SALE_EMAIL#<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Номер идентификатора отправления вашего заказа на сайте <?=$arParams[\"SITE_NAME\"];?></td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый <?=$arParams[\"ORDER_USER\"];?>,</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Произошла почтовая отправка заказа N <?=$arParams[\"ORDER_ID\"];?> от <?=$arParams[\"ORDER_DATE\"];?>.<br />\n<br />\nНомер идентификатора отправления: <?=$arParams[\"ORDER_TRACKING_NUMBER\"];?>.<br />\n<br />\nДля получения подробной информации по заказу пройдите на сайт http://<?=$arParams[\"SERVER_NAME\"];?>/personal/order/detail/<?=$arParams[\"ORDER_ACCOUNT_NUMBER_ENCODE\"];?>/<br />\n<br />\nE-mail: <?=$arParams[\"SALE_EMAIL\"];?><br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(50,'2019-07-10 13:46:50','SALE_CHECK_PRINT','s1','Y','#SALE_EMAIL#','#EMAIL#','Ссылка на чек','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Вы оплатили заказ на сайте #SITE_NAME#</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый #ORDER_USER#,</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\"><br />\nСогласно требованиям закона ФЗ-54 о фискальных чеках по вашему заказу произведена оплата и сформирован фискальный кассовый чек, который вы можете посмотреть по ссылке:<br />\n<br />\n#CHECK_LINK#<br />\n<br />\nДля получения подробной информации по заказу №#ORDER_ID# от #ORDER_DATE# пройдите на сайт #LINK_URL#<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Вы оплатили заказ на сайте <?=$arParams[\"SITE_NAME\"];?></td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый <?=$arParams[\"ORDER_USER\"];?>,</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\"><br />\nСогласно требованиям закона ФЗ-54 о фискальных чеках по вашему заказу произведена оплата и сформирован фискальный кассовый чек, который вы можете посмотреть по ссылке:<br />\n<br />\n<?=$arParams[\"CHECK_LINK\"];?><br />\n<br />\nДля получения подробной информации по заказу №<?=$arParams[\"ORDER_ID\"];?> от <?=$arParams[\"ORDER_DATE\"];?> пройдите на сайт <?=$arParams[\"LINK_URL\"];?><br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(51,'2019-07-10 13:46:50','SALE_CHECK_PRINT_ERROR','s1','Y','#SALE_EMAIL#','#EMAIL#','Ошибка при печати чека','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Ошибка при печати чека</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Здравствуйте!</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\"><br />\nПо какой-то причине чек №#CHECK_ID# по заказу №#ORDER_ACCOUNT_NUMBER# от #ORDER_DATE# не удалось распечатать!<br />\n<br />\nПерейдите по ссылке, чтобы устранить причину возникшей ситуации:<br />\n#LINK_URL#<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Ошибка при печати чека</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Здравствуйте!</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\"><br />\nПо какой-то причине чек №<?=$arParams[\"CHECK_ID\"];?> по заказу №<?=$arParams[\"ORDER_ACCOUNT_NUMBER\"];?> от <?=$arParams[\"ORDER_DATE\"];?> не удалось распечатать!<br />\n<br />\nПерейдите по ссылке, чтобы устранить причину возникшей ситуации:<br />\n<?=$arParams[\"LINK_URL\"];?><br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(52,'2019-07-10 13:46:50','SALE_ORDER_SHIPMENT_STATUS_CHANGED','s1','Y','#SALE_EMAIL#','#EMAIL#','Статус почтового отправления вашего заказа на сайте #SITE_NAME# изменился','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Изменился статус почтового отправления заказа на сайте #SITE_NAME#</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый #ORDER_USER#,</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Статус почтового отправления по заказу № #ORDER_NO# от #ORDER_DATE#<br />\n<br />\nизменил значение на \"#STATUS_NAME#\" (#STATUS_DESCRIPTION#).<br />\n<br />\nИдентификатор отправления: #TRACKING_NUMBER#.<br />\n<br />\nНаименование службы доставки: #DELIVERY_NAME#.<br />\n<br />\n#DELIVERY_TRACKING_URL##ORDER_DETAIL_URL#<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Изменился статус почтового отправления заказа на сайте <?=$arParams[\"SITE_NAME\"];?></td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый <?=$arParams[\"ORDER_USER\"];?>,</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Статус почтового отправления по заказу № <?=$arParams[\"ORDER_NO\"];?> от <?=$arParams[\"ORDER_DATE\"];?><br />\n<br />\nизменил значение на \"<?=$arParams[\"STATUS_NAME\"];?>\" (<?=$arParams[\"STATUS_DESCRIPTION\"];?>).<br />\n<br />\nИдентификатор отправления: <?=$arParams[\"TRACKING_NUMBER\"];?>.<br />\n<br />\nНаименование службы доставки: <?=$arParams[\"DELIVERY_NAME\"];?>.<br />\n<br />\n<?=$arParams[\"DELIVERY_TRACKING_URL\"];?><?=$arParams[\"ORDER_DETAIL_URL\"];?><br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(53,'2019-07-10 13:46:50','SALE_NEW_ORDER_RECURRING','s1','Y','#SALE_EMAIL#','#EMAIL#','#SITE_NAME#: Новый заказ N#ORDER_ID# на продление подписки','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nУважаемый #ORDER_USER#,\n\nВаш заказ номер #ORDER_ID# от #ORDER_DATE# на продление подписки принят.\n\nСтоимость заказа: #PRICE#.\n\nСостав заказа:\n#ORDER_LIST#\n\nВы можете следить за выполнением своего заказа (на какой\nстадии выполнения он находится), войдя в Ваш персональный\nраздел сайта #SITE_NAME#. Обратите внимание, что для входа\nв этот раздел Вам необходимо будет ввести логин и пароль\nпользователя сайта #SITE_NAME#.\n\nДля того, чтобы аннулировать заказ, воспользуйтесь функцией\nотмены заказа, которая доступна в Вашем персональном\nразделе сайта #SITE_NAME#.\n\nПожалуйста, при обращении к администрации сайта #SITE_NAME#\nОБЯЗАТЕЛЬНО указывайте номер Вашего заказа - #ORDER_ID#.\n\nСпасибо за покупку!\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nУважаемый <?=$arParams[\"ORDER_USER\"];?>,\n\nВаш заказ номер <?=$arParams[\"ORDER_ID\"];?> от <?=$arParams[\"ORDER_DATE\"];?> на продление подписки принят.\n\nСтоимость заказа: <?=$arParams[\"PRICE\"];?>.\n\nСостав заказа:\n<?=$arParams[\"ORDER_LIST\"];?>\n\n\nВы можете следить за выполнением своего заказа (на какой\nстадии выполнения он находится), войдя в Ваш персональный\nраздел сайта <?=$arParams[\"SITE_NAME\"];?>. Обратите внимание, что для входа\nв этот раздел Вам необходимо будет ввести логин и пароль\nпользователя сайта <?=$arParams[\"SITE_NAME\"];?>.\n\nДля того, чтобы аннулировать заказ, воспользуйтесь функцией\nотмены заказа, которая доступна в Вашем персональном\nразделе сайта <?=$arParams[\"SITE_NAME\"];?>.\n\nПожалуйста, при обращении к администрации сайта <?=$arParams[\"SITE_NAME\"];?>\n\nОБЯЗАТЕЛЬНО указывайте номер Вашего заказа - <?=$arParams[\"ORDER_ID\"];?>.\n\nСпасибо за покупку!\n','text','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(54,'2019-07-10 13:46:50','SALE_RECURRING_CANCEL','s1','Y','#SALE_EMAIL#','#EMAIL#','#SITE_NAME#: Подписка отменена','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nПодписка отменена\n\n#CANCELED_REASON#\n#SITE_NAME#\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nПодписка отменена\n\n<?=$arParams[\"CANCELED_REASON\"];?>\n\n<?=$arParams[\"SITE_NAME\"];?>\n\n','text','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(55,'2019-07-10 13:46:50','SALE_STATUS_CHANGED_F','s1','Y','#SALE_EMAIL#','#EMAIL#','#SERVER_NAME#: Изменение статуса заказа N#ORDER_ID#','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Изменение статуса заказа в магазине #SITE_NAME#</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\"></p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Информационное сообщение сайта #SITE_NAME#<br />\n------------------------------------------<br />\n<br />\nСтатус заказа номер #ORDER_ID# от #ORDER_DATE# изменен.<br />\n<br />\nНовый статус заказа:<br />\n#ORDER_STATUS#<br />\n#ORDER_DESCRIPTION#<br />\n#TEXT#<br />\n<br />\nДля получения подробной информации по заказу пройдите на сайт #SERVER_NAME#/personal/order/#ORDER_ID#/<br />\n<br />\nСпасибо за ваш выбор!<br />\n#SITE_NAME#<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Изменение статуса заказа в магазине <?=$arParams[\"SITE_NAME\"];?></td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\"></p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?><br />\n------------------------------------------<br />\n<br />\nСтатус заказа номер <?=$arParams[\"ORDER_ID\"];?> от <?=$arParams[\"ORDER_DATE\"];?> изменен.<br />\n<br />\nНовый статус заказа:<br />\n<?=$arParams[\"ORDER_STATUS\"];?><br />\n<?=$arParams[\"ORDER_DESCRIPTION\"];?><br />\n<?=$arParams[\"TEXT\"];?><br />\n<br />\nДля получения подробной информации по заказу пройдите на сайт <?=$arParams[\"SERVER_NAME\"];?>/personal/order/<?=$arParams[\"ORDER_ID\"];?>/<br />\n<br />\nСпасибо за ваш выбор!<br />\n<?=$arParams[\"SITE_NAME\"];?><br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(56,'2019-07-10 13:46:50','SALE_STATUS_CHANGED_N','s1','Y','#SALE_EMAIL#','#EMAIL#','#SERVER_NAME#: Изменение статуса заказа N#ORDER_ID#','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Изменение статуса заказа в магазине #SITE_NAME#</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\"></p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Информационное сообщение сайта #SITE_NAME#<br />\n------------------------------------------<br />\n<br />\nСтатус заказа номер #ORDER_ID# от #ORDER_DATE# изменен.<br />\n<br />\nНовый статус заказа:<br />\n#ORDER_STATUS#<br />\n#ORDER_DESCRIPTION#<br />\n#TEXT#<br />\n<br />\nДля получения подробной информации по заказу пройдите на сайт #SERVER_NAME#/personal/order/#ORDER_ID#/<br />\n<br />\nСпасибо за ваш выбор!<br />\n#SITE_NAME#<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Изменение статуса заказа в магазине <?=$arParams[\"SITE_NAME\"];?></td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\"></p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?><br />\n------------------------------------------<br />\n<br />\nСтатус заказа номер <?=$arParams[\"ORDER_ID\"];?> от <?=$arParams[\"ORDER_DATE\"];?> изменен.<br />\n<br />\nНовый статус заказа:<br />\n<?=$arParams[\"ORDER_STATUS\"];?><br />\n<?=$arParams[\"ORDER_DESCRIPTION\"];?><br />\n<?=$arParams[\"TEXT\"];?><br />\n<br />\nДля получения подробной информации по заказу пройдите на сайт <?=$arParams[\"SERVER_NAME\"];?>/personal/order/<?=$arParams[\"ORDER_ID\"];?>/<br />\n<br />\nСпасибо за ваш выбор!<br />\n<?=$arParams[\"SITE_NAME\"];?><br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(57,'2019-07-10 13:46:58','VIRUS_DETECTED','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL#','#SITE_NAME#: Обнаружен вирус','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nЗдравствуйте!\n\nВы получили это сообщение, так как модуль проактивной защиты сервера #SERVER_NAME# обнаружил код, похожий на вирус.\n\n1. Подозрительный код был вырезан из html.\n2. Проверьте журнал вторжений и убедитесь, что код действительно вредоносный, а не является кодом какого-либо счетчика или фреймворка.\n (ссылка: http://#SERVER_NAME#/bitrix/admin/event_log.php?lang=ru&set_filter=Y&find_type=audit_type_id&find_audit_type[]=SECURITY_VIRUS )\n3. В случае, если код не является опасным, добавьте его в исключения на странице настройки антивируса.\n (ссылка: http://#SERVER_NAME#/bitrix/admin/security_antivirus.php?lang=ru&tabControl_active_tab=exceptions )\n4. Если код является вирусным, то необходимо выполнить следующие действия:\n\n а) Смените пароли доступа к сайту у администраторов и ответственных сотрудников.\n б) Смените пароли доступа по ssh и ftp.\n в) Проверьте и вылечите компьютеры администраторов, имевших доступ к сайту по ssh или ftp.\n г) В программах доступа к сайту по ssh и ftp отключите сохранение паролей.\n д) Удалите вредоносный код из зараженных файлов. Например, восстановите поврежденные файлы из самой свежей резервной копии.\n\n---------------------------------------------------------------------\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nЗдравствуйте!\n\nВы получили это сообщение, так как модуль проактивной защиты сервера <?=$arParams[\"SERVER_NAME\"];?> обнаружил код, похожий на вирус.\n\n1. Подозрительный код был вырезан из html.\n2. Проверьте журнал вторжений и убедитесь, что код действительно вредоносный, а не является кодом какого-либо счетчика или фреймворка.\n (ссылка: http://<?=$arParams[\"SERVER_NAME\"];?>/bitrix/admin/event_log.php?lang=ru&set_filter=Y&find_type=audit_type_id&find_audit_type[]=SECURITY_VIRUS )\n3. В случае, если код не является опасным, добавьте его в исключения на странице настройки антивируса.\n (ссылка: http://<?=$arParams[\"SERVER_NAME\"];?>/bitrix/admin/security_antivirus.php?lang=ru&tabControl_active_tab=exceptions )\n4. Если код является вирусным, то необходимо выполнить следующие действия:\n\n а) Смените пароли доступа к сайту у администраторов и ответственных сотрудников.\n б) Смените пароли доступа по ssh и ftp.\n в) Проверьте и вылечите компьютеры администраторов, имевших доступ к сайту по ssh или ftp.\n г) В программах доступа к сайту по ssh и ftp отключите сохранение паролей.\n д) Удалите вредоносный код из зараженных файлов. Например, восстановите поврежденные файлы из самой свежей резервной копии.\n\n---------------------------------------------------------------------\nСообщение сгенерировано автоматически.\n','text','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(58,'2019-07-10 13:47:03','SENDER_SUBSCRIBE_CONFIRM','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL#','#SITE_NAME#: Подтверждение подписки','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nЗдравствуйте,\n\nВы получили это сообщение, так как ваш адрес был подписан\nна список рассылки сервера #SERVER_NAME#.\n\nДополнительная информация о подписке:\n\nАдрес подписки (email) ............ #EMAIL#\nДата добавления/редактирования .... #DATE#\nСписок рассылок:\n#MAILING_LIST#\n\n\nДля подтверждения подписки перейдите по следующей ссылке:\nhttp://#SERVER_NAME##CONFIRM_URL#\n\n\nВнимание! Вы не будете получать сообщения рассылки, пока не подтвердите\nсвою подписку.\nЕсли вы не подписывались на рассылку и получили это письмо по ошибке,\nпроигнорируйте его.\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nЗдравствуйте,\n\nВы получили это сообщение, так как ваш адрес был подписан\nна список рассылки сервера <?=$arParams[\"SERVER_NAME\"];?>.\n\nДополнительная информация о подписке:\n\nАдрес подписки (email) ............ <?=$arParams[\"EMAIL\"];?>\n\nДата добавления/редактирования .... <?=$arParams[\"DATE\"];?>\n\nСписок рассылок:\n<?=$arParams[\"MAILING_LIST\"];?>\n\n\n\nДля подтверждения подписки перейдите по следующей ссылке:\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"CONFIRM_URL\"];?>\n\n\n\nВнимание! Вы не будете получать сообщения рассылки, пока не подтвердите\nсвою подписку.\nЕсли вы не подписывались на рассылку и получили это письмо по ошибке,\nпроигнорируйте его.\n\nСообщение сгенерировано автоматически.\n','text','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(59,'2019-07-10 13:47:14','SONET_NEW_MESSAGE','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: У Вас новое сообщение','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nЗдравствуйте, #USER_NAME#!\n\nВам пришло новое сообщение от пользователя #SENDER_NAME# #SENDER_LAST_NAME#:\n\n------------------------------------------\n#MESSAGE#\n------------------------------------------\n\nСсылка на сообщения пользователя:\n\nhttp://#SERVER_NAME#/club/messages/chat/#SENDER_ID#/\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nЗдравствуйте, <?=$arParams[\"USER_NAME\"];?>!\n\nВам пришло новое сообщение от пользователя <?=$arParams[\"SENDER_NAME\"];?> <?=$arParams[\"SENDER_LAST_NAME\"];?>:\n\n------------------------------------------\n<?=$arParams[\"MESSAGE\"];?>\n\n------------------------------------------\n\nСсылка на сообщения пользователя:\n\nhttp://<?=$arParams[\"SERVER_NAME\"];?>/club/messages/chat/<?=$arParams[\"SENDER_ID\"];?>/\n\nСообщение сгенерировано автоматически.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(60,'2019-07-10 13:47:14','SONET_INVITE_FRIEND','s1','Y','#DEFAULT_EMAIL_FROM#','#RECIPIENT_USER_EMAIL_TO#','#SITE_NAME#: Приглашение присоединиться к списку друзей','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nЗдравствуйте, #RECIPIENT_USER_NAME#!\n\n#SENDER_USER_NAME# #SENDER_USER_LAST_NAME# приглашает Вас присоединиться к списку его друзей.\n\nЧтобы откликнуться на приглашение, пожалуйста, перейдите по ссылке:\n\nhttp://#SERVER_NAME##URL#\n\nСообщение от пользователя:\n------------------------------------------\n#MESSAGE#\n------------------------------------------\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nЗдравствуйте, <?=$arParams[\"RECIPIENT_USER_NAME\"];?>!\n\n<?=$arParams[\"SENDER_USER_NAME\"];?> <?=$arParams[\"SENDER_USER_LAST_NAME\"];?> приглашает Вас присоединиться к списку его друзей.\n\nЧтобы откликнуться на приглашение, пожалуйста, перейдите по ссылке:\n\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"URL\"];?>\n\n\nСообщение от пользователя:\n------------------------------------------\n<?=$arParams[\"MESSAGE\"];?>\n\n------------------------------------------\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(61,'2019-07-10 13:47:14','SONET_INVITE_GROUP','s1','Y','#DEFAULT_EMAIL_FROM#','#USER_EMAIL#','#SITE_NAME#: Приглашение стать участником группы','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nЗдравствуйте, #USER_NAME#!\n\nПользователь #INITIATED_USER_NAME# #INITIATED_USER_LAST_NAME# приглашает Вас стать участником группы #GROUP_NAME#.\n\nЧтобы откликнуться на приглашение, пожалуйста, перейдите по ссылке:\n\nhttp://#SERVER_NAME##URL#\n\nСообщение от группы:\n------------------------------------------\n#MESSAGE#\n------------------------------------------\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nЗдравствуйте, <?=$arParams[\"USER_NAME\"];?>!\n\nПользователь <?=$arParams[\"INITIATED_USER_NAME\"];?> <?=$arParams[\"INITIATED_USER_LAST_NAME\"];?> приглашает Вас стать участником группы <?=$arParams[\"GROUP_NAME\"];?>.\n\nЧтобы откликнуться на приглашение, пожалуйста, перейдите по ссылке:\n\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"URL\"];?>\n\n\nСообщение от группы:\n------------------------------------------\n<?=$arParams[\"MESSAGE\"];?>\n\n------------------------------------------\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(62,'2019-07-10 13:47:14','SONET_AGREE_FRIEND','s1','Y','#DEFAULT_EMAIL_FROM#','#RECIPIENT_USER_EMAIL_TO#','#SITE_NAME#: Подтверждение присоединения к списку друзей','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nЗдравствуйте, #RECIPIENT_USER_NAME#!\n\n#SENDER_USER_NAME# #SENDER_USER_LAST_NAME# согласен присоединиться к списку Ваших друзей.\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nЗдравствуйте, <?=$arParams[\"RECIPIENT_USER_NAME\"];?>!\n\n<?=$arParams[\"SENDER_USER_NAME\"];?> <?=$arParams[\"SENDER_USER_LAST_NAME\"];?> согласен присоединиться к списку Ваших друзей.\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(63,'2019-07-10 13:47:14','SONET_BAN_FRIEND','s1','Y','#DEFAULT_EMAIL_FROM#','#RECIPIENT_USER_EMAIL_TO#','#SITE_NAME#: Занесение в черный список','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nЗдравствуйте, #RECIPIENT_USER_NAME#!\n\n#SENDER_USER_NAME# #SENDER_USER_LAST_NAME# занес Вас в черный список.\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nЗдравствуйте, <?=$arParams[\"RECIPIENT_USER_NAME\"];?>!\n\n<?=$arParams[\"SENDER_USER_NAME\"];?> <?=$arParams[\"SENDER_USER_LAST_NAME\"];?> занес Вас в черный список.\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(64,'2019-07-10 13:47:14','SONET_NEW_EVENT_GROUP','s1','Y','#DEFAULT_EMAIL_FROM#','#SUBSCRIBER_EMAIL#','#SITE_NAME#: #GROUP_NAME# - Новое событие группы','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nЗдравствуйте, #SUBSCRIBER_NAME#!\n\nВ группе #GROUP_NAME# произошли следующие изменения:\n\n#TITLE#\n\n------------------------------------------\n#MESSAGE#\n------------------------------------------\n\nЧтобы попасть на сайт, пожалуйста, перейдите по ссылке:\n\nhttp://#SERVER_NAME##URL#\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nЗдравствуйте, <?=$arParams[\"SUBSCRIBER_NAME\"];?>!\n\nВ группе <?=$arParams[\"GROUP_NAME\"];?> произошли следующие изменения:\n\n<?=$arParams[\"TITLE\"];?>\n\n\n------------------------------------------\n<?=$arParams[\"MESSAGE\"];?>\n\n------------------------------------------\n\nЧтобы попасть на сайт, пожалуйста, перейдите по ссылке:\n\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"URL\"];?>\n\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(65,'2019-07-10 13:47:14','SONET_NEW_EVENT_USER','s1','Y','#DEFAULT_EMAIL_FROM#','#SUBSCRIBER_EMAIL#','#SITE_NAME#: #USER_NAME# - Новое событие в карточке пользователя','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nЗдравствуйте, #SUBSCRIBER_NAME#!\n\nУ пользователя #USER_NAME# произошли следующие изменения:\n\n#TITLE#\n\n------------------------------------------\n#MESSAGE#\n------------------------------------------\n\nЧтобы попасть на сайт, пожалуйста, перейдите по ссылке:\n\nhttp://#SERVER_NAME##URL#\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nЗдравствуйте, <?=$arParams[\"SUBSCRIBER_NAME\"];?>!\n\nУ пользователя <?=$arParams[\"USER_NAME\"];?> произошли следующие изменения:\n\n<?=$arParams[\"TITLE\"];?>\n\n\n------------------------------------------\n<?=$arParams[\"MESSAGE\"];?>\n\n------------------------------------------\n\nЧтобы попасть на сайт, пожалуйста, перейдите по ссылке:\n\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"URL\"];?>\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(66,'2019-07-10 13:47:14','SONET_NEW_EVENT','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: #ENTITY# - Новое событие в #ENTITY_TYPE#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nЗдравствуйте, #SUBSCRIBER_NAME#!\n\nНа сайте произошли следующие изменения:\n\n#TITLE#\n\n------------------------------------------\n#MESSAGE#\n------------------------------------------\n\nЧтобы попасть на страницу, где произошло событие, пожалуйста, перейдите по ссылке:\n\n#URL#\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nЗдравствуйте, <?=$arParams[\"SUBSCRIBER_NAME\"];?>!\n\nНа сайте произошли следующие изменения:\n\n<?=$arParams[\"TITLE\"];?>\n\n\n------------------------------------------\n<?=$arParams[\"MESSAGE\"];?>\n\n------------------------------------------\n\nЧтобы попасть на страницу, где произошло событие, пожалуйста, перейдите по ссылке:\n\n<?=$arParams[\"URL\"];?>\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(67,'2019-07-10 13:47:14','SONET_REQUEST_GROUP','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#TITLE#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nЗдравствуйте, #USER_NAME#!\n\n------------------------------------------\n#MESSAGE#\n------------------------------------------\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nЗдравствуйте, <?=$arParams[\"USER_NAME\"];?>!\n\n------------------------------------------\n<?=$arParams[\"MESSAGE\"];?>\n\n------------------------------------------\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(68,'2019-07-10 13:47:14','SONET_LOG_NEW_ENTRY','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#LOG_ENTRY_TITLE#','<?EventMessageThemeCompiler::includeComponent(\"bitrix:socialnetwork.log.entry.mail\",\"\",array(\"EMAIL_TO\" => \"{#EMAIL_TO#}\",\"RECIPIENT_ID\" => \"{#RECIPIENT_ID#}\",\"LOG_ENTRY_ID\" => \"{#LOG_ENTRY_ID#}\",\"URL\" => \"{#URL#}\"));?>','<?EventMessageThemeCompiler::includeComponent(\"bitrix:socialnetwork.log.entry.mail\",\"\",array(\"EMAIL_TO\" => \"{$arParams[\'EMAIL_TO\']}\",\"RECIPIENT_ID\" => \"{$arParams[\'RECIPIENT_ID\']}\",\"LOG_ENTRY_ID\" => \"{$arParams[\'LOG_ENTRY_ID\']}\",\"URL\" => \"{$arParams[\'URL\']}\"));?>','html',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'mail_user',NULL,NULL),(69,'2019-07-10 13:47:14','SONET_LOG_NEW_COMMENT','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','Re: #LOG_ENTRY_TITLE#','<?EventMessageThemeCompiler::includeComponent(\"bitrix:socialnetwork.log.entry.mail\",\"\",array(\"EMAIL_TO\" => \"{#EMAIL_TO#}\",\"RECIPIENT_ID\" => \"{#RECIPIENT_ID#}\",\"LOG_ENTRY_ID\" => \"{#LOG_ENTRY_ID#}\",\"COMMENT_ID\" => \"{#COMMENT_ID#}\",\"URL\" => \"{#URL#}\"));?>','<?EventMessageThemeCompiler::includeComponent(\"bitrix:socialnetwork.log.entry.mail\",\"\",array(\"EMAIL_TO\" => \"{$arParams[\'EMAIL_TO\']}\",\"RECIPIENT_ID\" => \"{$arParams[\'RECIPIENT_ID\']}\",\"LOG_ENTRY_ID\" => \"{$arParams[\'LOG_ENTRY_ID\']}\",\"COMMENT_ID\" => \"{$arParams[\'COMMENT_ID\']}\",\"URL\" => \"{$arParams[\'URL\']}\"));?>','html',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'mail_user',NULL,NULL),(70,'2019-07-10 13:47:46','STATISTIC_DAILY_REPORT','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#SERVER_NAME#: Статистика сайта (#SERVER_TIME#)','#HTML_HEADER#\n<font class=\'h2\'>Обобщенная статистика сайта <font color=\'#A52929\'>#SITE_NAME#</font><br>\nДанные на <font color=\'#0D716F\'>#SERVER_TIME#</font></font>\n<br><br>\n<a class=\'tablebodylink\' href=\'http://#SERVER_NAME#/bitrix/admin/stat_list.php?lang=ru\'>http://#SERVER_NAME#/bitrix/admin/stat_list.php?lang=ru</a>\n<br>\n<hr><br>\n#HTML_COMMON#\n<br>\n#HTML_ADV#\n<br>\n#HTML_REFERERS#\n<br>\n#HTML_PHRASES#\n<br>\n#HTML_SEARCHERS#\n<br>\n#HTML_EVENTS#\n<br>\n<hr>\n<a class=\'tablebodylink\' href=\'http://#SERVER_NAME#/bitrix/admin/stat_list.php?lang=ru\'>http://#SERVER_NAME#/bitrix/admin/stat_list.php?lang=ru</a>\n#HTML_FOOTER#\n','<?=$arParams[\"HTML_HEADER\"];?>\n\n<font class=\'h2\'>Обобщенная статистика сайта <font color=\'#A52929\'><?=$arParams[\"SITE_NAME\"];?></font><br>\nДанные на <font color=\'#0D716F\'><?=$arParams[\"SERVER_TIME\"];?></font></font>\n<br><br>\n<a class=\'tablebodylink\' href=\'http://<?=$arParams[\"SERVER_NAME\"];?>/bitrix/admin/stat_list.php?lang=ru\'>http://<?=$arParams[\"SERVER_NAME\"];?>/bitrix/admin/stat_list.php?lang=ru</a>\n<br>\n<hr><br>\n<?=$arParams[\"HTML_COMMON\"];?>\n\n<br>\n<?=$arParams[\"HTML_ADV\"];?>\n\n<br>\n<?=$arParams[\"HTML_REFERERS\"];?>\n\n<br>\n<?=$arParams[\"HTML_PHRASES\"];?>\n\n<br>\n<?=$arParams[\"HTML_SEARCHERS\"];?>\n\n<br>\n<?=$arParams[\"HTML_EVENTS\"];?>\n\n<br>\n<hr>\n<a class=\'tablebodylink\' href=\'http://<?=$arParams[\"SERVER_NAME\"];?>/bitrix/admin/stat_list.php?lang=ru\'>http://<?=$arParams[\"SERVER_NAME\"];?>/bitrix/admin/stat_list.php?lang=ru</a>\n<?=$arParams[\"HTML_FOOTER\"];?>\n\n','html','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(71,'2019-07-10 13:47:46','STATISTIC_ACTIVITY_EXCEEDING','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#SERVER_NAME#: Превышен лимит активности','На сайте #SERVER_NAME# посетитель превысил установленный лимит активности.\n\nНачиная с #CURRENT_TIME# посетитель заблокирован на #DELAY_TIME# сек.\n\nАктивность  - #ACTIVITY_HITS# хитов за #ACTIVITY_TIME_LIMIT# сек. (лимит - #ACTIVITY_HITS_LIMIT#)\nПосетитель  - #VISITOR_ID#\nСессия      - #SESSION_ID#\nПоисковик   - [#SERACHER_ID#] #SEARCHER_NAME#\nUserAgent   - #USER_AGENT#\n\n>===============================================================================================\nДля добавления в стоп-лист воспользуйтесь нижеследующей ссылкой:\nhttp://#SERVER_NAME##STOPLIST_LINK#\nДля просмотра сессии посетителя воспользуйтесь нижеследующей ссылкой:\nhttp://#SERVER_NAME##SESSION_LINK#\nДля просмотра профайла посетителя воспользуйтесь нижеследующей ссылкой:\nhttp://#SERVER_NAME##VISITOR_LINK#\nДля просмотра статистики хитов поисковика воспользуйтесь нижеследующей ссылкой:\nhttp://#SERVER_NAME##SEARCHER_LINK#\n','На сайте <?=$arParams[\"SERVER_NAME\"];?> посетитель превысил установленный лимит активности.\n\nНачиная с <?=$arParams[\"CURRENT_TIME\"];?> посетитель заблокирован на <?=$arParams[\"DELAY_TIME\"];?> сек.\n\nАктивность  - <?=$arParams[\"ACTIVITY_HITS\"];?> хитов за <?=$arParams[\"ACTIVITY_TIME_LIMIT\"];?> сек. (лимит - <?=$arParams[\"ACTIVITY_HITS_LIMIT\"];?>)\nПосетитель  - <?=$arParams[\"VISITOR_ID\"];?>\n\nСессия      - <?=$arParams[\"SESSION_ID\"];?>\n\nПоисковик   - [<?=$arParams[\"SERACHER_ID\"];?>] <?=$arParams[\"SEARCHER_NAME\"];?>\n\nUserAgent   - <?=$arParams[\"USER_AGENT\"];?>\n\n\n>===============================================================================================\nДля добавления в стоп-лист воспользуйтесь нижеследующей ссылкой:\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"STOPLIST_LINK\"];?>\n\nДля просмотра сессии посетителя воспользуйтесь нижеследующей ссылкой:\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"SESSION_LINK\"];?>\n\nДля просмотра профайла посетителя воспользуйтесь нижеследующей ссылкой:\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"VISITOR_LINK\"];?>\n\nДля просмотра статистики хитов поисковика воспользуйтесь нижеследующей ссылкой:\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"SEARCHER_LINK\"];?>\n\n','text','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(72,'2019-07-10 13:47:50','SUBSCRIBE_CONFIRM','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL#','#SITE_NAME#: Подтверждение подписки','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nЗдравствуйте,\n\nВы получили это сообщение, так как ваш адрес был подписан\nна список рассылки сервера #SERVER_NAME#.\n\nДополнительная информация о подписке:\n\nАдрес подписки (email) ............ #EMAIL#\nДата добавления/редактирования .... #DATE_SUBSCR#\n\nВаш код для подтверждения подписки: #CONFIRM_CODE#\n\nДля подтверждения подписки перейдите по следующей ссылке:\nhttp://#SERVER_NAME##SUBSCR_SECTION#subscr_edit.php?ID=#ID#&CONFIRM_CODE=#CONFIRM_CODE#\n\nВы также можете ввести код для подтверждения подписки на странице:\nhttp://#SERVER_NAME##SUBSCR_SECTION#subscr_edit.php?ID=#ID#\n\nВнимание! Вы не будете получать сообщения рассылки, пока не подтвердите\nсвою подписку.\n\n---------------------------------------------------------------------\nСохраните это письмо, так как оно содержит информацию для авторизации.\nИспользуя код подтверждения подписки, вы cможете изменить параметры\nподписки или отписаться от рассылки.\n\nИзменить параметры:\nhttp://#SERVER_NAME##SUBSCR_SECTION#subscr_edit.php?ID=#ID#&CONFIRM_CODE=#CONFIRM_CODE#\n\nОтписаться:\nhttp://#SERVER_NAME##SUBSCR_SECTION#subscr_edit.php?ID=#ID#&CONFIRM_CODE=#CONFIRM_CODE#&action=unsubscribe\n---------------------------------------------------------------------\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nЗдравствуйте,\n\nВы получили это сообщение, так как ваш адрес был подписан\nна список рассылки сервера <?=$arParams[\"SERVER_NAME\"];?>.\n\nДополнительная информация о подписке:\n\nАдрес подписки (email) ............ <?=$arParams[\"EMAIL\"];?>\n\nДата добавления/редактирования .... <?=$arParams[\"DATE_SUBSCR\"];?>\n\n\nВаш код для подтверждения подписки: <?=$arParams[\"CONFIRM_CODE\"];?>\n\n\nДля подтверждения подписки перейдите по следующей ссылке:\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"SUBSCR_SECTION\"];?>subscr_edit.php?ID=<?=$arParams[\"ID\"];?>&CONFIRM_CODE=<?=$arParams[\"CONFIRM_CODE\"];?>\n\n\nВы также можете ввести код для подтверждения подписки на странице:\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"SUBSCR_SECTION\"];?>subscr_edit.php?ID=<?=$arParams[\"ID\"];?>\n\n\nВнимание! Вы не будете получать сообщения рассылки, пока не подтвердите\nсвою подписку.\n\n---------------------------------------------------------------------\nСохраните это письмо, так как оно содержит информацию для авторизации.\nИспользуя код подтверждения подписки, вы cможете изменить параметры\nподписки или отписаться от рассылки.\n\nИзменить параметры:\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"SUBSCR_SECTION\"];?>subscr_edit.php?ID=<?=$arParams[\"ID\"];?>&CONFIRM_CODE=<?=$arParams[\"CONFIRM_CODE\"];?>\n\n\nОтписаться:\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"SUBSCR_SECTION\"];?>subscr_edit.php?ID=<?=$arParams[\"ID\"];?>&CONFIRM_CODE=<?=$arParams[\"CONFIRM_CODE\"];?>&action=unsubscribe\n---------------------------------------------------------------------\n\nСообщение сгенерировано автоматически.\n','text','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(73,'2019-07-10 13:47:57','VOTE_FOR','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: [V] #VOTE_TITLE#','#USER_NAME# принял участие в опросе \"#VOTE_TITLE#\":\n#VOTE_STATISTIC#\n\nhttp://#SERVER_NAME##URL#\nСообщение сгенерировано автоматически.','<?=$arParams[\"USER_NAME\"];?> принял участие в опросе \"<?=$arParams[\"VOTE_TITLE\"];?>\":\n<?=$arParams[\"VOTE_STATISTIC\"];?>\n\n\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"URL\"];?>\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(74,'2019-07-10 13:48:01','WF_STATUS_CHANGE','s1','Y','#DEFAULT_EMAIL_FROM#','#ENTERED_BY_EMAIL#, #ADMIN_EMAIL#','#SITE_NAME#: Изменен статус документа # #ID#','Изменен статус документа # #ID# на сайте #SITE_NAME#.\n---------------------------------------------------------------------------\n\nСейчас поля документа имеют следующие значения:\n\nИмя файла    - #FILENAME#\nЗаголовок    - #TITLE#\nСтатус       - [#STATUS_ID#] #STATUS_TITLE#; предыдущий - [#PREV_STATUS_ID#] #PREV_STATUS_TITLE#\nСоздан       - #DATE_ENTER#; [#ENTERED_BY_ID#] #ENTERED_BY_NAME#\nИзменен      - #DATE_MODIFY#; [#MODIFIED_BY_ID#] #MODIFIED_BY_NAME#\n\nСодержимое (тип - #BODY_TYPE#):\n---------------------------------------------------------------------------\n#BODY_TEXT#\n---------------------------------------------------------------------------\n\nКомментарий:\n---------------------------------------------------------------------------\n#COMMENTS#\n---------------------------------------------------------------------------\n\nДля просмотра и редактирования документа воспользуйтесь ссылкой:\nhttp://#SERVER_NAME#/bitrix/admin/workflow_edit.php?lang=ru&ID=#ID#\n\nПисьмо сгенерировано автоматически.\n','Изменен статус документа # <?=$arParams[\"ID\"];?> на сайте <?=$arParams[\"SITE_NAME\"];?>.\n---------------------------------------------------------------------------\n\nСейчас поля документа имеют следующие значения:\n\nИмя файла    - <?=$arParams[\"FILENAME\"];?>\n\nЗаголовок    - <?=$arParams[\"TITLE\"];?>\n\nСтатус       - [<?=$arParams[\"STATUS_ID\"];?>] <?=$arParams[\"STATUS_TITLE\"];?>; предыдущий - [<?=$arParams[\"PREV_STATUS_ID\"];?>] <?=$arParams[\"PREV_STATUS_TITLE\"];?>\n\nСоздан       - <?=$arParams[\"DATE_ENTER\"];?>; [<?=$arParams[\"ENTERED_BY_ID\"];?>] <?=$arParams[\"ENTERED_BY_NAME\"];?>\n\nИзменен      - <?=$arParams[\"DATE_MODIFY\"];?>; [<?=$arParams[\"MODIFIED_BY_ID\"];?>] <?=$arParams[\"MODIFIED_BY_NAME\"];?>\n\n\nСодержимое (тип - <?=$arParams[\"BODY_TYPE\"];?>):\n---------------------------------------------------------------------------\n<?=$arParams[\"BODY_TEXT\"];?>\n\n---------------------------------------------------------------------------\n\nКомментарий:\n---------------------------------------------------------------------------\n<?=$arParams[\"COMMENTS\"];?>\n\n---------------------------------------------------------------------------\n\nДля просмотра и редактирования документа воспользуйтесь ссылкой:\nhttp://<?=$arParams[\"SERVER_NAME\"];?>/bitrix/admin/workflow_edit.php?lang=ru&ID=<?=$arParams[\"ID\"];?>\n\n\nПисьмо сгенерировано автоматически.\n','text','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(75,'2019-07-10 13:48:01','WF_NEW_DOCUMENT','s1','Y','#DEFAULT_EMAIL_FROM#','#ENTERED_BY_EMAIL#, #ADMIN_EMAIL#','#SITE_NAME#: Создан новый документ','Создан новый документ на сайте #SITE_NAME#.\n---------------------------------------------------------------------------\n\nСейчас поля документа имеют следующие значения:\n\nID           - #ID#\nИмя файла    - #FILENAME#\nЗаголовок    - #TITLE#\nСтатус       - [#STATUS_ID#] #STATUS_TITLE#\nСоздан       - #DATE_ENTER#; [#ENTERED_BY_ID#] #ENTERED_BY_NAME#\n\nСодержимое (тип - #BODY_TYPE#):\n---------------------------------------------------------------------------\n#BODY_TEXT#\n---------------------------------------------------------------------------\n\nКомментарий:\n---------------------------------------------------------------------------\n#COMMENTS#\n---------------------------------------------------------------------------\n\nДля просмотра и редактирования документа воспользуйтесь ссылкой:\nhttp://#SERVER_NAME#/bitrix/admin/workflow_edit.php?lang=ru&ID=#ID#\n\nПисьмо сгенерировано автоматически.\n','Создан новый документ на сайте <?=$arParams[\"SITE_NAME\"];?>.\n---------------------------------------------------------------------------\n\nСейчас поля документа имеют следующие значения:\n\nID           - <?=$arParams[\"ID\"];?>\n\nИмя файла    - <?=$arParams[\"FILENAME\"];?>\n\nЗаголовок    - <?=$arParams[\"TITLE\"];?>\n\nСтатус       - [<?=$arParams[\"STATUS_ID\"];?>] <?=$arParams[\"STATUS_TITLE\"];?>\n\nСоздан       - <?=$arParams[\"DATE_ENTER\"];?>; [<?=$arParams[\"ENTERED_BY_ID\"];?>] <?=$arParams[\"ENTERED_BY_NAME\"];?>\n\n\nСодержимое (тип - <?=$arParams[\"BODY_TYPE\"];?>):\n---------------------------------------------------------------------------\n<?=$arParams[\"BODY_TEXT\"];?>\n\n---------------------------------------------------------------------------\n\nКомментарий:\n---------------------------------------------------------------------------\n<?=$arParams[\"COMMENTS\"];?>\n\n---------------------------------------------------------------------------\n\nДля просмотра и редактирования документа воспользуйтесь ссылкой:\nhttp://<?=$arParams[\"SERVER_NAME\"];?>/bitrix/admin/workflow_edit.php?lang=ru&ID=<?=$arParams[\"ID\"];?>\n\n\nПисьмо сгенерировано автоматически.\n','text','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(76,'2019-07-10 13:48:01','WF_IBLOCK_STATUS_CHANGE','s1','Y','#DEFAULT_EMAIL_FROM#','#CREATED_BY_EMAIL#, #ADMIN_EMAIL#','#SITE_NAME#: Изменен статус элемента # #ID# информационного блока # #IBLOCK_ID# (тип - #IBLOCK_TYPE#)','#SITE_NAME#: Изменен статус элемента # #ID# информационного блока # #IBLOCK_ID# (тип - #IBLOCK_TYPE#)\n---------------------------------------------------------------------------\n\nСейчас поля элемента имеют следующие значения:\n\nНаименование - #NAME#\nСтатус       - [#STATUS_ID#] #STATUS_TITLE#; предыдущий - [#PREV_STATUS_ID#] #PREV_STATUS_TITLE#\nСоздан       - #DATE_CREATE#; [#CREATED_BY_ID#] #CREATED_BY_NAME#\nИзменен      - #DATE_MODIFY#; [#MODIFIED_BY_ID#] #MODIFIED_BY_NAME#\n\nАнонс (тип - #PREVIEW_TYPE#):\n---------------------------------------------------------------------------\n#PREVIEW_TEXT#\n---------------------------------------------------------------------------\n\nДетальное описание (тип - #DETAIL_TYPE#):\n---------------------------------------------------------------------------\n#DETAIL_TEXT#\n---------------------------------------------------------------------------\n\nКомментарий:\n---------------------------------------------------------------------------\n#COMMENTS#\n---------------------------------------------------------------------------\n\nДля просмотра и редактирования элемента воспользуйтесь ссылкой:\nhttp://#SERVER_NAME#/bitrix/admin/iblock_element_edit.php?lang=ru&WF=Y&PID=#ID#&type=#IBLOCK_TYPE#&IBLOCK_ID=#IBLOCK_ID#&filter_section=#SECTION_ID#\n\nПисьмо сгенерировано автоматически.\n','<?=$arParams[\"SITE_NAME\"];?>: Изменен статус элемента # <?=$arParams[\"ID\"];?> информационного блока # <?=$arParams[\"IBLOCK_ID\"];?> (тип - <?=$arParams[\"IBLOCK_TYPE\"];?>)\n---------------------------------------------------------------------------\n\nСейчас поля элемента имеют следующие значения:\n\nНаименование - <?=$arParams[\"NAME\"];?>\n\nСтатус       - [<?=$arParams[\"STATUS_ID\"];?>] <?=$arParams[\"STATUS_TITLE\"];?>; предыдущий - [<?=$arParams[\"PREV_STATUS_ID\"];?>] <?=$arParams[\"PREV_STATUS_TITLE\"];?>\n\nСоздан       - <?=$arParams[\"DATE_CREATE\"];?>; [<?=$arParams[\"CREATED_BY_ID\"];?>] <?=$arParams[\"CREATED_BY_NAME\"];?>\n\nИзменен      - <?=$arParams[\"DATE_MODIFY\"];?>; [<?=$arParams[\"MODIFIED_BY_ID\"];?>] <?=$arParams[\"MODIFIED_BY_NAME\"];?>\n\n\nАнонс (тип - <?=$arParams[\"PREVIEW_TYPE\"];?>):\n---------------------------------------------------------------------------\n<?=$arParams[\"PREVIEW_TEXT\"];?>\n\n---------------------------------------------------------------------------\n\nДетальное описание (тип - <?=$arParams[\"DETAIL_TYPE\"];?>):\n---------------------------------------------------------------------------\n<?=$arParams[\"DETAIL_TEXT\"];?>\n\n---------------------------------------------------------------------------\n\nКомментарий:\n---------------------------------------------------------------------------\n<?=$arParams[\"COMMENTS\"];?>\n\n---------------------------------------------------------------------------\n\nДля просмотра и редактирования элемента воспользуйтесь ссылкой:\nhttp://<?=$arParams[\"SERVER_NAME\"];?>/bitrix/admin/iblock_element_edit.php?lang=ru&WF=Y&PID=<?=$arParams[\"ID\"];?>&type=<?=$arParams[\"IBLOCK_TYPE\"];?>&IBLOCK_ID=<?=$arParams[\"IBLOCK_ID\"];?>&filter_section=<?=$arParams[\"SECTION_ID\"];?>\n\n\nПисьмо сгенерировано автоматически.\n','text','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(77,'2019-07-10 13:48:01','WF_NEW_IBLOCK_ELEMENT','s1','Y','#DEFAULT_EMAIL_FROM#','#CREATED_BY_EMAIL#, #ADMIN_EMAIL#','#SITE_NAME#: Создан новый элемент информационного блока # #IBLOCK_ID# (тип - #IBLOCK_TYPE#)','#SITE_NAME#: Создан новый элемент информационного блока # #IBLOCK_ID# (тип - #IBLOCK_TYPE#)\n---------------------------------------------------------------------------\n\nСейчас поля элемента имеют следующие значения:\n\nНаименование - #NAME#\nСтатус       - [#STATUS_ID#] #STATUS_TITLE#\nСоздан       - #DATE_CREATE#; [#CREATED_BY_ID#] #CREATED_BY_NAME#\n\nАнонс (тип - #PREVIEW_TYPE#):\n---------------------------------------------------------------------------\n#PREVIEW_TEXT#\n---------------------------------------------------------------------------\n\nДетальное описание (тип - #DETAIL_TYPE#):\n---------------------------------------------------------------------------\n#DETAIL_TEXT#\n---------------------------------------------------------------------------\n\nКомментарий:\n---------------------------------------------------------------------------\n#COMMENTS#\n---------------------------------------------------------------------------\n\nДля просмотра и редактирования элемента воспользуйтесь ссылкой:\nhttp://#SERVER_NAME#/bitrix/admin/iblock_element_edit.php?lang=ru&WF=Y&PID=#ID#&type=#IBLOCK_TYPE#&IBLOCK_ID=#IBLOCK_ID#&filter_section=#SECTION_ID#\n\nПисьмо сгенерировано автоматически.\n','<?=$arParams[\"SITE_NAME\"];?>: Создан новый элемент информационного блока # <?=$arParams[\"IBLOCK_ID\"];?> (тип - <?=$arParams[\"IBLOCK_TYPE\"];?>)\n---------------------------------------------------------------------------\n\nСейчас поля элемента имеют следующие значения:\n\nНаименование - <?=$arParams[\"NAME\"];?>\n\nСтатус       - [<?=$arParams[\"STATUS_ID\"];?>] <?=$arParams[\"STATUS_TITLE\"];?>\n\nСоздан       - <?=$arParams[\"DATE_CREATE\"];?>; [<?=$arParams[\"CREATED_BY_ID\"];?>] <?=$arParams[\"CREATED_BY_NAME\"];?>\n\n\nАнонс (тип - <?=$arParams[\"PREVIEW_TYPE\"];?>):\n---------------------------------------------------------------------------\n<?=$arParams[\"PREVIEW_TEXT\"];?>\n\n---------------------------------------------------------------------------\n\nДетальное описание (тип - <?=$arParams[\"DETAIL_TYPE\"];?>):\n---------------------------------------------------------------------------\n<?=$arParams[\"DETAIL_TEXT\"];?>\n\n---------------------------------------------------------------------------\n\nКомментарий:\n---------------------------------------------------------------------------\n<?=$arParams[\"COMMENTS\"];?>\n\n---------------------------------------------------------------------------\n\nДля просмотра и редактирования элемента воспользуйтесь ссылкой:\nhttp://<?=$arParams[\"SERVER_NAME\"];?>/bitrix/admin/iblock_element_edit.php?lang=ru&WF=Y&PID=<?=$arParams[\"ID\"];?>&type=<?=$arParams[\"IBLOCK_TYPE\"];?>&IBLOCK_ID=<?=$arParams[\"IBLOCK_ID\"];?>&filter_section=<?=$arParams[\"SECTION_ID\"];?>\n\n\nПисьмо сгенерировано автоматически.\n','text','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `b_event_message` VALUES (1,'2019-10-17 11:02:34','NEW_USER','s1','Y','#DEFAULT_EMAIL_FROM#','#DEFAULT_EMAIL_FROM#','#SITE_NAME#: Зарегистрировался новый пользователь','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nНа сайте #SERVER_NAME# успешно зарегистрирован новый пользователь.\n\nДанные пользователя:\nID пользователя: #USER_ID#\n\nИмя: #NAME#\nФамилия: #LAST_NAME#\nE-Mail: #EMAIL#\n\nLogin: #LOGIN#\n\nПисьмо сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nНа сайте <?=$arParams[\"SERVER_NAME\"];?> успешно зарегистрирован новый пользователь.\n\nДанные пользователя:\nID пользователя: <?=$arParams[\"USER_ID\"];?>\n\n\nИмя: <?=$arParams[\"NAME\"];?>\n\nФамилия: <?=$arParams[\"LAST_NAME\"];?>\n\nE-Mail: <?=$arParams[\"EMAIL\"];?>\n\n\nLogin: <?=$arParams[\"LOGIN\"];?>\n\n\nПисьмо сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ru'),(2,'2019-10-17 11:02:34','USER_INFO','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL#','#SITE_NAME#: Регистрационная информация','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n#NAME# #LAST_NAME#,\n\n#MESSAGE#\n\nВаша регистрационная информация:\n\nID пользователя: #USER_ID#\nСтатус профиля: #STATUS#\nLogin: #LOGIN#\n\nВы можете изменить пароль, перейдя по следующей ссылке:\nhttp://#SERVER_NAME#/auth/index.php?change_password=yes&lang=ru&USER_CHECKWORD=#CHECKWORD#&USER_LOGIN=#URL_LOGIN#\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n<?=$arParams[\"NAME\"];?> <?=$arParams[\"LAST_NAME\"];?>,\n\n<?=$arParams[\"MESSAGE\"];?>\n\n\nВаша регистрационная информация:\n\nID пользователя: <?=$arParams[\"USER_ID\"];?>\n\nСтатус профиля: <?=$arParams[\"STATUS\"];?>\n\nLogin: <?=$arParams[\"LOGIN\"];?>\n\n\nВы можете изменить пароль, перейдя по следующей ссылке:\nhttp://<?=$arParams[\"SERVER_NAME\"];?>/auth/index.php?change_password=yes&lang=ru&USER_CHECKWORD=<?=$arParams[\"CHECKWORD\"];?>&USER_LOGIN=<?=$arParams[\"URL_LOGIN\"];?>\n\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ru'),(3,'2019-10-17 11:02:34','USER_PASS_REQUEST','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL#','#SITE_NAME#: Запрос на смену пароля','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n#NAME# #LAST_NAME#,\n\n#MESSAGE#\n\nДля смены пароля перейдите по следующей ссылке:\nhttp://#SERVER_NAME#/auth/index.php?change_password=yes&lang=ru&USER_CHECKWORD=#CHECKWORD#&USER_LOGIN=#URL_LOGIN#\n\nВаша регистрационная информация:\n\nID пользователя: #USER_ID#\nСтатус профиля: #STATUS#\nLogin: #LOGIN#\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n<?=$arParams[\"NAME\"];?> <?=$arParams[\"LAST_NAME\"];?>,\n\n<?=$arParams[\"MESSAGE\"];?>\n\n\nДля смены пароля перейдите по следующей ссылке:\nhttp://<?=$arParams[\"SERVER_NAME\"];?>/auth/index.php?change_password=yes&lang=ru&USER_CHECKWORD=<?=$arParams[\"CHECKWORD\"];?>&USER_LOGIN=<?=$arParams[\"URL_LOGIN\"];?>\n\n\nВаша регистрационная информация:\n\nID пользователя: <?=$arParams[\"USER_ID\"];?>\n\nСтатус профиля: <?=$arParams[\"STATUS\"];?>\n\nLogin: <?=$arParams[\"LOGIN\"];?>\n\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ru'),(4,'2019-10-17 11:02:34','USER_PASS_CHANGED','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL#','#SITE_NAME#: Подтверждение смены пароля','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n#NAME# #LAST_NAME#,\n\n#MESSAGE#\n\nВаша регистрационная информация:\n\nID пользователя: #USER_ID#\nСтатус профиля: #STATUS#\nLogin: #LOGIN#\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n<?=$arParams[\"NAME\"];?> <?=$arParams[\"LAST_NAME\"];?>,\n\n<?=$arParams[\"MESSAGE\"];?>\n\n\nВаша регистрационная информация:\n\nID пользователя: <?=$arParams[\"USER_ID\"];?>\n\nСтатус профиля: <?=$arParams[\"STATUS\"];?>\n\nLogin: <?=$arParams[\"LOGIN\"];?>\n\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ru'),(5,'2019-10-17 11:02:34','NEW_USER_CONFIRM','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL#','#SITE_NAME#: Подтверждение регистрации нового пользователя','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nЗдравствуйте,\n\nВы получили это сообщение, так как ваш адрес был использован при регистрации нового пользователя на сервере #SERVER_NAME#.\n\nВаш код для подтверждения регистрации: #CONFIRM_CODE#\n\nДля подтверждения регистрации перейдите по следующей ссылке:\nhttp://#SERVER_NAME#/auth/index.php?confirm_registration=yes&confirm_user_id=#USER_ID#&confirm_code=#CONFIRM_CODE#\n\nВы также можете ввести код для подтверждения регистрации на странице:\nhttp://#SERVER_NAME#/auth/index.php?confirm_registration=yes&confirm_user_id=#USER_ID#\n\nВнимание! Ваш профиль не будет активным, пока вы не подтвердите свою регистрацию.\n\n---------------------------------------------------------------------\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nЗдравствуйте,\n\nВы получили это сообщение, так как ваш адрес был использован при регистрации нового пользователя на сервере <?=$arParams[\"SERVER_NAME\"];?>.\n\nВаш код для подтверждения регистрации: <?=$arParams[\"CONFIRM_CODE\"];?>\n\n\nДля подтверждения регистрации перейдите по следующей ссылке:\nhttp://<?=$arParams[\"SERVER_NAME\"];?>/auth/index.php?confirm_registration=yes&confirm_user_id=<?=$arParams[\"USER_ID\"];?>&confirm_code=<?=$arParams[\"CONFIRM_CODE\"];?>\n\n\nВы также можете ввести код для подтверждения регистрации на странице:\nhttp://<?=$arParams[\"SERVER_NAME\"];?>/auth/index.php?confirm_registration=yes&confirm_user_id=<?=$arParams[\"USER_ID\"];?>\n\n\nВнимание! Ваш профиль не будет активным, пока вы не подтвердите свою регистрацию.\n\n---------------------------------------------------------------------\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ru'),(6,'2019-10-17 11:02:34','USER_INVITE','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL#','#SITE_NAME#: Приглашение на сайт','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\nЗдравствуйте, #NAME# #LAST_NAME#!\n\nАдминистратором сайта вы добавлены в число зарегистрированных пользователей.\n\nПриглашаем Вас на наш сайт.\n\nВаша регистрационная информация:\n\nID пользователя: #ID#\nLogin: #LOGIN#\n\nРекомендуем вам сменить установленный автоматически пароль.\n\nДля смены пароля перейдите по следующей ссылке:\nhttp://#SERVER_NAME#/auth.php?change_password=yes&USER_LOGIN=#URL_LOGIN#&USER_CHECKWORD=#CHECKWORD#\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\nЗдравствуйте, <?=$arParams[\"NAME\"];?> <?=$arParams[\"LAST_NAME\"];?>!\n\nАдминистратором сайта вы добавлены в число зарегистрированных пользователей.\n\nПриглашаем Вас на наш сайт.\n\nВаша регистрационная информация:\n\nID пользователя: <?=$arParams[\"ID\"];?>\n\nLogin: <?=$arParams[\"LOGIN\"];?>\n\n\nРекомендуем вам сменить установленный автоматически пароль.\n\nДля смены пароля перейдите по следующей ссылке:\nhttp://<?=$arParams[\"SERVER_NAME\"];?>/auth.php?change_password=yes&USER_LOGIN=<?=$arParams[\"URL_LOGIN\"];?>&USER_CHECKWORD=<?=$arParams[\"CHECKWORD\"];?>\n\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ru'),(7,'2019-10-17 11:02:34','FEEDBACK_FORM','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: Сообщение из формы обратной связи','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nВам было отправлено сообщение через форму обратной связи\n\nАвтор: #AUTHOR#\nE-mail автора: #AUTHOR_EMAIL#\n\nТекст сообщения:\n#TEXT#\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nВам было отправлено сообщение через форму обратной связи\n\nАвтор: <?=$arParams[\"AUTHOR\"];?>\n\nE-mail автора: <?=$arParams[\"AUTHOR_EMAIL\"];?>\n\n\nТекст сообщения:\n<?=$arParams[\"TEXT\"];?>\n\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ru'),(8,'2019-10-17 11:02:34','MAIN_MAIL_CONFIRM_CODE','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#MESSAGE_SUBJECT#','<? EventMessageThemeCompiler::includeComponent(\'bitrix:main.mail.confirm\', \'\', $arParams); ?>','<? EventMessageThemeCompiler::includeComponent(\'bitrix:main.mail.confirm\', \'\', $arParams); ?>','html',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'mail_join',NULL,NULL),(9,'2019-10-17 11:02:47','NEW_BLOG_MESSAGE','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: [B] #BLOG_NAME# : #MESSAGE_TITLE#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nНовое сообщение в блоге \"#BLOG_NAME#\"\n\nТема:\n#MESSAGE_TITLE#\n\nАвтор: #AUTHOR#\nДата: #MESSAGE_DATE#\n\nТекст сообщения:\n#MESSAGE_TEXT#\n\nАдрес сообщения:\n#MESSAGE_PATH#\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nНовое сообщение в блоге \"<?=$arParams[\"BLOG_NAME\"];?>\"\n\nТема:\n<?=$arParams[\"MESSAGE_TITLE\"];?>\n\n\nАвтор: <?=$arParams[\"AUTHOR\"];?>\n\nДата: <?=$arParams[\"MESSAGE_DATE\"];?>\n\n\nТекст сообщения:\n<?=$arParams[\"MESSAGE_TEXT\"];?>\n\n\nАдрес сообщения:\n<?=$arParams[\"MESSAGE_PATH\"];?>\n\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(10,'2019-10-17 11:02:47','NEW_BLOG_COMMENT','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: [B] #MESSAGE_TITLE# : #COMMENT_TITLE#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nНовый комментарий в блоге \"#BLOG_NAME#\" на сообщение \"#MESSAGE_TITLE#\"\n\nТема:\n#COMMENT_TITLE#\nАвтор: #AUTHOR#\nДата: #COMMENT_DATE#\n\nТекст сообщения:\n#COMMENT_TEXT#\n\nАдрес сообщения:\n#COMMENT_PATH#\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nНовый комментарий в блоге \"<?=$arParams[\"BLOG_NAME\"];?>\" на сообщение \"<?=$arParams[\"MESSAGE_TITLE\"];?>\"\n\nТема:\n<?=$arParams[\"COMMENT_TITLE\"];?>\n\nАвтор: <?=$arParams[\"AUTHOR\"];?>\n\nДата: <?=$arParams[\"COMMENT_DATE\"];?>\n\n\nТекст сообщения:\n<?=$arParams[\"COMMENT_TEXT\"];?>\n\n\nАдрес сообщения:\n<?=$arParams[\"COMMENT_PATH\"];?>\n\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(11,'2019-10-17 11:02:47','NEW_BLOG_COMMENT2COMMENT','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: [B] #MESSAGE_TITLE# : #COMMENT_TITLE#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nНовый комментарий на ваш комментарий в блоге \"#BLOG_NAME#\" на сообщение \"#MESSAGE_TITLE#\".\n\nТема:\n#COMMENT_TITLE#\nАвтор: #AUTHOR#\nДата: #COMMENT_DATE#\n\nТекст сообщения:\n#COMMENT_TEXT#\n\nАдрес сообщения:\n#COMMENT_PATH#\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nНовый комментарий на ваш комментарий в блоге \"<?=$arParams[\"BLOG_NAME\"];?>\" на сообщение \"<?=$arParams[\"MESSAGE_TITLE\"];?>\".\n\nТема:\n<?=$arParams[\"COMMENT_TITLE\"];?>\n\nАвтор: <?=$arParams[\"AUTHOR\"];?>\n\nДата: <?=$arParams[\"COMMENT_DATE\"];?>\n\n\nТекст сообщения:\n<?=$arParams[\"COMMENT_TEXT\"];?>\n\n\nАдрес сообщения:\n<?=$arParams[\"COMMENT_PATH\"];?>\n\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(12,'2019-10-17 11:02:47','NEW_BLOG_COMMENT_WITHOUT_TITLE','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: [B] #MESSAGE_TITLE#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nНовый комментарий в блоге \"#BLOG_NAME#\" на сообщение \"#MESSAGE_TITLE#\"\n\nАвтор: #AUTHOR#\nДата: #COMMENT_DATE#\n\nТекст сообщения:\n#COMMENT_TEXT#\n\nАдрес сообщения:\n#COMMENT_PATH#\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nНовый комментарий в блоге \"<?=$arParams[\"BLOG_NAME\"];?>\" на сообщение \"<?=$arParams[\"MESSAGE_TITLE\"];?>\"\n\nАвтор: <?=$arParams[\"AUTHOR\"];?>\n\nДата: <?=$arParams[\"COMMENT_DATE\"];?>\n\n\nТекст сообщения:\n<?=$arParams[\"COMMENT_TEXT\"];?>\n\n\nАдрес сообщения:\n<?=$arParams[\"COMMENT_PATH\"];?>\n\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(13,'2019-10-17 11:02:47','NEW_BLOG_COMMENT2COMMENT_WITHOUT_TITLE','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: [B] #MESSAGE_TITLE#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nНовый комментарий на ваш комментарий в блоге \"#BLOG_NAME#\" на сообщение \"#MESSAGE_TITLE#\".\n\nАвтор: #AUTHOR#\nДата: #COMMENT_DATE#\n\nТекст сообщения:\n#COMMENT_TEXT#\n\nАдрес сообщения:\n#COMMENT_PATH#\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nНовый комментарий на ваш комментарий в блоге \"<?=$arParams[\"BLOG_NAME\"];?>\" на сообщение \"<?=$arParams[\"MESSAGE_TITLE\"];?>\".\n\nАвтор: <?=$arParams[\"AUTHOR\"];?>\n\nДата: <?=$arParams[\"COMMENT_DATE\"];?>\n\n\nТекст сообщения:\n<?=$arParams[\"COMMENT_TEXT\"];?>\n\n\nАдрес сообщения:\n<?=$arParams[\"COMMENT_PATH\"];?>\n\n\nСообщение сгенерировано автоматически.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(14,'2019-10-17 11:02:47','BLOG_YOUR_BLOG_TO_USER','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: [B] Ваш блог \"#BLOG_NAME#\" был добавлен в друзья к #USER#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nВаш блог \"#BLOG_NAME#\" был добавлен в друзья к #USER#.\n\nПрофиль пользователя: #USER_URL#\n\nАдрес вашего блога: #BLOG_ADR#\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nВаш блог \"<?=$arParams[\"BLOG_NAME\"];?>\" был добавлен в друзья к <?=$arParams[\"USER\"];?>.\n\nПрофиль пользователя: <?=$arParams[\"USER_URL\"];?>\n\n\nАдрес вашего блога: <?=$arParams[\"BLOG_ADR\"];?>\n\n\nСообщение сгенерировано автоматически.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(15,'2019-10-17 11:02:47','BLOG_YOU_TO_BLOG','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: [B] Вы были добавлены в друзья блога \"#BLOG_NAME#\"','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nВы были добавлены в друзья блога \"#BLOG_NAME#\".\n\nАдрес блога: #BLOG_ADR#\n\nВаш профиль: #USER_URL#\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nВы были добавлены в друзья блога \"<?=$arParams[\"BLOG_NAME\"];?>\".\n\nАдрес блога: <?=$arParams[\"BLOG_ADR\"];?>\n\n\nВаш профиль: <?=$arParams[\"USER_URL\"];?>\n\n\nСообщение сгенерировано автоматически.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(16,'2019-10-17 11:02:47','BLOG_BLOG_TO_YOU','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: [B] К вам в друзья был добавлен блог \"#BLOG_NAME#\"','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nК вам в друзья был добавлен блог \"#BLOG_NAME#\".\n\nАдрес блога: #BLOG_ADR#\n\nВаш профиль: #USER_URL#\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nК вам в друзья был добавлен блог \"<?=$arParams[\"BLOG_NAME\"];?>\".\n\nАдрес блога: <?=$arParams[\"BLOG_ADR\"];?>\n\n\nВаш профиль: <?=$arParams[\"USER_URL\"];?>\n\n\nСообщение сгенерировано автоматически.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(17,'2019-10-17 11:02:47','BLOG_USER_TO_YOUR_BLOG','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: [B] В ваш блог \"#BLOG_NAME#\" был добавлен друг #USER#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nВ ваш блог \"#BLOG_NAME#\" был добавлен друг #USER#.\n\nПрофиль пользователя: #USER_URL#\n\nАдрес вашего блога: #BLOG_ADR#\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nВ ваш блог \"<?=$arParams[\"BLOG_NAME\"];?>\" был добавлен друг <?=$arParams[\"USER\"];?>.\n\nПрофиль пользователя: <?=$arParams[\"USER_URL\"];?>\n\n\nАдрес вашего блога: <?=$arParams[\"BLOG_ADR\"];?>\n\n\nСообщение сгенерировано автоматически.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(18,'2019-10-17 11:02:47','BLOG_SONET_NEW_POST','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#POST_TITLE#','<?EventMessageThemeCompiler::includeComponent(\"bitrix:socialnetwork.blog.post.mail\",\"\",Array(\"EMAIL_TO\" => \"{#EMAIL_TO#}\",\"RECIPIENT_ID\" => \"{#RECIPIENT_ID#}\",\"POST_ID\" => \"{#POST_ID#}\",\"URL\" => \"{#URL#}\"));?>','<?EventMessageThemeCompiler::includeComponent(\"bitrix:socialnetwork.blog.post.mail\",\"\",Array(\"EMAIL_TO\" => \"{$arParams[\'EMAIL_TO\']}\",\"RECIPIENT_ID\" => \"{$arParams[\'RECIPIENT_ID\']}\",\"POST_ID\" => \"{$arParams[\'POST_ID\']}\",\"URL\" => \"{$arParams[\'URL\']}\"));?>','html',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'mail_user',NULL,NULL),(19,'2019-10-17 11:02:47','BLOG_SONET_NEW_COMMENT','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','Re: #POST_TITLE#','<?EventMessageThemeCompiler::includeComponent(\"bitrix:socialnetwork.blog.post.comment.mail\",\"\",Array(\"COMMENT_ID\" => \"{#COMMENT_ID#}\",\"RECIPIENT_ID\" => \"{#RECIPIENT_ID#}\",\"EMAIL_TO\" => \"{#EMAIL_TO#}\",\"POST_ID\" => \"{#POST_ID#}\",\"URL\" => \"{#URL#}\"));?>','<?EventMessageThemeCompiler::includeComponent(\"bitrix:socialnetwork.blog.post.comment.mail\",\"\",Array(\"COMMENT_ID\" => \"{$arParams[\'COMMENT_ID\']}\",\"RECIPIENT_ID\" => \"{$arParams[\'RECIPIENT_ID\']}\",\"EMAIL_TO\" => \"{$arParams[\'EMAIL_TO\']}\",\"POST_ID\" => \"{$arParams[\'POST_ID\']}\",\"URL\" => \"{$arParams[\'URL\']}\"));?>','html',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'mail_user',NULL,NULL),(20,'2019-10-17 11:02:47','BLOG_SONET_POST_SHARE','s1','Y','#EMAIL_FROM#','#EMAIL_TO#','#POST_TITLE#','<?EventMessageThemeCompiler::includeComponent(\"bitrix:socialnetwork.blog.post_share.mail\",\"\",Array(\"EMAIL_TO\" => \"{#EMAIL_TO#}\",\"RECIPIENT_ID\" => \"{#RECIPIENT_ID#}\",\"POST_ID\" => \"{#POST_ID#}\",\"URL\" => \"{#URL#}\"));?>','<?EventMessageThemeCompiler::includeComponent(\"bitrix:socialnetwork.blog.post_share.mail\",\"\",Array(\"EMAIL_TO\" => \"{$arParams[\'EMAIL_TO\']}\",\"RECIPIENT_ID\" => \"{$arParams[\'RECIPIENT_ID\']}\",\"POST_ID\" => \"{$arParams[\'POST_ID\']}\",\"URL\" => \"{$arParams[\'URL\']}\"));?>','html',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'mail_user',NULL,NULL),(21,'2019-10-17 11:02:47','BLOG_POST_BROADCAST','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: #MESSAGE_TITLE#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nНа сайте добавлено новое сообщение.\n\nТема:\n#MESSAGE_TITLE#\n\nАвтор: #AUTHOR#\n\nТекст сообщения:\n#MESSAGE_TEXT#\n\nАдрес сообщения:\n#MESSAGE_PATH#\n\nСообщение сгенерировано автоматически.','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nНа сайте добавлено новое сообщение.\n\nТема:\n<?=$arParams[\"MESSAGE_TITLE\"];?>\n\n\nАвтор: <?=$arParams[\"AUTHOR\"];?>\n\n\nТекст сообщения:\n<?=$arParams[\"MESSAGE_TEXT\"];?>\n\n\nАдрес сообщения:\n<?=$arParams[\"MESSAGE_PATH\"];?>\n\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(22,'2019-10-17 11:02:55','CATALOG_PRODUCT_SUBSCRIBE_LIST_CONFIRM','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: Код подтверждения','\n			<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n			<html xmlns=\"http://www.w3.org/1999/xhtml\">\n			<head>\n				<style>\n					body\n					{\n						font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n						font-size: 14px;\n						color: #000;\n					}\n				</style>\n			</head>\n			<body>\n			<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; \n				border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n				<tr>\n					<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; \n						padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n						<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n							<tr>\n								<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: \n								center; font-size: 26px; color: #0b3961;\">Информационное сообщение сайта #SITE_NAME#</td>\n							</tr>\n							<tr>\n								<td bgcolor=\"#bad3df\" height=\"11\"></td>\n							</tr>\n						</table>\n					</td>\n				</tr>\n				<tr>\n					<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n						<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый, #USER_NAME#!</p>\n						<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">\nВы получили это сообщение, так как на ваш адрес был запрошен код подтверждения для доступа к подпискам сайта #SERVER_NAME#. <br><br> \nВаш код для подтверждения подписки: #TOKEN# <br><br> \nДля получения доступа к подпискам перейдите по следующей ссылке: #TOKEN_URL# <br><br>\nВы также можете ввести код на странице: #LIST_SUBSCRIBES# <br><br>\nПисьмо содержит информацию для авторизации.<br>\nИспользуя код подтверждения, вы cможете получить доступ к списку подписок.<br>\nНе отвечайте на письмо, оно сформировано автоматически.<br><br>\nСпасибо, что вы с нами!<br>\n</p>\n					</td>\n				</tr>\n				<tr>\n					<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n						<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; \n							line-height:21px;\">С уважением, администрация \n							<a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n							E-mail: <a href=\"mailto:#DEFAULT_EMAIL_FROM#\" style=\"color:#2e6eb6;\">#DEFAULT_EMAIL_FROM#</a>\n							\n						</p>\n					</td>\n				</tr>\n			</table>\n			</body>\n			</html>\n		','\n			<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n			<html xmlns=\"http://www.w3.org/1999/xhtml\">\n			<head>\n				<style>\n					body\n					{\n						font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n						font-size: 14px;\n						color: #000;\n					}\n				</style>\n			</head>\n			<body>\n			<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; \n				border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n				<tr>\n					<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; \n						padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n						<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n							<tr>\n								<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: \n								center; font-size: 26px; color: #0b3961;\">Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?></td>\n							</tr>\n							<tr>\n								<td bgcolor=\"#bad3df\" height=\"11\"></td>\n							</tr>\n						</table>\n					</td>\n				</tr>\n				<tr>\n					<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n						<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый, <?=$arParams[\"USER_NAME\"];?>!</p>\n						<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">\nВы получили это сообщение, так как на ваш адрес был запрошен код подтверждения для доступа к подпискам сайта <?=$arParams[\"SERVER_NAME\"];?>. <br><br> \nВаш код для подтверждения подписки: <?=$arParams[\"TOKEN\"];?> <br><br> \nДля получения доступа к подпискам перейдите по следующей ссылке: <?=$arParams[\"TOKEN_URL\"];?> <br><br>\nВы также можете ввести код на странице: <?=$arParams[\"LIST_SUBSCRIBES\"];?> <br><br>\nПисьмо содержит информацию для авторизации.<br>\nИспользуя код подтверждения, вы cможете получить доступ к списку подписок.<br>\nНе отвечайте на письмо, оно сформировано автоматически.<br><br>\nСпасибо, что вы с нами!<br>\n</p>\n					</td>\n				</tr>\n				<tr>\n					<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n						<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; \n							line-height:21px;\">С уважением, администрация \n							<a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n							E-mail: <a href=\"mailto:<?=$arParams[\"DEFAULT_EMAIL_FROM\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"DEFAULT_EMAIL_FROM\"];?></a>\n							\n						</p>\n					</td>\n				</tr>\n			</table>\n			</body>\n			</html>\n		','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(23,'2019-10-17 11:02:55','CATALOG_PRODUCT_SUBSCRIBE_NOTIFY','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: Уведомление о поступлении товара','\n			<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n			<html xmlns=\"http://www.w3.org/1999/xhtml\">\n			<head>\n				<style>\n					body\n					{\n						font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n						font-size: 14px;\n						color: #000;\n					}\n				</style>\n			</head>\n			<body>\n			<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; \n				border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n				<tr>\n					<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; \n						padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n						<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n							<tr>\n								<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: \n								center; font-size: 26px; color: #0b3961;\">Уведомление о поступлении товара в магазин #SITE_NAME#</td>\n							</tr>\n							<tr>\n								<td bgcolor=\"#bad3df\" height=\"11\"></td>\n							</tr>\n						</table>\n					</td>\n				</tr>\n				<tr>\n					<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n						<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый, #USER_NAME#!</p>\n						<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">\nТовар \"#NAME#\" (#PAGE_URL#) поступил на склад.<br><br>\nВы просили оповестить вас о поступление товара.<br><br>\nТовар поступил к нам в магазин, вы можете оформить заказ прямо сейчас: (#CHECKOUT_URL#)<br><br>\nНе отвечайте на письмо, оно сформировано автоматически.<br><br>\nСпасибо, что вы с нами!<br>\n</p>\n					</td>\n				</tr>\n				<tr>\n					<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n						<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; \n							line-height:21px;\">С уважением, администрация \n							<a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n							E-mail: <a href=\"mailto:#DEFAULT_EMAIL_FROM#\" style=\"color:#2e6eb6;\">#DEFAULT_EMAIL_FROM#</a>\n							<br><a href=\"#UNSUBSCRIBE_URL#\">Отписаться</a>\n						</p>\n					</td>\n				</tr>\n			</table>\n			</body>\n			</html>\n		','\n			<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n			<html xmlns=\"http://www.w3.org/1999/xhtml\">\n			<head>\n				<style>\n					body\n					{\n						font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n						font-size: 14px;\n						color: #000;\n					}\n				</style>\n			</head>\n			<body>\n			<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; \n				border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n				<tr>\n					<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; \n						padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n						<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n							<tr>\n								<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: \n								center; font-size: 26px; color: #0b3961;\">Уведомление о поступлении товара в магазин <?=$arParams[\"SITE_NAME\"];?></td>\n							</tr>\n							<tr>\n								<td bgcolor=\"#bad3df\" height=\"11\"></td>\n							</tr>\n						</table>\n					</td>\n				</tr>\n				<tr>\n					<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n						<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый, <?=$arParams[\"USER_NAME\"];?>!</p>\n						<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">\nТовар \"<?=$arParams[\"NAME\"];?>\" (<?=$arParams[\"PAGE_URL\"];?>) поступил на склад.<br><br>\nВы просили оповестить вас о поступление товара.<br><br>\nТовар поступил к нам в магазин, вы можете оформить заказ прямо сейчас: (<?=$arParams[\"CHECKOUT_URL\"];?>)<br><br>\nНе отвечайте на письмо, оно сформировано автоматически.<br><br>\nСпасибо, что вы с нами!<br>\n</p>\n					</td>\n				</tr>\n				<tr>\n					<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n						<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; \n							line-height:21px;\">С уважением, администрация \n							<a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n							E-mail: <a href=\"mailto:<?=$arParams[\"DEFAULT_EMAIL_FROM\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"DEFAULT_EMAIL_FROM\"];?></a>\n							<br><a href=\"<?=$arParams[\"UNSUBSCRIBE_URL\"];?>\">Отписаться</a>\n						</p>\n					</td>\n				</tr>\n			</table>\n			</body>\n			</html>\n		','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(24,'2019-10-17 11:02:55','CATALOG_PRODUCT_SUBSCRIBE_NOTIFY_REPEATED','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','Уведомление о товаре в магазине #SITE_NAME#','\n			<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n			<html xmlns=\"http://www.w3.org/1999/xhtml\">\n			<head>\n				<style>\n					body\n					{\n						font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n						font-size: 14px;\n						color: #000;\n					}\n				</style>\n			</head>\n			<body>\n			<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; \n				border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n				<tr>\n					<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; \n						padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n						<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n							<tr>\n								<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: \n								center; font-size: 26px; color: #0b3961;\">Уведомление о товаре в магазине #SITE_NAME#</td>\n							</tr>\n							<tr>\n								<td bgcolor=\"#bad3df\" height=\"11\"></td>\n							</tr>\n						</table>\n					</td>\n				</tr>\n				<tr>\n					<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n						<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый, #USER_NAME#!</p>\n						<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">\nТовар \"#NAME#\" (#PAGE_URL#) к сожалению снова закончился.<br><br>\nМы обязательно сообщим вам о поступлении товара.<br><br>\nНе отвечайте на письмо, оно сформировано автоматически.<br><br>\nСпасибо, что вы с нами!<br>\n</p>\n					</td>\n				</tr>\n				<tr>\n					<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n						<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; \n							line-height:21px;\">С уважением, администрация \n							<a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n							E-mail: <a href=\"mailto:#DEFAULT_EMAIL_FROM#\" style=\"color:#2e6eb6;\">#DEFAULT_EMAIL_FROM#</a>\n							<br><a href=\"#UNSUBSCRIBE_URL#\">Отписаться</a>\n						</p>\n					</td>\n				</tr>\n			</table>\n			</body>\n			</html>\n		','\n			<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n			<html xmlns=\"http://www.w3.org/1999/xhtml\">\n			<head>\n				<style>\n					body\n					{\n						font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n						font-size: 14px;\n						color: #000;\n					}\n				</style>\n			</head>\n			<body>\n			<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; \n				border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n				<tr>\n					<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; \n						padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n						<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n							<tr>\n								<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: \n								center; font-size: 26px; color: #0b3961;\">Уведомление о товаре в магазине <?=$arParams[\"SITE_NAME\"];?></td>\n							</tr>\n							<tr>\n								<td bgcolor=\"#bad3df\" height=\"11\"></td>\n							</tr>\n						</table>\n					</td>\n				</tr>\n				<tr>\n					<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n						<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый, <?=$arParams[\"USER_NAME\"];?>!</p>\n						<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">\nТовар \"<?=$arParams[\"NAME\"];?>\" (<?=$arParams[\"PAGE_URL\"];?>) к сожалению снова закончился.<br><br>\nМы обязательно сообщим вам о поступлении товара.<br><br>\nНе отвечайте на письмо, оно сформировано автоматически.<br><br>\nСпасибо, что вы с нами!<br>\n</p>\n					</td>\n				</tr>\n				<tr>\n					<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; \n						padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n						<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; \n							line-height:21px;\">С уважением, администрация \n							<a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n							E-mail: <a href=\"mailto:<?=$arParams[\"DEFAULT_EMAIL_FROM\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"DEFAULT_EMAIL_FROM\"];?></a>\n							<br><a href=\"<?=$arParams[\"UNSUBSCRIBE_URL\"];?>\">Отписаться</a>\n						</p>\n					</td>\n				</tr>\n			</table>\n			</body>\n			</html>\n		','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(25,'2019-10-17 11:03:24','NEW_FORUM_MESSAGE','s1','Y','#FROM_EMAIL#','#RECIPIENT#','#SITE_NAME#: [F] #TOPIC_TITLE# : #FORUM_NAME#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nНовое сообщение на форуме #SERVER_NAME#.\n\nТема:\n#TOPIC_TITLE#\n\nАвтор: #AUTHOR#\nДата : #MESSAGE_DATE#\nТекст сообщения:\n\n#MESSAGE_TEXT#\n\nАдрес сообщения:\nhttp://#SERVER_NAME##PATH2FORUM#\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nНовое сообщение на форуме <?=$arParams[\"SERVER_NAME\"];?>.\n\nТема:\n<?=$arParams[\"TOPIC_TITLE\"];?>\n\n\nАвтор: <?=$arParams[\"AUTHOR\"];?>\n\nДата : <?=$arParams[\"MESSAGE_DATE\"];?>\n\nТекст сообщения:\n\n<?=$arParams[\"MESSAGE_TEXT\"];?>\n\n\nАдрес сообщения:\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"PATH2FORUM\"];?>\n\n\nСообщение сгенерировано автоматически.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(26,'2019-10-17 11:03:24','NEW_FORUM_PRIV','s1','Y','#FROM_EMAIL#','#TO_EMAIL#','#SITE_NAME#: [private] #SUBJECT#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nВы получили персональное сообщение с форума на сайте #SERVER_NAME#.\n\nТема: #SUBJECT#\n\nАвтор: #FROM_NAME# #FROM_EMAIL#\nДата : #MESSAGE_DATE#\nСообщение:\n\n#MESSAGE#\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nВы получили персональное сообщение с форума на сайте <?=$arParams[\"SERVER_NAME\"];?>.\n\nТема: <?=$arParams[\"SUBJECT\"];?>\n\n\nАвтор: <?=$arParams[\"FROM_NAME\"];?> <?=$arParams[\"FROM_EMAIL\"];?>\n\nДата : <?=$arParams[\"MESSAGE_DATE\"];?>\n\nСообщение:\n\n<?=$arParams[\"MESSAGE\"];?>\n\n\nСообщение сгенерировано автоматически.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(27,'2019-10-17 11:03:24','NEW_FORUM_PRIVATE_MESSAGE','s1','Y','#FROM_EMAIL#','#TO_EMAIL#','#SITE_NAME#: [private] #SUBJECT#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nВы получили персональное сообщение с форума на сайте #SERVER_NAME#.\n\nТема: #SUBJECT#\n\nАвтор: #FROM_NAME#\nДата: #MESSAGE_DATE#\nСообщение:\n\n#MESSAGE#\n\nСсылка на сообщение: #MESSAGE_LINK#Сообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nВы получили персональное сообщение с форума на сайте <?=$arParams[\"SERVER_NAME\"];?>.\n\nТема: <?=$arParams[\"SUBJECT\"];?>\n\n\nАвтор: <?=$arParams[\"FROM_NAME\"];?>\n\nДата: <?=$arParams[\"MESSAGE_DATE\"];?>\n\nСообщение:\n\n<?=$arParams[\"MESSAGE\"];?>\n\n\nСсылка на сообщение: <?=$arParams[\"MESSAGE_LINK\"];?>Сообщение сгенерировано автоматически.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(28,'2019-10-17 11:03:24','EDIT_FORUM_MESSAGE','s1','Y','#FROM_EMAIL#','#RECIPIENT#','#SITE_NAME#: [F] #TOPIC_TITLE# : #FORUM_NAME#','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nИзменение сообщения на форуме #SERVER_NAME#.\n\nТема:\n#TOPIC_TITLE#\n\nАвтор: #AUTHOR#\nДата : #MESSAGE_DATE#\nТекст сообщения:\n\n#MESSAGE_TEXT#\n\nАдрес сообщения:\nhttp://#SERVER_NAME##PATH2FORUM#\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nИзменение сообщения на форуме <?=$arParams[\"SERVER_NAME\"];?>.\n\nТема:\n<?=$arParams[\"TOPIC_TITLE\"];?>\n\n\nАвтор: <?=$arParams[\"AUTHOR\"];?>\n\nДата : <?=$arParams[\"MESSAGE_DATE\"];?>\n\nТекст сообщения:\n\n<?=$arParams[\"MESSAGE_TEXT\"];?>\n\n\nАдрес сообщения:\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"PATH2FORUM\"];?>\n\n\nСообщение сгенерировано автоматически.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(29,'2019-10-17 11:03:24','FORUM_NEW_MESSAGE_MAIL','s1','Y','#FROM_EMAIL#','#RECIPIENT#','#TOPIC_TITLE#','#MESSAGE_TEXT#\n\n------------------------------------------  \nВы получили это сообщение, так как выподписаны на форум #FORUM_NAME#.\n\nОтветить на сообщение можно по электронной почте или через форму на сайте:\nhttp://#SERVER_NAME##PATH2FORUM#\n\nНаписать новое сообщение: #FORUM_EMAIL#\n\nАвтор сообщения: #AUTHOR#\n\nСообщение сгенерировано автоматически на сайте #SITE_NAME#.\n','<?=$arParams[\"MESSAGE_TEXT\"];?>\n\n\n------------------------------------------  \nВы получили это сообщение, так как выподписаны на форум <?=$arParams[\"FORUM_NAME\"];?>.\n\nОтветить на сообщение можно по электронной почте или через форму на сайте:\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"PATH2FORUM\"];?>\n\n\nНаписать новое сообщение: <?=$arParams[\"FORUM_EMAIL\"];?>\n\n\nАвтор сообщения: <?=$arParams[\"AUTHOR\"];?>\n\n\nСообщение сгенерировано автоматически на сайте <?=$arParams[\"SITE_NAME\"];?>.\n','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(30,'2019-10-17 11:04:16','SALE_NEW_ORDER','s1','Y','#SALE_EMAIL#','#EMAIL#','#SITE_NAME#: Новый заказ N#ORDER_ID#','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Вами оформлен заказ в магазине #SITE_NAME#</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый #ORDER_USER#,</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Ваш заказ номер #ORDER_ID# от #ORDER_DATE# принят.<br />\n<br />\nСтоимость заказа: #PRICE#.<br />\n<br />\nСостав заказа:<br />\n#ORDER_LIST#<br />\n<br />\nВы можете следить за выполнением своего заказа (на какой стадии выполнения он находится), войдя в Ваш персональный раздел сайта #SITE_NAME#.<br />\n<br />\nОбратите внимание, что для входа в этот раздел Вам необходимо будет ввести логин и пароль пользователя сайта #SITE_NAME#.<br />\n<br />\nДля того, чтобы аннулировать заказ, воспользуйтесь функцией отмены заказа, которая доступна в Вашем персональном разделе сайта #SITE_NAME#.<br />\n<br />\nПожалуйста, при обращении к администрации сайта #SITE_NAME# ОБЯЗАТЕЛЬНО указывайте номер Вашего заказа - #ORDER_ID#.<br />\n<br />\nСпасибо за покупку!<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Вами оформлен заказ в магазине <?=$arParams[\"SITE_NAME\"];?></td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый <?=$arParams[\"ORDER_USER\"];?>,</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Ваш заказ номер <?=$arParams[\"ORDER_ID\"];?> от <?=$arParams[\"ORDER_DATE\"];?> принят.<br />\n<br />\nСтоимость заказа: <?=$arParams[\"PRICE\"];?>.<br />\n<br />\nСостав заказа:<br />\n<?=$arParams[\"ORDER_LIST\"];?><br />\n<br />\nВы можете следить за выполнением своего заказа (на какой стадии выполнения он находится), войдя в Ваш персональный раздел сайта <?=$arParams[\"SITE_NAME\"];?>.<br />\n<br />\nОбратите внимание, что для входа в этот раздел Вам необходимо будет ввести логин и пароль пользователя сайта <?=$arParams[\"SITE_NAME\"];?>.<br />\n<br />\nДля того, чтобы аннулировать заказ, воспользуйтесь функцией отмены заказа, которая доступна в Вашем персональном разделе сайта <?=$arParams[\"SITE_NAME\"];?>.<br />\n<br />\nПожалуйста, при обращении к администрации сайта <?=$arParams[\"SITE_NAME\"];?> ОБЯЗАТЕЛЬНО указывайте номер Вашего заказа - <?=$arParams[\"ORDER_ID\"];?>.<br />\n<br />\nСпасибо за покупку!<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(31,'2019-10-17 11:04:16','SALE_ORDER_CANCEL','s1','Y','#SALE_EMAIL#','#EMAIL#','#SITE_NAME#: Отмена заказа N#ORDER_ID#','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">#SITE_NAME#: Отмена заказа N#ORDER_ID#</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Заказ номер #ORDER_ID# от #ORDER_DATE# отменен.</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">#ORDER_CANCEL_DESCRIPTION#<br />\n<br />\nДля получения подробной информации по заказу пройдите на сайт http://#SERVER_NAME#/personal/order/#ORDER_ACCOUNT_NUMBER_ENCODE#/<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\"><?=$arParams[\"SITE_NAME\"];?>: Отмена заказа N<?=$arParams[\"ORDER_ID\"];?></td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Заказ номер <?=$arParams[\"ORDER_ID\"];?> от <?=$arParams[\"ORDER_DATE\"];?> отменен.</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\"><?=$arParams[\"ORDER_CANCEL_DESCRIPTION\"];?><br />\n<br />\nДля получения подробной информации по заказу пройдите на сайт http://<?=$arParams[\"SERVER_NAME\"];?>/personal/order/<?=$arParams[\"ORDER_ACCOUNT_NUMBER_ENCODE\"];?>/<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(32,'2019-10-17 11:04:16','SALE_ORDER_DELIVERY','s1','Y','#SALE_EMAIL#','#EMAIL#','#SITE_NAME#: Доставка заказа N#ORDER_ID# разрешена','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Доставка вашего заказа с сайта #SITE_NAME# разрешена</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Доставка заказа номер #ORDER_ID# от #ORDER_DATE# разрешена.</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Для получения подробной информации по заказу пройдите на сайт http://#SERVER_NAME#/personal/order/#ORDER_ACCOUNT_NUMBER_ENCODE#/<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Доставка вашего заказа с сайта <?=$arParams[\"SITE_NAME\"];?> разрешена</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Доставка заказа номер <?=$arParams[\"ORDER_ID\"];?> от <?=$arParams[\"ORDER_DATE\"];?> разрешена.</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Для получения подробной информации по заказу пройдите на сайт http://<?=$arParams[\"SERVER_NAME\"];?>/personal/order/<?=$arParams[\"ORDER_ACCOUNT_NUMBER_ENCODE\"];?>/<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(33,'2019-10-17 11:04:16','SALE_ORDER_PAID','s1','Y','#SALE_EMAIL#','#EMAIL#','#SITE_NAME#: Заказ N#ORDER_ID# оплачен','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Вы оплатили заказ на сайте #SITE_NAME#</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Заказ номер #ORDER_ID# от #ORDER_DATE# оплачен.</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Для получения подробной информации по заказу пройдите на сайт http://#SERVER_NAME#/personal/order/#ORDER_ACCOUNT_NUMBER_ENCODE#/</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Вы оплатили заказ на сайте <?=$arParams[\"SITE_NAME\"];?></td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Заказ номер <?=$arParams[\"ORDER_ID\"];?> от <?=$arParams[\"ORDER_DATE\"];?> оплачен.</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Для получения подробной информации по заказу пройдите на сайт http://<?=$arParams[\"SERVER_NAME\"];?>/personal/order/<?=$arParams[\"ORDER_ACCOUNT_NUMBER_ENCODE\"];?>/</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(34,'2019-10-17 11:04:16','SALE_ORDER_REMIND_PAYMENT','s1','Y','#SALE_EMAIL#','#EMAIL#','#SITE_NAME#: Напоминание об оплате заказа N#ORDER_ID# ','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Напоминаем вам об оплате заказа на сайте #SITE_NAME#</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый #ORDER_USER#,</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Вами был оформлен заказ N #ORDER_ID# от #ORDER_DATE# на сумму #PRICE#.<br />\n<br />\nК сожалению, на сегодняшний день средства по этому заказу не поступили к нам.<br />\n<br />\nВы можете следить за выполнением своего заказа (на какой стадии выполнения он находится), войдя в Ваш персональный раздел сайта #SITE_NAME#.<br />\n<br />\nОбратите внимание, что для входа в этот раздел Вам необходимо будет ввести логин и пароль пользователя сайта #SITE_NAME#.<br />\n<br />\nДля того, чтобы аннулировать заказ, воспользуйтесь функцией отмены заказа, которая доступна в Вашем персональном разделе сайта #SITE_NAME#.<br />\n<br />\nПожалуйста, при обращении к администрации сайта #SITE_NAME# ОБЯЗАТЕЛЬНО указывайте номер Вашего заказа - #ORDER_ID#.<br />\n<br />\nСпасибо за покупку!<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Напоминаем вам об оплате заказа на сайте <?=$arParams[\"SITE_NAME\"];?></td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый <?=$arParams[\"ORDER_USER\"];?>,</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Вами был оформлен заказ N <?=$arParams[\"ORDER_ID\"];?> от <?=$arParams[\"ORDER_DATE\"];?> на сумму <?=$arParams[\"PRICE\"];?>.<br />\n<br />\nК сожалению, на сегодняшний день средства по этому заказу не поступили к нам.<br />\n<br />\nВы можете следить за выполнением своего заказа (на какой стадии выполнения он находится), войдя в Ваш персональный раздел сайта <?=$arParams[\"SITE_NAME\"];?>.<br />\n<br />\nОбратите внимание, что для входа в этот раздел Вам необходимо будет ввести логин и пароль пользователя сайта <?=$arParams[\"SITE_NAME\"];?>.<br />\n<br />\nДля того, чтобы аннулировать заказ, воспользуйтесь функцией отмены заказа, которая доступна в Вашем персональном разделе сайта <?=$arParams[\"SITE_NAME\"];?>.<br />\n<br />\nПожалуйста, при обращении к администрации сайта <?=$arParams[\"SITE_NAME\"];?> ОБЯЗАТЕЛЬНО указывайте номер Вашего заказа - <?=$arParams[\"ORDER_ID\"];?>.<br />\n<br />\nСпасибо за покупку!<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(35,'2019-10-17 11:04:16','SALE_SUBSCRIBE_PRODUCT','s1','Y','#SALE_EMAIL#','#EMAIL#','#SITE_NAME#: Уведомление о поступлении товара','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Уведомление о поступлении товара в магазин #SITE_NAME#</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый, #USER_NAME#!</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Товар \"#NAME#\" (#PAGE_URL#) поступил на склад.<br />\n<br />\nВы можете Оформить заказ (http://#SERVER_NAME#/personal/cart/).<br />\n<br />\nНе забудьте авторизоваться!<br />\n<br />\nВы получили это сообщение по Вашей просьбе оповестить при появлении товара.<br />\nНе отвечайте на него - письмо сформировано автоматически.<br />\n<br />\nСпасибо за покупку!<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Уведомление о поступлении товара в магазин <?=$arParams[\"SITE_NAME\"];?></td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый, <?=$arParams[\"USER_NAME\"];?>!</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Товар \"<?=$arParams[\"NAME\"];?>\" (<?=$arParams[\"PAGE_URL\"];?>) поступил на склад.<br />\n<br />\nВы можете Оформить заказ (http://<?=$arParams[\"SERVER_NAME\"];?>/personal/cart/).<br />\n<br />\nНе забудьте авторизоваться!<br />\n<br />\nВы получили это сообщение по Вашей просьбе оповестить при появлении товара.<br />\nНе отвечайте на него - письмо сформировано автоматически.<br />\n<br />\nСпасибо за покупку!<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(36,'2019-10-17 11:04:16','SALE_ORDER_TRACKING_NUMBER','s1','Y','#SALE_EMAIL#','#EMAIL#','Номер идентификатора отправления вашего заказа на сайте #SITE_NAME#','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Номер идентификатора отправления вашего заказа на сайте #SITE_NAME#</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый #ORDER_USER#,</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Произошла почтовая отправка заказа N #ORDER_ID# от #ORDER_DATE#.<br />\n<br />\nНомер идентификатора отправления: #ORDER_TRACKING_NUMBER#.<br />\n<br />\nДля получения подробной информации по заказу пройдите на сайт http://#SERVER_NAME#/personal/order/detail/#ORDER_ACCOUNT_NUMBER_ENCODE#/<br />\n<br />\nE-mail: #SALE_EMAIL#<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Номер идентификатора отправления вашего заказа на сайте <?=$arParams[\"SITE_NAME\"];?></td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый <?=$arParams[\"ORDER_USER\"];?>,</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Произошла почтовая отправка заказа N <?=$arParams[\"ORDER_ID\"];?> от <?=$arParams[\"ORDER_DATE\"];?>.<br />\n<br />\nНомер идентификатора отправления: <?=$arParams[\"ORDER_TRACKING_NUMBER\"];?>.<br />\n<br />\nДля получения подробной информации по заказу пройдите на сайт http://<?=$arParams[\"SERVER_NAME\"];?>/personal/order/detail/<?=$arParams[\"ORDER_ACCOUNT_NUMBER_ENCODE\"];?>/<br />\n<br />\nE-mail: <?=$arParams[\"SALE_EMAIL\"];?><br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(37,'2019-10-17 11:04:16','SALE_CHECK_PRINT','s1','Y','#SALE_EMAIL#','#EMAIL#','Ссылка на чек','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Вы оплатили заказ на сайте #SITE_NAME#</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый #ORDER_USER#,</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\"><br />\nСогласно требованиям закона ФЗ-54 о фискальных чеках по вашему заказу произведена оплата и сформирован фискальный кассовый чек, который вы можете посмотреть по ссылке:<br />\n<br />\n#CHECK_LINK#<br />\n<br />\nДля получения подробной информации по заказу №#ORDER_ID# от #ORDER_DATE# пройдите на сайт #LINK_URL#<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Вы оплатили заказ на сайте <?=$arParams[\"SITE_NAME\"];?></td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый <?=$arParams[\"ORDER_USER\"];?>,</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\"><br />\nСогласно требованиям закона ФЗ-54 о фискальных чеках по вашему заказу произведена оплата и сформирован фискальный кассовый чек, который вы можете посмотреть по ссылке:<br />\n<br />\n<?=$arParams[\"CHECK_LINK\"];?><br />\n<br />\nДля получения подробной информации по заказу №<?=$arParams[\"ORDER_ID\"];?> от <?=$arParams[\"ORDER_DATE\"];?> пройдите на сайт <?=$arParams[\"LINK_URL\"];?><br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(38,'2019-10-17 11:04:16','SALE_CHECK_PRINT_ERROR','s1','Y','#SALE_EMAIL#','#EMAIL#','Ошибка при печати чека','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Ошибка при печати чека</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Здравствуйте!</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\"><br />\nПо какой-то причине чек №#CHECK_ID# по заказу №#ORDER_ACCOUNT_NUMBER# от #ORDER_DATE# не удалось распечатать!<br />\n<br />\nПерейдите по ссылке, чтобы устранить причину возникшей ситуации:<br />\n#LINK_URL#<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Ошибка при печати чека</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Здравствуйте!</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\"><br />\nПо какой-то причине чек №<?=$arParams[\"CHECK_ID\"];?> по заказу №<?=$arParams[\"ORDER_ACCOUNT_NUMBER\"];?> от <?=$arParams[\"ORDER_DATE\"];?> не удалось распечатать!<br />\n<br />\nПерейдите по ссылке, чтобы устранить причину возникшей ситуации:<br />\n<?=$arParams[\"LINK_URL\"];?><br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(39,'2019-10-17 11:04:16','SALE_ORDER_SHIPMENT_STATUS_CHANGED','s1','Y','#SALE_EMAIL#','#EMAIL#','Статус почтового отправления вашего заказа на сайте #SITE_NAME# изменился','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Изменился статус почтового отправления заказа на сайте #SITE_NAME#</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый #ORDER_USER#,</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Статус почтового отправления по заказу № #ORDER_NO# от #ORDER_DATE#<br />\n<br />\nизменил значение на \"#STATUS_NAME#\" (#STATUS_DESCRIPTION#).<br />\n<br />\nИдентификатор отправления: #TRACKING_NUMBER#.<br />\n<br />\nНаименование службы доставки: #DELIVERY_NAME#.<br />\n<br />\n#DELIVERY_TRACKING_URL##ORDER_DETAIL_URL#<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Изменился статус почтового отправления заказа на сайте <?=$arParams[\"SITE_NAME\"];?></td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\">Уважаемый <?=$arParams[\"ORDER_USER\"];?>,</p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Статус почтового отправления по заказу № <?=$arParams[\"ORDER_NO\"];?> от <?=$arParams[\"ORDER_DATE\"];?><br />\n<br />\nизменил значение на \"<?=$arParams[\"STATUS_NAME\"];?>\" (<?=$arParams[\"STATUS_DESCRIPTION\"];?>).<br />\n<br />\nИдентификатор отправления: <?=$arParams[\"TRACKING_NUMBER\"];?>.<br />\n<br />\nНаименование службы доставки: <?=$arParams[\"DELIVERY_NAME\"];?>.<br />\n<br />\n<?=$arParams[\"DELIVERY_TRACKING_URL\"];?><?=$arParams[\"ORDER_DETAIL_URL\"];?><br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(40,'2019-10-17 11:04:16','SALE_NEW_ORDER_RECURRING','s1','Y','#SALE_EMAIL#','#EMAIL#','#SITE_NAME#: Новый заказ N#ORDER_ID# на продление подписки','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nУважаемый #ORDER_USER#,\n\nВаш заказ номер #ORDER_ID# от #ORDER_DATE# на продление подписки принят.\n\nСтоимость заказа: #PRICE#.\n\nСостав заказа:\n#ORDER_LIST#\n\nВы можете следить за выполнением своего заказа (на какой\nстадии выполнения он находится), войдя в Ваш персональный\nраздел сайта #SITE_NAME#. Обратите внимание, что для входа\nв этот раздел Вам необходимо будет ввести логин и пароль\nпользователя сайта #SITE_NAME#.\n\nДля того, чтобы аннулировать заказ, воспользуйтесь функцией\nотмены заказа, которая доступна в Вашем персональном\nразделе сайта #SITE_NAME#.\n\nПожалуйста, при обращении к администрации сайта #SITE_NAME#\nОБЯЗАТЕЛЬНО указывайте номер Вашего заказа - #ORDER_ID#.\n\nСпасибо за покупку!\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nУважаемый <?=$arParams[\"ORDER_USER\"];?>,\n\nВаш заказ номер <?=$arParams[\"ORDER_ID\"];?> от <?=$arParams[\"ORDER_DATE\"];?> на продление подписки принят.\n\nСтоимость заказа: <?=$arParams[\"PRICE\"];?>.\n\nСостав заказа:\n<?=$arParams[\"ORDER_LIST\"];?>\n\n\nВы можете следить за выполнением своего заказа (на какой\nстадии выполнения он находится), войдя в Ваш персональный\nраздел сайта <?=$arParams[\"SITE_NAME\"];?>. Обратите внимание, что для входа\nв этот раздел Вам необходимо будет ввести логин и пароль\nпользователя сайта <?=$arParams[\"SITE_NAME\"];?>.\n\nДля того, чтобы аннулировать заказ, воспользуйтесь функцией\nотмены заказа, которая доступна в Вашем персональном\nразделе сайта <?=$arParams[\"SITE_NAME\"];?>.\n\nПожалуйста, при обращении к администрации сайта <?=$arParams[\"SITE_NAME\"];?>\n\nОБЯЗАТЕЛЬНО указывайте номер Вашего заказа - <?=$arParams[\"ORDER_ID\"];?>.\n\nСпасибо за покупку!\n','text','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(41,'2019-10-17 11:04:16','SALE_RECURRING_CANCEL','s1','Y','#SALE_EMAIL#','#EMAIL#','#SITE_NAME#: Подписка отменена','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nПодписка отменена\n\n#CANCELED_REASON#\n#SITE_NAME#\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nПодписка отменена\n\n<?=$arParams[\"CANCELED_REASON\"];?>\n\n<?=$arParams[\"SITE_NAME\"];?>\n\n','text','#BCC#',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(42,'2019-10-17 11:04:17','SALE_STATUS_CHANGED_F','s1','Y','#SALE_EMAIL#','#EMAIL#','#SERVER_NAME#: Изменение статуса заказа N#ORDER_ID#','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Изменение статуса заказа в магазине #SITE_NAME#</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\"></p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Информационное сообщение сайта #SITE_NAME#<br />\n------------------------------------------<br />\n<br />\nСтатус заказа номер #ORDER_ID# от #ORDER_DATE# изменен.<br />\n<br />\nНовый статус заказа:<br />\n#ORDER_STATUS#<br />\n#ORDER_DESCRIPTION#<br />\n#TEXT#<br />\n<br />\nДля получения подробной информации по заказу пройдите на сайт #SERVER_NAME#/personal/order/#ORDER_ID#/<br />\n<br />\nСпасибо за ваш выбор!<br />\n#SITE_NAME#<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Изменение статуса заказа в магазине <?=$arParams[\"SITE_NAME\"];?></td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\"></p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?><br />\n------------------------------------------<br />\n<br />\nСтатус заказа номер <?=$arParams[\"ORDER_ID\"];?> от <?=$arParams[\"ORDER_DATE\"];?> изменен.<br />\n<br />\nНовый статус заказа:<br />\n<?=$arParams[\"ORDER_STATUS\"];?><br />\n<?=$arParams[\"ORDER_DESCRIPTION\"];?><br />\n<?=$arParams[\"TEXT\"];?><br />\n<br />\nДля получения подробной информации по заказу пройдите на сайт <?=$arParams[\"SERVER_NAME\"];?>/personal/order/<?=$arParams[\"ORDER_ID\"];?>/<br />\n<br />\nСпасибо за ваш выбор!<br />\n<?=$arParams[\"SITE_NAME\"];?><br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(43,'2019-10-17 11:04:17','SALE_STATUS_CHANGED_N','s1','Y','#SALE_EMAIL#','#EMAIL#','#SERVER_NAME#: Изменение статуса заказа N#ORDER_ID#','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Изменение статуса заказа в магазине #SITE_NAME#</td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\"></p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Информационное сообщение сайта #SITE_NAME#<br />\n------------------------------------------<br />\n<br />\nСтатус заказа номер #ORDER_ID# от #ORDER_DATE# изменен.<br />\n<br />\nНовый статус заказа:<br />\n#ORDER_STATUS#<br />\n#ORDER_DESCRIPTION#<br />\n#TEXT#<br />\n<br />\nДля получения подробной информации по заказу пройдите на сайт #SERVER_NAME#/personal/order/#ORDER_ID#/<br />\n<br />\nСпасибо за ваш выбор!<br />\n#SITE_NAME#<br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://#SERVER_NAME#\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:#SALE_EMAIL#\" style=\"color:#2e6eb6;\">#SALE_EMAIL#</a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\">\n<head>\n	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"/>\n	<style>\n		body\n		{\n			font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;\n			font-size: 14px;\n			color: #000;\n		}\n	</style>\n</head>\n<body>\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"850\" style=\"background-color: #d1d1d1; border-radius: 2px; border:1px solid #d1d1d1; margin: 0 auto;\" border=\"1\" bordercolor=\"#d1d1d1\">\n	<tr>\n		<td height=\"83\" width=\"850\" bgcolor=\"#eaf3f5\" style=\"border: none; padding-top: 23px; padding-right: 17px; padding-bottom: 24px; padding-left: 17px;\">\n			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n				<tr>\n					<td bgcolor=\"#ffffff\" height=\"75\" style=\"font-weight: bold; text-align: center; font-size: 26px; color: #0b3961;\">Изменение статуса заказа в магазине <?=$arParams[\"SITE_NAME\"];?></td>\n				</tr>\n				<tr>\n					<td bgcolor=\"#bad3df\" height=\"11\"></td>\n				</tr>\n			</table>\n		</td>\n	</tr>\n	<tr>\n		<td width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 16px; padding-left: 44px;\">\n			<p style=\"margin-top:30px; margin-bottom: 28px; font-weight: bold; font-size: 19px;\"></p>\n			<p style=\"margin-top: 0; margin-bottom: 20px; line-height: 20px;\">Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?><br />\n------------------------------------------<br />\n<br />\nСтатус заказа номер <?=$arParams[\"ORDER_ID\"];?> от <?=$arParams[\"ORDER_DATE\"];?> изменен.<br />\n<br />\nНовый статус заказа:<br />\n<?=$arParams[\"ORDER_STATUS\"];?><br />\n<?=$arParams[\"ORDER_DESCRIPTION\"];?><br />\n<?=$arParams[\"TEXT\"];?><br />\n<br />\nДля получения подробной информации по заказу пройдите на сайт <?=$arParams[\"SERVER_NAME\"];?>/personal/order/<?=$arParams[\"ORDER_ID\"];?>/<br />\n<br />\nСпасибо за ваш выбор!<br />\n<?=$arParams[\"SITE_NAME\"];?><br />\n</p>\n		</td>\n	</tr>\n	<tr>\n		<td height=\"40px\" width=\"850\" bgcolor=\"#f7f7f7\" valign=\"top\" style=\"border: none; padding-top: 0; padding-right: 44px; padding-bottom: 30px; padding-left: 44px;\">\n			<p style=\"border-top: 1px solid #d1d1d1; margin-bottom: 5px; margin-top: 0; padding-top: 20px; line-height:21px;\">С уважением,<br />администрация <a href=\"http://<?=$arParams[\"SERVER_NAME\"];?>\" style=\"color:#2e6eb6;\">Интернет-магазина</a><br />\n				E-mail: <a href=\"mailto:<?=$arParams[\"SALE_EMAIL\"];?>\" style=\"color:#2e6eb6;\"><?=$arParams[\"SALE_EMAIL\"];?></a>\n			</p>\n		</td>\n	</tr>\n</table>\n</body>\n</html>','html',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(44,'2019-10-17 11:04:29','VIRUS_DETECTED','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL#','#SITE_NAME#: Обнаружен вирус','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nЗдравствуйте!\n\nВы получили это сообщение, так как модуль проактивной защиты сервера #SERVER_NAME# обнаружил код, похожий на вирус.\n\n1. Подозрительный код был вырезан из html.\n2. Проверьте журнал вторжений и убедитесь, что код действительно вредоносный, а не является кодом какого-либо счетчика или фреймворка.\n (ссылка: http://#SERVER_NAME#/bitrix/admin/event_log.php?lang=ru&set_filter=Y&find_type=audit_type_id&find_audit_type[]=SECURITY_VIRUS )\n3. В случае, если код не является опасным, добавьте его в исключения на странице настройки антивируса.\n (ссылка: http://#SERVER_NAME#/bitrix/admin/security_antivirus.php?lang=ru&tabControl_active_tab=exceptions )\n4. Если код является вирусным, то необходимо выполнить следующие действия:\n\n а) Смените пароли доступа к сайту у администраторов и ответственных сотрудников.\n б) Смените пароли доступа по ssh и ftp.\n в) Проверьте и вылечите компьютеры администраторов, имевших доступ к сайту по ssh или ftp.\n г) В программах доступа к сайту по ssh и ftp отключите сохранение паролей.\n д) Удалите вредоносный код из зараженных файлов. Например, восстановите поврежденные файлы из самой свежей резервной копии.\n\n---------------------------------------------------------------------\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nЗдравствуйте!\n\nВы получили это сообщение, так как модуль проактивной защиты сервера <?=$arParams[\"SERVER_NAME\"];?> обнаружил код, похожий на вирус.\n\n1. Подозрительный код был вырезан из html.\n2. Проверьте журнал вторжений и убедитесь, что код действительно вредоносный, а не является кодом какого-либо счетчика или фреймворка.\n (ссылка: http://<?=$arParams[\"SERVER_NAME\"];?>/bitrix/admin/event_log.php?lang=ru&set_filter=Y&find_type=audit_type_id&find_audit_type[]=SECURITY_VIRUS )\n3. В случае, если код не является опасным, добавьте его в исключения на странице настройки антивируса.\n (ссылка: http://<?=$arParams[\"SERVER_NAME\"];?>/bitrix/admin/security_antivirus.php?lang=ru&tabControl_active_tab=exceptions )\n4. Если код является вирусным, то необходимо выполнить следующие действия:\n\n а) Смените пароли доступа к сайту у администраторов и ответственных сотрудников.\n б) Смените пароли доступа по ssh и ftp.\n в) Проверьте и вылечите компьютеры администраторов, имевших доступ к сайту по ssh или ftp.\n г) В программах доступа к сайту по ssh и ftp отключите сохранение паролей.\n д) Удалите вредоносный код из зараженных файлов. Например, восстановите поврежденные файлы из самой свежей резервной копии.\n\n---------------------------------------------------------------------\nСообщение сгенерировано автоматически.\n','text','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(45,'2019-10-17 11:04:35','SENDER_SUBSCRIBE_CONFIRM','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL#','#SITE_NAME#: Подтверждение подписки','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nЗдравствуйте,\n\nВы получили это сообщение, так как ваш адрес был подписан\nна список рассылки сервера #SERVER_NAME#.\n\nДополнительная информация о подписке:\n\nАдрес подписки (email) ............ #EMAIL#\nДата добавления/редактирования .... #DATE#\nСписок рассылок:\n#MAILING_LIST#\n\n\nДля подтверждения подписки перейдите по следующей ссылке:\nhttp://#SERVER_NAME##CONFIRM_URL#\n\n\nВнимание! Вы не будете получать сообщения рассылки, пока не подтвердите\nсвою подписку.\nЕсли вы не подписывались на рассылку и получили это письмо по ошибке,\nпроигнорируйте его.\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nЗдравствуйте,\n\nВы получили это сообщение, так как ваш адрес был подписан\nна список рассылки сервера <?=$arParams[\"SERVER_NAME\"];?>.\n\nДополнительная информация о подписке:\n\nАдрес подписки (email) ............ <?=$arParams[\"EMAIL\"];?>\n\nДата добавления/редактирования .... <?=$arParams[\"DATE\"];?>\n\nСписок рассылок:\n<?=$arParams[\"MAILING_LIST\"];?>\n\n\n\nДля подтверждения подписки перейдите по следующей ссылке:\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"CONFIRM_URL\"];?>\n\n\n\nВнимание! Вы не будете получать сообщения рассылки, пока не подтвердите\nсвою подписку.\nЕсли вы не подписывались на рассылку и получили это письмо по ошибке,\nпроигнорируйте его.\n\nСообщение сгенерировано автоматически.\n','text','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(46,'2019-10-17 11:04:50','SUBSCRIBE_CONFIRM','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL#','#SITE_NAME#: Подтверждение подписки','Информационное сообщение сайта #SITE_NAME#\n------------------------------------------\n\nЗдравствуйте,\n\nВы получили это сообщение, так как ваш адрес был подписан\nна список рассылки сервера #SERVER_NAME#.\n\nДополнительная информация о подписке:\n\nАдрес подписки (email) ............ #EMAIL#\nДата добавления/редактирования .... #DATE_SUBSCR#\n\nВаш код для подтверждения подписки: #CONFIRM_CODE#\n\nДля подтверждения подписки перейдите по следующей ссылке:\nhttp://#SERVER_NAME##SUBSCR_SECTION#subscr_edit.php?ID=#ID#&CONFIRM_CODE=#CONFIRM_CODE#\n\nВы также можете ввести код для подтверждения подписки на странице:\nhttp://#SERVER_NAME##SUBSCR_SECTION#subscr_edit.php?ID=#ID#\n\nВнимание! Вы не будете получать сообщения рассылки, пока не подтвердите\nсвою подписку.\n\n---------------------------------------------------------------------\nСохраните это письмо, так как оно содержит информацию для авторизации.\nИспользуя код подтверждения подписки, вы cможете изменить параметры\nподписки или отписаться от рассылки.\n\nИзменить параметры:\nhttp://#SERVER_NAME##SUBSCR_SECTION#subscr_edit.php?ID=#ID#&CONFIRM_CODE=#CONFIRM_CODE#\n\nОтписаться:\nhttp://#SERVER_NAME##SUBSCR_SECTION#subscr_edit.php?ID=#ID#&CONFIRM_CODE=#CONFIRM_CODE#&action=unsubscribe\n---------------------------------------------------------------------\n\nСообщение сгенерировано автоматически.\n','Информационное сообщение сайта <?=$arParams[\"SITE_NAME\"];?>\n\n------------------------------------------\n\nЗдравствуйте,\n\nВы получили это сообщение, так как ваш адрес был подписан\nна список рассылки сервера <?=$arParams[\"SERVER_NAME\"];?>.\n\nДополнительная информация о подписке:\n\nАдрес подписки (email) ............ <?=$arParams[\"EMAIL\"];?>\n\nДата добавления/редактирования .... <?=$arParams[\"DATE_SUBSCR\"];?>\n\n\nВаш код для подтверждения подписки: <?=$arParams[\"CONFIRM_CODE\"];?>\n\n\nДля подтверждения подписки перейдите по следующей ссылке:\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"SUBSCR_SECTION\"];?>subscr_edit.php?ID=<?=$arParams[\"ID\"];?>&CONFIRM_CODE=<?=$arParams[\"CONFIRM_CODE\"];?>\n\n\nВы также можете ввести код для подтверждения подписки на странице:\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"SUBSCR_SECTION\"];?>subscr_edit.php?ID=<?=$arParams[\"ID\"];?>\n\n\nВнимание! Вы не будете получать сообщения рассылки, пока не подтвердите\nсвою подписку.\n\n---------------------------------------------------------------------\nСохраните это письмо, так как оно содержит информацию для авторизации.\nИспользуя код подтверждения подписки, вы cможете изменить параметры\nподписки или отписаться от рассылки.\n\nИзменить параметры:\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"SUBSCR_SECTION\"];?>subscr_edit.php?ID=<?=$arParams[\"ID\"];?>&CONFIRM_CODE=<?=$arParams[\"CONFIRM_CODE\"];?>\n\n\nОтписаться:\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"SUBSCR_SECTION\"];?>subscr_edit.php?ID=<?=$arParams[\"ID\"];?>&CONFIRM_CODE=<?=$arParams[\"CONFIRM_CODE\"];?>&action=unsubscribe\n---------------------------------------------------------------------\n\nСообщение сгенерировано автоматически.\n','text','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(47,'2019-10-17 11:05:01','VOTE_FOR','s1','Y','#DEFAULT_EMAIL_FROM#','#EMAIL_TO#','#SITE_NAME#: [V] #VOTE_TITLE#','#USER_NAME# принял участие в опросе \"#VOTE_TITLE#\":\n#VOTE_STATISTIC#\n\nhttp://#SERVER_NAME##URL#\nСообщение сгенерировано автоматически.','<?=$arParams[\"USER_NAME\"];?> принял участие в опросе \"<?=$arParams[\"VOTE_TITLE\"];?>\":\n<?=$arParams[\"VOTE_STATISTIC\"];?>\n\n\nhttp://<?=$arParams[\"SERVER_NAME\"];?><?=$arParams[\"URL\"];?>\n\nСообщение сгенерировано автоматически.','text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `b_event_message` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3928,7 +2812,7 @@ CREATE TABLE `b_event_message_site` (
 
 LOCK TABLES `b_event_message_site` WRITE;
 /*!40000 ALTER TABLE `b_event_message_site` DISABLE KEYS */;
-INSERT INTO `b_event_message_site` VALUES (1,'s1'),(2,'s1'),(3,'s1'),(4,'s1'),(5,'s1'),(6,'s1'),(7,'s1'),(8,'s1'),(9,'s1'),(10,'s1'),(11,'s1'),(12,'s1'),(13,'s1'),(14,'s1'),(15,'s1'),(16,'s1'),(17,'s1'),(18,'s1'),(19,'s1'),(20,'s1'),(21,'s1'),(22,'s1'),(23,'s1'),(24,'s1'),(25,'s1'),(26,'s1'),(27,'s1'),(28,'s1'),(29,'s1'),(30,'s1'),(31,'s1'),(32,'s1'),(33,'s1'),(34,'s1'),(35,'s1'),(36,'s1'),(37,'s1'),(38,'s1'),(39,'s1'),(40,'s1'),(41,'s1'),(42,'s1'),(43,'s1'),(44,'s1'),(45,'s1'),(46,'s1'),(47,'s1'),(48,'s1'),(49,'s1'),(50,'s1'),(51,'s1'),(52,'s1'),(53,'s1'),(54,'s1'),(55,'s1'),(56,'s1'),(57,'s1'),(58,'s1'),(59,'s1'),(60,'s1'),(61,'s1'),(62,'s1'),(63,'s1'),(64,'s1'),(65,'s1'),(66,'s1'),(67,'s1'),(68,'s1'),(69,'s1'),(70,'s1'),(71,'s1'),(72,'s1'),(73,'s1'),(74,'s1'),(75,'s1'),(76,'s1'),(77,'s1');
+INSERT INTO `b_event_message_site` VALUES (1,'s1'),(2,'s1'),(3,'s1'),(4,'s1'),(5,'s1'),(6,'s1'),(7,'s1'),(8,'s1'),(9,'s1'),(10,'s1'),(11,'s1'),(12,'s1'),(13,'s1'),(14,'s1'),(15,'s1'),(16,'s1'),(17,'s1'),(18,'s1'),(19,'s1'),(20,'s1'),(21,'s1'),(22,'s1'),(23,'s1'),(24,'s1'),(25,'s1'),(26,'s1'),(27,'s1'),(28,'s1'),(29,'s1'),(30,'s1'),(31,'s1'),(32,'s1'),(33,'s1'),(34,'s1'),(35,'s1'),(36,'s1'),(37,'s1'),(38,'s1'),(39,'s1'),(40,'s1'),(41,'s1'),(42,'s1'),(43,'s1'),(44,'s1'),(45,'s1'),(46,'s1'),(47,'s1');
 /*!40000 ALTER TABLE `b_event_message_site` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3949,7 +2833,7 @@ CREATE TABLE `b_event_type` (
   `EVENT_TYPE` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'email',
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ux_1` (`EVENT_NAME`,`LID`)
-) ENGINE=InnoDB AUTO_INCREMENT=159 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3958,7 +2842,7 @@ CREATE TABLE `b_event_type` (
 
 LOCK TABLES `b_event_type` WRITE;
 /*!40000 ALTER TABLE `b_event_type` DISABLE KEYS */;
-INSERT INTO `b_event_type` VALUES (1,'ru','NEW_USER','Зарегистрировался новый пользователь','\n\n#USER_ID# - ID пользователя\n#LOGIN# - Логин\n#EMAIL# - EMail\n#NAME# - Имя\n#LAST_NAME# - Фамилия\n#USER_IP# - IP пользователя\n#USER_HOST# - Хост пользователя\n',1,'email'),(2,'ru','USER_INFO','Информация о пользователе','\n\n#USER_ID# - ID пользователя\n#STATUS# - Статус логина\n#MESSAGE# - Сообщение пользователю\n#LOGIN# - Логин\n#URL_LOGIN# - Логин, закодированный для использования в URL\n#CHECKWORD# - Контрольная строка для смены пароля\n#NAME# - Имя\n#LAST_NAME# - Фамилия\n#EMAIL# - E-Mail пользователя\n',2,'email'),(3,'ru','NEW_USER_CONFIRM','Подтверждение регистрации нового пользователя','\n\n\n#USER_ID# - ID пользователя\n#LOGIN# - Логин\n#EMAIL# - EMail\n#NAME# - Имя\n#LAST_NAME# - Фамилия\n#USER_IP# - IP пользователя\n#USER_HOST# - Хост пользователя\n#CONFIRM_CODE# - Код подтверждения\n',3,'email'),(4,'ru','USER_PASS_REQUEST','Запрос на смену пароля','\n\n#USER_ID# - ID пользователя\n#STATUS# - Статус логина\n#MESSAGE# - Сообщение пользователю\n#LOGIN# - Логин\n#URL_LOGIN# - Логин, закодированный для использования в URL\n#CHECKWORD# - Контрольная строка для смены пароля\n#NAME# - Имя\n#LAST_NAME# - Фамилия\n#EMAIL# - E-Mail пользователя\n',4,'email'),(5,'ru','USER_PASS_CHANGED','Подтверждение смены пароля','\n\n#USER_ID# - ID пользователя\n#STATUS# - Статус логина\n#MESSAGE# - Сообщение пользователю\n#LOGIN# - Логин\n#URL_LOGIN# - Логин, закодированный для использования в URL\n#CHECKWORD# - Контрольная строка для смены пароля\n#NAME# - Имя\n#LAST_NAME# - Фамилия\n#EMAIL# - E-Mail пользователя\n',5,'email'),(6,'ru','USER_INVITE','Приглашение на сайт нового пользователя','#ID# - ID пользователя\n#LOGIN# - Логин\n#URL_LOGIN# - Логин, закодированный для использования в URL\n#EMAIL# - EMail\n#NAME# - Имя\n#LAST_NAME# - Фамилия\n#PASSWORD# - пароль пользователя \n#CHECKWORD# - Контрольная строка для смены пароля\n#XML_ID# - ID пользователя для связи с внешними источниками\n',6,'email'),(7,'ru','FEEDBACK_FORM','Отправка сообщения через форму обратной связи','#AUTHOR# - Автор сообщения\n#AUTHOR_EMAIL# - Email автора сообщения\n#TEXT# - Текст сообщения\n#EMAIL_FROM# - Email отправителя письма\n#EMAIL_TO# - Email получателя письма',7,'email'),(8,'ru','MAIN_MAIL_CONFIRM_CODE','Подтверждение email-адреса отправителя','\n\n#EMAIL_TO# - Email-адрес для подтверждения\n#MESSAGE_SUBJECT# - Тема сообщения\n#CONFIRM_CODE# - Код подтверждения',8,'email'),(9,'ru','SMS_USER_CONFIRM_NUMBER','Подтверждение номера телефона по СМС','#USER_PHONE# - номер телефона\r\n#CODE# - код подтверждения\r\n',100,'sms'),(10,'ru','SMS_USER_RESTORE_PASSWORD','Восстановление пароля через СМС','#USER_PHONE# - номер телефона\r\n#CODE# - код для восстановления\r\n',100,'sms'),(11,'en','NEW_USER','New user was registered','\n\n#USER_ID# - User ID\n#LOGIN# - Login\n#EMAIL# - EMail\n#NAME# - Name\n#LAST_NAME# - Last Name\n#USER_IP# - User IP\n#USER_HOST# - User Host\n',1,'email'),(12,'en','USER_INFO','Account Information','\n\n#USER_ID# - User ID\n#STATUS# - Account status\n#MESSAGE# - Message for user\n#LOGIN# - Login\n#URL_LOGIN# - Encoded login for use in URL\n#CHECKWORD# - Check string for password change\n#NAME# - Name\n#LAST_NAME# - Last Name\n#EMAIL# - User E-Mail\n',2,'email'),(13,'en','NEW_USER_CONFIRM','New user registration confirmation','\n\n#USER_ID# - User ID\n#LOGIN# - Login\n#EMAIL# - E-mail\n#NAME# - First name\n#LAST_NAME# - Last name\n#USER_IP# - User IP\n#USER_HOST# - User host\n#CONFIRM_CODE# - Confirmation code\n',3,'email'),(14,'en','USER_PASS_REQUEST','Password Change Request','\n\n#USER_ID# - User ID\n#STATUS# - Account status\n#MESSAGE# - Message for user\n#LOGIN# - Login\n#URL_LOGIN# - Encoded login for use in URL\n#CHECKWORD# - Check string for password change\n#NAME# - Name\n#LAST_NAME# - Last Name\n#EMAIL# - User E-Mail\n',4,'email'),(15,'en','USER_PASS_CHANGED','Password Change Confirmation','\n\n#USER_ID# - User ID\n#STATUS# - Account status\n#MESSAGE# - Message for user\n#LOGIN# - Login\n#URL_LOGIN# - Encoded login for use in URL\n#CHECKWORD# - Check string for password change\n#NAME# - Name\n#LAST_NAME# - Last Name\n#EMAIL# - User E-Mail\n',5,'email'),(16,'en','USER_INVITE','Invitation of a new site user','#ID# - User ID\n#LOGIN# - Login\n#URL_LOGIN# - Encoded login for use in URL\n#EMAIL# - EMail\n#NAME# - Name\n#LAST_NAME# - Last Name\n#PASSWORD# - User password \n#CHECKWORD# - Password check string\n#XML_ID# - User ID to link with external data sources\n\n',6,'email'),(17,'en','FEEDBACK_FORM','Sending a message using a feedback form','#AUTHOR# - Message author\n#AUTHOR_EMAIL# - Author\'s e-mail address\n#TEXT# - Message text\n#EMAIL_FROM# - Sender\'s e-mail address\n#EMAIL_TO# - Recipient\'s e-mail address',7,'email'),(18,'en','MAIN_MAIL_CONFIRM_CODE','Confirm sender\'s email address','\n\n#EMAIL_TO# - confirmation email address\n#MESSAGE_SUBJECT# - Message subject\n#CONFIRM_CODE# - Confirmation code',8,'email'),(19,'en','SMS_USER_CONFIRM_NUMBER','Verify phone number using SMS','#USER_PHONE# - phone number\n#CODE# - confirmation code',100,'sms'),(20,'en','SMS_USER_RESTORE_PASSWORD','Recover password using SMS','#USER_PHONE# - phone number\n#CODE# - recovery confirmation code',100,'sms'),(21,'ru','ADV_BANNER_STATUS_CHANGE','Изменился статус баннера','#EMAIL_TO# - EMail получателя сообщения (#OWNER_EMAIL#)\n#ADMIN_EMAIL# - EMail пользователей имеющих роль \"менеджер баннеров\" и \"администратор\"\n#ADD_EMAIL# - EMail пользователей имеющих право управления баннерами контракта\n#STAT_EMAIL# - EMail пользователей имеющих право просмотра баннеров конракта\n#EDIT_EMAIL# - EMail пользователей имеющих право модификации некоторых полей контракта\n#OWNER_EMAIL# - EMail пользователей имеющих какое либо право на контракт\n#BCC# - скрытая копия (#ADMIN_EMAIL#)\n#ID# - ID баннера\n#CONTRACT_ID# - ID контракта\n#CONTRACT_NAME# - заголовок контракта\n#TYPE_SID# - ID типа\n#TYPE_NAME# - заголовок типа\n#STATUS# - статус\n#STATUS_COMMENTS# - комментарий к статусу\n#NAME# - заголовок баннера\n#GROUP_SID# - группа баннера\n#INDICATOR# - показывается ли баннер на сайте ?\n#ACTIVE# - флаг активности баннера [Y | N]\n#MAX_SHOW_COUNT# - максимальное количество показов баннера\n#SHOW_COUNT# - сколько раз баннер был показан на сайте\n#MAX_CLICK_COUNT# - максимальное количество кликов на баннер\n#CLICK_COUNT# - сколько раз кликнули на баннер\n#DATE_LAST_SHOW# - дата последнего показа баннера\n#DATE_LAST_CLICK# - дата последнего клика на баннер\n#DATE_SHOW_FROM# - дата начала показа баннера\n#DATE_SHOW_TO# - дата окончания показа баннера\n#IMAGE_LINK# - ссылка на изображение баннера\n#IMAGE_ALT# - текст всплывающей подсказки на изображении\n#URL# - URL на изображении\n#URL_TARGET# - где развернуть URL изображения\n#CODE# - код баннера\n#CODE_TYPE# - тип кода баннера (text | html)\n#COMMENTS# - комментарий к баннеру\n#DATE_CREATE# - дата создания баннера\n#CREATED_BY# - кем был создан баннер\n#DATE_MODIFY# - дата изменения баннера\n#MODIFIED_BY# - кем изменен баннер\n',100,'email'),(22,'ru','ADV_CONTRACT_INFO','Параметры рекламного контракта','#MESSAGE# - сообщение\n#EMAIL_TO# - EMail получателя сообщения (#OWNER_EMAIL#)\n#ADMIN_EMAIL# - EMail пользователей имеющих роль \"менеджер баннеров\" и \"администратор\"\n#ADD_EMAIL# - EMail пользователей имеющих право управления баннерами контракта\n#STAT_EMAIL# - EMail пользователей имеющих право просмотра статистики баннеров конракта\n#EDIT_EMAIL# - EMail пользователей имеющих право модификации некоторых полей контракта\n#OWNER_EMAIL# - EMail пользователей имеющих какое либо право на контракт\n#BCC# - скрытая копия (#ADD_EMAIL#)\n#ID# - ID контракта\n#INDICATOR# - показываются ли баннеры контракта на сайте ?\n#ACTIVE# - флаг активности контракта [Y | N]\n#NAME# - заголовок контракта\n#DESCRIPTION# - описание контракта\n#MAX_SHOW_COUNT# - максимальное количество показов всех баннеров контракта\n#SHOW_COUNT# - сколько раз в сумме показали баннеры контракта\n#MAX_CLICK_COUNT# - максимальное количество кликов на все баннеры контракта\n#CLICK_COUNT# - количество кликов на все баннеры контракта\n#BANNERS# - количество баннеров контракта\n#DATE_SHOW_FROM# - дата начала показа баннеров\n#DATE_SHOW_TO# - дата окончания показа баннеров\n#DATE_CREATE# - дата создания контракта\n#CREATED_BY# - кем был создан контракт\n#DATE_MODIFY# - дата изменения контракта\n#MODIFIED_BY# - кем был изменен контракт\n',100,'email'),(23,'en','ADV_BANNER_STATUS_CHANGE','Banner status was changed','#EMAIL_TO# - EMail of message receiver (#OWNER_EMAIL#)\n#ADMIN_EMAIL# - EMail of the users with \"banners manager\" and \"administrator\" roles\n#ADD_EMAIL# - EMail of banner managers\n#STAT_EMAIL# - EMail of users who have permissions to view banner statistics\n#EDIT_EMAIL# - EMail of users who have permissions to modify some contract fields\n#OWNER_EMAIL# - EMail of users who have any permissions on contract\n#BCC# - copy (#ADMIN_EMAIL#)\n#ID# - banner ID\n#CONTRACT_ID# - contract ID\n#CONTRACT_NAME# - contract title\n#TYPE_SID# - type ID\n#TYPE_NAME# - type title\n#STATUS# - status\n#STATUS_COMMENTS# - comments for status\n#NAME# - banner title\n#GROUP_SID# - banner group\n#ACTIVE# - banner activity flag [Y | N]\n#INDICATOR# - is banner shown on the site ?\n#SITE_ID# - language part of the site for banner showing\n#WEIGHT# - weight (priority)\n#MAX_SHOW_COUNT# - max number of banner shows\n#SHOW_COUNT# - number of banner shows\n#MAX_CLICK_COUNT# - max number of clicks on banner\n#CLICK_COUNT# - number of clicks on banner\n#DATE_LAST_SHOW# - date of last banner showing\n#DATE_LAST_CLICK# - date of last banner click\n#DATE_SHOW_FROM# - start date of banner showing period\n#DATE_SHOW_TO# - end date of banner showing period\n#IMAGE_LINK# - image link\n#IMAGE_ALT# - image tooltip text\n#URL# - URL on image\n#URL_TARGET# - where to open URL\n#CODE# - banner code\n#CODE_TYPE# - type of banner code (text | html)\n#COMMENTS# - banner comments\n#DATE_CREATE# - banner creation date\n#CREATED_BY# - banner creator\n#DATE_MODIFY# - banner modification date\n#MODIFIED_BY# - who has modified the banner\n',100,'email'),(24,'en','ADV_CONTRACT_INFO','Advertising contract settings','#ID# - contract ID\n#MESSAGE# - message\n#EMAIL_TO# - EMail of message receiver\n#ADMIN_EMAIL# - EMail of the users with \"banners manager\" and \"administrator\" roles\n#ADD_EMAIL# - EMail of banner managers\n#STAT_EMAIL# - EMail of users who have permissions to view banner statistics\n#EDIT_EMAIL# - EMail of users who have permissions to modify some contract fields\n#OWNER_EMAIL# - EMail of users who have any permissions on contract\n#BCC# - copy\n#INDICATOR# - is contract banners shown on the site ?\n#ACTIVE# - contract activity flag [Y | N]\n#NAME# - contract title\n#DESCRIPTION# - contract description\n#MAX_SHOW_COUNT# - max number of all contract banners shows\n#SHOW_COUNT# - number of all contract banners shows\n#MAX_CLICK_COUNT# - max number of all contract banners clicks\n#CLICK_COUNT# - number of all contract banners clicks\n#BANNERS# - number of contract banners\n#DATE_SHOW_FROM# - start date of banner showing period\n#DATE_SHOW_TO# - end date of banner showing period\n#DATE_CREATE# - contract creation date\n#CREATED_BY# - contract creator\n#DATE_MODIFY# - contract modification date\n#MODIFIED_BY# - who has modified the contract\n',100,'email'),(25,'ru','BIZPROC_MAIL_TEMPLATE','Сообщение действия отправки почты','#SENDER# - Отправитель сообщения\n#RECEIVER# - Получатель сообщения\n#TITLE# - Заголовок сообщения\n#MESSAGE# - Сообщение',100,'email'),(26,'ru','BIZPROC_HTML_MAIL_TEMPLATE','Сообщение действия отправки почты (HTML)','#SENDER# - Отправитель сообщения\n#RECEIVER# - Получатель сообщения\n#TITLE# - Заголовок сообщения\n#MESSAGE# - Сообщение',100,'email'),(27,'en','BIZPROC_MAIL_TEMPLATE','E-mail send action notification','#SENDER# - Message sender\n#RECEIVER# - Message recipient\n#TITLE# - Message title\n#MESSAGE# - Message text',100,'email'),(28,'en','BIZPROC_HTML_MAIL_TEMPLATE','E-mail send action notification (HTML)','#SENDER# - Message sender\n#RECEIVER# - Message recipient\n#TITLE# - Message title\n#MESSAGE# - Message text',100,'email'),(29,'ru','NEW_BLOG_MESSAGE','Новое сообщение в блоге','#BLOG_ID# - ID блога \n#BLOG_NAME# - Название блога\n#BLOG_URL# - Название блога латиницей\n#MESSAGE_TITLE# - Тема сообщения\n#MESSAGE_TEXT# - Текст сообщения\n#MESSAGE_DATE# - Дата сообщения\n#MESSAGE_PATH# - URL адрес сообщения\n#AUTHOR# - Автор сообщения\n#EMAIL_FROM# - Email отправителя письма\n#EMAIL_TO# - Email получателя письма',100,'email'),(30,'ru','NEW_BLOG_COMMENT','Новый комментарий в блоге','#BLOG_ID# - ID блога \n#BLOG_NAME# - Название блога\n#BLOG_URL# - Название блога латиницей\n#MESSAGE_TITLE# - Тема сообщения\n#COMMENT_TITLE# - Заголовок комментария\n#COMMENT_TEXT# - Текст комментария\n#COMMENT_DATE# - Текст комментария\n#COMMENT_PATH# - URL адрес сообщения\n#AUTHOR# - Автор сообщения\n#EMAIL_FROM# - Email отправителя письма\n#EMAIL_TO# - Email получателя письма',100,'email'),(31,'ru','NEW_BLOG_COMMENT2COMMENT','Новый комментарий на ваш комментарий в блоге','#BLOG_ID# - ID блога \n#BLOG_NAME# - Название блога\n#BLOG_URL# - Название блога латиницей\n#MESSAGE_TITLE# - Тема сообщения\n#COMMENT_TITLE# - Заголовок комментария\n#COMMENT_TEXT# - Текст комментария\n#COMMENT_DATE# - Текст комментария\n#COMMENT_PATH# - URL адрес сообщения\n#AUTHOR# - Автор сообщения\n#EMAIL_FROM# - Email отправителя письма\n#EMAIL_TO# - Email получателя письма',100,'email'),(32,'ru','NEW_BLOG_COMMENT_WITHOUT_TITLE','Новый комментарий в блоге (без темы)','#BLOG_ID# - ID блога \n#BLOG_NAME# - Название блога\n#BLOG_URL# - Название блога латиницей\n#MESSAGE_TITLE# - Тема сообщения\n#COMMENT_TEXT# - Текст комментария\n#COMMENT_DATE# - Текст комментария\n#COMMENT_PATH# - URL адрес сообщения\n#AUTHOR# - Автор сообщения\n#EMAIL_FROM# - Email отправителя письма\n#EMAIL_TO# - Email получателя письма',100,'email'),(33,'ru','NEW_BLOG_COMMENT2COMMENT_WITHOUT_TITLE','Новый комментарий на ваш комментарий в блоге (без темы)','#BLOG_ID# - ID блога \n#BLOG_NAME# - Название блога\n#BLOG_URL# - Название блога латиницей\n#COMMENT_TITLE# - Заголовок комментария\n#COMMENT_TEXT# - Текст комментария\n#COMMENT_DATE# - Текст комментария\n#COMMENT_PATH# - URL адрес сообщения\n#AUTHOR# - Автор сообщения\n#EMAIL_FROM# - Email отправителя письма\n#EMAIL_TO# - Email получателя письма',100,'email'),(34,'ru','BLOG_YOUR_BLOG_TO_USER','Ваш блог был добавлен в друзья','#BLOG_ID# - ID блога \n#BLOG_NAME# - Название блога\n#BLOG_URL# - Название блога латиницей\n#BLOG_ADR# - Адрес блога\n#USER_ID# - ID пользователя\n#USER# - Пользователь\n#USER_URL# - Адрес пользователя\n#EMAIL_FROM# - Email отправителя письма\n#EMAIL_TO# - Email получателя письма\n',100,'email'),(35,'ru','BLOG_YOU_TO_BLOG','Вы были добавлены в друзья блога','#BLOG_ID# - ID блога \n#BLOG_NAME# - Название блога\n#BLOG_URL# - Название блога латиницей\n#BLOG_ADR# - Адрес блога\n#USER_ID# - ID пользователя\n#USER# - Пользователь\n#USER_URL# - Адрес пользователя\n#EMAIL_FROM# - Email отправителя письма\n#EMAIL_TO# - Email получателя письма\n',100,'email'),(36,'ru','BLOG_BLOG_TO_YOU','К вам в друзья был добавлен блог','#BLOG_ID# - ID блога \n#BLOG_NAME# - Название блога\n#BLOG_URL# - Название блога латиницей\n#BLOG_ADR# - Адрес блога\n#USER_ID# - ID пользователя\n#USER# - Пользователь\n#USER_URL# - Адрес пользователя\n#EMAIL_FROM# - Email отправителя письма\n#EMAIL_TO# - Email получателя письма\n',100,'email'),(37,'ru','BLOG_USER_TO_YOUR_BLOG','В ваш блог был добавлен друг','#BLOG_ID# - ID блога \n#BLOG_NAME# - Название блога\n#BLOG_URL# - Название блога латиницей\n#BLOG_ADR# - Адрес блога\n#USER_ID# - ID пользователя\n#USER# - Пользователь\n#USER_URL# - Адрес пользователя\n#EMAIL_FROM# - Email отправителя письма\n#EMAIL_TO# - Email получателя письма\n',100,'email'),(38,'ru','BLOG_SONET_NEW_POST','Добавлено новое сообщение','#EMAIL_TO# - Email получателя письма\n#POST_ID# - ID сообщения\n#RECIPIENT_ID# - ID получателя\n#URL_ID# - URL страницы сообщения\n',100,'email'),(39,'ru','BLOG_SONET_NEW_COMMENT','Добавлен новый комментарий','#EMAIL_TO# - Email получателя письма\n#COMMENT_ID# - ID комментария\n#POST_ID# - ID сообщения\n#RECIPIENT_ID# - ID получателя\n#URL_ID# - URL страницы сообщения\n',100,'email'),(40,'ru','BLOG_SONET_POST_SHARE','Добавлен новый получатель сообщения','#EMAIL_TO# - Email получателя письма\n#POST_ID# - ID сообщения\n#RECIPIENT_ID# - ID получателя\n#URL_ID# - URL страницы сообщения\n',100,'email'),(41,'ru','BLOG_POST_BROADCAST','Добавлено новое сообщение','\n#MESSAGE_TITLE# - Тема сообщения\n#MESSAGE_TEXT# - Текст сообщения\n#MESSAGE_PATH# - URL адрес сообщения\n#AUTHOR# - Автор сообщения\n#EMAIL_TO# - Email получателя письма',100,'email'),(42,'en','NEW_BLOG_MESSAGE','New blog message','#BLOG_ID# - Blog ID\n#BLOG_NAME# - Blog title\n#BLOG_URL# - Blog url\n#MESSAGE_TITLE# - Message title\n#MESSAGE_TEXT# - Message text\n#MESSAGE_DATE# - Message date\n#MESSAGE_PATH# - URL to message\n#AUTHOR# - Message author\n#EMAIL_FROM# - Sender email\n#EMAIL_TO# - Recipient email',100,'email'),(43,'en','NEW_BLOG_COMMENT','New comment in blog','#BLOG_ID# - Blog ID\n#BLOG_NAME# - Blog title\n#BLOG_URL# - Blog url\n#MESSAGE_TITLE# - Message title\n#COMMENT_TITLE# - Comment title\n#COMMENT_TEXT# - Comment text\n#COMMENT_DATE# - Comment date\n#COMMENT_PATH# - Comment URL\n#AUTHOR# - Comment author\n#EMAIL_FROM# - Sender email\n#EMAIL_TO# - Recipient email',100,'email'),(44,'en','NEW_BLOG_COMMENT2COMMENT','New comment for your in blog','#BLOG_ID# - Blog ID\n#BLOG_NAME# - Blog title\n#BLOG_URL# - Blog url\n#MESSAGE_TITLE# - Message title\n#COMMENT_TITLE# - Comment title\n#COMMENT_TEXT# - Comment text\n#COMMENT_DATE# - Comment date\n#COMMENT_PATH# - Comment URL\n#AUTHOR# - Comment author\n#EMAIL_FROM# - Sender email\n#EMAIL_TO# - Recipient email',100,'email'),(45,'en','NEW_BLOG_COMMENT_WITHOUT_TITLE','New comment in blog (without subject)','#BLOG_ID# - Blog ID\n#BLOG_NAME# - Blog title\n#BLOG_URL# - Blog url\n#MESSAGE_TITLE# - Message title\n#COMMENT_TEXT# - Comment text\n#COMMENT_DATE# - Comment date\n#COMMENT_PATH# - Comment URL\n#AUTHOR# - Comment author\n#EMAIL_FROM# - Sender email\n#EMAIL_TO# - Recipient email',100,'email'),(46,'en','NEW_BLOG_COMMENT2COMMENT_WITHOUT_TITLE','New comment for your in blog (without subject)','#BLOG_ID# - Blog ID\n#BLOG_NAME# - Blog title\n#BLOG_URL# - Blog url\n#MESSAGE_TITLE# - Message title\n#COMMENT_TEXT# - Comment text\n#COMMENT_DATE# - Comment date\n#COMMENT_PATH# - Comment URL\n#AUTHOR# - Comment author\n#EMAIL_FROM# - Sender email\n#EMAIL_TO# - Recipient email',100,'email'),(47,'en','BLOG_YOUR_BLOG_TO_USER','Your blog has been added to friends','#BLOG_ID# - Blog ID\n#BLOG_NAME# - Blog name\n#BLOG_URL# - Blog name, Latin letters only\n#BLOG_ADR# - Blog address\n#USER_ID# - User ID\n#USER# - User\n#USER_URL# - User URL\n#EMAIL_FROM# - Sender E-mail\n#EMAIL_TO# - Recipient E-mail',100,'email'),(48,'en','BLOG_YOU_TO_BLOG','You have been added to blog friends','#BLOG_ID# - Blog ID\n#BLOG_NAME# - Blog name\n#BLOG_URL# - Blog name, Latin letters only\n#BLOG_ADR# - Blog address\n#USER_ID# - User ID\n#USER# - User\n#USER_URL# - User URL\n#EMAIL_FROM# - Sender E-mail\n#EMAIL_TO# - Recipient E-mail',100,'email'),(49,'en','BLOG_BLOG_TO_YOU','A blog has been added to your friends','#BLOG_ID# - Blog ID\n#BLOG_NAME# - Blog name\n#BLOG_URL# - Blog name, Latin letters only\n#BLOG_ADR# - Blog address\n#USER_ID# - User ID\n#USER# - User\n#USER_URL# - User URL\n#EMAIL_FROM# - Sender E-mail\n#EMAIL_TO# - Recipient E-mail',100,'email'),(50,'en','BLOG_USER_TO_YOUR_BLOG','A friend has been added to your blog','#BLOG_ID# - Blog ID\n#BLOG_NAME# - Blog name\n#BLOG_URL# - Blog name, Latin letters only\n#BLOG_ADR# - Blog address\n#USER_ID# - User ID\n#USER# - User\n#USER_URL# - User URL\n#EMAIL_FROM# - Sender E-mail\n#EMAIL_TO# - Recipient E-mail',100,'email'),(51,'en','BLOG_SONET_NEW_POST','New post added','#EMAIL_TO# - Recipient email\n#POST_ID# - Post ID\n#URL_ID# - Post URL',100,'email'),(52,'en','BLOG_SONET_NEW_COMMENT','Comment added','#EMAIL_TO# - Recipient email\n#COMMENT_ID# - Comment ID\n#POST_ID# - Post ID\n#URL_ID# - Post URL',100,'email'),(53,'en','BLOG_SONET_POST_SHARE','New recipient added','#EMAIL_TO# - Recipient email\n#POST_ID# - Post ID\n#URL_ID# - Post URL',100,'email'),(54,'en','BLOG_POST_BROADCAST','New post added','\n#MESSAGE_TITLE# - Post subject\n#MESSAGE_TEXT# - Post text \n#MESSAGE_PATH# - Post URL\n#AUTHOR# - Post author\n#EMAIL_TO# - E-mail recipient',100,'email'),(55,'ru','CALENDAR_INVITATION','Приглашение на встречу','\n\n#EMAIL_TO# - EMail приглашенного\n#TITLE# - Тема\n#MESSAGE# - Подробное описание встречи\n',100,'email'),(56,'en','CALENDAR_INVITATION','Invitation','\n\n#EMAIL_TO# - invited person e-mail\n#TITLE# - subject\n#MESSAGE# - full description of the event\n',100,'email'),(57,'en','CATALOG_PRODUCT_SUBSCRIBE_LIST_CONFIRM','Код подтверждения','\n#TOKEN# - Код подтверждения\n#TOKEN_URL# - Ссылка с кодом подтверждения\n#LIST_SUBSCRIBES# - Список подписок\n#URL_PARAMETERS# - Параметры ссылки для подтверждения кода доступа\n',100,'email'),(58,'en','CATALOG_PRODUCT_SUBSCRIBE_NOTIFY','Уведомление о поступлении товара','#USER_NAME# - имя пользователя\n#EMAIL_TO# - email пользователя\n#NAME# - название товара\n#PAGE_URL# - детальная страница товара\n#CHECKOUT_URL# - добавление товара в корзину\n#CHECKOUT_URL_PARAMETERS# - параметры ссылки добавления товара в корзину\n#PRODUCT_ID# - id товара для формирования ссылок\n#UNSUBSCRIBE_URL# - ссылка отписки от товара\n#UNSUBSCRIBE_URL_PARAMETERS# - параметры ссылки отписки от товара\n',100,'email'),(59,'en','CATALOG_PRODUCT_SUBSCRIBE_NOTIFY_REPEATED','Уведомление о товаре в магазине','#USER_NAME# - имя пользователя\n#EMAIL_TO# - email пользователя\n#NAME# - название товара\n#PAGE_URL# - детальная страница товара\n#PRODUCT_ID# - id товара для формирования ссылок\n#UNSUBSCRIBE_URL# - ссылка отписки от товара\n#UNSUBSCRIBE_URL_PARAMETERS# - параметры ссылки отписки от товара\n',100,'email'),(60,'ru','CATALOG_PRODUCT_SUBSCRIBE_LIST_CONFIRM','Код подтверждения','\n#TOKEN# - Код подтверждения\n#TOKEN_URL# - Ссылка с кодом подтверждения\n#LIST_SUBSCRIBES# - Список подписок\n#URL_PARAMETERS# - Параметры ссылки для подтверждения кода доступа\n',100,'email'),(61,'ru','CATALOG_PRODUCT_SUBSCRIBE_NOTIFY','Уведомление о поступлении товара','#USER_NAME# - имя пользователя\n#EMAIL_TO# - email пользователя\n#NAME# - название товара\n#PAGE_URL# - детальная страница товара\n#CHECKOUT_URL# - добавление товара в корзину\n#CHECKOUT_URL_PARAMETERS# - параметры ссылки добавления товара в корзину\n#PRODUCT_ID# - id товара для формирования ссылок\n#UNSUBSCRIBE_URL# - ссылка отписки от товара\n#UNSUBSCRIBE_URL_PARAMETERS# - параметры ссылки отписки от товара\n',100,'email'),(62,'ru','CATALOG_PRODUCT_SUBSCRIBE_NOTIFY_REPEATED','Уведомление о товаре в магазине','#USER_NAME# - имя пользователя\n#EMAIL_TO# - email пользователя\n#NAME# - название товара\n#PAGE_URL# - детальная страница товара\n#PRODUCT_ID# - id товара для формирования ссылок\n#UNSUBSCRIBE_URL# - ссылка отписки от товара\n#UNSUBSCRIBE_URL_PARAMETERS# - параметры ссылки отписки от товара\n',100,'email'),(63,'ru','NEW_FORUM_MESSAGE','Новое сообщение на форуме','\n			#FORUM_ID# - ID форума\n			#FORUM_NAME# - Название форума\n			#TOPIC_ID# - ID темы\n			#MESSAGE_ID# - ID сообщения\n			#TOPIC_TITLE# - Тема сообщения\n			#MESSAGE_TEXT# - Текст сообщения\n			#MESSAGE_DATE# - Дата сообщения\n			#AUTHOR# - Автор сообщения\n			#RECIPIENT# - Получатель сообщения\n			#TAPPROVED# - Тема сообщения показывается\n			#MAPPROVED# - Тело сообщения показывается\n			#PATH2FORUM# - Адрес сообщения\n			#FROM_EMAIL# - E-Mail для поля From письма',100,'email'),(64,'ru','NEW_FORUM_PRIV','Приватное письмо посетителю форума','\n			#FROM_NAME# - Автор сообщения\n			#FROM_EMAIL# - E-Mail автора сообщения\n			#TO_NAME# - Имя получателя сообщения\n			#TO_EMAIL# - E-Mail получателя сообщения\n			#SUBJECT# - Тема сообщения\n			#MESSAGE# - Тело сообщения\n			#MESSAGE_DATE# - Дата сообщения',100,'email'),(65,'ru','NEW_FORUM_PRIVATE_MESSAGE','Приватное сообщение','\n			#FROM_NAME# - Имя автора сообщения\n			#FROM_USER_ID# - ID автора сообщения\n			#FROM_EMAIL# - E-Mail автора сообщения\n			#TO_NAME# - Имя получателя сообщения\n			#TO_USER_ID# - ID получателя сообщения\n			#TO_EMAIL# - E-Mail получателя сообщения\n			#SUBJECT# - Тема сообщения\n			#MESSAGE# - Текст сообщения\n			#MESSAGE_DATE# - Дата сообщения\n			#MESSAGE_LINK# - Ссылка на сообщение',100,'email'),(66,'ru','EDIT_FORUM_MESSAGE','Изменение сообщения на форуме','\n			#FORUM_ID# - ID форума\n			#FORUM_NAME# - Название форума\n			#TOPIC_ID# - ID темы\n			#MESSAGE_ID# - ID сообщения\n			#TOPIC_TITLE# - Тема сообщения\n			#MESSAGE_TEXT# - Текст сообщения\n			#MESSAGE_DATE# - Дата сообщения\n			#AUTHOR# - Автор сообщения\n			#RECIPIENT# - Получатель сообщения\n			#TAPPROVED# - Тема сообщения показывается\n			#MAPPROVED# - Тело сообщения показывается\n			#PATH2FORUM# - Адрес сообщения\n			#FROM_EMAIL# - E-Mail для поля From письма',100,'email'),(67,'en','NEW_FORUM_MESSAGE','New forum message','\n			#FORUM_ID# - Forum ID\n			#FORUM_NAME# - Forum name\n			#TOPIC_ID# - Topic ID\n			#MESSAGE_ID# - Message ID\n			#TOPIC_TITLE# - Topic title\n			#MESSAGE_TEXT# - Message text\n			#MESSAGE_DATE# - Message date\n			#AUTHOR# - Message author\n			#RECIPIENT# - E-Mail recipient\n			#TAPPROVED# - Message topic is approved\n			#MAPPROVED# - Message is approved\n			#PATH2FORUM# - Message Url\n			#FROM_EMAIL# - E-Mail for From field of the EMail',100,'email'),(68,'en','NEW_FORUM_PRIV','Private message for forum user','\n			#FROM_NAME# - Name of the sender\n			#FROM_EMAIL# - E-Mail of the sender\n			#TO_NAME# - Name of recipient\n			#TO_EMAIL# - E-Mail of recipient\n			#SUBJECT# - Topic\n			#MESSAGE# - Message\n			#MESSAGE_DATE# - Date',100,'email'),(69,'en','NEW_FORUM_PRIVATE_MESSAGE','Private message for forum user','\n			#FROM_NAME# - Name of the sender\n			#FROM_USER_ID# - ID of the sender\n			#FROM_EMAIL# - E-Mail of the sender\n			#TO_NAME# - Name of recipient\n			#TO_USER_ID# - ID of recipient\n			#TO_EMAIL# - E-Mail of recipient\n			#SUBJECT# - Topic\n			#MESSAGE# - Message\n			#MESSAGE_DATE# - Date\n			#MESSAGE_LINK# - Link to message',100,'email'),(70,'en','EDIT_FORUM_MESSAGE','Changing forum message','\n			#FORUM_ID# - Forum ID\n			#FORUM_NAME# - Forum name\n			#TOPIC_ID# - Topic ID\n			#MESSAGE_ID# - Message ID\n			#TOPIC_TITLE# - Topic title\n			#MESSAGE_TEXT# - Message text\n			#MESSAGE_DATE# - Message date\n			#AUTHOR# - Message author\n			#RECIPIENT# - E-Mail recipient\n			#TAPPROVED# - Message topic is approved\n			#MAPPROVED# - Message is approved\n			#PATH2FORUM# - Message Url\n			#FROM_EMAIL# - E-Mail for From field of the EMail',100,'email'),(71,'ru','FORUM_NEW_MESSAGE_MAIL','Новое сообщение на форуме в режиме общения по E-Mail','#FORUM_NAME# - Название форума\n#AUTHOR# - Автор сообщения\n#FROM_EMAIL# - E-Mail для поля From письма\n#RECIPIENT# - Получатель сообщения\n#TOPIC_TITLE# - Тема сообщения\n#MESSAGE_TEXT# - Текст сообщения\n#PATH2FORUM# - Адрес сообщения\n#MESSAGE_DATE# - Дата сообщения\n#FORUM_EMAIL# - Е-Mail адрес для добавления сообщений на форум\n#FORUM_ID# - ID форума\n#TOPIC_ID# - ID темы \n#MESSAGE_ID# - ID сообщения\n#TAPPROVED# - Тема опубликована\n#MAPPROVED# - Сообщение опубликовано\n',100,'email'),(72,'en','FORUM_NEW_MESSAGE_MAIL','New message at the forum (e-mail messaging mode)','#FORUM_NAME# - Forum name\n#AUTHOR# - Message author\n#FROM_EMAIL# - E-Mail in the &amp;From&amp; field\n#RECIPIENT# - Message recipient\n#TOPIC_TITLE# - Message subject\n#MESSAGE_TEXT# - Message text\n#PATH2FORUM# - Message URL\n#MESSAGE_DATE# - Message date\n#FORUM_EMAIL# - E-Mail to add messages to the forum \n#FORUM_ID# - Forum ID\n#TOPIC_ID# - Topic ID \n#MESSAGE_ID# - Message ID\n#TAPPROVED# - Topic approved and published\n#MAPPROVED# - Message approved and published\n',100,'email'),(73,'ru','ADD_IDEA_COMMENT','Добавлен новый комментарий к идее','#FULL_PATH# - Путь к комментарию к идее\n#IDEA_TITLE# - Заголовок идеи\n#AUTHOR# - Имя автора комментария к идее\n#IDEA_COMMENT_TEXT# - Текст комментария к идее\n#DATE_CREATE# - Дата и время создания комментария к идее\n#EMAIL_TO# - Email подписчика',100,'email'),(74,'en','ADD_IDEA_COMMENT','A new comment added to idea','#FULL_PATH# - Comment path\n#IDEA_TITLE# - Idea title\n#AUTHOR# - Comment author\n#IDEA_COMMENT_TEXT# - Comment text\n#DATE_CREATE# - Comment added on\n#EMAIL_TO# - Subscriber e-mail',100,'email'),(75,'ru','ADD_IDEA','Добавлена новая идея','#FULL_PATH# - Путь к идее\n#TITLE# - Заголовок идеи\n#AUTHOR# - Имя автора идеи\n#IDEA_TEXT# - Текст идеи\n#DATE_PUBLISH# - Дата и время создания идеи\n#EMAIL_TO# - Email подписчика\n#CATEGORY# - Категория',100,'email'),(76,'en','ADD_IDEA','New idea added','#FULL_PATH# - Idea full path\n#TITLE# - Idea title\n#AUTHOR# - Idea author\n#IDEA_TEXT# - Idea text\n#DATE_PUBLISH# - Date and time idea was created\n#EMAIL_TO# - Subscriber e-mail\n#CATEGORY# - Category',100,'email'),(77,'ru','IM_NEW_NOTIFY','Новое уведомление','#MESSAGE_ID# - ID сообщения\n#USER_ID# - ID пользователя\n#USER_LOGIN# - Логин пользователя\n#USER_NAME# - Имя пользователя\n#USER_LAST_NAME# - Фамилия пользователя\n#FROM_USER_ID# - ID отправителя сообщения\n#FROM_USER# - Имя отправителя сообщения\n#DATE_CREATE# - Дата создания сообщения\n#TITLE# - Заголовок сообщения\n#MESSAGE# - Сообщение\n#MESSAGE_50# - Сообщение, первые 50 символов\n#EMAIL_TO# - Email получателя письма',100,'email'),(78,'ru','IM_NEW_NOTIFY_GROUP','Новое уведомление (групповое)','#MESSAGE_ID# - ID сообщения\n#USER_ID# - ID пользователя\n#USER_LOGIN# - Логин пользователя\n#USER_NAME# - Имя пользователя\n#USER_LAST_NAME# - Фамилия пользователя\n#FROM_USERS# - Имена отправителелей сообщения\n#DATE_CREATE# - Дата создания сообщения\n#TITLE# - Заголовок сообщения\n#MESSAGE# - Текст уведомления\n#MESSAGE_50# - Текст уведомления, первые 50 символов\n#EMAIL_TO# - Email получателя письма',100,'email'),(79,'ru','IM_NEW_MESSAGE','Новое сообщение','#USER_ID# - ID пользователя\n#USER_LOGIN# - Логин пользователя\n#USER_NAME# - Имя пользователя\n#USER_LAST_NAME# - Фамилия пользователя\n#FROM_USER# - Имя отправителя сообщения\n#MESSAGES# - Блок сообщений\n#EMAIL_TO# - Email получателя письма',100,'email'),(80,'ru','IM_NEW_MESSAGE_GROUP','Новое сообщение (групповое)','#USER_ID# - ID пользователя\n#USER_LOGIN# - Логин пользователя\n#USER_NAME# - Имя пользователя\n#USER_LAST_NAME# - Фамилия пользователя\n#FROM_USERS# - Имена отправителелей сообщения\n#MESSAGES# - Блок сообщений\n#EMAIL_TO# - Email получателя письма',100,'email'),(81,'en','IM_NEW_NOTIFY','New notification','#MESSAGE_ID# - message ID\n#USER_ID# - user ID\n#USER_LOGIN# - user Login\n#USER_NAME# - user first name\n#USER_LAST_NAME# - user last name\n#FROM_USER_ID# - message sender ID\n#FROM_USER# - message sender name\n#DATE_CREATE# - the date the message was created\n#TITLE# - message title\n#MESSAGE# - message body\n#MESSAGE_50# - first 50 characters of the message text\n#EMAIL_TO# - message recipient e-mail address',100,'email'),(82,'en','IM_NEW_NOTIFY_GROUP','New notification (group)','#MESSAGE_ID# - message ID\n#USER_ID# - user ID\n#USER_LOGIN# - user Login\n#USER_NAME# - user first name\n#USER_LAST_NAME# - user last name\n#FROM_USERS# - message senders names\n#DATE_CREATE# - the date the message was created\n#TITLE# - message title\n#MESSAGE# - message body\n#MESSAGE_50# - first 50 characters of the message text\n#EMAIL_TO# - message recipient e-mail address\n',100,'email'),(83,'en','IM_NEW_MESSAGE','New message','#USER_ID# - user ID\n#USER_LOGIN# - user login\n#USER_NAME# - user first name\n#USER_LAST_NAME# - user last name\n#FROM_USER# - message sender name\n#MESSAGES# - messages\n#EMAIL_TO# - recipient E-mail address',100,'email'),(84,'en','IM_NEW_MESSAGE_GROUP','New message (group)','#USER_ID# - user ID\n#USER_LOGIN# - user login\n#USER_NAME# - user first name\n#USER_LAST_NAME# - user last name\n#FROM_USERS# - message senders names\n#MESSAGES# - messages\n#EMAIL_TO# - recipient E-mail address',100,'email'),(85,'en','LDAP_USER_CONFIRM','Registration Confirmation','#USER_ID# - User ID\n#EMAIL# - E-mail\n#LOGIN# - Login\n#XML_ID# - External ID\n#BACK_URL# - Return URL\n',100,'email'),(86,'ru','LDAP_USER_CONFIRM','Подтверждение регистрации','\n#USER_ID# - ID пользователя\n#EMAIL# - E-mail\n#LOGIN# - Логин\n#XML_ID# - Внешний идентификатор\n#BACK_URL# - Обратная ссылка\n',100,'email'),(87,'ru','NEW_LEARNING_TEXT_ANSWER','Новый текстовый ответ','#ID# - ID результата\n#ATTEMPT_ID# - ID попытки\n#TEST_NAME# - Название теста\n#USER# - Пользователь, ответивший на вопрос\n#DATE# - Дата и время\n#QUESTION_TEXT# - Вопрос\n#ANSWER_TEXT# - Ответ\n#EMAIL_FROM# - Email отправителя письма\n#EMAIL_TO# - Email получателя письма\n#MESSAGE_TITLE# - Заголовок сообщения',100,'email'),(88,'en','NEW_LEARNING_TEXT_ANSWER','New Text Answer','#ID# - The result ID\n#ATTEMPT_ID# - The attempt ID\n#TEST_NAME# - The test name\n#USER# - The user taking a test\n#DATE# - The date and time\n#QUESTION_TEXT# - The question\n#ANSWER_TEXT# - The answer\n#EMAIL_FROM# - The sender\'s e-mail address\n#EMAIL_TO# - The recipient\'s e-mail address\n#MESSAGE_TITLE# - The e-mail message subject',100,'email'),(89,'ru','SALE_NEW_ORDER','Новый заказ','#ORDER_ID# - код заказа\n#ORDER_ACCOUNT_NUMBER_ENCODE# - код заказа(для ссылок)\n#ORDER_REAL_ID# - реальный ID заказа\n#ORDER_DATE# - дата заказа\n#ORDER_USER# - заказчик\n#PRICE# - сумма заказа\n#EMAIL# - E-Mail заказчика\n#BCC# - E-Mail скрытой копии\n#ORDER_LIST# - состав заказа\n#ORDER_PUBLIC_URL# - ссылка для просмотра заказа без авторизации (требуется настройка в модуле интернет-магазина)\n#SALE_EMAIL# - E-Mail отдела продаж',100,'email'),(90,'ru','SALE_NEW_ORDER_RECURRING','Новый заказ на продление подписки','#ORDER_ID# - код заказа\n#ORDER_ACCOUNT_NUMBER_ENCODE# - код заказа(для ссылок)\n#ORDER_REAL_ID# - реальный ID заказа\n#ORDER_DATE# - дата заказа\n#ORDER_USER# - заказчик\n#PRICE# - сумма заказа\n#EMAIL# - E-Mail заказчика\n#BCC# - E-Mail скрытой копии\n#ORDER_LIST# - состав заказа\n#SALE_EMAIL# - E-Mail отдела продаж',100,'email'),(91,'ru','SALE_ORDER_REMIND_PAYMENT','Напоминание об оплате заказа','#ORDER_ID# - код заказа\n#ORDER_ACCOUNT_NUMBER_ENCODE# - код заказа(для ссылок)\n#ORDER_REAL_ID# - реальный ID заказа\n#ORDER_DATE# - дата заказа\n#ORDER_USER# - заказчик\n#PRICE# - сумма заказа\n#EMAIL# - E-Mail заказчика\n#BCC# - E-Mail скрытой копии\n#ORDER_LIST# - состав заказа\n#ORDER_PUBLIC_URL# - ссылка для просмотра заказа без авторизации (требуется настройка в модуле интернет-магазина)\n#SALE_EMAIL# - E-Mail отдела продаж',100,'email'),(92,'ru','SALE_ORDER_CANCEL','Отмена заказа','#ORDER_ID# - код заказа\n#ORDER_ACCOUNT_NUMBER_ENCODE# - код заказа(для ссылок)\n#ORDER_REAL_ID# - реальный ID заказа\n#ORDER_DATE# - дата заказа\n#EMAIL# - E-Mail пользователя\n#ORDER_CANCEL_DESCRIPTION# - причина отмены\n#ORDER_PUBLIC_URL# - ссылка для просмотра заказа без авторизации (требуется настройка в модуле интернет-магазина)\n#SALE_EMAIL# - E-Mail отдела продаж',100,'email'),(93,'ru','SALE_ORDER_PAID','Заказ оплачен','#ORDER_ID# - код заказа\n#ORDER_ACCOUNT_NUMBER_ENCODE# - код заказа(для ссылок)\n#ORDER_REAL_ID# - реальный ID заказа\n#ORDER_DATE# - дата заказа\n#EMAIL# - E-Mail пользователя\n#ORDER_PUBLIC_URL# - ссылка для просмотра заказа без авторизации (требуется настройка в модуле интернет-магазина)\n#SALE_EMAIL# - E-Mail отдела продаж',100,'email'),(94,'ru','SALE_ORDER_DELIVERY','Доставка заказа разрешена','#ORDER_ID# - код заказа\n#ORDER_ACCOUNT_NUMBER_ENCODE# - код заказа(для ссылок)\n#ORDER_REAL_ID# - реальный ID заказа\n#ORDER_DATE# - дата заказа\n#EMAIL# - E-Mail пользователя\n#ORDER_PUBLIC_URL# - ссылка для просмотра заказа без авторизации (требуется настройка в модуле интернет-магазина)\n#SALE_EMAIL# - E-Mail отдела продаж',100,'email'),(95,'ru','SALE_RECURRING_CANCEL','Подписка отменена','#ORDER_ID# - код заказа\n#ORDER_ACCOUNT_NUMBER_ENCODE# - код заказа(для ссылок)\n#ORDER_REAL_ID# - реальный ID заказа\n#ORDER_DATE# - дата заказа\n#EMAIL# - E-Mail пользователя\n#CANCELED_REASON# - причина отмены\n#SALE_EMAIL# - E-Mail отдела продаж',100,'email'),(96,'ru','SALE_SUBSCRIBE_PRODUCT','Уведомление о поступлении товара','#USER_NAME# - имя пользователя\n#EMAIL# - email пользователя\n#NAME# - название товара\n#PAGE_URL# - детальная страница товара',100,'email'),(97,'ru','SALE_ORDER_TRACKING_NUMBER','Уведомление об изменении идентификатора почтового отправления','#ORDER_ID# - код заказа\n#ORDER_ACCOUNT_NUMBER_ENCODE# - код заказа(для ссылок)\n#ORDER_REAL_ID# - реальный ID заказа\n#ORDER_DATE# - дата заказа\n#ORDER_USER# - заказчик\n#ORDER_TRACKING_NUMBER# - идентификатор почтового отправления\n#ORDER_PUBLIC_URL# - ссылка для просмотра заказа без авторизации (требуется настройка в модуле интернет-магазина)\n#EMAIL# - E-Mail заказчика\n#BCC# - E-Mail скрытой копии\n#SALE_EMAIL# - E-Mail отдела продаж',100,'email'),(98,'ru','SALE_CHECK_PRINT','Уведомление о печати чека','#ORDER_ID# - код заказа\n#ORDER_DATE# - дата заказа\n#ORDER_USER# - заказчик\n#ORDER_ACCOUNT_NUMBER_ENCODE# - код заказа(для ссылок)\n#ORDER_PUBLIC_URL# - ссылка для просмотра заказа без авторизации (требуется настройка в модуле интернет-магазина)\n#CHECK_LINK# - ссылка на чек',100,'email'),(99,'ru','SALE_CHECK_PRINT_ERROR','Уведомление об ошибке при печати чека','#ORDER_ACCOUNT_NUMBER# - код заказа\n#ORDER_DATE# - дата заказа\n#ORDER_ID# - ID заказа\n#CHECK_ID# - номер чека',100,'email'),(100,'ru','SALE_ORDER_SHIPMENT_STATUS_CHANGED','Уведомление об изменении статуса почтового отправления','#SHIPMENT_NO# - номер отгрузки\n#SHIPMENT_DATE# - дата отгрузки\n#ORDER_NO# - номер заказа\n#ORDER_DATE# - дата заказа\n#STATUS_NAME# - название статуса\n#STATUS_DESCRIPTION# - описание статуса\n#TRACKING_NUMBER# - идентификатор почтового отправления\n#EMAIL# - кому будет отправлено письмо\n#BCC# - кому будет отправлена копия письма\n#ORDER_USER# - заказчик\n#DELIVERY_NAME# - наименование службы доставки\n#DELIVERY_TRACKING_URL# - ссылка на сайте службы доставке, где можно подробнее узнать о статусе отправления\n#ORDER_ACCOUNT_NUMBER_ENCODE# - код заказа(для ссылок)\n#ORDER_PUBLIC_URL# - ссылка для просмотра заказа без авторизации (требуется настройка в модуле интернет-магазина)\n#ORDER_DETAIL_URL# - ссылка для просмотра подробной информации о заказе',100,'email'),(101,'ru','SALE_STATUS_CHANGED_F','Изменение статуса заказа на  \"Выполнен\"','#ORDER_ID# - код заказа\n#ORDER_DATE# - дата заказа\n#ORDER_STATUS# - статус заказа\n#EMAIL# - E-Mail пользователя\n#ORDER_DESCRIPTION# - описание статуса заказа\n#TEXT# - текст\n#SALE_EMAIL# - E-Mail отдела продаж\n#ORDER_PUBLIC_URL# - ссылка для просмотра заказа без авторизации (требуется настройка в модуле интернет-магазина)\n',100,'email'),(102,'ru','SALE_STATUS_CHANGED_N','Изменение статуса заказа на  \"Принят, ожидается оплата\"','#ORDER_ID# - код заказа\n#ORDER_DATE# - дата заказа\n#ORDER_STATUS# - статус заказа\n#EMAIL# - E-Mail пользователя\n#ORDER_DESCRIPTION# - описание статуса заказа\n#TEXT# - текст\n#SALE_EMAIL# - E-Mail отдела продаж\n#ORDER_PUBLIC_URL# - ссылка для просмотра заказа без авторизации (требуется настройка в модуле интернет-магазина)\n',100,'email'),(103,'en','SALE_NEW_ORDER','New order','#ORDER_ID# - order ID\n#ORDER_ACCOUNT_NUMBER_ENCODE# - order ID (for URL\'s)\n#ORDER_REAL_ID# - real order ID\n#ORDER_DATE# - order date\n#ORDER_USER# - customer\n#PRICE# - order amount\n#EMAIL# - customer e-mail\n#BCC# - BCC e-mail\n#ORDER_LIST# - order contents\n#ORDER_PUBLIC_URL# - order view link for unauthorized users (requires configuration in the e-Store module settings)\n#SALE_EMAIL# - sales dept. e-mail',100,'email'),(104,'en','SALE_NEW_ORDER_RECURRING','New Order for Subscription Renewal','#ORDER_ID# - order ID\n#ORDER_ACCOUNT_NUMBER_ENCODE# - order ID (for URL\'s)\n#ORDER_REAL_ID# - real order ID\n#ORDER_DATE# - order date\n#ORDER_USER# - customer\n#PRICE# - order amount\n#EMAIL# - customer e-mail\n#BCC# - BCC e-mail\n#ORDER_LIST# - order contents\n#SALE_EMAIL# - sales dept. e-mail',100,'email'),(105,'en','SALE_ORDER_REMIND_PAYMENT','Order Payment Reminder','#ORDER_ID# - order ID\n#ORDER_ACCOUNT_NUMBER_ENCODE# - order ID (for URL\'s)\n#ORDER_REAL_ID# - real order ID\n#ORDER_DATE# - order date\n#ORDER_USER# - customer\n#PRICE# - order amount\n#EMAIL# - customer e-mail\n#BCC# - BCC e-mail\n#ORDER_LIST# - order contents\n#ORDER_PUBLIC_URL# - order view link for unauthorized users (requires configuration in the e-Store module settings)\n#SALE_EMAIL# - sales dept. e-mail',100,'email'),(106,'en','SALE_ORDER_CANCEL','Cancel order','#ORDER_ID# - order ID\n#ORDER_ACCOUNT_NUMBER_ENCODE# - order ID (for URL\'s)\n#ORDER_REAL_ID# - real order ID\n#ORDER_DATE# - order date\n#EMAIL# - customer e-mail\n#ORDER_LIST# - order contents\n#ORDER_CANCEL_DESCRIPTION# - reason for cancellation\n#ORDER_PUBLIC_URL# - order view link for unauthorized users (requires configuration in the e-Store module settings)\n#SALE_EMAIL# - sales dept. e-mail\n',100,'email'),(107,'en','SALE_ORDER_PAID','Paid order','#ORDER_ID# - order ID\n#ORDER_ACCOUNT_NUMBER_ENCODE# - order ID (for URL\'s)\n#ORDER_REAL_ID# - real order ID\n#ORDER_DATE# - order date\n#EMAIL# - customer e-mail\n#ORDER_PUBLIC_URL# - order view link for unauthorized users (requires configuration in the e-Store module settings)\n#SALE_EMAIL# - sales dept. e-mail',100,'email'),(108,'en','SALE_ORDER_DELIVERY','Order delivery allowed','#ORDER_ID# - order ID\n#ORDER_ACCOUNT_NUMBER_ENCODE# - order ID (for URL\'s)\n#ORDER_REAL_ID# - real order ID\n#ORDER_DATE# - order date\n#EMAIL# - customer e-mail\n#ORDER_PUBLIC_URL# - order view link for unauthorized users (requires configuration in the e-Store module settings)\n#SALE_EMAIL# - sales dept. e-mail',100,'email'),(109,'en','SALE_RECURRING_CANCEL','Recurring payment canceled','#ORDER_ID# - order ID\n#ORDER_ACCOUNT_NUMBER_ENCODE# - order ID (for URL\'s)\n#ORDER_REAL_ID# - real order ID\n#ORDER_DATE# - order date\n#EMAIL# - customer e-mail\n#CANCELED_REASON# - reason for cancellation\n#SALE_EMAIL# - sales dept. e-mail',100,'email'),(110,'en','SALE_SUBSCRIBE_PRODUCT','Back in stock notification','#USER_NAME# - user name\n#EMAIL# - user e-mail \n#NAME# - product name\n#PAGE_URL# - product details page',100,'email'),(111,'en','SALE_ORDER_TRACKING_NUMBER','Notification of change in tracking number ','#ORDER_ID# - order ID\n#ORDER_ACCOUNT_NUMBER_ENCODE# - order ID (for URL\'s)\n#ORDER_REAL_ID# - real order ID\n#ORDER_DATE# - order date\n#ORDER_USER# - customer\n#ORDER_TRACKING_NUMBER# - tracking number\n#ORDER_PUBLIC_URL# - order view link for unauthorized users (requires configuration in the e-Store module settings)\n#EMAIL# - customer e-mail\n#BCC# - BCC e-mail\n#SALE_EMAIL# - sales dept. e-mail',100,'email'),(112,'en','SALE_CHECK_PRINT','Receipt printout notification','#ORDER_ID# - order ID\n#ORDER_DATE# - order date\n#ORDER_USER# - customer\n#ORDER_ACCOUNT_NUMBER_ENCODE# - order Id for use in links\n#ORDER_PUBLIC_URL# - order view link for unauthorized users (requires configuration in the e-Store module settings)\n#CHECK_LINK# - receipt link',100,'email'),(113,'en','SALE_CHECK_PRINT_ERROR','Receipt printout error notification','#ORDER_ACCOUNT_NUMBER# - order id\n#ORDER_DATE# - order date\n#ORDER_ID# - order id\n#CHECK_ID# - receipt id',100,'email'),(114,'en','SALE_ORDER_SHIPMENT_STATUS_CHANGED','Package status update','#SHIPMENT_NO# - shipment ID\n#SHIPMENT_DATE# - shipped on\n#ORDER_NO# - order #\n#ORDER_DATE# - order date\n#STATUS_NAME# - status name\n#STATUS_DESCRIPTION# - status description\n#TRACKING_NUMBER# - tracking number\n#EMAIL# - notify e-mail address\n#BCC# - send copy to address\n#ORDER_USER# - customer\n#DELIVERY_NAME# - delivery service name\n#DELIVERY_TRACKING_URL# - delivery service website for more tracking details\n#ORDER_ACCOUNT_NUMBER_ENCODE# - order ID (for links)\n#ORDER_PUBLIC_URL# - order view link for unauthorized users (requires configuration in the e-Store module settings)\n#ORDER_DETAIL_URL# - order details URL',100,'email'),(115,'en','SALE_STATUS_CHANGED_F','Changing order status to \"\"','#ORDER_ID# - order ID\n#ORDER_DATE# - order date\n#ORDER_STATUS# - order status\n#EMAIL# - customer e-mail\n#ORDER_DESCRIPTION# - order status description\n#TEXT# - text\n#SALE_EMAIL# - Sales department e-mail\n#ORDER_PUBLIC_URL# - order view link for unauthorized users (requires configuration in the e-Store module settings)\n',100,'email'),(116,'en','SALE_STATUS_CHANGED_N','Changing order status to \"\"','#ORDER_ID# - order ID\n#ORDER_DATE# - order date\n#ORDER_STATUS# - order status\n#EMAIL# - customer e-mail\n#ORDER_DESCRIPTION# - order status description\n#TEXT# - text\n#SALE_EMAIL# - Sales department e-mail\n#ORDER_PUBLIC_URL# - order view link for unauthorized users (requires configuration in the e-Store module settings)\n',100,'email'),(117,'ru','VIRUS_DETECTED','Обнаружен вирус','#EMAIL# - E-Mail администратора сайта (из настроек главного модуля)',100,'email'),(118,'en','VIRUS_DETECTED','Virus detected','#EMAIL# - Site administrator\'s e-mail address (from the Kernel module settings)',100,'email'),(119,'ru','SENDER_SUBSCRIBE_CONFIRM','Подтверждение подписки','#EMAIL# - адрес подписки\n#DATE# - дата добавления/изменения адреса\n#CONFIRM_URL# - адрес подтверждения\n#MAILING_LIST# - список подписок\n',100,'email'),(120,'en','SENDER_SUBSCRIBE_CONFIRM','Confirm subscription','#EMAIL# - subscription URL\n#DATE# - the date the address was added or updated\n#CONFIRM_URL# - confirmation URL\n#MAILING_LIST# - subscriptions\n',100,'email'),(121,'ru','SONET_NEW_MESSAGE','У Вас новое сообщение','#MESSAGE_ID# - ID сообщения\n#USER_ID# - ID пользователя\n#USER_NAME# - Имя пользователя\n#USER_LAST_NAME# - Фамилия пользователя\n#SENDER_ID# - ID отправителя сообщения\n#SENDER_NAME# - Имя отправителя сообщения\n#SENDER_LAST_NAME# - Фамилия отправителя сообщения\n#TITLE# - Заголовок сообщения\n#MESSAGE# - Сообщение\n#EMAIL_TO# - Email получателя письма',100,'email'),(122,'ru','SONET_INVITE_FRIEND','Приглашение присоединиться к списку друзей','#RELATION_ID# - ID связи\n#SENDER_USER_ID# - ID отправителя\n#SENDER_USER_NAME# - Имя отправителя\n#SENDER_USER_LAST_NAME# - Фамилия отправителя\n#SENDER_EMAIL_TO# - Email отправителя\n#RECIPIENT_USER_ID# - ID получателя\n#RECIPIENT_USER_NAME# - Имя получателя\n#RECIPIENT_USER_LAST_NAME# - Фамилия получателя\n#RECIPIENT_USER_EMAIL_TO# - Email получателя\n#MESSAGE# - Сообщение',100,'email'),(123,'ru','SONET_INVITE_GROUP','Приглашение присоединиться к группе','#RELATION_ID# - ID связи\n#GROUP_ID# - ID группы\n#USER_ID# - ID пользователя\n#GROUP_NAME# - Название группы\n#USER_NAME# - Имя пользователя\n#USER_LAST_NAME# - Фамилия пользователя\n#USER_EMAIL# - Email пользователя\n#INITIATED_USER_NAME# - Имя пользователя, отправившего приглашение\n#INITIATED_USER_LAST_NAME# - Фамилия пользователя, отправившего приглашение\n#URL# - Путь к странице сообщений пользователя\n#MESSAGE# - Сообщение',100,'email'),(124,'ru','SONET_AGREE_FRIEND','Согласие стать другом','#RELATION_ID# - ID связи\n#SENDER_USER_ID# - ID отправителя\n#SENDER_USER_NAME# - Имя отправителя\n#SENDER_USER_LAST_NAME# - Фамилия отправителя\n#SENDER_EMAIL_TO# - Email отправителя\n#RECIPIENT_USER_ID# - ID получателя\n#RECIPIENT_USER_NAME# - Имя получателя\n#RECIPIENT_USER_LAST_NAME# - Фамилия получателя\n#RECIPIENT_USER_EMAIL_TO# - Email получателя\n#MESSAGE# - Сообщение',100,'email'),(125,'ru','SONET_BAN_FRIEND','Занесение в черный список','#RELATION_ID# - ID связи\n#SENDER_USER_ID# - ID отправителя\n#SENDER_USER_NAME# - Имя отправителя\n#SENDER_USER_LAST_NAME# - Фамилия отправителя\n#SENDER_EMAIL_TO# - Email отправителя\n#RECIPIENT_USER_ID# - ID получателя\n#RECIPIENT_USER_NAME# - Имя получателя\n#RECIPIENT_USER_LAST_NAME# - Фамилия получателя\n#RECIPIENT_USER_EMAIL_TO# - Email получателя\n#MESSAGE# - Сообщение',100,'email'),(126,'ru','SONET_NEW_EVENT_GROUP','Новое событие группы','#ENTITY_ID# - ID группы\n#LOG_DATE# - Дата записи\n#TITLE# - Заголовок\n#MESSAGE# - Сообщение\n#URL# - Адрес\n#GROUP_NAME# - Название группы\n#SUBSCRIBER_NAME# - Имя получателя\n#SUBSCRIBER_LAST_NAME# - Фамилия получателя\n#SUBSCRIBER_EMAIL# - Email получателя\n#SUBSCRIBER_ID# - ID получателя',100,'email'),(127,'ru','SONET_NEW_EVENT_USER','Новое событие пользователя','#ENTITY_ID# - ID пользователя\n#LOG_DATE# - Дата записи\n#TITLE# - Заголовок\n#MESSAGE# - Сообщение\n#URL# - Адрес\n#USER_NAME# - Имя пользователя\n#SUBSCRIBER_NAME# - Имя получателя\n#SUBSCRIBER_LAST_NAME# - Фамилия получателя\n#SUBSCRIBER_EMAIL# - Email получателя\n#SUBSCRIBER_ID# - ID получателя',100,'email'),(128,'ru','SONET_NEW_EVENT','Новое событие','#ENTITY_ID# - ID источника события\n#LOG_DATE# - Дата записи\n#TITLE# - Заголовок\n#MESSAGE# - Сообщение\n#URL# - Адрес\n#ENTITY# - Место регистрации события\n#SUBSCRIBER_NAME# - Имя получателя\n#SUBSCRIBER_LAST_NAME# - Фамилия получателя\n#SUBSCRIBER_EMAIL# - Email получателя\n#SUBSCRIBER_ID# - ID получателя',100,'email'),(129,'ru','SONET_REQUEST_GROUP','Запрос на вступление в группу','#MESSAGE_ID# - ID сообщения\n#USER_ID# - ID получателя запроса\n#USER_NAME# - Имя получателя запроса\n#USER_LAST_NAME# - Фамилия получателя запроса\n#SENDER_ID# - ID отправителя запроса\n#SENDER_NAME# - Имя отправителя запроса\n#SENDER_LAST_NAME# - Фамилия отправителя запроса\n#TITLE# - Заголовок\n#MESSAGE# - Сообщение\n#EMAIL_TO# - Email получателя письма',100,'email'),(130,'ru','SONET_LOG_NEW_ENTRY','Добавлено новое сообщение','#EMAIL_TO# - Email получателя письма\n#LOG_ENTRY_ID# - ID сообщения\n#RECIPIENT_ID# - ID получателя\n#URL_ID# - URL страницы сообщения\n',100,'email'),(131,'ru','SONET_LOG_NEW_COMMENT','Добавлен новый комментарий','#EMAIL_TO# - Email получателя письма\n#COMMENT_ID# - ID комментария\n#LOG_ENTRY_ID# - ID сообщения\n#RECIPIENT_ID# - ID получателя\n#URL_ID# - URL страницы сообщения\n',100,'email'),(132,'en','SONET_NEW_MESSAGE','You have a new message','#MESSAGE_ID# - Message ID\r\n#USER_ID# - User ID\r\n#USER_NAME# - User first name\r\n#USER_LAST_NAME# - User last name\r\n#SENDER_ID# - Message sender ID\r\n#SENDER_NAME# - Message sender first name\r\n#SENDER_LAST_NAME# - Message sender last name\r\n#TITLE# - Message title\r\n#MESSAGE# - Message body\r\n#EMAIL_TO# - Recipient e-mail address',100,'email'),(133,'en','SONET_INVITE_FRIEND','Invitation to Join Friends','#RELATION_ID# - Relation ID\r\n#SENDER_USER_ID# - Sender ID\r\n#SENDER_USER_NAME# - Sender first name\r\n#SENDER_USER_LAST_NAME# - Sender last name\r\n#SENDER_EMAIL_TO# - Sender e-mail address\r\n#RECIPIENT_USER_ID# - Recipient ID\r\n#RECIPIENT_USER_NAME# - Recipient first name\r\n#RECIPIENT_USER_LAST_NAME# - Recipient last name\r\n#RECIPIENT_USER_EMAIL_TO# - Recipient e-mail address\r\n#MESSAGE# - Message body',100,'email'),(134,'en','SONET_INVITE_GROUP','Invitation to Join Group','#RELATION_ID# - Relation ID\r\n#GROUP_ID# - Group ID\r\n#USER_ID# - User ID\r\n#GROUP_NAME# - Group name\r\n#USER_NAME# - User first name\r\n#USER_LAST_NAME# - User last name\r\n#USER_EMAIL# - User e-mail address\r\n#INITIATED_USER_NAME# - Name of sender of invitation\r\n#INITIATED_USER_LAST_NAME# - Last Name of sender of invitation\r\n#URL# - Path to user messages page\r\n#MESSAGE# - Message body',100,'email'),(135,'en','SONET_AGREE_FRIEND','Confirmation of Friend Invitation','#RELATION_ID# - Relation ID\r\n#SENDER_USER_ID# - Sender ID\r\n#SENDER_USER_NAME# - Sender first name\r\n#SENDER_USER_LAST_NAME# - Sender last name\r\n#SENDER_EMAIL_TO# - Sender e-mail address\r\n#RECIPIENT_USER_ID# - Recipient ID\r\n#RECIPIENT_USER_NAME# - Recipient first name\r\n#RECIPIENT_USER_LAST_NAME# - Recipient last name\r\n#RECIPIENT_USER_EMAIL_TO# - Recipient e-mail address\r\n#MESSAGE# - Message body',100,'email'),(136,'en','SONET_BAN_FRIEND','Blacklisting','#RELATION_ID# - Relation ID\r\n#SENDER_USER_ID# - Sender ID\r\n#SENDER_USER_NAME# - Sender first name\r\n#SENDER_USER_LAST_NAME# - Sender last name\r\n#SENDER_EMAIL_TO# - Sender e-mail address\r\n#RECIPIENT_USER_ID# - Recipient ID\r\n#RECIPIENT_USER_NAME# - Recipient first name\r\n#RECIPIENT_USER_LAST_NAME# - Recipient last name\r\n#RECIPIENT_USER_EMAIL_TO# - Recipient e-mail address\r\n#MESSAGE# - Message body',100,'email'),(137,'en','SONET_NEW_EVENT_GROUP','New Group Event','#ENTITY_ID# - Group ID\r\n#LOG_DATE# - Entry date\r\n#TITLE# - Title\r\n#MESSAGE# - Message\r\n#URL# - Address (URL)\r\n#GROUP_NAME# - Group title\r\n#SUBSCRIBER_NAME# - Subscriber\'s first name\r\n#SUBSCRIBER_LAST_NAME# - Subscriber\'s last name\r\n#SUBSCRIBER_EMAIL# - Subscriber\'s e-mail address\r\n#SUBSCRIBER_ID# - Subscriber ID',100,'email'),(138,'en','SONET_NEW_EVENT_USER','New User Event','#ENTITY_ID# - Group ID\r\n#LOG_DATE# - Entry date\r\n#TITLE# - Title\r\n#MESSAGE# - Message\r\n#URL# - Address (URL)\r\n#USER_NAME# - User name\r\n#SUBSCRIBER_NAME# - Subscriber\'s first name\r\n#SUBSCRIBER_LAST_NAME# - Subscriber\'s last name\r\n#SUBSCRIBER_EMAIL# - Subscriber\'s e-mail address\r\n#SUBSCRIBER_ID# - Subscriber ID',100,'email'),(139,'en','SONET_NEW_EVENT','New Event','#ENTITY_ID# - The event source ID\n#LOG_DATE# - The date the event was logged\n#TITLE# - The title\n#MESSAGE# - The message\n#URL# - URL\n#ENTITY# - The event registration disposition\n#SUBSCRIBER_NAME# - The recipient\'s first name\n#SUBSCRIBER_LAST_NAME# - The recipient\'s last name\n#SUBSCRIBER_EMAIL# - The recipient\'s e-mail address\n#SUBSCRIBER_ID# - The recipient\'s ID',100,'email'),(140,'en','SONET_REQUEST_GROUP','Group Membership Request','#MESSAGE_ID# - the message ID\n#USER_ID# - the request recipient ID\n#USER_NAME# - the request recipient first name\n#USER_LAST_NAME# - the request recipient last name\n#SENDER_ID# - the request sender ID\n#SENDER_NAME# - the request sender first name\n#SENDER_LAST_NAME# - the request sender last name\n#TITLE# - the message title\n#MESSAGE# - the message body\n#EMAIL_TO# - the message recipient\'s e-mail',100,'email'),(141,'en','SONET_LOG_NEW_ENTRY','New message added','#EMAIL_TO# - message recipient e-mail \n#LOG_ENTRY_ID# - message ID\n#RECIPIENT_ID# - recipient ID\n#URL_ID# - message view URL\n',100,'email'),(142,'en','SONET_LOG_NEW_COMMENT','New comment added','#EMAIL_TO# - message recipient e-mail \n#COMMENT_ID# - comment ID\n#LOG_ENTRY_ID# - message ID\n#RECIPIENT_ID# - recipient ID\n#URL_ID# - message view URL\n',100,'email'),(143,'ru','STATISTIC_ACTIVITY_EXCEEDING','Превышение лимита активности','#ACTIVITY_TIME_LIMIT# - тестовый интервал времени\n#ACTIVITY_HITS# - кол-во хитов за тестовый интервал времени\n#ACTIVITY_HITS_LIMIT# - максимальное кол-во хитов за тестовый интервал времени (лимит активности)\n#ACTIVITY_EXCEEDING# - превышение кол-ва хитов\n#CURRENT_TIME# - момент блокировки (время на сервере)\n#DELAY_TIME# - длительность блокировки\n#USER_AGENT# - UserAgent\n#SESSION_ID# - ID сессии\n#SESSION_LINK# - ссылка на сессию\n#SERACHER_ID# - ID поисковика\n#SEARCHER_NAME# - наименование поисковика\n#SEARCHER_LINK# - ссылка на список хитов поисковика\n#VISITOR_ID# - ID посетителя\n#VISITOR_LINK# - ссылка на профайл посетителя\n#STOPLIST_LINK# - ссылка для добавления посетителя в стоп-лист\n',100,'email'),(144,'ru','STATISTIC_DAILY_REPORT','Ежедневная статистика сайта','#EMAIL_TO# - email администратора сайта\n#SERVER_TIME# - время на сервере в момент отсылки отчета\n#HTML_HEADER# - открытие тэга HTML + CSS стили\n#HTML_COMMON# - таблица посещаемости сайта (хиты, сессии, хосты, посетители, события) (HTML)\n#HTML_ADV# - таблица рекламных кампаний (TOP 10) (HTML)\n#HTML_EVENTS# - таблица типов событий (TOP 10) (HTML)\n#HTML_REFERERS# - таблица ссылающихся сайтов (TOP 10) (HTML)\n#HTML_PHRASES# - таблица поисковых фраз (TOP 10) (HTML)\n#HTML_SEARCHERS# - таблица индексации сайта (TOP 10) (HTML)\n#HTML_FOOTER# - закрытие тэга HTML\n',100,'email'),(145,'en','STATISTIC_ACTIVITY_EXCEEDING','Visitor activity limit exceeded','#ACTIVITY_TIME_LIMIT# - test time period (sec.)\n#ACTIVITY_HITS# - number of hits for test period\n#ACTIVITY_HITS_LIMIT# - max number of hits for test period\n#ACTIVITY_EXCEEDING# - activity exceeding\n#CURRENT_TIME# - time of blocking (server time)\n#DELAY_TIME# - period of blocking\n#USER_AGENT# - UserAgent\n#SESSION_ID# - session ID\n#SESSION_LINK# - link to the session report\n#SERACHER_ID# - search engine ID\n#SEARCHER_NAME# - search engine name\n#SEARCHER_LINK# - link to search engine hit list\n#VISITOR_ID# - visitor ID\n#VISITOR_LINK# - link to the visitor profile\n#STOPLIST_LINK# - link for adding the visitor to the stop-list',100,'email'),(146,'en','STATISTIC_DAILY_REPORT','Site statistics daily report','#EMAIL_TO# - site administrator email\n#SERVER_TIME# - server time during report sending\n#HTML_HEADER# - HTML header\n#HTML_COMMON# - table of site traffic (hits, sessions, hosts, guests, events) (HTML)\n#HTML_ADV# - table of advertising campaigns (TOP 10) (HTML)\n#HTML_EVENTS# - table of event typies (TOP 10) (HTML)\n#HTML_REFERERS# - table of referring sites (TOP 10) (HTML)\n#HTML_PHRASES# - table of search phrases (TOP 10) (HTML)\n#HTML_SEARCHERS# - table of site indexing (TOP 10) (HTML)\n#HTML_FOOTER# - HTML footer\n',100,'email'),(147,'ru','SUBSCRIBE_CONFIRM','Подтверждение подписки','#ID# - идентификатор подписки\n#EMAIL# - адрес подписки\n#CONFIRM_CODE# - код подтверждения\n#SUBSCR_SECTION# - раздел, где находится страница редактирования подписки (задается в настройках)\n#USER_NAME# - имя подписчика (может отсутствовать)\n#DATE_SUBSCR# - дата добавления/изменения адреса\n',100,'email'),(148,'en','SUBSCRIBE_CONFIRM','Confirmation of subscription','#ID# - subscription ID\n#EMAIL# - subscription email\n#CONFIRM_CODE# - confirmation code\n#SUBSCR_SECTION# - section with subscription edit page (specifies in the settings)\n#USER_NAME# - subscriber\'s name (optional)\n#DATE_SUBSCR# - date of adding/change of address\n',100,'email'),(149,'ru','VOTE_FOR','Новый голос','#ID# - ID результата голосования\n#TIME# - время голосования\n#VOTE_TITLE# - наименование опроса\n#VOTE_DESCRIPTION# - описание опроса\n#VOTE_ID# - ID опроса\n#CHANNEL# - наименование группы опроса\n#CHANNEL_ID# - ID группы опроса\n#VOTER_ID# - ID проголосовавшего посетителя\n#USER_NAME# - ФИО пользователя\n#LOGIN# - логин\n#USER_ID# - ID пользователя\n#STAT_GUEST_ID# - ID посетителя модуля статистики\n#SESSION_ID# - ID сессии модуля статистики\n#IP# - IP адрес\n#VOTE_STATISTIC# - Сводная статистика опроса типа ( - Вопрос - Ответ )\n#URL# - Путь к опросу\n',100,'email'),(150,'en','VOTE_FOR','New vote','#ID# - Vote result ID\n#TIME# - Time of vote\n#VOTE_TITLE# - Poll name\n#VOTE_DESCRIPTION# - Poll description\n#VOTE_ID# - Poll ID\n#CHANNEL# - Poll group name\n#CHANNEL_ID# - Poll group ID\n#VOTER_ID# - Voter\'s user ID\n#USER_NAME# - User full name\n#LOGIN# - login\n#USER_ID# - User ID\n#STAT_GUEST_ID# - Visitor ID in web analytics module\n#SESSION_ID# - Session ID in web analytics module\n#IP# - IP address\n#VOTE_STATISTIC# - Summary statistics of this poll type ( - Question - Answer)\n#URL# - Poll URL',100,'email'),(151,'ru','WF_STATUS_CHANGE','Изменен статус документа','#ID# - ID\n#ADMIN_EMAIL# - EMail\'ы администраторов документооборота (через запятую)\n#BCC# - скрытая копия (все, кто изменял либо может изменить документ в его текущем статусе)\n#PREV_STATUS_ID# - ID предыдущего статуса документа\n#PREV_STATUS_TITLE# - наименование предыдущего статуса документа\n#STATUS_ID# - ID статуса\n#STATUS_TITLE# - наименование статуса\n#DATE_ENTER# - дата создания документа\n#ENTERED_BY_ID# - ID пользователя, создавшего документ\n#ENTERED_BY_NAME# - имя пользователя, создавшего документ\n#ENTERED_BY_EMAIL# - EMail пользователя, создавшего документ\n#DATE_MODIFY# - дата изменения документа\n#MODIFIED_BY_ID# - ID пользователя, изменившего документ\n#MODIFIED_BY_NAME# - имя пользователя, изменившего документ\n#FILENAME# - полное имя файла\n#TITLE# - заголовок файла\n#BODY_HTML# - содержимое документа в формате HTML\n#BODY_TEXT# - содержимое документа в формате TEXT\n#BODY# - содержимое документа, хранящееся в базе\n#BODY_TYPE# - тип содержимого документа\n#COMMENTS# - комментарий\n',100,'email'),(152,'ru','WF_NEW_DOCUMENT','Создан новый документ','#ID# - ID\n#ADMIN_EMAIL# - EMail\'ы администраторов документооборота (через запятую)\n#BCC# - скрытая копия (все, кто изменял либо может изменить документ в его текущем статусе)\n#STATUS_ID# - ID статуса\n#STATUS_TITLE# - наименование статуса\n#DATE_ENTER# - дата создания документа\n#ENTERED_BY_ID# - ID пользователя, создавшего документ\n#ENTERED_BY_NAME# - имя пользователя, создавшего документ\n#ENTERED_BY_EMAIL# - EMail пользователя, создавшего документ\n#FILENAME# - полное имя файла\n#TITLE# - заголовок файла\n#BODY_HTML# - содержимое документа в формате HTML\n#BODY_TEXT# - содержимое документа в формате TEXT\n#BODY# - содержимое документа, хранящееся в базе\n#BODY_TYPE# - тип содержимого документа\n#COMMENTS# - комментарий\n',100,'email'),(153,'ru','WF_IBLOCK_STATUS_CHANGE','Изменен статус элемента инфоблока','#ID# - ID\n#IBLOCK_ID# - ID информационного блока\n#IBLOCK_TYPE# - тип информационного блока\n#SECTION_ID# - ID секции\n#ADMIN_EMAIL# - EMail\'ы администраторов документооборота\n#BCC# - скрытая копия (все, кто изменял либо может изменить элемент)\n#PREV_STATUS_ID# - ID предыдущего статуса документа\n#PREV_STATUS_TITLE# - наименование предыдущего статуса документа\n#STATUS_ID# - ID текущего статуса\n#STATUS_TITLE# - наименование текущего статуса\n#DATE_CREATE# - дата создания элемента\n#CREATED_BY_ID# - ID пользователя, создавшего элемент\n#CREATED_BY_NAME# - имя пользователя, создавшего элемент\n#CREATED_BY_EMAIL# - EMail пользователя, создавшего элемент\n#DATE_MODIFY# - дата изменения элемента\n#MODIFIED_BY_ID# - ID пользователя, изменившего элемент\n#MODIFIED_BY_NAME# - имя пользователя, изменившего элемент\n#NAME# - наименование элемента\n#PREVIEW_HTML# - анонс в формате HTML\n#PREVIEW_TEXT# - анонс в формате TEXT\n#PREVIEW# - анонс, хранящийся в базе\n#PREVIEW_TYPE# - тип анонса (text | html)\n#DETAIL_HTML# - детальное описание элемента в формате HTML\n#DETAIL_TEXT# - детальное описание элемента в формате TEXT\n#DETAIL# - детальное описание элемента, хранящееся в базе\n#DETAIL_TYPE# - тип детального описания (text | html)\n#COMMENTS# - комментарий\n',100,'email'),(154,'ru','WF_NEW_IBLOCK_ELEMENT','Создан новый элемент инфоблока','#ID# - ID\n#IBLOCK_ID# - ID информационного блока\n#IBLOCK_TYPE# - тип информационного блока\n#SECTION_ID# - ID секции\n#ADMIN_EMAIL# - EMail\'ы администраторов документооборота\n#BCC# - скрытая копия (все, кто изменял либо может изменить документ в его текущем статусе)\n#STATUS_ID# - ID статуса\n#STATUS_TITLE# - наименование статуса\n#DATE_CREATE# - дата создания элемента\n#CREATED_BY_ID# - ID пользователя, создавшего элемент\n#CREATED_BY_NAME# - имя пользователя, создавшего элемент\n#CREATED_BY_EMAIL# - EMail пользователя, создавшего элемент\n#NAME# - наименование элемента\n#PREVIEW_HTML# - анонс в формате HTML\n#PREVIEW_TEXT# - анонс в формате TEXT\n#PREVIEW# - анонс, хранящийся в базе\n#PREVIEW_TYPE# - тип анонса (text | html)\n#DETAIL_HTML# - детальное описание элемента в формате HTML\n#DETAIL_TEXT# - детальное описание элемента в формате TEXT\n#DETAIL# - детальное описание элемента, хранящееся в базе\n#DETAIL_TYPE# - тип детального описания\n#COMMENTS# - комментарий\n',100,'email'),(155,'en','WF_STATUS_CHANGE','Document status was changed','#ID# - ID\n#ADMIN_EMAIL# - Emails of workflow administrators\n#BCC# - Emails of the users who have already modified the document at some time or who can modify it\n#PREV_STATUS_ID# - ID of previous status of document\n#PREV_STATUS_TITLE# - name of previous status of document\n#STATUS_ID# - status ID\n#STATUS_TITLE# - status name\n#DATE_ENTER# - date of document creation\n#ENTERED_BY_ID# - ID of the user that created document\n#ENTERED_BY_NAME# - name of the user that created document\n#ENTERED_BY_EMAIL# - Email of the user that created document\n#DATE_MODIFY# - date of document modification\n#MODIFIED_BY_ID# - ID of the user that modified document\n#MODIFIED_BY_NAME# - name of the user that modified document\n#FILENAME# - full file name\n#TITLE# - file title\n#BODY_HTML# - document contents in HTML format\n#BODY_TEXT# - document contents in TEXT format\n#BODY# - document\'s content stored in database\n#BODY_TYPE# - type of document contents\n#COMMENTS# - comments\n',100,'email'),(156,'en','WF_NEW_DOCUMENT','New document was created','#ID# - ID\n#ADMIN_EMAIL# - EMails of workflow administrators\n#BCC# - Emails of the users which have already modified the document some time or which can modify it\n#STATUS_ID# - status ID\n#STATUS_TITLE# - status name\n#DATE_ENTER# - date of document creation\n#ENTERED_BY_ID# - ID of the user that created document\n#ENTERED_BY_NAME# - name of the user that created document\n#ENTERED_BY_EMAIL# - EMail of the user that created document\n#FILENAME# - full file name\n#TITLE# - file title\n#BODY_HTML# - document contents in HTML format\n#BODY_TEXT# - document contents in TEXT format\n#BODY# - document\'s content stored in database\n#BODY_TYPE# - type of document contents\n#COMMENTS# - comments\n',100,'email'),(157,'en','WF_IBLOCK_STATUS_CHANGE','Infoblock element status was changed','#ID# - ID\n#IBLOCK_ID# - ID of informational block\n#IBLOCK_TYPE# - informational block type\n#SECTION_ID# - section ID\n#ADMIN_EMAIL# - EMails of workflow administrators\n#BCC# - Emails of the users which have already modified the element some time or which can modify it\n#PREV_STATUS_ID# - ID of previous status of element\n#PREV_STATUS_TITLE# - name of previous status of element\n#STATUS_ID# - current status ID\n#STATUS_TITLE# - current status name\n#DATE_CREATE# - date of element creation\n#CREATED_BY_ID# - ID of the user that created element\n#CREATED_BY_NAME# - name of the user that created element\n#CREATED_BY_EMAIL# - EMail of the user that created element\n#DATE_MODIFY# - date of element modification\n#MODIFIED_BY_ID# - ID of the user that modified element\n#MODIFIED_BY_NAME# - name of the user that modified element\n#NAME# - element name\n#PREVIEW_HTML# - brief description in HTML format\n#PREVIEW_TEXT# - brief description in TEXT format\n#PREVIEW# - brief description stored in database\n#PREVIEW_TYPE# - brief description type (text | html)\n#DETAIL_HTML# - full description in HTML format\n#DETAIL_TEXT# - full description in TEXT format\n#DETAIL# - full description stored in database\n#DETAIL_TYPE# - full description type (text | html)\n#COMMENTS# - comments\n',100,'email'),(158,'en','WF_NEW_IBLOCK_ELEMENT','New element of information block was created','#ID# - ID\n#IBLOCK_ID# - ID of informational block\n#IBLOCK_TYPE# - informational block type\n#SECTION_ID# - section ID\n#ADMIN_EMAIL# - EMails of workflow administrators\n#BCC# - Emails of the users which have already modified the element some time or which can modify it\n#STATUS_ID# - current status ID\n#STATUS_TITLE# - current status name\n#DATE_CREATE# - date of element creation\n#CREATED_BY_ID# - ID of the user that created element\n#CREATED_BY_NAME# - name of the user that created element\n#CREATED_BY_EMAIL# - EMail of the user that created element\n#NAME# - element name\n#PREVIEW_HTML# - brief description in HTML format\n#PREVIEW_TEXT# - brief description in TEXT format\n#PREVIEW# - brief description stored in database\n#PREVIEW_TYPE# - brief description type (text | html)\n#DETAIL_HTML# - full description in HTML format\n#DETAIL_TEXT# - full description in TEXT format\n#DETAIL# - full description stored in database\n#DETAIL_TYPE# - full description type (text | html)\n#COMMENTS# - comments\n',100,'email');
+INSERT INTO `b_event_type` VALUES (1,'ru','NEW_USER','Зарегистрировался новый пользователь','\n\n#USER_ID# - ID пользователя\n#LOGIN# - Логин\n#EMAIL# - EMail\n#NAME# - Имя\n#LAST_NAME# - Фамилия\n#USER_IP# - IP пользователя\n#USER_HOST# - Хост пользователя\n',1,'email'),(2,'ru','USER_INFO','Информация о пользователе','\n\n#USER_ID# - ID пользователя\n#STATUS# - Статус логина\n#MESSAGE# - Сообщение пользователю\n#LOGIN# - Логин\n#URL_LOGIN# - Логин, закодированный для использования в URL\n#CHECKWORD# - Контрольная строка для смены пароля\n#NAME# - Имя\n#LAST_NAME# - Фамилия\n#EMAIL# - E-Mail пользователя\n',2,'email'),(3,'ru','NEW_USER_CONFIRM','Подтверждение регистрации нового пользователя','\n\n\n#USER_ID# - ID пользователя\n#LOGIN# - Логин\n#EMAIL# - EMail\n#NAME# - Имя\n#LAST_NAME# - Фамилия\n#USER_IP# - IP пользователя\n#USER_HOST# - Хост пользователя\n#CONFIRM_CODE# - Код подтверждения\n',3,'email'),(4,'ru','USER_PASS_REQUEST','Запрос на смену пароля','\n\n#USER_ID# - ID пользователя\n#STATUS# - Статус логина\n#MESSAGE# - Сообщение пользователю\n#LOGIN# - Логин\n#URL_LOGIN# - Логин, закодированный для использования в URL\n#CHECKWORD# - Контрольная строка для смены пароля\n#NAME# - Имя\n#LAST_NAME# - Фамилия\n#EMAIL# - E-Mail пользователя\n',4,'email'),(5,'ru','USER_PASS_CHANGED','Подтверждение смены пароля','\n\n#USER_ID# - ID пользователя\n#STATUS# - Статус логина\n#MESSAGE# - Сообщение пользователю\n#LOGIN# - Логин\n#URL_LOGIN# - Логин, закодированный для использования в URL\n#CHECKWORD# - Контрольная строка для смены пароля\n#NAME# - Имя\n#LAST_NAME# - Фамилия\n#EMAIL# - E-Mail пользователя\n',5,'email'),(6,'ru','USER_INVITE','Приглашение на сайт нового пользователя','#ID# - ID пользователя\n#LOGIN# - Логин\n#URL_LOGIN# - Логин, закодированный для использования в URL\n#EMAIL# - EMail\n#NAME# - Имя\n#LAST_NAME# - Фамилия\n#PASSWORD# - пароль пользователя \n#CHECKWORD# - Контрольная строка для смены пароля\n#XML_ID# - ID пользователя для связи с внешними источниками\n',6,'email'),(7,'ru','FEEDBACK_FORM','Отправка сообщения через форму обратной связи','#AUTHOR# - Автор сообщения\n#AUTHOR_EMAIL# - Email автора сообщения\n#TEXT# - Текст сообщения\n#EMAIL_FROM# - Email отправителя письма\n#EMAIL_TO# - Email получателя письма',7,'email'),(8,'ru','MAIN_MAIL_CONFIRM_CODE','Подтверждение email-адреса отправителя','\n\n#EMAIL_TO# - Email-адрес для подтверждения\n#MESSAGE_SUBJECT# - Тема сообщения\n#CONFIRM_CODE# - Код подтверждения',8,'email'),(9,'ru','SMS_USER_CONFIRM_NUMBER','Подтверждение номера телефона по СМС','#USER_PHONE# - номер телефона\n#CODE# - код подтверждения\n',100,'sms'),(10,'ru','SMS_USER_RESTORE_PASSWORD','Восстановление пароля через СМС','#USER_PHONE# - номер телефона\n#CODE# - код для восстановления\n',100,'sms'),(11,'en','NEW_USER','New user was registered','\n\n#USER_ID# - User ID\n#LOGIN# - Login\n#EMAIL# - EMail\n#NAME# - Name\n#LAST_NAME# - Last Name\n#USER_IP# - User IP\n#USER_HOST# - User Host\n',1,'email'),(12,'en','USER_INFO','Account Information','\n\n#USER_ID# - User ID\n#STATUS# - Account status\n#MESSAGE# - Message for user\n#LOGIN# - Login\n#URL_LOGIN# - Encoded login for use in URL\n#CHECKWORD# - Check string for password change\n#NAME# - Name\n#LAST_NAME# - Last Name\n#EMAIL# - User E-Mail\n',2,'email'),(13,'en','NEW_USER_CONFIRM','New user registration confirmation','\n\n#USER_ID# - User ID\n#LOGIN# - Login\n#EMAIL# - E-mail\n#NAME# - First name\n#LAST_NAME# - Last name\n#USER_IP# - User IP\n#USER_HOST# - User host\n#CONFIRM_CODE# - Confirmation code\n',3,'email'),(14,'en','USER_PASS_REQUEST','Password Change Request','\n\n#USER_ID# - User ID\n#STATUS# - Account status\n#MESSAGE# - Message for user\n#LOGIN# - Login\n#URL_LOGIN# - Encoded login for use in URL\n#CHECKWORD# - Check string for password change\n#NAME# - Name\n#LAST_NAME# - Last Name\n#EMAIL# - User E-Mail\n',4,'email'),(15,'en','USER_PASS_CHANGED','Password Change Confirmation','\n\n#USER_ID# - User ID\n#STATUS# - Account status\n#MESSAGE# - Message for user\n#LOGIN# - Login\n#URL_LOGIN# - Encoded login for use in URL\n#CHECKWORD# - Check string for password change\n#NAME# - Name\n#LAST_NAME# - Last Name\n#EMAIL# - User E-Mail\n',5,'email'),(16,'en','USER_INVITE','Invitation of a new site user','#ID# - User ID\n#LOGIN# - Login\n#URL_LOGIN# - Encoded login for use in URL\n#EMAIL# - EMail\n#NAME# - Name\n#LAST_NAME# - Last Name\n#PASSWORD# - User password \n#CHECKWORD# - Password check string\n#XML_ID# - User ID to link with external data sources\n\n',6,'email'),(17,'en','FEEDBACK_FORM','Sending a message using a feedback form','#AUTHOR# - Message author\n#AUTHOR_EMAIL# - Author\'s e-mail address\n#TEXT# - Message text\n#EMAIL_FROM# - Sender\'s e-mail address\n#EMAIL_TO# - Recipient\'s e-mail address',7,'email'),(18,'en','MAIN_MAIL_CONFIRM_CODE','Confirm sender\'s email address','\n\n#EMAIL_TO# - confirmation email address\n#MESSAGE_SUBJECT# - Message subject\n#CONFIRM_CODE# - Confirmation code',8,'email'),(19,'en','SMS_USER_CONFIRM_NUMBER','Verify phone number using SMS','#USER_PHONE# - phone number\n#CODE# - confirmation code',100,'sms'),(20,'en','SMS_USER_RESTORE_PASSWORD','Recover password using SMS','#USER_PHONE# - phone number\n#CODE# - recovery confirmation code',100,'sms'),(21,'ru','NEW_BLOG_MESSAGE','Новое сообщение в блоге','#BLOG_ID# - ID блога \n#BLOG_NAME# - Название блога\n#BLOG_URL# - Название блога латиницей\n#MESSAGE_TITLE# - Тема сообщения\n#MESSAGE_TEXT# - Текст сообщения\n#MESSAGE_DATE# - Дата сообщения\n#MESSAGE_PATH# - URL адрес сообщения\n#AUTHOR# - Автор сообщения\n#EMAIL_FROM# - Email отправителя письма\n#EMAIL_TO# - Email получателя письма',100,'email'),(22,'ru','NEW_BLOG_COMMENT','Новый комментарий в блоге','#BLOG_ID# - ID блога \n#BLOG_NAME# - Название блога\n#BLOG_URL# - Название блога латиницей\n#MESSAGE_TITLE# - Тема сообщения\n#COMMENT_TITLE# - Заголовок комментария\n#COMMENT_TEXT# - Текст комментария\n#COMMENT_DATE# - Текст комментария\n#COMMENT_PATH# - URL адрес сообщения\n#AUTHOR# - Автор сообщения\n#EMAIL_FROM# - Email отправителя письма\n#EMAIL_TO# - Email получателя письма',100,'email'),(23,'ru','NEW_BLOG_COMMENT2COMMENT','Новый комментарий на ваш комментарий в блоге','#BLOG_ID# - ID блога \n#BLOG_NAME# - Название блога\n#BLOG_URL# - Название блога латиницей\n#MESSAGE_TITLE# - Тема сообщения\n#COMMENT_TITLE# - Заголовок комментария\n#COMMENT_TEXT# - Текст комментария\n#COMMENT_DATE# - Текст комментария\n#COMMENT_PATH# - URL адрес сообщения\n#AUTHOR# - Автор сообщения\n#EMAIL_FROM# - Email отправителя письма\n#EMAIL_TO# - Email получателя письма',100,'email'),(24,'ru','NEW_BLOG_COMMENT_WITHOUT_TITLE','Новый комментарий в блоге (без темы)','#BLOG_ID# - ID блога \n#BLOG_NAME# - Название блога\n#BLOG_URL# - Название блога латиницей\n#MESSAGE_TITLE# - Тема сообщения\n#COMMENT_TEXT# - Текст комментария\n#COMMENT_DATE# - Текст комментария\n#COMMENT_PATH# - URL адрес сообщения\n#AUTHOR# - Автор сообщения\n#EMAIL_FROM# - Email отправителя письма\n#EMAIL_TO# - Email получателя письма',100,'email'),(25,'ru','NEW_BLOG_COMMENT2COMMENT_WITHOUT_TITLE','Новый комментарий на ваш комментарий в блоге (без темы)','#BLOG_ID# - ID блога \n#BLOG_NAME# - Название блога\n#BLOG_URL# - Название блога латиницей\n#COMMENT_TITLE# - Заголовок комментария\n#COMMENT_TEXT# - Текст комментария\n#COMMENT_DATE# - Текст комментария\n#COMMENT_PATH# - URL адрес сообщения\n#AUTHOR# - Автор сообщения\n#EMAIL_FROM# - Email отправителя письма\n#EMAIL_TO# - Email получателя письма',100,'email'),(26,'ru','BLOG_YOUR_BLOG_TO_USER','Ваш блог был добавлен в друзья','#BLOG_ID# - ID блога \n#BLOG_NAME# - Название блога\n#BLOG_URL# - Название блога латиницей\n#BLOG_ADR# - Адрес блога\n#USER_ID# - ID пользователя\n#USER# - Пользователь\n#USER_URL# - Адрес пользователя\n#EMAIL_FROM# - Email отправителя письма\n#EMAIL_TO# - Email получателя письма\n',100,'email'),(27,'ru','BLOG_YOU_TO_BLOG','Вы были добавлены в друзья блога','#BLOG_ID# - ID блога \n#BLOG_NAME# - Название блога\n#BLOG_URL# - Название блога латиницей\n#BLOG_ADR# - Адрес блога\n#USER_ID# - ID пользователя\n#USER# - Пользователь\n#USER_URL# - Адрес пользователя\n#EMAIL_FROM# - Email отправителя письма\n#EMAIL_TO# - Email получателя письма\n',100,'email'),(28,'ru','BLOG_BLOG_TO_YOU','К вам в друзья был добавлен блог','#BLOG_ID# - ID блога \n#BLOG_NAME# - Название блога\n#BLOG_URL# - Название блога латиницей\n#BLOG_ADR# - Адрес блога\n#USER_ID# - ID пользователя\n#USER# - Пользователь\n#USER_URL# - Адрес пользователя\n#EMAIL_FROM# - Email отправителя письма\n#EMAIL_TO# - Email получателя письма\n',100,'email'),(29,'ru','BLOG_USER_TO_YOUR_BLOG','В ваш блог был добавлен друг','#BLOG_ID# - ID блога \n#BLOG_NAME# - Название блога\n#BLOG_URL# - Название блога латиницей\n#BLOG_ADR# - Адрес блога\n#USER_ID# - ID пользователя\n#USER# - Пользователь\n#USER_URL# - Адрес пользователя\n#EMAIL_FROM# - Email отправителя письма\n#EMAIL_TO# - Email получателя письма\n',100,'email'),(30,'ru','BLOG_SONET_NEW_POST','Добавлено новое сообщение','#EMAIL_TO# - Email получателя письма\n#POST_ID# - ID сообщения\n#RECIPIENT_ID# - ID получателя\n#URL_ID# - URL страницы сообщения\n',100,'email'),(31,'ru','BLOG_SONET_NEW_COMMENT','Добавлен новый комментарий','#EMAIL_TO# - Email получателя письма\n#COMMENT_ID# - ID комментария\n#POST_ID# - ID сообщения\n#RECIPIENT_ID# - ID получателя\n#URL_ID# - URL страницы сообщения\n',100,'email'),(32,'ru','BLOG_SONET_POST_SHARE','Добавлен новый получатель сообщения','#EMAIL_TO# - Email получателя письма\n#POST_ID# - ID сообщения\n#RECIPIENT_ID# - ID получателя\n#URL_ID# - URL страницы сообщения\n',100,'email'),(33,'ru','BLOG_POST_BROADCAST','Добавлено новое сообщение','\n#MESSAGE_TITLE# - Тема сообщения\n#MESSAGE_TEXT# - Текст сообщения\n#MESSAGE_PATH# - URL адрес сообщения\n#AUTHOR# - Автор сообщения\n#EMAIL_TO# - Email получателя письма',100,'email'),(34,'en','NEW_BLOG_MESSAGE','New blog message','#BLOG_ID# - Blog ID\n#BLOG_NAME# - Blog title\n#BLOG_URL# - Blog url\n#MESSAGE_TITLE# - Message title\n#MESSAGE_TEXT# - Message text\n#MESSAGE_DATE# - Message date\n#MESSAGE_PATH# - URL to message\n#AUTHOR# - Message author\n#EMAIL_FROM# - Sender email\n#EMAIL_TO# - Recipient email',100,'email'),(35,'en','NEW_BLOG_COMMENT','New comment in blog','#BLOG_ID# - Blog ID\n#BLOG_NAME# - Blog title\n#BLOG_URL# - Blog url\n#MESSAGE_TITLE# - Message title\n#COMMENT_TITLE# - Comment title\n#COMMENT_TEXT# - Comment text\n#COMMENT_DATE# - Comment date\n#COMMENT_PATH# - Comment URL\n#AUTHOR# - Comment author\n#EMAIL_FROM# - Sender email\n#EMAIL_TO# - Recipient email',100,'email'),(36,'en','NEW_BLOG_COMMENT2COMMENT','New comment for your in blog','#BLOG_ID# - Blog ID\n#BLOG_NAME# - Blog title\n#BLOG_URL# - Blog url\n#MESSAGE_TITLE# - Message title\n#COMMENT_TITLE# - Comment title\n#COMMENT_TEXT# - Comment text\n#COMMENT_DATE# - Comment date\n#COMMENT_PATH# - Comment URL\n#AUTHOR# - Comment author\n#EMAIL_FROM# - Sender email\n#EMAIL_TO# - Recipient email',100,'email'),(37,'en','NEW_BLOG_COMMENT_WITHOUT_TITLE','New comment in blog (without subject)','#BLOG_ID# - Blog ID\n#BLOG_NAME# - Blog title\n#BLOG_URL# - Blog url\n#MESSAGE_TITLE# - Message title\n#COMMENT_TEXT# - Comment text\n#COMMENT_DATE# - Comment date\n#COMMENT_PATH# - Comment URL\n#AUTHOR# - Comment author\n#EMAIL_FROM# - Sender email\n#EMAIL_TO# - Recipient email',100,'email'),(38,'en','NEW_BLOG_COMMENT2COMMENT_WITHOUT_TITLE','New comment for your in blog (without subject)','#BLOG_ID# - Blog ID\n#BLOG_NAME# - Blog title\n#BLOG_URL# - Blog url\n#MESSAGE_TITLE# - Message title\n#COMMENT_TEXT# - Comment text\n#COMMENT_DATE# - Comment date\n#COMMENT_PATH# - Comment URL\n#AUTHOR# - Comment author\n#EMAIL_FROM# - Sender email\n#EMAIL_TO# - Recipient email',100,'email'),(39,'en','BLOG_YOUR_BLOG_TO_USER','Your blog has been added to friends','#BLOG_ID# - Blog ID\n#BLOG_NAME# - Blog name\n#BLOG_URL# - Blog name, Latin letters only\n#BLOG_ADR# - Blog address\n#USER_ID# - User ID\n#USER# - User\n#USER_URL# - User URL\n#EMAIL_FROM# - Sender E-mail\n#EMAIL_TO# - Recipient E-mail',100,'email'),(40,'en','BLOG_YOU_TO_BLOG','You have been added to blog friends','#BLOG_ID# - Blog ID\n#BLOG_NAME# - Blog name\n#BLOG_URL# - Blog name, Latin letters only\n#BLOG_ADR# - Blog address\n#USER_ID# - User ID\n#USER# - User\n#USER_URL# - User URL\n#EMAIL_FROM# - Sender E-mail\n#EMAIL_TO# - Recipient E-mail',100,'email'),(41,'en','BLOG_BLOG_TO_YOU','A blog has been added to your friends','#BLOG_ID# - Blog ID\n#BLOG_NAME# - Blog name\n#BLOG_URL# - Blog name, Latin letters only\n#BLOG_ADR# - Blog address\n#USER_ID# - User ID\n#USER# - User\n#USER_URL# - User URL\n#EMAIL_FROM# - Sender E-mail\n#EMAIL_TO# - Recipient E-mail',100,'email'),(42,'en','BLOG_USER_TO_YOUR_BLOG','A friend has been added to your blog','#BLOG_ID# - Blog ID\n#BLOG_NAME# - Blog name\n#BLOG_URL# - Blog name, Latin letters only\n#BLOG_ADR# - Blog address\n#USER_ID# - User ID\n#USER# - User\n#USER_URL# - User URL\n#EMAIL_FROM# - Sender E-mail\n#EMAIL_TO# - Recipient E-mail',100,'email'),(43,'en','BLOG_SONET_NEW_POST','New post added','#EMAIL_TO# - Recipient email\n#POST_ID# - Post ID\n#URL_ID# - Post URL',100,'email'),(44,'en','BLOG_SONET_NEW_COMMENT','Comment added','#EMAIL_TO# - Recipient email\n#COMMENT_ID# - Comment ID\n#POST_ID# - Post ID\n#URL_ID# - Post URL',100,'email'),(45,'en','BLOG_SONET_POST_SHARE','New recipient added','#EMAIL_TO# - Recipient email\n#POST_ID# - Post ID\n#URL_ID# - Post URL',100,'email'),(46,'en','BLOG_POST_BROADCAST','New post added','\n#MESSAGE_TITLE# - Post subject\n#MESSAGE_TEXT# - Post text \n#MESSAGE_PATH# - Post URL\n#AUTHOR# - Post author\n#EMAIL_TO# - E-mail recipient',100,'email'),(47,'en','CATALOG_PRODUCT_SUBSCRIBE_LIST_CONFIRM','Код подтверждения','\n#TOKEN# - Код подтверждения\n#TOKEN_URL# - Ссылка с кодом подтверждения\n#LIST_SUBSCRIBES# - Список подписок\n#URL_PARAMETERS# - Параметры ссылки для подтверждения кода доступа\n',100,'email'),(48,'en','CATALOG_PRODUCT_SUBSCRIBE_NOTIFY','Уведомление о поступлении товара','#USER_NAME# - имя пользователя\n#EMAIL_TO# - email пользователя\n#NAME# - название товара\n#PAGE_URL# - детальная страница товара\n#CHECKOUT_URL# - добавление товара в корзину\n#CHECKOUT_URL_PARAMETERS# - параметры ссылки добавления товара в корзину\n#PRODUCT_ID# - id товара для формирования ссылок\n#UNSUBSCRIBE_URL# - ссылка отписки от товара\n#UNSUBSCRIBE_URL_PARAMETERS# - параметры ссылки отписки от товара\n',100,'email'),(49,'en','CATALOG_PRODUCT_SUBSCRIBE_NOTIFY_REPEATED','Уведомление о товаре в магазине','#USER_NAME# - имя пользователя\n#EMAIL_TO# - email пользователя\n#NAME# - название товара\n#PAGE_URL# - детальная страница товара\n#PRODUCT_ID# - id товара для формирования ссылок\n#UNSUBSCRIBE_URL# - ссылка отписки от товара\n#UNSUBSCRIBE_URL_PARAMETERS# - параметры ссылки отписки от товара\n',100,'email'),(50,'ru','CATALOG_PRODUCT_SUBSCRIBE_LIST_CONFIRM','Код подтверждения','\n#TOKEN# - Код подтверждения\n#TOKEN_URL# - Ссылка с кодом подтверждения\n#LIST_SUBSCRIBES# - Список подписок\n#URL_PARAMETERS# - Параметры ссылки для подтверждения кода доступа\n',100,'email'),(51,'ru','CATALOG_PRODUCT_SUBSCRIBE_NOTIFY','Уведомление о поступлении товара','#USER_NAME# - имя пользователя\n#EMAIL_TO# - email пользователя\n#NAME# - название товара\n#PAGE_URL# - детальная страница товара\n#CHECKOUT_URL# - добавление товара в корзину\n#CHECKOUT_URL_PARAMETERS# - параметры ссылки добавления товара в корзину\n#PRODUCT_ID# - id товара для формирования ссылок\n#UNSUBSCRIBE_URL# - ссылка отписки от товара\n#UNSUBSCRIBE_URL_PARAMETERS# - параметры ссылки отписки от товара\n',100,'email'),(52,'ru','CATALOG_PRODUCT_SUBSCRIBE_NOTIFY_REPEATED','Уведомление о товаре в магазине','#USER_NAME# - имя пользователя\n#EMAIL_TO# - email пользователя\n#NAME# - название товара\n#PAGE_URL# - детальная страница товара\n#PRODUCT_ID# - id товара для формирования ссылок\n#UNSUBSCRIBE_URL# - ссылка отписки от товара\n#UNSUBSCRIBE_URL_PARAMETERS# - параметры ссылки отписки от товара\n',100,'email'),(53,'ru','NEW_FORUM_MESSAGE','Новое сообщение на форуме','\n			#FORUM_ID# - ID форума\n			#FORUM_NAME# - Название форума\n			#TOPIC_ID# - ID темы\n			#MESSAGE_ID# - ID сообщения\n			#TOPIC_TITLE# - Тема сообщения\n			#MESSAGE_TEXT# - Текст сообщения\n			#MESSAGE_DATE# - Дата сообщения\n			#AUTHOR# - Автор сообщения\n			#RECIPIENT# - Получатель сообщения\n			#TAPPROVED# - Тема сообщения показывается\n			#MAPPROVED# - Тело сообщения показывается\n			#PATH2FORUM# - Адрес сообщения\n			#FROM_EMAIL# - E-Mail для поля From письма',100,'email'),(54,'ru','NEW_FORUM_PRIV','Приватное письмо посетителю форума','\n			#FROM_NAME# - Автор сообщения\n			#FROM_EMAIL# - E-Mail автора сообщения\n			#TO_NAME# - Имя получателя сообщения\n			#TO_EMAIL# - E-Mail получателя сообщения\n			#SUBJECT# - Тема сообщения\n			#MESSAGE# - Тело сообщения\n			#MESSAGE_DATE# - Дата сообщения',100,'email'),(55,'ru','NEW_FORUM_PRIVATE_MESSAGE','Приватное сообщение','\n			#FROM_NAME# - Имя автора сообщения\n			#FROM_USER_ID# - ID автора сообщения\n			#FROM_EMAIL# - E-Mail автора сообщения\n			#TO_NAME# - Имя получателя сообщения\n			#TO_USER_ID# - ID получателя сообщения\n			#TO_EMAIL# - E-Mail получателя сообщения\n			#SUBJECT# - Тема сообщения\n			#MESSAGE# - Текст сообщения\n			#MESSAGE_DATE# - Дата сообщения\n			#MESSAGE_LINK# - Ссылка на сообщение',100,'email'),(56,'ru','EDIT_FORUM_MESSAGE','Изменение сообщения на форуме','\n			#FORUM_ID# - ID форума\n			#FORUM_NAME# - Название форума\n			#TOPIC_ID# - ID темы\n			#MESSAGE_ID# - ID сообщения\n			#TOPIC_TITLE# - Тема сообщения\n			#MESSAGE_TEXT# - Текст сообщения\n			#MESSAGE_DATE# - Дата сообщения\n			#AUTHOR# - Автор сообщения\n			#RECIPIENT# - Получатель сообщения\n			#TAPPROVED# - Тема сообщения показывается\n			#MAPPROVED# - Тело сообщения показывается\n			#PATH2FORUM# - Адрес сообщения\n			#FROM_EMAIL# - E-Mail для поля From письма',100,'email'),(57,'en','NEW_FORUM_MESSAGE','New forum message','\n			#FORUM_ID# - Forum ID\n			#FORUM_NAME# - Forum name\n			#TOPIC_ID# - Topic ID\n			#MESSAGE_ID# - Message ID\n			#TOPIC_TITLE# - Topic title\n			#MESSAGE_TEXT# - Message text\n			#MESSAGE_DATE# - Message date\n			#AUTHOR# - Message author\n			#RECIPIENT# - E-Mail recipient\n			#TAPPROVED# - Message topic is approved\n			#MAPPROVED# - Message is approved\n			#PATH2FORUM# - Message Url\n			#FROM_EMAIL# - E-Mail for From field of the EMail',100,'email'),(58,'en','NEW_FORUM_PRIV','Private message for forum user','\n			#FROM_NAME# - Name of the sender\n			#FROM_EMAIL# - E-Mail of the sender\n			#TO_NAME# - Name of recipient\n			#TO_EMAIL# - E-Mail of recipient\n			#SUBJECT# - Topic\n			#MESSAGE# - Message\n			#MESSAGE_DATE# - Date',100,'email'),(59,'en','NEW_FORUM_PRIVATE_MESSAGE','Private message for forum user','\n			#FROM_NAME# - Name of the sender\n			#FROM_USER_ID# - ID of the sender\n			#FROM_EMAIL# - E-Mail of the sender\n			#TO_NAME# - Name of recipient\n			#TO_USER_ID# - ID of recipient\n			#TO_EMAIL# - E-Mail of recipient\n			#SUBJECT# - Topic\n			#MESSAGE# - Message\n			#MESSAGE_DATE# - Date\n			#MESSAGE_LINK# - Link to message',100,'email'),(60,'en','EDIT_FORUM_MESSAGE','Changing forum message','\n			#FORUM_ID# - Forum ID\n			#FORUM_NAME# - Forum name\n			#TOPIC_ID# - Topic ID\n			#MESSAGE_ID# - Message ID\n			#TOPIC_TITLE# - Topic title\n			#MESSAGE_TEXT# - Message text\n			#MESSAGE_DATE# - Message date\n			#AUTHOR# - Message author\n			#RECIPIENT# - E-Mail recipient\n			#TAPPROVED# - Message topic is approved\n			#MAPPROVED# - Message is approved\n			#PATH2FORUM# - Message Url\n			#FROM_EMAIL# - E-Mail for From field of the EMail',100,'email'),(61,'ru','FORUM_NEW_MESSAGE_MAIL','Новое сообщение на форуме в режиме общения по E-Mail','#FORUM_NAME# - Название форума\n#AUTHOR# - Автор сообщения\n#FROM_EMAIL# - E-Mail для поля From письма\n#RECIPIENT# - Получатель сообщения\n#TOPIC_TITLE# - Тема сообщения\n#MESSAGE_TEXT# - Текст сообщения\n#PATH2FORUM# - Адрес сообщения\n#MESSAGE_DATE# - Дата сообщения\n#FORUM_EMAIL# - Е-Mail адрес для добавления сообщений на форум\n#FORUM_ID# - ID форума\n#TOPIC_ID# - ID темы \n#MESSAGE_ID# - ID сообщения\n#TAPPROVED# - Тема опубликована\n#MAPPROVED# - Сообщение опубликовано\n',100,'email'),(62,'en','FORUM_NEW_MESSAGE_MAIL','New message at the forum (e-mail messaging mode)','#FORUM_NAME# - Forum name\n#AUTHOR# - Message author\n#FROM_EMAIL# - E-Mail in the &amp;From&amp; field\n#RECIPIENT# - Message recipient\n#TOPIC_TITLE# - Message subject\n#MESSAGE_TEXT# - Message text\n#PATH2FORUM# - Message URL\n#MESSAGE_DATE# - Message date\n#FORUM_EMAIL# - E-Mail to add messages to the forum \n#FORUM_ID# - Forum ID\n#TOPIC_ID# - Topic ID \n#MESSAGE_ID# - Message ID\n#TAPPROVED# - Topic approved and published\n#MAPPROVED# - Message approved and published\n',100,'email'),(63,'ru','SALE_NEW_ORDER','Новый заказ','#ORDER_ID# - код заказа\n#ORDER_ACCOUNT_NUMBER_ENCODE# - код заказа(для ссылок)\n#ORDER_REAL_ID# - реальный ID заказа\n#ORDER_DATE# - дата заказа\n#ORDER_USER# - заказчик\n#PRICE# - сумма заказа\n#EMAIL# - E-Mail заказчика\n#BCC# - E-Mail скрытой копии\n#ORDER_LIST# - состав заказа\n#ORDER_PUBLIC_URL# - ссылка для просмотра заказа без авторизации (требуется настройка в модуле интернет-магазина)\n#SALE_EMAIL# - E-Mail отдела продаж',100,'email'),(64,'ru','SALE_NEW_ORDER_RECURRING','Новый заказ на продление подписки','#ORDER_ID# - код заказа\n#ORDER_ACCOUNT_NUMBER_ENCODE# - код заказа(для ссылок)\n#ORDER_REAL_ID# - реальный ID заказа\n#ORDER_DATE# - дата заказа\n#ORDER_USER# - заказчик\n#PRICE# - сумма заказа\n#EMAIL# - E-Mail заказчика\n#BCC# - E-Mail скрытой копии\n#ORDER_LIST# - состав заказа\n#SALE_EMAIL# - E-Mail отдела продаж',100,'email'),(65,'ru','SALE_ORDER_REMIND_PAYMENT','Напоминание об оплате заказа','#ORDER_ID# - код заказа\n#ORDER_ACCOUNT_NUMBER_ENCODE# - код заказа(для ссылок)\n#ORDER_REAL_ID# - реальный ID заказа\n#ORDER_DATE# - дата заказа\n#ORDER_USER# - заказчик\n#PRICE# - сумма заказа\n#EMAIL# - E-Mail заказчика\n#BCC# - E-Mail скрытой копии\n#ORDER_LIST# - состав заказа\n#ORDER_PUBLIC_URL# - ссылка для просмотра заказа без авторизации (требуется настройка в модуле интернет-магазина)\n#SALE_EMAIL# - E-Mail отдела продаж',100,'email'),(66,'ru','SALE_ORDER_CANCEL','Отмена заказа','#ORDER_ID# - код заказа\n#ORDER_ACCOUNT_NUMBER_ENCODE# - код заказа(для ссылок)\n#ORDER_REAL_ID# - реальный ID заказа\n#ORDER_DATE# - дата заказа\n#EMAIL# - E-Mail пользователя\n#ORDER_CANCEL_DESCRIPTION# - причина отмены\n#ORDER_PUBLIC_URL# - ссылка для просмотра заказа без авторизации (требуется настройка в модуле интернет-магазина)\n#SALE_EMAIL# - E-Mail отдела продаж',100,'email'),(67,'ru','SALE_ORDER_PAID','Заказ оплачен','#ORDER_ID# - код заказа\n#ORDER_ACCOUNT_NUMBER_ENCODE# - код заказа(для ссылок)\n#ORDER_REAL_ID# - реальный ID заказа\n#ORDER_DATE# - дата заказа\n#EMAIL# - E-Mail пользователя\n#ORDER_PUBLIC_URL# - ссылка для просмотра заказа без авторизации (требуется настройка в модуле интернет-магазина)\n#SALE_EMAIL# - E-Mail отдела продаж',100,'email'),(68,'ru','SALE_ORDER_DELIVERY','Доставка заказа разрешена','#ORDER_ID# - код заказа\n#ORDER_ACCOUNT_NUMBER_ENCODE# - код заказа(для ссылок)\n#ORDER_REAL_ID# - реальный ID заказа\n#ORDER_DATE# - дата заказа\n#EMAIL# - E-Mail пользователя\n#ORDER_PUBLIC_URL# - ссылка для просмотра заказа без авторизации (требуется настройка в модуле интернет-магазина)\n#SALE_EMAIL# - E-Mail отдела продаж',100,'email'),(69,'ru','SALE_RECURRING_CANCEL','Подписка отменена','#ORDER_ID# - код заказа\n#ORDER_ACCOUNT_NUMBER_ENCODE# - код заказа(для ссылок)\n#ORDER_REAL_ID# - реальный ID заказа\n#ORDER_DATE# - дата заказа\n#EMAIL# - E-Mail пользователя\n#CANCELED_REASON# - причина отмены\n#SALE_EMAIL# - E-Mail отдела продаж',100,'email'),(70,'ru','SALE_SUBSCRIBE_PRODUCT','Уведомление о поступлении товара','#USER_NAME# - имя пользователя\n#EMAIL# - email пользователя\n#NAME# - название товара\n#PAGE_URL# - детальная страница товара',100,'email'),(71,'ru','SALE_ORDER_TRACKING_NUMBER','Уведомление об изменении идентификатора почтового отправления','#ORDER_ID# - код заказа\n#ORDER_ACCOUNT_NUMBER_ENCODE# - код заказа(для ссылок)\n#ORDER_REAL_ID# - реальный ID заказа\n#ORDER_DATE# - дата заказа\n#ORDER_USER# - заказчик\n#ORDER_TRACKING_NUMBER# - идентификатор почтового отправления\n#ORDER_PUBLIC_URL# - ссылка для просмотра заказа без авторизации (требуется настройка в модуле интернет-магазина)\n#EMAIL# - E-Mail заказчика\n#BCC# - E-Mail скрытой копии\n#SALE_EMAIL# - E-Mail отдела продаж',100,'email'),(72,'ru','SALE_CHECK_PRINT','Уведомление о печати чека','#ORDER_ID# - код заказа\n#ORDER_DATE# - дата заказа\n#ORDER_USER# - заказчик\n#ORDER_ACCOUNT_NUMBER_ENCODE# - код заказа(для ссылок)\n#ORDER_PUBLIC_URL# - ссылка для просмотра заказа без авторизации (требуется настройка в модуле интернет-магазина)\n#CHECK_LINK# - ссылка на чек',100,'email'),(73,'ru','SALE_CHECK_PRINT_ERROR','Уведомление об ошибке при печати чека','#ORDER_ACCOUNT_NUMBER# - код заказа\n#ORDER_DATE# - дата заказа\n#ORDER_ID# - ID заказа\n#CHECK_ID# - номер чека',100,'email'),(74,'ru','SALE_ORDER_SHIPMENT_STATUS_CHANGED','Уведомление об изменении статуса почтового отправления','#SHIPMENT_NO# - номер отгрузки\n#SHIPMENT_DATE# - дата отгрузки\n#ORDER_NO# - номер заказа\n#ORDER_DATE# - дата заказа\n#STATUS_NAME# - название статуса\n#STATUS_DESCRIPTION# - описание статуса\n#TRACKING_NUMBER# - идентификатор почтового отправления\n#EMAIL# - кому будет отправлено письмо\n#BCC# - кому будет отправлена копия письма\n#ORDER_USER# - заказчик\n#DELIVERY_NAME# - наименование службы доставки\n#DELIVERY_TRACKING_URL# - ссылка на сайте службы доставке, где можно подробнее узнать о статусе отправления\n#ORDER_ACCOUNT_NUMBER_ENCODE# - код заказа(для ссылок)\n#ORDER_PUBLIC_URL# - ссылка для просмотра заказа без авторизации (требуется настройка в модуле интернет-магазина)\n#ORDER_DETAIL_URL# - ссылка для просмотра подробной информации о заказе',100,'email'),(75,'ru','SALE_STATUS_CHANGED_F','Изменение статуса заказа на  \"Выполнен\"','#ORDER_ID# - код заказа\n#ORDER_DATE# - дата заказа\n#ORDER_STATUS# - статус заказа\n#EMAIL# - E-Mail пользователя\n#ORDER_DESCRIPTION# - описание статуса заказа\n#TEXT# - текст\n#SALE_EMAIL# - E-Mail отдела продаж\n#ORDER_PUBLIC_URL# - ссылка для просмотра заказа без авторизации (требуется настройка в модуле интернет-магазина)\n',100,'email'),(76,'ru','SALE_STATUS_CHANGED_N','Изменение статуса заказа на  \"Принят, ожидается оплата\"','#ORDER_ID# - код заказа\n#ORDER_DATE# - дата заказа\n#ORDER_STATUS# - статус заказа\n#EMAIL# - E-Mail пользователя\n#ORDER_DESCRIPTION# - описание статуса заказа\n#TEXT# - текст\n#SALE_EMAIL# - E-Mail отдела продаж\n#ORDER_PUBLIC_URL# - ссылка для просмотра заказа без авторизации (требуется настройка в модуле интернет-магазина)\n',100,'email'),(77,'en','SALE_NEW_ORDER','New order','#ORDER_ID# - order ID\n#ORDER_ACCOUNT_NUMBER_ENCODE# - order ID (for URL\'s)\n#ORDER_REAL_ID# - real order ID\n#ORDER_DATE# - order date\n#ORDER_USER# - customer\n#PRICE# - order amount\n#EMAIL# - customer e-mail\n#BCC# - BCC e-mail\n#ORDER_LIST# - order contents\n#ORDER_PUBLIC_URL# - order view link for unauthorized users (requires configuration in the e-Store module settings)\n#SALE_EMAIL# - sales dept. e-mail',100,'email'),(78,'en','SALE_NEW_ORDER_RECURRING','New Order for Subscription Renewal','#ORDER_ID# - order ID\n#ORDER_ACCOUNT_NUMBER_ENCODE# - order ID (for URL\'s)\n#ORDER_REAL_ID# - real order ID\n#ORDER_DATE# - order date\n#ORDER_USER# - customer\n#PRICE# - order amount\n#EMAIL# - customer e-mail\n#BCC# - BCC e-mail\n#ORDER_LIST# - order contents\n#SALE_EMAIL# - sales dept. e-mail',100,'email'),(79,'en','SALE_ORDER_REMIND_PAYMENT','Order Payment Reminder','#ORDER_ID# - order ID\n#ORDER_ACCOUNT_NUMBER_ENCODE# - order ID (for URL\'s)\n#ORDER_REAL_ID# - real order ID\n#ORDER_DATE# - order date\n#ORDER_USER# - customer\n#PRICE# - order amount\n#EMAIL# - customer e-mail\n#BCC# - BCC e-mail\n#ORDER_LIST# - order contents\n#ORDER_PUBLIC_URL# - order view link for unauthorized users (requires configuration in the e-Store module settings)\n#SALE_EMAIL# - sales dept. e-mail',100,'email'),(80,'en','SALE_ORDER_CANCEL','Cancel order','#ORDER_ID# - order ID\n#ORDER_ACCOUNT_NUMBER_ENCODE# - order ID (for URL\'s)\n#ORDER_REAL_ID# - real order ID\n#ORDER_DATE# - order date\n#EMAIL# - customer e-mail\n#ORDER_LIST# - order contents\n#ORDER_CANCEL_DESCRIPTION# - reason for cancellation\n#ORDER_PUBLIC_URL# - order view link for unauthorized users (requires configuration in the e-Store module settings)\n#SALE_EMAIL# - sales dept. e-mail\n',100,'email'),(81,'en','SALE_ORDER_PAID','Paid order','#ORDER_ID# - order ID\n#ORDER_ACCOUNT_NUMBER_ENCODE# - order ID (for URL\'s)\n#ORDER_REAL_ID# - real order ID\n#ORDER_DATE# - order date\n#EMAIL# - customer e-mail\n#ORDER_PUBLIC_URL# - order view link for unauthorized users (requires configuration in the e-Store module settings)\n#SALE_EMAIL# - sales dept. e-mail',100,'email'),(82,'en','SALE_ORDER_DELIVERY','Order delivery allowed','#ORDER_ID# - order ID\n#ORDER_ACCOUNT_NUMBER_ENCODE# - order ID (for URL\'s)\n#ORDER_REAL_ID# - real order ID\n#ORDER_DATE# - order date\n#EMAIL# - customer e-mail\n#ORDER_PUBLIC_URL# - order view link for unauthorized users (requires configuration in the e-Store module settings)\n#SALE_EMAIL# - sales dept. e-mail',100,'email'),(83,'en','SALE_RECURRING_CANCEL','Recurring payment canceled','#ORDER_ID# - order ID\n#ORDER_ACCOUNT_NUMBER_ENCODE# - order ID (for URL\'s)\n#ORDER_REAL_ID# - real order ID\n#ORDER_DATE# - order date\n#EMAIL# - customer e-mail\n#CANCELED_REASON# - reason for cancellation\n#SALE_EMAIL# - sales dept. e-mail',100,'email'),(84,'en','SALE_SUBSCRIBE_PRODUCT','Back in stock notification','#USER_NAME# - user name\n#EMAIL# - user e-mail \n#NAME# - product name\n#PAGE_URL# - product details page',100,'email'),(85,'en','SALE_ORDER_TRACKING_NUMBER','Notification of change in tracking number ','#ORDER_ID# - order ID\n#ORDER_ACCOUNT_NUMBER_ENCODE# - order ID (for URL\'s)\n#ORDER_REAL_ID# - real order ID\n#ORDER_DATE# - order date\n#ORDER_USER# - customer\n#ORDER_TRACKING_NUMBER# - tracking number\n#ORDER_PUBLIC_URL# - order view link for unauthorized users (requires configuration in the e-Store module settings)\n#EMAIL# - customer e-mail\n#BCC# - BCC e-mail\n#SALE_EMAIL# - sales dept. e-mail',100,'email'),(86,'en','SALE_CHECK_PRINT','Receipt printout notification','#ORDER_ID# - order ID\n#ORDER_DATE# - order date\n#ORDER_USER# - customer\n#ORDER_ACCOUNT_NUMBER_ENCODE# - order Id for use in links\n#ORDER_PUBLIC_URL# - order view link for unauthorized users (requires configuration in the e-Store module settings)\n#CHECK_LINK# - receipt link',100,'email'),(87,'en','SALE_CHECK_PRINT_ERROR','Receipt printout error notification','#ORDER_ACCOUNT_NUMBER# - order id\n#ORDER_DATE# - order date\n#ORDER_ID# - order id\n#CHECK_ID# - receipt id',100,'email'),(88,'en','SALE_ORDER_SHIPMENT_STATUS_CHANGED','Package status update','#SHIPMENT_NO# - shipment ID\n#SHIPMENT_DATE# - shipped on\n#ORDER_NO# - order #\n#ORDER_DATE# - order date\n#STATUS_NAME# - status name\n#STATUS_DESCRIPTION# - status description\n#TRACKING_NUMBER# - tracking number\n#EMAIL# - notify e-mail address\n#BCC# - send copy to address\n#ORDER_USER# - customer\n#DELIVERY_NAME# - delivery service name\n#DELIVERY_TRACKING_URL# - delivery service website for more tracking details\n#ORDER_ACCOUNT_NUMBER_ENCODE# - order ID (for links)\n#ORDER_PUBLIC_URL# - order view link for unauthorized users (requires configuration in the e-Store module settings)\n#ORDER_DETAIL_URL# - order details URL',100,'email'),(89,'en','SALE_STATUS_CHANGED_F','Changing order status to \"\"','#ORDER_ID# - order ID\n#ORDER_DATE# - order date\n#ORDER_STATUS# - order status\n#EMAIL# - customer e-mail\n#ORDER_DESCRIPTION# - order status description\n#TEXT# - text\n#SALE_EMAIL# - Sales department e-mail\n#ORDER_PUBLIC_URL# - order view link for unauthorized users (requires configuration in the e-Store module settings)\n',100,'email'),(90,'en','SALE_STATUS_CHANGED_N','Changing order status to \"\"','#ORDER_ID# - order ID\n#ORDER_DATE# - order date\n#ORDER_STATUS# - order status\n#EMAIL# - customer e-mail\n#ORDER_DESCRIPTION# - order status description\n#TEXT# - text\n#SALE_EMAIL# - Sales department e-mail\n#ORDER_PUBLIC_URL# - order view link for unauthorized users (requires configuration in the e-Store module settings)\n',100,'email'),(91,'ru','VIRUS_DETECTED','Обнаружен вирус','#EMAIL# - E-Mail администратора сайта (из настроек главного модуля)',100,'email'),(92,'en','VIRUS_DETECTED','Virus detected','#EMAIL# - Site administrator\'s e-mail address (from the Kernel module settings)',100,'email'),(93,'ru','SENDER_SUBSCRIBE_CONFIRM','Подтверждение подписки','#EMAIL# - адрес подписки\n#DATE# - дата добавления/изменения адреса\n#CONFIRM_URL# - адрес подтверждения\n#MAILING_LIST# - список подписок\n',100,'email'),(94,'en','SENDER_SUBSCRIBE_CONFIRM','Confirm subscription','#EMAIL# - subscription URL\n#DATE# - the date the address was added or updated\n#CONFIRM_URL# - confirmation URL\n#MAILING_LIST# - subscriptions\n',100,'email'),(95,'ru','SUBSCRIBE_CONFIRM','Подтверждение подписки','#ID# - идентификатор подписки\n#EMAIL# - адрес подписки\n#CONFIRM_CODE# - код подтверждения\n#SUBSCR_SECTION# - раздел, где находится страница редактирования подписки (задается в настройках)\n#USER_NAME# - имя подписчика (может отсутствовать)\n#DATE_SUBSCR# - дата добавления/изменения адреса\n',100,'email'),(96,'en','SUBSCRIBE_CONFIRM','Confirmation of subscription','#ID# - subscription ID\n#EMAIL# - subscription email\n#CONFIRM_CODE# - confirmation code\n#SUBSCR_SECTION# - section with subscription edit page (specifies in the settings)\n#USER_NAME# - subscriber\'s name (optional)\n#DATE_SUBSCR# - date of adding/change of address\n',100,'email'),(97,'ru','VOTE_FOR','Новый голос','#ID# - ID результата голосования\n#TIME# - время голосования\n#VOTE_TITLE# - наименование опроса\n#VOTE_DESCRIPTION# - описание опроса\n#VOTE_ID# - ID опроса\n#CHANNEL# - наименование группы опроса\n#CHANNEL_ID# - ID группы опроса\n#VOTER_ID# - ID проголосовавшего посетителя\n#USER_NAME# - ФИО пользователя\n#LOGIN# - логин\n#USER_ID# - ID пользователя\n#STAT_GUEST_ID# - ID посетителя модуля статистики\n#SESSION_ID# - ID сессии модуля статистики\n#IP# - IP адрес\n#VOTE_STATISTIC# - Сводная статистика опроса типа ( - Вопрос - Ответ )\n#URL# - Путь к опросу\n',100,'email'),(98,'en','VOTE_FOR','New vote','#ID# - Vote result ID\n#TIME# - Time of vote\n#VOTE_TITLE# - Poll name\n#VOTE_DESCRIPTION# - Poll description\n#VOTE_ID# - Poll ID\n#CHANNEL# - Poll group name\n#CHANNEL_ID# - Poll group ID\n#VOTER_ID# - Voter\'s user ID\n#USER_NAME# - User full name\n#LOGIN# - login\n#USER_ID# - User ID\n#STAT_GUEST_ID# - Visitor ID in web analytics module\n#SESSION_ID# - Session ID in web analytics module\n#IP# - IP address\n#VOTE_STATISTIC# - Summary statistics of this poll type ( - Question - Answer)\n#URL# - Poll URL',100,'email');
 /*!40000 ALTER TABLE `b_event_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -5008,13 +3892,13 @@ CREATE TABLE `b_forum_message` (
   `MAIL_HEADER` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`ID`),
   KEY `IX_FORUM_MESSAGE_FORUM` (`FORUM_ID`,`APPROVED`),
-  KEY `IX_FORUM_MESSAGE_TOPIC` (`TOPIC_ID`,`APPROVED`,`ID`),
-  KEY `IX_FORUM_MESSAGE_AUTHOR` (`AUTHOR_ID`,`APPROVED`,`FORUM_ID`,`ID`),
+  KEY `IX_FORUM_MESSAGE_TOPIC` (`TOPIC_ID`,`APPROVED`),
+  KEY `IX_FORUM_MESSAGE_AUTHOR` (`AUTHOR_ID`,`APPROVED`,`FORUM_ID`),
   KEY `IX_FORUM_MESSAGE_APPROVED` (`APPROVED`),
   KEY `IX_FORUM_MESSAGE_PARAM2` (`PARAM2`),
   KEY `IX_FORUM_MESSAGE_XML_ID` (`XML_ID`),
   KEY `IX_FORUM_MESSAGE_DATE_AUTHOR_ID` (`POST_DATE`,`AUTHOR_ID`),
-  KEY `IX_FORUM_MESSAGE_AUTHOR_TOPIC_ID` (`AUTHOR_ID`,`TOPIC_ID`,`ID`),
+  KEY `IX_FORUM_MESSAGE_AUTHOR_TOPIC_ID` (`AUTHOR_ID`,`TOPIC_ID`),
   KEY `IX_FORUM_MESSAGE_AUTHOR_FORUM_ID` (`AUTHOR_ID`,`FORUM_ID`,`ID`,`APPROVED`,`TOPIC_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -5535,7 +4419,7 @@ CREATE TABLE `b_group` (
   `SECURITY_POLICY` text COLLATE utf8_unicode_ci,
   `STRING_ID` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5544,7 +4428,7 @@ CREATE TABLE `b_group` (
 
 LOCK TABLES `b_group` WRITE;
 /*!40000 ALTER TABLE `b_group` DISABLE KEYS */;
-INSERT INTO `b_group` VALUES (1,'2019-07-10 13:49:03','Y',1,'N','Y','Администраторы','Полный доступ к управлению сайтом.','a:12:{s:15:\"SESSION_TIMEOUT\";i:15;s:15:\"SESSION_IP_MASK\";s:15:\"255.255.255.255\";s:13:\"MAX_STORE_NUM\";i:1;s:13:\"STORE_IP_MASK\";s:15:\"255.255.255.255\";s:13:\"STORE_TIMEOUT\";i:4320;s:17:\"CHECKWORD_TIMEOUT\";i:60;s:15:\"PASSWORD_LENGTH\";i:10;s:18:\"PASSWORD_UPPERCASE\";s:1:\"Y\";s:18:\"PASSWORD_LOWERCASE\";s:1:\"Y\";s:15:\"PASSWORD_DIGITS\";s:1:\"Y\";s:20:\"PASSWORD_PUNCTUATION\";s:1:\"Y\";s:14:\"LOGIN_ATTEMPTS\";i:3;}',NULL),(2,'2019-07-10 13:45:10','Y',2,'Y','Y','Все пользователи (в том числе неавторизованные)','Все пользователи, включая неавторизованных.',NULL,NULL),(3,'2019-07-10 13:45:10','Y',3,'N','Y','Пользователи, имеющие право голосовать за рейтинг','В эту группу пользователи добавляются автоматически.',NULL,'RATING_VOTE'),(4,'2019-07-10 13:45:10','Y',4,'N','Y','Пользователи имеющие право голосовать за авторитет','В эту группу пользователи добавляются автоматически.',NULL,'RATING_VOTE_AUTHORITY'),(5,'2019-07-10 13:46:24','Y',201,'N','Y','Почтовые пользователи','Пользователи, авторизуемые на портале по прямой ссылке из почтовых уведомлений',NULL,'MAIL_INVITED'),(6,'2019-07-10 13:49:03','Y',3,'N','Y','Зарегистрированные пользователи',NULL,NULL,'REGISTERED_USERS'),(7,'2019-07-10 13:49:03','Y',4,'N','Y','Пользователи панели управления',NULL,NULL,'CONTROL_PANEL_USERS');
+INSERT INTO `b_group` VALUES (1,'2019-10-17 11:02:31','Y',1,'N','Y','Администраторы','Полный доступ к управлению сайтом.',NULL,NULL),(2,'2019-10-17 11:02:31','Y',2,'Y','Y','Все пользователи (в том числе неавторизованные)','Все пользователи, включая неавторизованных.',NULL,NULL),(3,'2019-10-17 11:02:31','Y',3,'N','Y','Пользователи, имеющие право голосовать за рейтинг','В эту группу пользователи добавляются автоматически.',NULL,'RATING_VOTE'),(4,'2019-10-17 11:02:31','Y',4,'N','Y','Пользователи имеющие право голосовать за авторитет','В эту группу пользователи добавляются автоматически.',NULL,'RATING_VOTE_AUTHORITY');
 /*!40000 ALTER TABLE `b_group` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -5616,7 +4500,6 @@ CREATE TABLE `b_group_task` (
 
 LOCK TABLES `b_group_task` WRITE;
 /*!40000 ALTER TABLE `b_group_task` DISABLE KEYS */;
-INSERT INTO `b_group_task` VALUES (5,2,''),(6,2,''),(7,2,'');
 /*!40000 ALTER TABLE `b_group_task` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -5803,7 +4686,7 @@ CREATE TABLE `b_iblock` (
   `ELEMENT_NAME` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `ix_iblock` (`IBLOCK_TYPE_ID`,`LID`,`ACTIVE`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5812,7 +4695,6 @@ CREATE TABLE `b_iblock` (
 
 LOCK TABLES `b_iblock` WRITE;
 /*!40000 ALTER TABLE `b_iblock` DISABLE KEYS */;
-INSERT INTO `b_iblock` VALUES (1,'2019-07-10 13:49:08','lists','s1','CLIENTS','Клиенты','Y',500,'#SITE_DIR#/lists/index.php?ID=#IBLOCK_ID#','#SITE_DIR#/lists/detail.php?ID=#ID#','#SITE_DIR#/lists/list.php?SECTION_ID=#ID#',NULL,NULL,NULL,'text',24,'Y','N',NULL,NULL,'N','lists-clients','fc91e92dde474aa175f3af64d09239ab','Y','Y','Y','N','L',NULL,'S',NULL,NULL,1,0,NULL,NULL,NULL,'Разделы','Раздел','Клиенты','Клиент');
 /*!40000 ALTER TABLE `b_iblock` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -5886,7 +4768,7 @@ CREATE TABLE `b_iblock_element` (
   KEY `ix_iblock_element_4` (`IBLOCK_ID`,`XML_ID`,`WF_PARENT_ELEMENT_ID`),
   KEY `ix_iblock_element_3` (`WF_PARENT_ELEMENT_ID`),
   KEY `ix_iblock_element_code` (`IBLOCK_ID`,`CODE`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5895,7 +4777,6 @@ CREATE TABLE `b_iblock_element` (
 
 LOCK TABLES `b_iblock_element` WRITE;
 /*!40000 ALTER TABLE `b_iblock_element` DISABLE KEYS */;
-INSERT INTO `b_iblock_element` VALUES (1,'2019-07-10 13:49:08',1,'2019-07-10 13:49:08',1,1,NULL,'Y',NULL,NULL,500,'ООО Копейка',NULL,'','html',NULL,NULL,'text','ООО КОПЕЙКА\r\nИВАНОВ ВАСИЛИЙ ПЕТРОВИЧ\r\n556677',1,NULL,NULL,NULL,NULL,NULL,'N','710','','','-1456313546',NULL,NULL,NULL),(2,'2019-07-10 13:49:08',1,'2019-07-10 13:49:08',1,1,NULL,'Y',NULL,NULL,500,'ЗАО Зайцы+',NULL,'','html',NULL,NULL,'text','ЗАО ЗАЙЦЫ+\r\nЛИСИЦИН ВОЛЬФ ФЕДЕРОВИЧ\r\n557766',1,NULL,NULL,NULL,NULL,NULL,'N','711','','','2044187526',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `b_iblock_element` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -5972,7 +4853,7 @@ CREATE TABLE `b_iblock_element_property` (
   KEY `ix_iblock_element_property_2` (`IBLOCK_PROPERTY_ID`),
   KEY `ix_iblock_element_prop_enum` (`VALUE_ENUM`,`IBLOCK_PROPERTY_ID`),
   KEY `ix_iblock_element_prop_num` (`VALUE_NUM`,`IBLOCK_PROPERTY_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5981,7 +4862,6 @@ CREATE TABLE `b_iblock_element_property` (
 
 LOCK TABLES `b_iblock_element_property` WRITE;
 /*!40000 ALTER TABLE `b_iblock_element_property` DISABLE KEYS */;
-INSERT INTO `b_iblock_element_property` VALUES (1,1,1,'Иванов Василий Петрович','text',NULL,0.0000,''),(2,2,1,'556677','text',NULL,556677.0000,''),(3,1,2,'Лисицин Вольф Федерович','text',NULL,0.0000,''),(4,2,2,'557766','text',NULL,557766.0000,'');
 /*!40000 ALTER TABLE `b_iblock_element_property` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -6035,7 +4915,6 @@ CREATE TABLE `b_iblock_fields` (
 
 LOCK TABLES `b_iblock_fields` WRITE;
 /*!40000 ALTER TABLE `b_iblock_fields` DISABLE KEYS */;
-INSERT INTO `b_iblock_fields` VALUES (1,'ACTIVE','Y',NULL),(1,'ACTIVE_FROM','N',NULL),(1,'ACTIVE_TO','N',NULL),(1,'CODE','N','a:8:{s:6:\"UNIQUE\";s:1:\"N\";s:15:\"TRANSLITERATION\";s:1:\"N\";s:9:\"TRANS_LEN\";i:100;s:10:\"TRANS_CASE\";s:1:\"L\";s:11:\"TRANS_SPACE\";s:1:\"-\";s:11:\"TRANS_OTHER\";s:1:\"-\";s:9:\"TRANS_EAT\";s:1:\"Y\";s:10:\"USE_GOOGLE\";s:1:\"N\";}'),(1,'DETAIL_PICTURE','N','a:17:{s:5:\"SCALE\";s:1:\"N\";s:5:\"WIDTH\";s:0:\"\";s:6:\"HEIGHT\";s:0:\"\";s:13:\"IGNORE_ERRORS\";s:1:\"N\";s:6:\"METHOD\";s:8:\"resample\";s:11:\"COMPRESSION\";i:95;s:18:\"USE_WATERMARK_TEXT\";s:1:\"N\";s:14:\"WATERMARK_TEXT\";N;s:19:\"WATERMARK_TEXT_FONT\";N;s:20:\"WATERMARK_TEXT_COLOR\";N;s:19:\"WATERMARK_TEXT_SIZE\";s:0:\"\";s:23:\"WATERMARK_TEXT_POSITION\";N;s:18:\"USE_WATERMARK_FILE\";s:1:\"N\";s:14:\"WATERMARK_FILE\";N;s:20:\"WATERMARK_FILE_ALPHA\";s:0:\"\";s:23:\"WATERMARK_FILE_POSITION\";N;s:20:\"WATERMARK_FILE_ORDER\";N;}'),(1,'DETAIL_TEXT','N',NULL),(1,'DETAIL_TEXT_TYPE','Y',NULL),(1,'DETAIL_TEXT_TYPE_ALLOW_CHANGE','N','Y'),(1,'IBLOCK_SECTION','N','a:1:{s:22:\"KEEP_IBLOCK_SECTION_ID\";s:1:\"N\";}'),(1,'LOG_ELEMENT_ADD','N',NULL),(1,'LOG_ELEMENT_DELETE','N',NULL),(1,'LOG_ELEMENT_EDIT','N',NULL),(1,'LOG_SECTION_ADD','N',NULL),(1,'LOG_SECTION_DELETE','N',NULL),(1,'LOG_SECTION_EDIT','N',NULL),(1,'NAME','Y',NULL),(1,'PREVIEW_PICTURE','N','a:20:{s:11:\"FROM_DETAIL\";s:1:\"N\";s:5:\"SCALE\";s:1:\"N\";s:5:\"WIDTH\";s:0:\"\";s:6:\"HEIGHT\";s:0:\"\";s:13:\"IGNORE_ERRORS\";s:1:\"N\";s:6:\"METHOD\";s:8:\"resample\";s:11:\"COMPRESSION\";i:95;s:18:\"DELETE_WITH_DETAIL\";s:1:\"N\";s:18:\"UPDATE_WITH_DETAIL\";s:1:\"N\";s:18:\"USE_WATERMARK_TEXT\";s:1:\"N\";s:14:\"WATERMARK_TEXT\";N;s:19:\"WATERMARK_TEXT_FONT\";N;s:20:\"WATERMARK_TEXT_COLOR\";N;s:19:\"WATERMARK_TEXT_SIZE\";s:0:\"\";s:23:\"WATERMARK_TEXT_POSITION\";N;s:18:\"USE_WATERMARK_FILE\";s:1:\"N\";s:14:\"WATERMARK_FILE\";N;s:20:\"WATERMARK_FILE_ALPHA\";s:0:\"\";s:23:\"WATERMARK_FILE_POSITION\";N;s:20:\"WATERMARK_FILE_ORDER\";N;}'),(1,'PREVIEW_TEXT','N',NULL),(1,'PREVIEW_TEXT_TYPE','Y',NULL),(1,'PREVIEW_TEXT_TYPE_ALLOW_CHANGE','N','Y'),(1,'SECTION_CODE','N','a:8:{s:6:\"UNIQUE\";s:1:\"N\";s:15:\"TRANSLITERATION\";s:1:\"N\";s:9:\"TRANS_LEN\";i:100;s:10:\"TRANS_CASE\";s:1:\"L\";s:11:\"TRANS_SPACE\";s:1:\"-\";s:11:\"TRANS_OTHER\";s:1:\"-\";s:9:\"TRANS_EAT\";s:1:\"Y\";s:10:\"USE_GOOGLE\";s:1:\"N\";}'),(1,'SECTION_DESCRIPTION','N',NULL),(1,'SECTION_DESCRIPTION_TYPE','Y',NULL),(1,'SECTION_DESCRIPTION_TYPE_ALLOW_CHANGE','N','Y'),(1,'SECTION_DETAIL_PICTURE','N','a:17:{s:5:\"SCALE\";s:1:\"N\";s:5:\"WIDTH\";s:0:\"\";s:6:\"HEIGHT\";s:0:\"\";s:13:\"IGNORE_ERRORS\";s:1:\"N\";s:6:\"METHOD\";s:8:\"resample\";s:11:\"COMPRESSION\";i:95;s:18:\"USE_WATERMARK_TEXT\";s:1:\"N\";s:14:\"WATERMARK_TEXT\";N;s:19:\"WATERMARK_TEXT_FONT\";N;s:20:\"WATERMARK_TEXT_COLOR\";N;s:19:\"WATERMARK_TEXT_SIZE\";s:0:\"\";s:23:\"WATERMARK_TEXT_POSITION\";N;s:18:\"USE_WATERMARK_FILE\";s:1:\"N\";s:14:\"WATERMARK_FILE\";N;s:20:\"WATERMARK_FILE_ALPHA\";s:0:\"\";s:23:\"WATERMARK_FILE_POSITION\";N;s:20:\"WATERMARK_FILE_ORDER\";N;}'),(1,'SECTION_NAME','Y',NULL),(1,'SECTION_PICTURE','N','a:20:{s:11:\"FROM_DETAIL\";s:1:\"N\";s:5:\"SCALE\";s:1:\"N\";s:5:\"WIDTH\";s:0:\"\";s:6:\"HEIGHT\";s:0:\"\";s:13:\"IGNORE_ERRORS\";s:1:\"N\";s:6:\"METHOD\";s:8:\"resample\";s:11:\"COMPRESSION\";i:95;s:18:\"DELETE_WITH_DETAIL\";s:1:\"N\";s:18:\"UPDATE_WITH_DETAIL\";s:1:\"N\";s:18:\"USE_WATERMARK_TEXT\";s:1:\"N\";s:14:\"WATERMARK_TEXT\";N;s:19:\"WATERMARK_TEXT_FONT\";N;s:20:\"WATERMARK_TEXT_COLOR\";N;s:19:\"WATERMARK_TEXT_SIZE\";s:0:\"\";s:23:\"WATERMARK_TEXT_POSITION\";N;s:18:\"USE_WATERMARK_FILE\";s:1:\"N\";s:14:\"WATERMARK_FILE\";N;s:20:\"WATERMARK_FILE_ALPHA\";s:0:\"\";s:23:\"WATERMARK_FILE_POSITION\";N;s:20:\"WATERMARK_FILE_ORDER\";N;}'),(1,'SECTION_XML_ID','N',NULL),(1,'SORT','N','0'),(1,'TAGS','N',NULL),(1,'XML_ID','Y',NULL),(1,'XML_IMPORT_START_TIME','N','2019-07-10 13:49:07');
 /*!40000 ALTER TABLE `b_iblock_fields` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -6060,7 +4939,6 @@ CREATE TABLE `b_iblock_group` (
 
 LOCK TABLES `b_iblock_group` WRITE;
 /*!40000 ALTER TABLE `b_iblock_group` DISABLE KEYS */;
-INSERT INTO `b_iblock_group` VALUES (1,1,'X'),(1,2,'R');
 /*!40000 ALTER TABLE `b_iblock_group` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -6138,7 +5016,6 @@ CREATE TABLE `b_iblock_messages` (
 
 LOCK TABLES `b_iblock_messages` WRITE;
 /*!40000 ALTER TABLE `b_iblock_messages` DISABLE KEYS */;
-INSERT INTO `b_iblock_messages` VALUES (1,'ELEMENT_ADD','Добавить клиента'),(1,'ELEMENT_DELETE','Удалить клиента'),(1,'ELEMENT_EDIT','Изменить клиента'),(1,'ELEMENT_NAME','Клиент'),(1,'ELEMENTS_NAME','Клиенты'),(1,'SECTION_ADD','Добавить раздел'),(1,'SECTION_DELETE','Удалить раздел'),(1,'SECTION_EDIT','Изменить раздел'),(1,'SECTION_NAME','Раздел'),(1,'SECTIONS_NAME','Разделы');
 /*!40000 ALTER TABLE `b_iblock_messages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -6205,7 +5082,7 @@ CREATE TABLE `b_iblock_property` (
   KEY `ix_iblock_property_1` (`IBLOCK_ID`),
   KEY `ix_iblock_property_3` (`LINK_IBLOCK_ID`),
   KEY `ix_iblock_property_2` (`CODE`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6214,7 +5091,6 @@ CREATE TABLE `b_iblock_property` (
 
 LOCK TABLES `b_iblock_property` WRITE;
 /*!40000 ALTER TABLE `b_iblock_property` DISABLE KEYS */;
-INSERT INTO `b_iblock_property` VALUES (1,'2019-07-10 13:49:08',1,'Руководитель','Y',20,'PERSON',NULL,'S',1,30,'L','N','lists-clients-property-person',NULL,5,NULL,NULL,'N','N','N','N',1,NULL,NULL,NULL),(2,'2019-07-10 13:49:08',1,'Телефон','Y',30,'PHONE',NULL,'S',1,30,'L','N','lists-clients-property-phone',NULL,5,NULL,NULL,'N','N','N','N',1,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `b_iblock_property` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -6538,7 +5414,6 @@ CREATE TABLE `b_iblock_site` (
 
 LOCK TABLES `b_iblock_site` WRITE;
 /*!40000 ALTER TABLE `b_iblock_site` DISABLE KEYS */;
-INSERT INTO `b_iblock_site` VALUES (1,'s1');
 /*!40000 ALTER TABLE `b_iblock_site` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -6566,7 +5441,7 @@ CREATE TABLE `b_iblock_type` (
 
 LOCK TABLES `b_iblock_type` WRITE;
 /*!40000 ALTER TABLE `b_iblock_type` DISABLE KEYS */;
-INSERT INTO `b_iblock_type` VALUES ('lists','Y',NULL,NULL,'N',90),('rest_entity','Y',NULL,NULL,'N',1000);
+INSERT INTO `b_iblock_type` VALUES ('rest_entity','Y',NULL,NULL,'N',1000);
 /*!40000 ALTER TABLE `b_iblock_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -6592,703 +5467,37 @@ CREATE TABLE `b_iblock_type_lang` (
 
 LOCK TABLES `b_iblock_type_lang` WRITE;
 /*!40000 ALTER TABLE `b_iblock_type_lang` DISABLE KEYS */;
-INSERT INTO `b_iblock_type_lang` VALUES ('rest_entity','ru','Хранилище данных для приложений Маркетплейс24','Разделы','Элементы'),('lists','ru','Списки','Разделы','Элементы');
+INSERT INTO `b_iblock_type_lang` VALUES ('rest_entity','ru','Хранилище данных для приложений Маркетплейс24','Разделы','Элементы');
 /*!40000 ALTER TABLE `b_iblock_type_lang` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `b_idea_email_subscribe`
+-- Table structure for table `b_landing_entity_rights`
 --
 
-DROP TABLE IF EXISTS `b_idea_email_subscribe`;
+DROP TABLE IF EXISTS `b_landing_entity_rights`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_idea_email_subscribe` (
-  `USER_ID` int(18) NOT NULL,
-  `SUBSCRIBE_TYPE` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `ENTITY_TYPE` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `ENTITY_CODE` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`USER_ID`,`ENTITY_TYPE`,`ENTITY_CODE`),
-  KEY `ix_b_idea_email_subscribe` (`SUBSCRIBE_TYPE`,`ENTITY_TYPE`,`ENTITY_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_idea_email_subscribe`
---
-
-LOCK TABLES `b_idea_email_subscribe` WRITE;
-/*!40000 ALTER TABLE `b_idea_email_subscribe` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_idea_email_subscribe` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_im_alias`
---
-
-DROP TABLE IF EXISTS `b_im_alias`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_im_alias` (
+CREATE TABLE `b_landing_entity_rights` (
   `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `ALIAS` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `ENTITY_TYPE` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `ENTITY_ID` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ENTITY_ID` int(18) NOT NULL,
+  `ENTITY_TYPE` char(1) COLLATE utf8_unicode_ci NOT NULL,
+  `TASK_ID` int(11) NOT NULL,
+  `ACCESS_CODE` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `ROLE_ID` int(18) DEFAULT '0',
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `UX_B_IM_ALIAS` (`ALIAS`)
+  KEY `IX_ENTITY` (`ENTITY_ID`,`ENTITY_TYPE`),
+  KEY `IX_ROLE` (`ROLE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `b_im_alias`
+-- Dumping data for table `b_landing_entity_rights`
 --
 
-LOCK TABLES `b_im_alias` WRITE;
-/*!40000 ALTER TABLE `b_im_alias` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_im_alias` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_im_app`
---
-
-DROP TABLE IF EXISTS `b_im_app`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_im_app` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `MODULE_ID` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `BOT_ID` int(18) DEFAULT '0',
-  `APP_ID` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `CODE` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `HASH` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `REGISTERED` varchar(32) COLLATE utf8_unicode_ci DEFAULT 'N',
-  `ICON_FILE_ID` int(18) DEFAULT NULL,
-  `CONTEXT` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `IFRAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `IFRAME_WIDTH` int(18) DEFAULT NULL,
-  `IFRAME_HEIGHT` int(18) DEFAULT NULL,
-  `IFRAME_POPUP` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
-  `JS` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `HIDDEN` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
-  `EXTRANET_SUPPORT` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
-  `LIVECHAT_SUPPORT` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
-  `CLASS` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `METHOD_LANG_GET` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_IM_APP_1` (`BOT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_im_app`
---
-
-LOCK TABLES `b_im_app` WRITE;
-/*!40000 ALTER TABLE `b_im_app` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_im_app` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_im_app_lang`
---
-
-DROP TABLE IF EXISTS `b_im_app_lang`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_im_app_lang` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `APP_ID` int(18) NOT NULL,
-  `LANGUAGE_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  `TITLE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `DESCRIPTION` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `COPYRIGHT` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `UX_B_APP_LANG` (`APP_ID`,`LANGUAGE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_im_app_lang`
---
-
-LOCK TABLES `b_im_app_lang` WRITE;
-/*!40000 ALTER TABLE `b_im_app_lang` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_im_app_lang` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_im_bot`
---
-
-DROP TABLE IF EXISTS `b_im_bot`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_im_bot` (
-  `BOT_ID` int(18) NOT NULL,
-  `MODULE_ID` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `CODE` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `TYPE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'B',
-  `CLASS` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `LANG` varchar(50) COLLATE utf8_unicode_ci DEFAULT '',
-  `METHOD_BOT_DELETE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `METHOD_MESSAGE_ADD` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `METHOD_MESSAGE_UPDATE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `METHOD_MESSAGE_DELETE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `METHOD_WELCOME_MESSAGE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `TEXT_PRIVATE_WELCOME_MESSAGE` text COLLATE utf8_unicode_ci,
-  `TEXT_CHAT_WELCOME_MESSAGE` text COLLATE utf8_unicode_ci,
-  `COUNT_COMMAND` int(18) DEFAULT '0',
-  `COUNT_MESSAGE` int(18) DEFAULT '0',
-  `COUNT_CHAT` int(18) DEFAULT '0',
-  `COUNT_USER` int(18) DEFAULT '0',
-  `APP_ID` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `VERIFIED` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
-  `OPENLINE` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
-  PRIMARY KEY (`BOT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_im_bot`
---
-
-LOCK TABLES `b_im_bot` WRITE;
-/*!40000 ALTER TABLE `b_im_bot` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_im_bot` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_im_bot_chat`
---
-
-DROP TABLE IF EXISTS `b_im_bot_chat`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_im_bot_chat` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `BOT_ID` int(18) NOT NULL,
-  `CHAT_ID` int(18) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_IM_BC_1` (`BOT_ID`,`CHAT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_im_bot_chat`
---
-
-LOCK TABLES `b_im_bot_chat` WRITE;
-/*!40000 ALTER TABLE `b_im_bot_chat` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_im_bot_chat` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_im_bot_token`
---
-
-DROP TABLE IF EXISTS `b_im_bot_token`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_im_bot_token` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `TOKEN` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `DATE_CREATE` datetime NOT NULL,
-  `DATE_EXPIRE` datetime DEFAULT NULL,
-  `BOT_ID` int(18) DEFAULT '0',
-  `DIALOG_ID` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_IM_BOT_TOKEN_1` (`DATE_EXPIRE`,`BOT_ID`),
-  KEY `IX_IM_BOT_TOKEN_2` (`TOKEN`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_im_bot_token`
---
-
-LOCK TABLES `b_im_bot_token` WRITE;
-/*!40000 ALTER TABLE `b_im_bot_token` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_im_bot_token` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_im_call`
---
-
-DROP TABLE IF EXISTS `b_im_call`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_im_call` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `TYPE` int(11) DEFAULT NULL,
-  `INITIATOR_ID` int(11) DEFAULT NULL,
-  `IS_PUBLIC` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `PUBLIC_ID` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `PROVIDER` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ENTITY_TYPE` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ENTITY_ID` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `PARENT_ID` int(11) DEFAULT NULL,
-  `STATE` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `START_DATE` datetime DEFAULT NULL,
-  `END_DATE` datetime DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `IX_B_IM_CALL_PID` (`PUBLIC_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_im_call`
---
-
-LOCK TABLES `b_im_call` WRITE;
-/*!40000 ALTER TABLE `b_im_call` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_im_call` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_im_call_user`
---
-
-DROP TABLE IF EXISTS `b_im_call_user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_im_call_user` (
-  `CALL_ID` int(11) NOT NULL,
-  `USER_ID` int(11) NOT NULL,
-  `STATE` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `LAST_SEEN` datetime DEFAULT NULL,
-  PRIMARY KEY (`CALL_ID`,`USER_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_im_call_user`
---
-
-LOCK TABLES `b_im_call_user` WRITE;
-/*!40000 ALTER TABLE `b_im_call_user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_im_call_user` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_im_chat`
---
-
-DROP TABLE IF EXISTS `b_im_chat`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_im_chat` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `PARENT_ID` int(18) DEFAULT '0',
-  `PARENT_MID` int(18) DEFAULT '0',
-  `TITLE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `COLOR` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `TYPE` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `EXTRANET` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `AUTHOR_ID` int(18) NOT NULL,
-  `AVATAR` int(18) DEFAULT NULL,
-  `PIN_MESSAGE_ID` int(18) DEFAULT '0',
-  `CALL_TYPE` smallint(1) DEFAULT '0',
-  `CALL_NUMBER` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ENTITY_TYPE` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ENTITY_ID` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ENTITY_DATA_1` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ENTITY_DATA_2` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ENTITY_DATA_3` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `DISK_FOLDER_ID` int(18) DEFAULT NULL,
-  `MESSAGE_COUNT` int(18) DEFAULT '0',
-  `LAST_MESSAGE_ID` int(18) DEFAULT NULL,
-  `LAST_MESSAGE_STATUS` varchar(50) COLLATE utf8_unicode_ci DEFAULT 'received',
-  `DATE_CREATE` datetime DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_IM_CHAT_1` (`AUTHOR_ID`),
-  KEY `IX_IM_CHAT_2` (`ENTITY_TYPE`,`ENTITY_ID`,`AUTHOR_ID`),
-  KEY `IX_IM_CHAT_3` (`CALL_NUMBER`,`AUTHOR_ID`),
-  KEY `IX_IM_CHAT_4` (`TYPE`),
-  KEY `IX_IM_CHAT_5` (`PARENT_ID`,`PARENT_MID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_im_chat`
---
-
-LOCK TABLES `b_im_chat` WRITE;
-/*!40000 ALTER TABLE `b_im_chat` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_im_chat` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_im_chat_index`
---
-
-DROP TABLE IF EXISTS `b_im_chat_index`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_im_chat_index` (
-  `CHAT_ID` int(11) NOT NULL,
-  `SEARCH_CONTENT` mediumtext COLLATE utf8_unicode_ci,
-  `SEARCH_TITLE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SEARCH_USERS` mediumtext COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`CHAT_ID`),
-  KEY `IX_IM_CHAT_INDEX_1` (`SEARCH_TITLE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_im_chat_index`
---
-
-LOCK TABLES `b_im_chat_index` WRITE;
-/*!40000 ALTER TABLE `b_im_chat_index` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_im_chat_index` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_im_command`
---
-
-DROP TABLE IF EXISTS `b_im_command`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_im_command` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `MODULE_ID` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `BOT_ID` int(18) DEFAULT '0',
-  `APP_ID` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `COMMAND` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `COMMON` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
-  `HIDDEN` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
-  `EXTRANET_SUPPORT` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
-  `SONET_SUPPORT` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
-  `CLASS` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `METHOD_COMMAND_ADD` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `METHOD_LANG_GET` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_IM_COMMAND_1` (`BOT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_im_command`
---
-
-LOCK TABLES `b_im_command` WRITE;
-/*!40000 ALTER TABLE `b_im_command` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_im_command` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_im_command_lang`
---
-
-DROP TABLE IF EXISTS `b_im_command_lang`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_im_command_lang` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `COMMAND_ID` int(18) NOT NULL,
-  `LANGUAGE_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  `TITLE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `PARAMS` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `UX_B_IM_COMMAND_LANG` (`COMMAND_ID`,`LANGUAGE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_im_command_lang`
---
-
-LOCK TABLES `b_im_command_lang` WRITE;
-/*!40000 ALTER TABLE `b_im_command_lang` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_im_command_lang` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_im_external_avatar`
---
-
-DROP TABLE IF EXISTS `b_im_external_avatar`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_im_external_avatar` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `LINK_MD5` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `AVATAR_ID` int(11) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_IMOL_NA_1` (`LINK_MD5`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_im_external_avatar`
---
-
-LOCK TABLES `b_im_external_avatar` WRITE;
-/*!40000 ALTER TABLE `b_im_external_avatar` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_im_external_avatar` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_im_last_search`
---
-
-DROP TABLE IF EXISTS `b_im_last_search`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_im_last_search` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `USER_ID` int(18) NOT NULL,
-  `DIALOG_ID` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `ITEM_CID` int(18) NOT NULL DEFAULT '0',
-  `ITEM_RID` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  KEY `IX_IM_LS_2` (`USER_ID`,`DIALOG_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_im_last_search`
---
-
-LOCK TABLES `b_im_last_search` WRITE;
-/*!40000 ALTER TABLE `b_im_last_search` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_im_last_search` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_im_message`
---
-
-DROP TABLE IF EXISTS `b_im_message`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_im_message` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `CHAT_ID` int(18) NOT NULL,
-  `AUTHOR_ID` int(18) NOT NULL,
-  `MESSAGE` text COLLATE utf8_unicode_ci,
-  `MESSAGE_OUT` text COLLATE utf8_unicode_ci,
-  `DATE_CREATE` datetime NOT NULL,
-  `EMAIL_TEMPLATE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `NOTIFY_TYPE` smallint(2) DEFAULT '0',
-  `NOTIFY_MODULE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `NOTIFY_EVENT` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `NOTIFY_TAG` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `NOTIFY_SUB_TAG` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `NOTIFY_TITLE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `NOTIFY_BUTTONS` text COLLATE utf8_unicode_ci,
-  `NOTIFY_READ` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
-  `IMPORT_ID` int(18) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_IM_MESS_2` (`NOTIFY_TAG`,`AUTHOR_ID`),
-  KEY `IX_IM_MESS_3` (`NOTIFY_SUB_TAG`,`AUTHOR_ID`),
-  KEY `IX_IM_MESS_4` (`CHAT_ID`,`NOTIFY_READ`),
-  KEY `IX_IM_MESS_5` (`CHAT_ID`,`DATE_CREATE`),
-  KEY `IX_IM_MESS_6` (`AUTHOR_ID`),
-  KEY `IX_IM_MESS_7` (`CHAT_ID`,`ID`),
-  KEY `IX_IM_MESS_8` (`NOTIFY_TYPE`,`DATE_CREATE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_im_message`
---
-
-LOCK TABLES `b_im_message` WRITE;
-/*!40000 ALTER TABLE `b_im_message` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_im_message` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_im_message_favorite`
---
-
-DROP TABLE IF EXISTS `b_im_message_favorite`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_im_message_favorite` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `USER_ID` int(18) NOT NULL,
-  `CHAT_ID` int(11) NOT NULL,
-  `MESSAGE_ID` int(11) NOT NULL,
-  `DATE_CREATE` datetime NOT NULL,
-  UNIQUE KEY `pk_b_im_message_favorite` (`ID`),
-  KEY `IX_B_IM_MESSAGE_FAVORITE_1` (`USER_ID`,`DATE_CREATE`),
-  KEY `IX_B_IM_MESSAGE_FAVORITE_2` (`CHAT_ID`,`DATE_CREATE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_im_message_favorite`
---
-
-LOCK TABLES `b_im_message_favorite` WRITE;
-/*!40000 ALTER TABLE `b_im_message_favorite` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_im_message_favorite` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_im_message_param`
---
-
-DROP TABLE IF EXISTS `b_im_message_param`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_im_message_param` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `MESSAGE_ID` int(11) NOT NULL,
-  `PARAM_NAME` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `PARAM_VALUE` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `PARAM_JSON` text COLLATE utf8_unicode_ci,
-  UNIQUE KEY `pk_b_im_message_param` (`ID`),
-  KEY `IX_B_IM_MESSAGE_PARAM_1` (`MESSAGE_ID`,`PARAM_NAME`),
-  KEY `IX_B_IM_MESSAGE_PARAM_2` (`PARAM_NAME`,`PARAM_VALUE`(50),`MESSAGE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_im_message_param`
---
-
-LOCK TABLES `b_im_message_param` WRITE;
-/*!40000 ALTER TABLE `b_im_message_param` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_im_message_param` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_im_no_relation_permission_disk`
---
-
-DROP TABLE IF EXISTS `b_im_no_relation_permission_disk`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_im_no_relation_permission_disk` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `CHAT_ID` int(18) DEFAULT NULL,
-  `USER_ID` int(18) DEFAULT NULL,
-  `ACTIVE_TO` datetime DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_IM_USER_ID_CHAT_ID` (`USER_ID`,`CHAT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_im_no_relation_permission_disk`
---
-
-LOCK TABLES `b_im_no_relation_permission_disk` WRITE;
-/*!40000 ALTER TABLE `b_im_no_relation_permission_disk` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_im_no_relation_permission_disk` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_im_recent`
---
-
-DROP TABLE IF EXISTS `b_im_recent`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_im_recent` (
-  `USER_ID` int(18) NOT NULL,
-  `ITEM_TYPE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'P',
-  `ITEM_ID` int(18) NOT NULL,
-  `ITEM_MID` int(18) NOT NULL,
-  `ITEM_CID` int(18) DEFAULT '0',
-  `ITEM_RID` int(18) DEFAULT '0',
-  `ITEM_OLID` int(18) DEFAULT '0',
-  `PINNED` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
-  `DATE_UPDATE` datetime DEFAULT NULL,
-  PRIMARY KEY (`USER_ID`,`ITEM_TYPE`,`ITEM_ID`),
-  KEY `IX_IM_REC_1` (`ITEM_TYPE`,`ITEM_ID`),
-  KEY `IX_IM_REC_2` (`DATE_UPDATE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_im_recent`
---
-
-LOCK TABLES `b_im_recent` WRITE;
-/*!40000 ALTER TABLE `b_im_recent` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_im_recent` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_im_relation`
---
-
-DROP TABLE IF EXISTS `b_im_relation`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_im_relation` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `CHAT_ID` int(18) NOT NULL,
-  `MESSAGE_TYPE` char(1) COLLATE utf8_unicode_ci DEFAULT 'P',
-  `USER_ID` int(18) NOT NULL,
-  `START_ID` int(18) DEFAULT '0',
-  `UNREAD_ID` int(18) DEFAULT '0',
-  `LAST_ID` int(18) DEFAULT '0',
-  `LAST_SEND_ID` int(18) DEFAULT '0',
-  `LAST_FILE_ID` int(18) DEFAULT '0',
-  `LAST_READ` datetime DEFAULT NULL,
-  `STATUS` smallint(1) DEFAULT '0',
-  `CALL_STATUS` smallint(1) DEFAULT '0',
-  `MESSAGE_STATUS` varchar(50) COLLATE utf8_unicode_ci DEFAULT 'received',
-  `NOTIFY_BLOCK` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
-  `MANAGER` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
-  `COUNTER` int(18) DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  KEY `IX_IM_REL_2` (`USER_ID`,`MESSAGE_TYPE`,`STATUS`),
-  KEY `IX_IM_REL_3` (`USER_ID`,`MESSAGE_TYPE`,`CHAT_ID`),
-  KEY `IX_IM_REL_4` (`USER_ID`,`STATUS`),
-  KEY `IX_IM_REL_5` (`MESSAGE_TYPE`,`STATUS`),
-  KEY `IX_IM_REL_6` (`CHAT_ID`,`USER_ID`),
-  KEY `IX_IM_REL_7` (`STATUS`,`COUNTER`,`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_im_relation`
---
-
-LOCK TABLES `b_im_relation` WRITE;
-/*!40000 ALTER TABLE `b_im_relation` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_im_relation` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_im_status`
---
-
-DROP TABLE IF EXISTS `b_im_status`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_im_status` (
-  `USER_ID` int(18) NOT NULL,
-  `COLOR` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `STATUS` varchar(50) COLLATE utf8_unicode_ci DEFAULT 'online',
-  `STATUS_TEXT` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `IDLE` datetime DEFAULT NULL,
-  `DESKTOP_LAST_DATE` datetime DEFAULT NULL,
-  `MOBILE_LAST_DATE` datetime DEFAULT NULL,
-  `EVENT_ID` int(18) DEFAULT NULL,
-  `EVENT_UNTIL_DATE` datetime DEFAULT NULL,
-  PRIMARY KEY (`USER_ID`),
-  KEY `IX_IM_STATUS_EUD` (`EVENT_UNTIL_DATE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_im_status`
---
-
-LOCK TABLES `b_im_status` WRITE;
-/*!40000 ALTER TABLE `b_im_status` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_im_status` ENABLE KEYS */;
+LOCK TABLES `b_landing_entity_rights` WRITE;
+/*!40000 ALTER TABLE `b_landing_entity_rights` DISABLE KEYS */;
+/*!40000 ALTER TABLE `b_landing_entity_rights` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -7316,6 +5525,32 @@ CREATE TABLE `b_landing_file` (
 LOCK TABLES `b_landing_file` WRITE;
 /*!40000 ALTER TABLE `b_landing_file` DISABLE KEYS */;
 /*!40000 ALTER TABLE `b_landing_file` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `b_landing_filter_block`
+--
+
+DROP TABLE IF EXISTS `b_landing_filter_block`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `b_landing_filter_block` (
+  `ID` int(18) NOT NULL AUTO_INCREMENT,
+  `FILTER_ID` int(18) NOT NULL,
+  `BLOCK_ID` int(18) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `IX_B_FILTER_BLOCK` (`FILTER_ID`,`BLOCK_ID`),
+  KEY `IX_B_FILTER_ID` (`FILTER_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `b_landing_filter_block`
+--
+
+LOCK TABLES `b_landing_filter_block` WRITE;
+/*!40000 ALTER TABLE `b_landing_filter_block` DISABLE KEYS */;
+/*!40000 ALTER TABLE `b_landing_filter_block` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -7437,7 +5672,7 @@ CREATE TABLE `b_lang` (
 
 LOCK TABLES `b_lang` WRITE;
 /*!40000 ALTER TABLE `b_lang` DISABLE KEYS */;
-INSERT INTO `b_lang` VALUES ('s1',1,'Y','Y','Моя компания','/',NULL,NULL,NULL,NULL,NULL,'ru',NULL,'N',NULL,NULL,NULL,1);
+INSERT INTO `b_lang` VALUES ('s1',1,'Y','Y','Сайт по умолчанию','/',NULL,NULL,NULL,NULL,NULL,'ru',NULL,'N',NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `b_lang` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -7499,757 +5734,6 @@ INSERT INTO `b_language` VALUES ('en',2,'N','Y','English',NULL,NULL,NULL,NULL,NU
 UNLOCK TABLES;
 
 --
--- Table structure for table `b_ldap_group`
---
-
-DROP TABLE IF EXISTS `b_ldap_group`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ldap_group` (
-  `LDAP_SERVER_ID` int(11) NOT NULL,
-  `GROUP_ID` int(11) NOT NULL,
-  `LDAP_GROUP_ID` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`LDAP_SERVER_ID`,`GROUP_ID`,`LDAP_GROUP_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ldap_group`
---
-
-LOCK TABLES `b_ldap_group` WRITE;
-/*!40000 ALTER TABLE `b_ldap_group` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ldap_group` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_ldap_server`
---
-
-DROP TABLE IF EXISTS `b_ldap_server`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ldap_server` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `TIMESTAMP_X` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `CODE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `SERVER` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `PORT` int(11) NOT NULL DEFAULT '389',
-  `ADMIN_LOGIN` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `ADMIN_PASSWORD` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `BASE_DN` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `GROUP_FILTER` varchar(2048) COLLATE utf8_unicode_ci NOT NULL,
-  `GROUP_ID_ATTR` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `GROUP_NAME_ATTR` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `GROUP_MEMBERS_ATTR` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `USER_FILTER` varchar(2048) COLLATE utf8_unicode_ci NOT NULL,
-  `USER_ID_ATTR` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `USER_NAME_ATTR` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `USER_LAST_NAME_ATTR` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `USER_EMAIL_ATTR` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `USER_GROUP_ATTR` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `USER_GROUP_ACCESSORY` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
-  `USER_DEPARTMENT_ATTR` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `USER_MANAGER_ATTR` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `CONVERT_UTF8` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
-  `SYNC_PERIOD` int(18) DEFAULT NULL,
-  `FIELD_MAP` text COLLATE utf8_unicode_ci,
-  `ROOT_DEPARTMENT` int(18) DEFAULT NULL,
-  `DEFAULT_DEPARTMENT_NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `IMPORT_STRUCT` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
-  `STRUCT_HAVE_DEFAULT` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SET_DEPARTMENT_HEAD` char(1) COLLATE utf8_unicode_ci DEFAULT 'Y',
-  `SYNC` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SYNC_ATTR` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SYNC_LAST` datetime DEFAULT NULL,
-  `MAX_PAGE_SIZE` int(11) DEFAULT NULL,
-  `LDAP_OPT_TIMELIMIT` int(11) NOT NULL DEFAULT '100',
-  `LDAP_OPT_TIMEOUT` int(11) NOT NULL DEFAULT '5',
-  `LDAP_OPT_NETWORK_TIMEOUT` int(11) NOT NULL DEFAULT '5',
-  `SYNC_USER_ADD` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `CONNECTION_TYPE` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ldap_server`
---
-
-LOCK TABLES `b_ldap_server` WRITE;
-/*!40000 ALTER TABLE `b_ldap_server` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ldap_server` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_answer`
---
-
-DROP TABLE IF EXISTS `b_learn_answer`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_answer` (
-  `ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `QUESTION_ID` int(11) unsigned NOT NULL,
-  `SORT` int(11) NOT NULL DEFAULT '10',
-  `ANSWER` text COLLATE utf8_unicode_ci NOT NULL,
-  `CORRECT` char(1) COLLATE utf8_unicode_ci NOT NULL,
-  `FEEDBACK` text COLLATE utf8_unicode_ci,
-  `MATCH_ANSWER` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`ID`),
-  KEY `IX_B_LEARN_ANSWER1` (`QUESTION_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_answer`
---
-
-LOCK TABLES `b_learn_answer` WRITE;
-/*!40000 ALTER TABLE `b_learn_answer` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_learn_answer` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_attempt`
---
-
-DROP TABLE IF EXISTS `b_learn_attempt`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_attempt` (
-  `ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `TEST_ID` int(11) NOT NULL,
-  `STUDENT_ID` int(18) NOT NULL,
-  `DATE_START` datetime NOT NULL,
-  `DATE_END` datetime DEFAULT NULL,
-  `STATUS` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'B',
-  `COMPLETED` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `SCORE` int(11) DEFAULT '0',
-  `MAX_SCORE` int(11) DEFAULT '0',
-  `QUESTIONS` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  KEY `IX_B_LEARN_ATTEMPT1` (`STUDENT_ID`,`TEST_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_attempt`
---
-
-LOCK TABLES `b_learn_attempt` WRITE;
-/*!40000 ALTER TABLE `b_learn_attempt` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_learn_attempt` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_certification`
---
-
-DROP TABLE IF EXISTS `b_learn_certification`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_certification` (
-  `ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `STUDENT_ID` int(18) NOT NULL,
-  `COURSE_ID` int(11) NOT NULL,
-  `TIMESTAMP_X` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `DATE_CREATE` datetime DEFAULT NULL,
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `SORT` int(11) NOT NULL DEFAULT '500',
-  `FROM_ONLINE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `PUBLIC_PROFILE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `SUMMARY` int(11) NOT NULL DEFAULT '0',
-  `MAX_SUMMARY` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  KEY `IX_B_LEARN_CERTIFICATION1` (`STUDENT_ID`,`COURSE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_certification`
---
-
-LOCK TABLES `b_learn_certification` WRITE;
-/*!40000 ALTER TABLE `b_learn_certification` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_learn_certification` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_chapter`
---
-
-DROP TABLE IF EXISTS `b_learn_chapter`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_chapter` (
-  `ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `TIMESTAMP_X` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `COURSE_ID` int(11) unsigned NOT NULL,
-  `CHAPTER_ID` int(11) DEFAULT NULL,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `CODE` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SORT` int(11) NOT NULL DEFAULT '500',
-  `PREVIEW_PICTURE` int(18) DEFAULT NULL,
-  `PREVIEW_TEXT` text COLLATE utf8_unicode_ci,
-  `PREVIEW_TEXT_TYPE` char(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'text',
-  `DETAIL_PICTURE` int(18) DEFAULT NULL,
-  `DETAIL_TEXT` longtext COLLATE utf8_unicode_ci,
-  `DETAIL_TEXT_TYPE` char(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'text',
-  `JOURNAL_STATUS` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_chapter`
---
-
-LOCK TABLES `b_learn_chapter` WRITE;
-/*!40000 ALTER TABLE `b_learn_chapter` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_learn_chapter` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_course`
---
-
-DROP TABLE IF EXISTS `b_learn_course`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_course` (
-  `ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `TIMESTAMP_X` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `CODE` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'name',
-  `SORT` int(11) NOT NULL DEFAULT '500',
-  `PREVIEW_PICTURE` int(18) DEFAULT NULL,
-  `PREVIEW_TEXT` text COLLATE utf8_unicode_ci,
-  `PREVIEW_TEXT_TYPE` char(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'text',
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `DESCRIPTION_TYPE` char(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'text',
-  `ACTIVE_FROM` datetime DEFAULT NULL,
-  `ACTIVE_TO` datetime DEFAULT NULL,
-  `RATING` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `RATING_TYPE` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SCORM` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `LINKED_LESSON_ID` int(11) DEFAULT NULL,
-  `JOURNAL_STATUS` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  KEY `ix_learn_course_lesson` (`LINKED_LESSON_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_course`
---
-
-LOCK TABLES `b_learn_course` WRITE;
-/*!40000 ALTER TABLE `b_learn_course` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_learn_course` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_course_site`
---
-
-DROP TABLE IF EXISTS `b_learn_course_site`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_course_site` (
-  `COURSE_ID` int(11) unsigned NOT NULL,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`COURSE_ID`,`SITE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_course_site`
---
-
-LOCK TABLES `b_learn_course_site` WRITE;
-/*!40000 ALTER TABLE `b_learn_course_site` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_learn_course_site` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_exceptions_log`
---
-
-DROP TABLE IF EXISTS `b_learn_exceptions_log`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_exceptions_log` (
-  `DATE_REGISTERED` datetime NOT NULL,
-  `CODE` int(11) NOT NULL,
-  `MESSAGE` text COLLATE utf8_unicode_ci NOT NULL,
-  `FFILE` text COLLATE utf8_unicode_ci NOT NULL,
-  `LINE` int(11) NOT NULL,
-  `BACKTRACE` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_exceptions_log`
---
-
-LOCK TABLES `b_learn_exceptions_log` WRITE;
-/*!40000 ALTER TABLE `b_learn_exceptions_log` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_learn_exceptions_log` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_gradebook`
---
-
-DROP TABLE IF EXISTS `b_learn_gradebook`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_gradebook` (
-  `ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `STUDENT_ID` int(18) NOT NULL,
-  `TEST_ID` int(11) NOT NULL,
-  `RESULT` int(11) DEFAULT NULL,
-  `MAX_RESULT` int(11) DEFAULT NULL,
-  `ATTEMPTS` int(11) NOT NULL DEFAULT '1',
-  `COMPLETED` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `EXTRA_ATTEMPTS` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `UX_B_LEARN_GRADEBOOK1` (`STUDENT_ID`,`TEST_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_gradebook`
---
-
-LOCK TABLES `b_learn_gradebook` WRITE;
-/*!40000 ALTER TABLE `b_learn_gradebook` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_learn_gradebook` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_groups`
---
-
-DROP TABLE IF EXISTS `b_learn_groups`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_groups` (
-  `ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `TITLE` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT ' ',
-  `CODE` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SORT` int(11) NOT NULL DEFAULT '500',
-  `ACTIVE_FROM` datetime DEFAULT NULL,
-  `ACTIVE_TO` datetime DEFAULT NULL,
-  `COURSE_LESSON_ID` int(11) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_groups`
---
-
-LOCK TABLES `b_learn_groups` WRITE;
-/*!40000 ALTER TABLE `b_learn_groups` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_learn_groups` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_groups_lesson`
---
-
-DROP TABLE IF EXISTS `b_learn_groups_lesson`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_groups_lesson` (
-  `LEARNING_GROUP_ID` int(11) NOT NULL DEFAULT '0',
-  `LESSON_ID` int(11) NOT NULL DEFAULT '0',
-  `DELAY` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`LEARNING_GROUP_ID`,`LESSON_ID`),
-  KEY `LESSON_ID` (`LESSON_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_groups_lesson`
---
-
-LOCK TABLES `b_learn_groups_lesson` WRITE;
-/*!40000 ALTER TABLE `b_learn_groups_lesson` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_learn_groups_lesson` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_groups_member`
---
-
-DROP TABLE IF EXISTS `b_learn_groups_member`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_groups_member` (
-  `LEARNING_GROUP_ID` int(11) NOT NULL DEFAULT '0',
-  `USER_ID` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`LEARNING_GROUP_ID`,`USER_ID`),
-  KEY `USER_ID` (`USER_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_groups_member`
---
-
-LOCK TABLES `b_learn_groups_member` WRITE;
-/*!40000 ALTER TABLE `b_learn_groups_member` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_learn_groups_member` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_lesson`
---
-
-DROP TABLE IF EXISTS `b_learn_lesson`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_lesson` (
-  `ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `TIMESTAMP_X` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `DATE_CREATE` datetime DEFAULT NULL,
-  `CREATED_BY` int(18) DEFAULT NULL,
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `COURSE_ID` int(11) unsigned NOT NULL DEFAULT '0',
-  `CHAPTER_ID` int(11) unsigned DEFAULT NULL,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'name',
-  `SORT` int(11) NOT NULL DEFAULT '500',
-  `PREVIEW_PICTURE` int(18) DEFAULT NULL,
-  `KEYWORDS` text COLLATE utf8_unicode_ci,
-  `PREVIEW_TEXT` text COLLATE utf8_unicode_ci,
-  `PREVIEW_TEXT_TYPE` char(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'text',
-  `DETAIL_PICTURE` int(18) DEFAULT NULL,
-  `DETAIL_TEXT` longtext COLLATE utf8_unicode_ci,
-  `DETAIL_TEXT_TYPE` char(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'text',
-  `LAUNCH` text COLLATE utf8_unicode_ci,
-  `CODE` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `WAS_CHAPTER_ID` int(11) DEFAULT NULL,
-  `WAS_PARENT_CHAPTER_ID` int(11) DEFAULT NULL,
-  `WAS_PARENT_COURSE_ID` int(11) DEFAULT NULL,
-  `WAS_COURSE_ID` int(11) DEFAULT NULL,
-  `JOURNAL_STATUS` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_lesson`
---
-
-LOCK TABLES `b_learn_lesson` WRITE;
-/*!40000 ALTER TABLE `b_learn_lesson` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_learn_lesson` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_lesson_edges`
---
-
-DROP TABLE IF EXISTS `b_learn_lesson_edges`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_lesson_edges` (
-  `SOURCE_NODE` int(11) NOT NULL,
-  `TARGET_NODE` int(11) NOT NULL,
-  `SORT` int(11) NOT NULL DEFAULT '500',
-  PRIMARY KEY (`SOURCE_NODE`,`TARGET_NODE`),
-  KEY `TARGET_NODE` (`TARGET_NODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_lesson_edges`
---
-
-LOCK TABLES `b_learn_lesson_edges` WRITE;
-/*!40000 ALTER TABLE `b_learn_lesson_edges` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_learn_lesson_edges` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_publish_prohibition`
---
-
-DROP TABLE IF EXISTS `b_learn_publish_prohibition`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_publish_prohibition` (
-  `COURSE_LESSON_ID` int(10) unsigned NOT NULL,
-  `PROHIBITED_LESSON_ID` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`COURSE_LESSON_ID`,`PROHIBITED_LESSON_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_publish_prohibition`
---
-
-LOCK TABLES `b_learn_publish_prohibition` WRITE;
-/*!40000 ALTER TABLE `b_learn_publish_prohibition` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_learn_publish_prohibition` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_question`
---
-
-DROP TABLE IF EXISTS `b_learn_question`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_question` (
-  `ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `TIMESTAMP_X` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `LESSON_ID` int(11) unsigned NOT NULL,
-  `QUESTION_TYPE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'S',
-  `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `SORT` int(11) NOT NULL DEFAULT '500',
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `DESCRIPTION_TYPE` char(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'text',
-  `COMMENT_TEXT` text COLLATE utf8_unicode_ci,
-  `FILE_ID` int(18) DEFAULT NULL,
-  `SELF` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `POINT` int(11) NOT NULL DEFAULT '10',
-  `DIRECTION` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'V',
-  `CORRECT_REQUIRED` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `EMAIL_ANSWER` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `INCORRECT_MESSAGE` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`ID`),
-  KEY `IX_B_LEARN_QUESTION1` (`LESSON_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_question`
---
-
-LOCK TABLES `b_learn_question` WRITE;
-/*!40000 ALTER TABLE `b_learn_question` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_learn_question` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_rights`
---
-
-DROP TABLE IF EXISTS `b_learn_rights`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_rights` (
-  `LESSON_ID` int(10) unsigned NOT NULL,
-  `SUBJECT_ID` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `TASK_ID` int(11) NOT NULL,
-  PRIMARY KEY (`LESSON_ID`,`SUBJECT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_rights`
---
-
-LOCK TABLES `b_learn_rights` WRITE;
-/*!40000 ALTER TABLE `b_learn_rights` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_learn_rights` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_rights_all`
---
-
-DROP TABLE IF EXISTS `b_learn_rights_all`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_rights_all` (
-  `SUBJECT_ID` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `TASK_ID` int(11) NOT NULL,
-  PRIMARY KEY (`SUBJECT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_rights_all`
---
-
-LOCK TABLES `b_learn_rights_all` WRITE;
-/*!40000 ALTER TABLE `b_learn_rights_all` DISABLE KEYS */;
-INSERT INTO `b_learn_rights_all` VALUES ('CR',66),('G1',67),('G2',59);
-/*!40000 ALTER TABLE `b_learn_rights_all` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_site_path`
---
-
-DROP TABLE IF EXISTS `b_learn_site_path`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_site_path` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  `PATH` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `TYPE` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `IX_LEARN_SITE_PATH_2` (`SITE_ID`,`TYPE`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_site_path`
---
-
-LOCK TABLES `b_learn_site_path` WRITE;
-/*!40000 ALTER TABLE `b_learn_site_path` DISABLE KEYS */;
-INSERT INTO `b_learn_site_path` VALUES (1,'s1','/learning/course/index.php?COURSE_ID=#COURSE_ID#&INDEX=Y','C'),(2,'s1','/learning/course/index.php?COURSE_ID=#COURSE_ID#&CHAPTER_ID=#CHAPTER_ID#','H'),(3,'s1','/learning/course/index.php?COURSE_ID=#COURSE_ID#&LESSON_ID=#LESSON_ID#','L'),(4,'s1','/learning/course/index.php?LESSON_PATH=#LESSON_PATH#','U');
-/*!40000 ALTER TABLE `b_learn_site_path` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_student`
---
-
-DROP TABLE IF EXISTS `b_learn_student`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_student` (
-  `USER_ID` int(18) NOT NULL,
-  `TRANSCRIPT` int(11) NOT NULL,
-  `PUBLIC_PROFILE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `RESUME` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`USER_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_student`
---
-
-LOCK TABLES `b_learn_student` WRITE;
-/*!40000 ALTER TABLE `b_learn_student` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_learn_student` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_test`
---
-
-DROP TABLE IF EXISTS `b_learn_test`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_test` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `COURSE_ID` int(11) NOT NULL,
-  `TIMESTAMP_X` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `SORT` int(11) NOT NULL DEFAULT '500',
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `DESCRIPTION_TYPE` char(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'text',
-  `ATTEMPT_LIMIT` int(11) NOT NULL DEFAULT '0',
-  `TIME_LIMIT` int(11) DEFAULT '0',
-  `COMPLETED_SCORE` int(11) DEFAULT NULL,
-  `QUESTIONS_FROM` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'A',
-  `QUESTIONS_FROM_ID` int(11) NOT NULL DEFAULT '0',
-  `QUESTIONS_AMOUNT` int(11) NOT NULL DEFAULT '0',
-  `RANDOM_QUESTIONS` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `RANDOM_ANSWERS` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `APPROVED` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `INCLUDE_SELF_TEST` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `PASSAGE_TYPE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-  `PREVIOUS_TEST_ID` int(11) DEFAULT NULL,
-  `PREVIOUS_TEST_SCORE` int(11) DEFAULT '0',
-  `INCORRECT_CONTROL` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `CURRENT_INDICATION` int(11) NOT NULL DEFAULT '0',
-  `FINAL_INDICATION` int(11) NOT NULL DEFAULT '0',
-  `MIN_TIME_BETWEEN_ATTEMPTS` int(11) NOT NULL DEFAULT '0',
-  `SHOW_ERRORS` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `NEXT_QUESTION_ON_ERROR` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  PRIMARY KEY (`ID`),
-  KEY `IX_B_LEARN_TEST1` (`COURSE_ID`),
-  KEY `IX_B_LEARN_TEST2` (`PREVIOUS_TEST_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_test`
---
-
-LOCK TABLES `b_learn_test` WRITE;
-/*!40000 ALTER TABLE `b_learn_test` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_learn_test` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_test_mark`
---
-
-DROP TABLE IF EXISTS `b_learn_test_mark`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_test_mark` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `TEST_ID` int(11) NOT NULL,
-  `SCORE` int(11) NOT NULL,
-  `MARK` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`ID`),
-  KEY `IX_B_LEARN_TEST_MARK1` (`TEST_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_test_mark`
---
-
-LOCK TABLES `b_learn_test_mark` WRITE;
-/*!40000 ALTER TABLE `b_learn_test_mark` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_learn_test_mark` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_learn_test_result`
---
-
-DROP TABLE IF EXISTS `b_learn_test_result`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_learn_test_result` (
-  `ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `ATTEMPT_ID` int(11) unsigned NOT NULL,
-  `QUESTION_ID` int(11) NOT NULL,
-  `RESPONSE` text COLLATE utf8_unicode_ci,
-  `POINT` int(11) NOT NULL DEFAULT '0',
-  `CORRECT` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `ANSWERED` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  PRIMARY KEY (`ID`),
-  KEY `IX_B_LEARN_TEST_RESULT1` (`ATTEMPT_ID`,`QUESTION_ID`),
-  KEY `IX_B_LEARN_TEST_RESULT2` (`QUESTION_ID`,`ANSWERED`,`CORRECT`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_learn_test_result`
---
-
-LOCK TABLES `b_learn_test_result` WRITE;
-/*!40000 ALTER TABLE `b_learn_test_result` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_learn_test_result` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `b_list_rubric`
 --
 
@@ -8286,782 +5770,41 @@ LOCK TABLES `b_list_rubric` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `b_lists_field`
+-- Table structure for table `b_log_notification`
 --
 
-DROP TABLE IF EXISTS `b_lists_field`;
+DROP TABLE IF EXISTS `b_log_notification`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_lists_field` (
-  `IBLOCK_ID` int(11) NOT NULL,
-  `FIELD_ID` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `SORT` int(11) NOT NULL,
-  `NAME` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `SETTINGS` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`IBLOCK_ID`,`FIELD_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_lists_field`
---
-
-LOCK TABLES `b_lists_field` WRITE;
-/*!40000 ALTER TABLE `b_lists_field` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_lists_field` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_lists_permission`
---
-
-DROP TABLE IF EXISTS `b_lists_permission`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_lists_permission` (
-  `IBLOCK_TYPE_ID` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `GROUP_ID` int(11) NOT NULL,
-  PRIMARY KEY (`IBLOCK_TYPE_ID`,`GROUP_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_lists_permission`
---
-
-LOCK TABLES `b_lists_permission` WRITE;
-/*!40000 ALTER TABLE `b_lists_permission` DISABLE KEYS */;
-INSERT INTO `b_lists_permission` VALUES ('lists',1);
-/*!40000 ALTER TABLE `b_lists_permission` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_lists_socnet_group`
---
-
-DROP TABLE IF EXISTS `b_lists_socnet_group`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_lists_socnet_group` (
-  `IBLOCK_ID` int(11) NOT NULL,
-  `SOCNET_ROLE` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `PERMISSION` char(1) COLLATE utf8_unicode_ci NOT NULL,
-  UNIQUE KEY `ux_b_lists_socnet_group_1` (`IBLOCK_ID`,`SOCNET_ROLE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_lists_socnet_group`
---
-
-LOCK TABLES `b_lists_socnet_group` WRITE;
-/*!40000 ALTER TABLE `b_lists_socnet_group` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_lists_socnet_group` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_lists_url`
---
-
-DROP TABLE IF EXISTS `b_lists_url`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_lists_url` (
-  `IBLOCK_ID` int(11) NOT NULL,
-  `URL` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `LIVE_FEED` tinyint(1) DEFAULT '0',
-  PRIMARY KEY (`IBLOCK_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_lists_url`
---
-
-LOCK TABLES `b_lists_url` WRITE;
-/*!40000 ALTER TABLE `b_lists_url` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_lists_url` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_mail_blacklist`
---
-
-DROP TABLE IF EXISTS `b_mail_blacklist`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_mail_blacklist` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  `MAILBOX_ID` int(11) NOT NULL DEFAULT '0',
-  `USER_ID` int(18) unsigned NOT NULL DEFAULT '0',
-  `ITEM_TYPE` int(11) NOT NULL,
-  `ITEM_VALUE` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `UX_B_MAIL_BLACKLIST_MAILBOX_USER_VALUE` (`MAILBOX_ID`,`USER_ID`,`ITEM_VALUE`),
-  KEY `IX_B_MAIL_BLACKLIST` (`MAILBOX_ID`,`SITE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_mail_blacklist`
---
-
-LOCK TABLES `b_mail_blacklist` WRITE;
-/*!40000 ALTER TABLE `b_mail_blacklist` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_mail_blacklist` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_mail_contact`
---
-
-DROP TABLE IF EXISTS `b_mail_contact`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_mail_contact` (
-  `ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `EMAIL` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ICON` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FILE_ID` int(18) unsigned DEFAULT NULL,
-  `USER_ID` int(18) unsigned DEFAULT NULL,
-  `ADDED_FROM` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `UX_B_MAIL_CONTACT_USER_ID_EMAIL` (`USER_ID`,`EMAIL`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_mail_contact`
---
-
-LOCK TABLES `b_mail_contact` WRITE;
-/*!40000 ALTER TABLE `b_mail_contact` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_mail_contact` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_mail_domain_email`
---
-
-DROP TABLE IF EXISTS `b_mail_domain_email`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_mail_domain_email` (
-  `DOMAIN` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `LOGIN` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`LOGIN`(50),`DOMAIN`(50)),
-  KEY `IX_B_MAIL_DOMAIN_EMAIL` (`DOMAIN`(50))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_mail_domain_email`
---
-
-LOCK TABLES `b_mail_domain_email` WRITE;
-/*!40000 ALTER TABLE `b_mail_domain_email` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_mail_domain_email` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_mail_filter`
---
-
-DROP TABLE IF EXISTS `b_mail_filter`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_mail_filter` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `TIMESTAMP_X` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `MAILBOX_ID` int(18) NOT NULL,
-  `PARENT_FILTER_ID` int(18) DEFAULT NULL,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `SORT` int(18) NOT NULL DEFAULT '500',
+CREATE TABLE `b_log_notification` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `PHP_CONDITION` text COLLATE utf8_unicode_ci,
-  `WHEN_MAIL_RECEIVED` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `WHEN_MANUALLY_RUN` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `SPAM_RATING` decimal(9,4) DEFAULT NULL,
-  `SPAM_RATING_TYPE` char(1) COLLATE utf8_unicode_ci DEFAULT '<',
-  `MESSAGE_SIZE` int(18) DEFAULT NULL,
-  `MESSAGE_SIZE_TYPE` char(1) COLLATE utf8_unicode_ci DEFAULT '<',
-  `MESSAGE_SIZE_UNIT` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ACTION_STOP_EXEC` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `ACTION_DELETE_MESSAGE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `ACTION_READ` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT '-',
-  `ACTION_PHP` text COLLATE utf8_unicode_ci,
-  `ACTION_TYPE` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ACTION_VARS` text COLLATE utf8_unicode_ci,
-  `ACTION_SPAM` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT '-',
-  PRIMARY KEY (`ID`),
-  KEY `IX_MAIL_FILTER_MAILBOX` (`MAILBOX_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_mail_filter`
---
-
-LOCK TABLES `b_mail_filter` WRITE;
-/*!40000 ALTER TABLE `b_mail_filter` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_mail_filter` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_mail_filter_cond`
---
-
-DROP TABLE IF EXISTS `b_mail_filter_cond`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_mail_filter_cond` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `FILTER_ID` int(11) NOT NULL,
-  `TYPE` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `STRINGS` text COLLATE utf8_unicode_ci NOT NULL,
-  `COMPARE_TYPE` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'CONTAIN',
+  `AUDIT_TYPE_ID` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `ITEM_ID` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `USER_ID` int(11) DEFAULT NULL,
+  `REMOTE_ADDR` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `USER_AGENT` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `REQUEST_URI` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `CHECK_INTERVAL` int(11) DEFAULT NULL,
+  `ALERT_COUNT` int(11) DEFAULT NULL,
+  `DATE_CHECKED` datetime DEFAULT NULL,
+  `NOTIFY_EMAIL` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
+  `EMAIL` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `EMAIL_TEXT` text COLLATE utf8_unicode_ci,
+  `NOTIFY_SMS` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
+  `PHONE_NUMBER` varchar(25) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `SMS_TEXT` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `b_mail_filter_cond`
+-- Dumping data for table `b_log_notification`
 --
 
-LOCK TABLES `b_mail_filter_cond` WRITE;
-/*!40000 ALTER TABLE `b_mail_filter_cond` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_mail_filter_cond` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_mail_log`
---
-
-DROP TABLE IF EXISTS `b_mail_log`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_mail_log` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `MAILBOX_ID` int(18) NOT NULL DEFAULT '0',
-  `FILTER_ID` int(18) DEFAULT NULL,
-  `MESSAGE_ID` int(18) DEFAULT NULL,
-  `LOG_TYPE` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `DATE_INSERT` datetime NOT NULL,
-  `STATUS_GOOD` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `MESSAGE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_MAIL_MSGLOG_1` (`MAILBOX_ID`),
-  KEY `IX_MAIL_MSGLOG_2` (`MESSAGE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_mail_log`
---
-
-LOCK TABLES `b_mail_log` WRITE;
-/*!40000 ALTER TABLE `b_mail_log` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_mail_log` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_mail_mailbox`
---
-
-DROP TABLE IF EXISTS `b_mail_mailbox`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_mail_mailbox` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `TIMESTAMP_X` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `LID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `SERVICE_ID` int(11) NOT NULL DEFAULT '0',
-  `EMAIL` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `USERNAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SERVER` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `PORT` int(18) NOT NULL DEFAULT '110',
-  `LINK` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `LOGIN` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `CHARSET` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `PASSWORD` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `USE_MD5` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `DELETE_MESSAGES` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `PERIOD_CHECK` int(15) DEFAULT NULL,
-  `MAX_MSG_COUNT` int(11) DEFAULT '0',
-  `MAX_MSG_SIZE` int(11) DEFAULT '0',
-  `MAX_KEEP_DAYS` int(11) DEFAULT '0',
-  `USE_TLS` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `SERVER_TYPE` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'pop3',
-  `DOMAINS` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `RELAY` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `AUTH_RELAY` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `USER_ID` int(11) NOT NULL DEFAULT '0',
-  `SYNC_LOCK` int(11) DEFAULT NULL,
-  `OPTIONS` mediumtext COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`ID`),
-  KEY `IX_B_MAIL_MAILBOX_USER_ID` (`USER_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_mail_mailbox`
---
-
-LOCK TABLES `b_mail_mailbox` WRITE;
-/*!40000 ALTER TABLE `b_mail_mailbox` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_mail_mailbox` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_mail_mailbox_access`
---
-
-DROP TABLE IF EXISTS `b_mail_mailbox_access`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_mail_mailbox_access` (
-  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `MAILBOX_ID` int(10) unsigned NOT NULL,
-  `TASK_ID` int(10) unsigned NOT NULL,
-  `ACCESS_CODE` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_B_MAIL_MAILBOX_ACCESS_CODE` (`ACCESS_CODE`,`TASK_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_mail_mailbox_access`
---
-
-LOCK TABLES `b_mail_mailbox_access` WRITE;
-/*!40000 ALTER TABLE `b_mail_mailbox_access` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_mail_mailbox_access` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_mail_mailservices`
---
-
-DROP TABLE IF EXISTS `b_mail_mailservices`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_mail_mailservices` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `SITE_ID` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `SERVICE_TYPE` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'imap',
-  `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `SERVER` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `PORT` int(11) DEFAULT NULL,
-  `ENCRYPTION` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `LINK` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ICON` int(11) DEFAULT NULL,
-  `TOKEN` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FLAGS` int(11) NOT NULL DEFAULT '0',
-  `SORT` int(11) NOT NULL DEFAULT '100',
-  `SMTP_SERVER` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SMTP_PORT` int(11) DEFAULT NULL,
-  `SMTP_LOGIN_AS_IMAP` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `SMTP_PASSWORD_AS_IMAP` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  PRIMARY KEY (`ID`),
-  KEY `IX_B_MAIL_MAILSERVICE_ACTIVE` (`ACTIVE`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_mail_mailservices`
---
-
-LOCK TABLES `b_mail_mailservices` WRITE;
-/*!40000 ALTER TABLE `b_mail_mailservices` DISABLE KEYS */;
-INSERT INTO `b_mail_mailservices` VALUES (1,'s1','Y','imap','gmail','imap.gmail.com',993,'Y','https://mail.google.com/',NULL,NULL,0,100,'smtp.gmail.com',465,'N','N'),(2,'s1','Y','imap','outlook.com','imap-mail.outlook.com',993,'Y','https://www.outlook.com/owa',NULL,NULL,0,200,'smtp-mail.outlook.com',587,'N','N'),(3,'s1','Y','imap','icloud','imap.mail.me.com',993,'Y','https://www.icloud.com/#mail',NULL,NULL,0,300,'smtp.mail.me.com',587,'N','N'),(4,'s1','Y','imap','office365','outlook.office365.com',993,'Y','http://mail.office365.com/',NULL,NULL,0,400,'smtp.office365.com',587,'N','N'),(5,'s1','Y','imap','exchange',NULL,NULL,NULL,NULL,NULL,NULL,0,500,NULL,NULL,'N','N'),(6,'s1','Y','imap','yahoo','imap.mail.yahoo.com',993,'Y','http://mail.yahoo.com/',NULL,NULL,0,600,'smtp.mail.yahoo.com',465,'N','N'),(7,'s1','Y','imap','aol','imap.aol.com',993,'Y','http://mail.aol.com/',NULL,NULL,0,700,'smtp.aol.com',465,'N','N'),(8,'s1','Y','imap','yandex','imap.yandex.ru',993,'Y','https://mail.yandex.ru/',NULL,NULL,0,800,'smtp.yandex.ru',465,'N','N'),(9,'s1','Y','imap','mail.ru','imap.mail.ru',993,'Y','http://e.mail.ru/',NULL,NULL,0,900,'smtp.mail.ru',465,'N','N'),(10,'s1','Y','imap','other',NULL,NULL,NULL,NULL,NULL,NULL,0,1000,NULL,NULL,'N','N');
-/*!40000 ALTER TABLE `b_mail_mailservices` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_mail_message`
---
-
-DROP TABLE IF EXISTS `b_mail_message`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_mail_message` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `MAILBOX_ID` int(18) NOT NULL,
-  `DATE_INSERT` datetime NOT NULL,
-  `FULL_TEXT` longtext COLLATE utf8_unicode_ci,
-  `MESSAGE_SIZE` int(18) NOT NULL,
-  `HEADER` text COLLATE utf8_unicode_ci,
-  `FIELD_DATE` datetime DEFAULT NULL,
-  `FIELD_FROM` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FIELD_REPLY_TO` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FIELD_TO` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FIELD_CC` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FIELD_BCC` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FIELD_PRIORITY` int(18) NOT NULL DEFAULT '3',
-  `SUBJECT` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `BODY` longtext COLLATE utf8_unicode_ci,
-  `BODY_HTML` longtext COLLATE utf8_unicode_ci,
-  `SEARCH_CONTENT` text COLLATE utf8_unicode_ci,
-  `INDEX_VERSION` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `ATTACHMENTS` int(18) DEFAULT '0',
-  `NEW_MESSAGE` char(1) COLLATE utf8_unicode_ci DEFAULT 'Y',
-  `SPAM` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT '?',
-  `SPAM_RATING` decimal(18,4) DEFAULT NULL,
-  `SPAM_WORDS` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SPAM_LAST_RESULT` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `EXTERNAL_ID` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `MSG_ID` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `IN_REPLY_TO` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `LEFT_MARGIN` int(18) unsigned DEFAULT NULL,
-  `RIGHT_MARGIN` int(18) unsigned DEFAULT NULL,
-  `READ_CONFIRMED` datetime DEFAULT NULL,
-  `OPTIONS` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`ID`),
-  KEY `IX_MAIL_MESSAGE` (`MAILBOX_ID`,`IN_REPLY_TO`(50),`MSG_ID`(50)),
-  KEY `IX_MAIL_MESSAGE_2` (`MAILBOX_ID`,`MSG_ID`),
-  KEY `IX_MAIL_MESSAGE_DATE` (`DATE_INSERT`,`MAILBOX_ID`),
-  KEY `IX_MAIL_MESSAGE_DATE_2` (`MAILBOX_ID`,`FIELD_DATE`),
-  KEY `IX_MAIL_MESSAGE_MSG_ID` (`MSG_ID`),
-  KEY `IX_MAIL_MESSAGE_IN_REPLY` (`IN_REPLY_TO`),
-  KEY `IX_MAIL_MESSAGE_INDEX_VERSION` (`INDEX_VERSION`,`ID`),
-  KEY `IX_MAIL_MESSAGE_TREE` (`LEFT_MARGIN`,`RIGHT_MARGIN`,`MAILBOX_ID`),
-  FULLTEXT KEY `IXF_B_MAIL_MESSAGE_SC` (`SEARCH_CONTENT`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_mail_message`
---
-
-LOCK TABLES `b_mail_message` WRITE;
-/*!40000 ALTER TABLE `b_mail_message` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_mail_message` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_mail_message_access`
---
-
-DROP TABLE IF EXISTS `b_mail_message_access`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_mail_message_access` (
-  `TOKEN` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `SECRET` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `MAILBOX_ID` int(10) unsigned NOT NULL,
-  `MESSAGE_ID` int(10) unsigned NOT NULL,
-  `ENTITY_UF_ID` int(10) unsigned NOT NULL,
-  `ENTITY_TYPE` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `ENTITY_ID` int(10) unsigned NOT NULL,
-  `OPTIONS` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`TOKEN`),
-  KEY `IX_B_MAIL_MESSAGE_ACCESS` (`MESSAGE_ID`,`ENTITY_ID`,`ENTITY_UF_ID`,`MAILBOX_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_mail_message_access`
---
-
-LOCK TABLES `b_mail_message_access` WRITE;
-/*!40000 ALTER TABLE `b_mail_message_access` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_mail_message_access` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_mail_message_closure`
---
-
-DROP TABLE IF EXISTS `b_mail_message_closure`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_mail_message_closure` (
-  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `MESSAGE_ID` int(10) unsigned NOT NULL,
-  `PARENT_ID` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `UX_MAIL_MESSAGE_CL` (`MESSAGE_ID`,`PARENT_ID`),
-  KEY `IX_MAIL_MESSAGE_CL_R` (`PARENT_ID`,`MESSAGE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_mail_message_closure`
---
-
-LOCK TABLES `b_mail_message_closure` WRITE;
-/*!40000 ALTER TABLE `b_mail_message_closure` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_mail_message_closure` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_mail_message_delete_queue`
---
-
-DROP TABLE IF EXISTS `b_mail_message_delete_queue`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_mail_message_delete_queue` (
-  `PK` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `ID` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `MAILBOX_ID` int(10) unsigned NOT NULL,
-  `MESSAGE_ID` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`PK`),
-  UNIQUE KEY `UX_MAIL_MESSAGE_DQ` (`ID`,`MAILBOX_ID`,`MESSAGE_ID`),
-  KEY `IX_MAIL_MESSAGE_DQ` (`MAILBOX_ID`,`MESSAGE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_mail_message_delete_queue`
---
-
-LOCK TABLES `b_mail_message_delete_queue` WRITE;
-/*!40000 ALTER TABLE `b_mail_message_delete_queue` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_mail_message_delete_queue` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_mail_message_uid`
---
-
-DROP TABLE IF EXISTS `b_mail_message_uid`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_mail_message_uid` (
-  `ID` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `MAILBOX_ID` int(18) NOT NULL,
-  `DIR_MD5` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `DIR_UIDV` int(18) unsigned DEFAULT NULL,
-  `MSG_UID` int(18) unsigned DEFAULT NULL,
-  `INTERNALDATE` datetime DEFAULT NULL,
-  `HEADER_MD5` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `IS_SEEN` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `SESSION_ID` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `TIMESTAMP_X` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `DATE_INSERT` datetime NOT NULL,
-  `MESSAGE_ID` int(18) NOT NULL,
-  PRIMARY KEY (`ID`,`MAILBOX_ID`),
-  KEY `IX_MAIL_MSG_UID` (`MAILBOX_ID`,`DIR_MD5`,`DIR_UIDV`),
-  KEY `IX_MAIL_MSG_UID_HASH` (`HEADER_MD5`),
-  KEY `IX_MAIL_MSG_UID_MESSAGE` (`MESSAGE_ID`,`MAILBOX_ID`,`DIR_MD5`),
-  KEY `IX_MAIL_MSG_UID_OBSOLETE` (`MAILBOX_ID`,`DIR_MD5`,`MSG_UID`,`DIR_UIDV`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_mail_message_uid`
---
-
-LOCK TABLES `b_mail_message_uid` WRITE;
-/*!40000 ALTER TABLE `b_mail_message_uid` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_mail_message_uid` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_mail_message_upload_queue`
---
-
-DROP TABLE IF EXISTS `b_mail_message_upload_queue`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_mail_message_upload_queue` (
-  `ID` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `MAILBOX_ID` int(11) NOT NULL,
-  `SYNC_STAGE` int(11) NOT NULL DEFAULT '0',
-  `SYNC_LOCK` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`,`MAILBOX_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_mail_message_upload_queue`
---
-
-LOCK TABLES `b_mail_message_upload_queue` WRITE;
-/*!40000 ALTER TABLE `b_mail_message_upload_queue` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_mail_message_upload_queue` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_mail_msg_attachment`
---
-
-DROP TABLE IF EXISTS `b_mail_msg_attachment`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_mail_msg_attachment` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `MESSAGE_ID` int(18) NOT NULL,
-  `FILE_ID` int(18) NOT NULL DEFAULT '0',
-  `FILE_NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FILE_SIZE` int(11) NOT NULL DEFAULT '0',
-  `FILE_DATA` longblob,
-  `CONTENT_TYPE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `IMAGE_WIDTH` int(18) DEFAULT NULL,
-  `IMAGE_HEIGHT` int(18) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_MAIL_MESSATTACHMENT` (`MESSAGE_ID`),
-  KEY `IX_MAIL_MSG_ATTACHMENT_FILE_ID` (`FILE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_mail_msg_attachment`
---
-
-LOCK TABLES `b_mail_msg_attachment` WRITE;
-/*!40000 ALTER TABLE `b_mail_msg_attachment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_mail_msg_attachment` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_mail_oauth`
---
-
-DROP TABLE IF EXISTS `b_mail_oauth`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_mail_oauth` (
-  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `UID` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `TOKEN` text COLLATE utf8_unicode_ci,
-  `REFRESH_TOKEN` text COLLATE utf8_unicode_ci,
-  `TOKEN_EXPIRES` bigint(20) unsigned DEFAULT NULL,
-  `SECRET` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_B_MAIL_OAUTH_UID` (`UID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_mail_oauth`
---
-
-LOCK TABLES `b_mail_oauth` WRITE;
-/*!40000 ALTER TABLE `b_mail_oauth` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_mail_oauth` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_mail_spam_weight`
---
-
-DROP TABLE IF EXISTS `b_mail_spam_weight`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_mail_spam_weight` (
-  `WORD_ID` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `WORD_REAL` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `GOOD_CNT` int(18) NOT NULL DEFAULT '0',
-  `BAD_CNT` int(18) NOT NULL DEFAULT '0',
-  `TOTAL_CNT` int(18) NOT NULL DEFAULT '0',
-  `TIMESTAMP_X` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`WORD_ID`),
-  KEY `mail_spam_good` (`GOOD_CNT`),
-  KEY `mail_spam_bad` (`BAD_CNT`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_mail_spam_weight`
---
-
-LOCK TABLES `b_mail_spam_weight` WRITE;
-/*!40000 ALTER TABLE `b_mail_spam_weight` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_mail_spam_weight` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_mail_user_message`
---
-
-DROP TABLE IF EXISTS `b_mail_user_message`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_mail_user_message` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `TYPE` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  `ENTITY_TYPE` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `ENTITY_ID` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `USER_ID` int(11) NOT NULL,
-  `SUBJECT` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `CONTENT` longtext COLLATE utf8_unicode_ci,
-  `ATTACHMENTS` text COLLATE utf8_unicode_ci,
-  `HEADERS` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_mail_user_message`
---
-
-LOCK TABLES `b_mail_user_message` WRITE;
-/*!40000 ALTER TABLE `b_mail_user_message` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_mail_user_message` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_mail_user_relations`
---
-
-DROP TABLE IF EXISTS `b_mail_user_relations`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_mail_user_relations` (
-  `TOKEN` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `USER_ID` int(11) NOT NULL,
-  `ENTITY_TYPE` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `ENTITY_ID` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ENTITY_LINK` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `BACKURL` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`TOKEN`),
-  UNIQUE KEY `UX_B_MAIL_USER_RELATION` (`USER_ID`,`ENTITY_TYPE`(50),`ENTITY_ID`(50),`SITE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_mail_user_relations`
---
-
-LOCK TABLES `b_mail_user_relations` WRITE;
-/*!40000 ALTER TABLE `b_mail_user_relations` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_mail_user_relations` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_mail_user_signature`
---
-
-DROP TABLE IF EXISTS `b_mail_user_signature`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_mail_user_signature` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `USER_ID` int(11) NOT NULL,
-  `SIGNATURE` text COLLATE utf8_unicode_ci,
-  `SENDER` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_mail_user_signature`
---
-
-LOCK TABLES `b_mail_user_signature` WRITE;
-/*!40000 ALTER TABLE `b_mail_user_signature` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_mail_user_signature` ENABLE KEYS */;
+LOCK TABLES `b_log_notification` WRITE;
+/*!40000 ALTER TABLE `b_log_notification` DISABLE KEYS */;
+/*!40000 ALTER TABLE `b_log_notification` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -9074,6 +5817,7 @@ DROP TABLE IF EXISTS `b_main_mail_blacklist`;
 CREATE TABLE `b_main_mail_blacklist` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `DATE_INSERT` datetime NOT NULL,
+  `CATEGORY_ID` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `CODE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `UK_B_MAIN_MAIL_BLACKLIST_CODE` (`CODE`)
@@ -9401,7 +6145,7 @@ CREATE TABLE `b_module` (
 
 LOCK TABLES `b_module` WRITE;
 /*!40000 ALTER TABLE `b_module` DISABLE KEYS */;
-INSERT INTO `b_module` VALUES ('abtest','2019-07-10 13:45:17'),('advertising','2019-07-10 13:45:19'),('b24connector','2019-07-10 13:45:21'),('bitrix.eshop','2019-07-10 13:45:22'),('bitrix.sitecommunity','2019-07-10 13:45:23'),('bitrix.sitecorporate','2019-07-10 13:45:24'),('bitrix.siteinfoportal','2019-07-10 13:45:25'),('bitrix.sitepersonal','2019-07-10 13:45:26'),('bitrixcloud','2019-07-10 13:45:27'),('bizproc','2019-07-10 13:45:29'),('bizprocdesigner','2019-07-10 13:45:30'),('blog','2019-07-10 13:45:34'),('calendar','2019-07-10 13:45:37'),('catalog','2019-07-10 13:45:42'),('clouds','2019-07-10 13:45:44'),('compression','2019-07-10 13:45:46'),('conversion','2019-07-10 13:45:47'),('currency','2019-07-10 13:45:48'),('fileman','2019-07-10 13:45:50'),('form','2019-07-10 13:45:53'),('forum','2019-07-10 13:45:56'),('highloadblock','2019-07-10 13:46:03'),('iblock','2019-07-10 13:46:06'),('idea','2019-07-10 13:46:09'),('im','2019-07-10 13:46:12'),('ldap','2019-07-10 13:46:15'),('learning','2019-07-10 13:46:19'),('lists','2019-07-10 13:46:20'),('mail','2019-07-10 13:46:23'),('main','2019-07-10 13:45:10'),('messageservice','2019-07-10 13:46:25'),('mobileapp','2019-07-10 13:46:26'),('perfmon','2019-07-10 13:46:29'),('photogallery','2019-07-10 13:46:31'),('pull','2019-07-10 13:46:32'),('report','2019-07-10 13:46:34'),('rest','2019-07-10 13:46:36'),('sale','2019-07-10 13:46:47'),('scale','2019-07-10 13:46:53'),('search','2019-07-10 13:46:55'),('security','2019-07-10 13:46:58'),('sender','2019-07-10 13:47:02'),('seo','2019-07-10 13:47:06'),('socialnetwork','2019-07-10 13:47:10'),('socialservices','2019-07-10 13:47:17'),('statistic','2019-07-10 13:47:22'),('storeassist','2019-07-10 13:47:48'),('subscribe','2019-07-10 13:47:49'),('translate','2019-07-10 13:47:53'),('ui','2019-07-10 13:47:54'),('vote','2019-07-10 13:47:56'),('webservice','2019-07-10 13:47:58'),('wiki','2019-07-10 13:47:59'),('workflow','2019-07-10 13:48:00');
+INSERT INTO `b_module` VALUES ('abtest','2019-10-17 11:02:38'),('b24connector','2019-10-17 11:02:39'),('bitrix.eshop','2019-10-17 11:02:41'),('bitrix.sitecorporate','2019-10-17 11:02:42'),('bitrixcloud','2019-10-17 11:02:43'),('blog','2019-10-17 11:02:46'),('catalog','2019-10-17 11:02:54'),('clouds','2019-10-17 11:02:58'),('compression','2019-10-17 11:03:00'),('conversion','2019-10-17 11:03:04'),('currency','2019-10-17 11:03:07'),('fileman','2019-10-17 11:03:10'),('form','2019-10-17 11:03:15'),('forum','2019-10-17 11:03:19'),('highloadblock','2019-10-17 11:03:27'),('iblock','2019-10-17 11:03:31'),('main','2019-10-17 11:02:32'),('messageservice','2019-10-17 11:03:39'),('mobileapp','2019-10-17 11:03:42'),('perfmon','2019-10-17 11:03:46'),('photogallery','2019-10-17 11:03:48'),('pull','2019-10-17 11:03:52'),('report','2019-10-17 11:03:56'),('rest','2019-10-17 11:03:59'),('sale','2019-10-17 11:04:13'),('scale','2019-10-17 11:04:21'),('search','2019-10-17 11:04:24'),('security','2019-10-17 11:04:29'),('sender','2019-10-17 11:04:34'),('seo','2019-10-17 11:04:40'),('socialservices','2019-10-17 11:04:44'),('storeassist','2019-10-17 11:04:47'),('subscribe','2019-10-17 11:04:50'),('translate','2019-10-17 11:04:54'),('ui','2019-10-17 11:04:57'),('vote','2019-10-17 11:05:00');
 /*!40000 ALTER TABLE `b_module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -9451,9 +6195,11 @@ CREATE TABLE `b_module_to_module` (
   `TO_METHOD` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `TO_METHOD_ARG` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `VERSION` int(18) DEFAULT NULL,
+  `UNIQUE_ID` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`ID`),
+  UNIQUE KEY `ux_module_to_module_unique_id` (`UNIQUE_ID`),
   KEY `ix_module_to_module` (`FROM_MODULE_ID`(20),`MESSAGE_ID`(20),`TO_MODULE_ID`(20),`TO_CLASS`(20),`TO_METHOD`(20))
-) ENGINE=InnoDB AUTO_INCREMENT=668 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=490 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -9462,7 +6208,7 @@ CREATE TABLE `b_module_to_module` (
 
 LOCK TABLES `b_module_to_module` WRITE;
 /*!40000 ALTER TABLE `b_module_to_module` DISABLE KEYS */;
-INSERT INTO `b_module_to_module` VALUES (1,'2019-07-10 13:45:10',100,'iblock','OnIBlockPropertyBuildList','main','/modules/main/tools/prop_userid.php','CIBlockPropertyUserID','GetUserTypeDescription','',1),(2,'2019-07-10 13:45:10',100,'main','OnUserDelete','main','/modules/main/classes/mysql/favorites.php','CFavorites','OnUserDelete','',1),(3,'2019-07-10 13:45:10',100,'main','OnLanguageDelete','main','/modules/main/classes/mysql/favorites.php','CFavorites','OnLanguageDelete','',1),(4,'2019-07-10 13:45:10',100,'main','OnUserDelete','main','','CUserOptions','OnUserDelete','',1),(5,'2019-07-10 13:45:10',100,'main','OnChangeFile','main','','CMain','OnChangeFileComponent','',1),(6,'2019-07-10 13:45:10',100,'main','OnUserTypeRightsCheck','main','','CUser','UserTypeRightsCheck','',1),(7,'2019-07-10 13:45:10',100,'main','OnUserLogin','main','','UpdateTools','CheckUpdates','',1),(8,'2019-07-10 13:45:10',100,'main','OnModuleUpdate','main','','UpdateTools','SetUpdateResult','',1),(9,'2019-07-10 13:45:10',100,'main','OnUpdateCheck','main','','UpdateTools','SetUpdateError','',1),(10,'2019-07-10 13:45:10',100,'main','OnPanelCreate','main','','CUndo','CheckNotifyMessage','',1),(11,'2019-07-10 13:45:11',100,'main','OnAfterAddRating','main','','CRatingsComponentsMain','OnAfterAddRating','',1),(12,'2019-07-10 13:45:11',100,'main','OnAfterUpdateRating','main','','CRatingsComponentsMain','OnAfterUpdateRating','',1),(13,'2019-07-10 13:45:11',100,'main','OnSetRatingsConfigs','main','','CRatingsComponentsMain','OnSetRatingConfigs','',1),(14,'2019-07-10 13:45:11',100,'main','OnGetRatingsConfigs','main','','CRatingsComponentsMain','OnGetRatingConfigs','',1),(15,'2019-07-10 13:45:11',100,'main','OnGetRatingsObjects','main','','CRatingsComponentsMain','OnGetRatingObject','',1),(16,'2019-07-10 13:45:11',100,'main','OnGetRatingContentOwner','main','','CRatingsComponentsMain','OnGetRatingContentOwner','',1),(17,'2019-07-10 13:45:11',100,'main','OnAfterAddRatingRule','main','','CRatingRulesMain','OnAfterAddRatingRule','',1),(18,'2019-07-10 13:45:11',100,'main','OnAfterUpdateRatingRule','main','','CRatingRulesMain','OnAfterUpdateRatingRule','',1),(19,'2019-07-10 13:45:11',100,'main','OnGetRatingRuleObjects','main','','CRatingRulesMain','OnGetRatingRuleObjects','',1),(20,'2019-07-10 13:45:11',100,'main','OnGetRatingRuleConfigs','main','','CRatingRulesMain','OnGetRatingRuleConfigs','',1),(21,'2019-07-10 13:45:11',100,'main','OnAfterUserAdd','main','','CRatings','OnAfterUserRegister','',1),(22,'2019-07-10 13:45:11',100,'main','OnUserDelete','main','','CRatings','OnUserDelete','',1),(23,'2019-07-10 13:45:11',100,'main','OnUserDelete','main','','CAccess','OnUserDelete','',1),(24,'2019-07-10 13:45:11',100,'main','OnAfterGroupAdd','main','','CGroupAuthProvider','OnAfterGroupAdd','',1),(25,'2019-07-10 13:45:11',100,'main','OnBeforeGroupUpdate','main','','CGroupAuthProvider','OnBeforeGroupUpdate','',1),(26,'2019-07-10 13:45:11',100,'main','OnBeforeGroupDelete','main','','CGroupAuthProvider','OnBeforeGroupDelete','',1),(27,'2019-07-10 13:45:11',100,'main','OnAfterSetUserGroup','main','','CGroupAuthProvider','OnAfterSetUserGroup','',1),(28,'2019-07-10 13:45:11',100,'main','OnUserLogin','main','','CGroupAuthProvider','OnUserLogin','',1),(29,'2019-07-10 13:45:11',100,'main','OnEventLogGetAuditTypes','main','','CEventMain','GetAuditTypes','',1),(30,'2019-07-10 13:45:11',100,'main','OnEventLogGetAuditHandlers','main','','CEventMain','MakeMainObject','',1),(31,'2019-07-10 13:45:11',100,'perfmon','OnGetTableSchema','main','','CTableSchema','OnGetTableSchema','',1),(32,'2019-07-10 13:45:11',100,'sender','OnConnectorList','main','','\\Bitrix\\Main\\SenderEventHandler','onConnectorListUser','',1),(33,'2019-07-10 13:45:11',110,'main','OnUserTypeBuildList','main','','CUserTypeString','GetUserTypeDescription','',1),(34,'2019-07-10 13:45:11',120,'main','OnUserTypeBuildList','main','','CUserTypeInteger','GetUserTypeDescription','',1),(35,'2019-07-10 13:45:11',130,'main','OnUserTypeBuildList','main','','CUserTypeDouble','GetUserTypeDescription','',1),(36,'2019-07-10 13:45:11',140,'main','OnUserTypeBuildList','main','','CUserTypeDateTime','GetUserTypeDescription','',1),(37,'2019-07-10 13:45:11',145,'main','OnUserTypeBuildList','main','','CUserTypeDate','GetUserTypeDescription','',1),(38,'2019-07-10 13:45:11',150,'main','OnUserTypeBuildList','main','','CUserTypeBoolean','GetUserTypeDescription','',1),(39,'2019-07-10 13:45:11',155,'main','OnUserTypeBuildList','main','','CUserTypeUrl','GetUserTypeDescription','',1),(40,'2019-07-10 13:45:11',160,'main','OnUserTypeBuildList','main','','CUserTypeFile','GetUserTypeDescription','',1),(41,'2019-07-10 13:45:11',170,'main','OnUserTypeBuildList','main','','CUserTypeEnum','GetUserTypeDescription','',1),(42,'2019-07-10 13:45:11',180,'main','OnUserTypeBuildList','main','','CUserTypeIBlockSection','GetUserTypeDescription','',1),(43,'2019-07-10 13:45:11',190,'main','OnUserTypeBuildList','main','','CUserTypeIBlockElement','GetUserTypeDescription','',1),(44,'2019-07-10 13:45:11',200,'main','OnUserTypeBuildList','main','','CUserTypeStringFormatted','GetUserTypeDescription','',1),(45,'2019-07-10 13:45:11',210,'main','OnUserTypeBuildList','main','','\\Bitrix\\Main\\UrlPreview\\UrlPreviewUserType','getUserTypeDescription','',1),(46,'2019-07-10 13:45:11',100,'main','OnBeforeEndBufferContent','main','','\\Bitrix\\Main\\Analytics\\Counter','onBeforeEndBufferContent','',1),(47,'2019-07-10 13:45:11',100,'main','OnBeforeRestartBuffer','main','','\\Bitrix\\Main\\Analytics\\Counter','onBeforeRestartBuffer','',1),(48,'2019-07-10 13:45:11',100,'main','OnFileDelete','main','','\\Bitrix\\Main\\UI\\Viewer\\FilePreviewTable','onFileDelete','',1),(49,'2019-07-10 13:45:11',100,'disk','onAfterAjaxActionCreateFolderWithSharing','main','','\\Bitrix\\Main\\FinderDestTable','onAfterDiskAjaxAction','',1),(50,'2019-07-10 13:45:11',100,'disk','onAfterAjaxActionAppendSharing','main','','\\Bitrix\\Main\\FinderDestTable','onAfterDiskAjaxAction','',1),(51,'2019-07-10 13:45:11',100,'disk','onAfterAjaxActionChangeSharingAndRights','main','','\\Bitrix\\Main\\FinderDestTable','onAfterDiskAjaxAction','',1),(52,'2019-07-10 13:45:11',100,'socialnetwork','OnSocNetLogDelete','main','','CUserCounter','OnSocNetLogDelete','',1),(53,'2019-07-10 13:45:11',100,'socialnetwork','OnSocNetLogCommentDelete','main','','CUserCounter','OnSocNetLogCommentDelete','',1),(54,'2019-07-10 13:45:11',100,'main','OnAdminInformerInsertItems','main','','CMpNotifications','OnAdminInformerInsertItemsHandlerMP','',1),(55,'2019-07-10 13:45:11',100,'rest','OnRestServiceBuildDescription','main','','\\Bitrix\\Main\\Rest\\Handlers','onRestServiceBuildDescription','',1),(56,'2019-07-10 13:45:11',100,'sale','OnSaleBasketItemSaved','main','','\\Bitrix\\Main\\Analytics\\Catalog','catchCatalogBasket','',2),(57,'2019-07-10 13:45:11',100,'sale','OnSaleOrderSaved','main','','\\Bitrix\\Main\\Analytics\\Catalog','catchCatalogOrder','',2),(58,'2019-07-10 13:45:11',100,'sale','OnSaleOrderPaid','main','','\\Bitrix\\Main\\Analytics\\Catalog','catchCatalogOrderPayment','',2),(59,'2019-07-10 13:45:11',1000,'sale','onBuildDiscountConditionInterfaceControls','main','','\\Bitrix\\Main\\Discount\\UserConditionControl','onBuildDiscountConditionInterfaceControls','',1),(60,'2019-07-10 13:45:11',100,'main','OnBeforePhpMail','main','','\\Bitrix\\Main\\Mail\\Sender','applyCustomSmtp','',2),(61,'2019-07-10 13:45:17',100,'main','OnGetCurrentSiteTemplate','abtest','','\\Bitrix\\ABTest\\EventHandler','onGetCurrentSiteTemplate','',2),(62,'2019-07-10 13:45:17',100,'main','OnFileRewrite','abtest','','\\Bitrix\\ABTest\\EventHandler','onFileRewrite','',2),(63,'2019-07-10 13:45:17',100,'main','OnPageStart','abtest','','\\Bitrix\\ABTest\\EventHandler','onPageStart','',1),(64,'2019-07-10 13:45:17',100,'main','OnPanelCreate','abtest','','\\Bitrix\\ABTest\\EventHandler','onPanelCreate','',1),(65,'2019-07-10 13:45:17',100,'conversion','OnGetAttributeTypes','abtest','','\\Bitrix\\ABTest\\EventHandler','onGetAttributeTypes','',1),(66,'2019-07-10 13:45:17',100,'conversion','OnSetDayContextAttributes','abtest','','\\Bitrix\\ABTest\\EventHandler','onConversionSetContextAttributes','',1),(67,'2019-07-10 13:45:19',100,'main','OnBeforeProlog','advertising','','','','',1),(68,'2019-07-10 13:45:19',100,'main','OnEndBufferContent','advertising','','CAdvBanner','FixShowAll','',1),(69,'2019-07-10 13:45:19',100,'main','OnBeforeRestartBuffer','advertising','','CAdvBanner','BeforeRestartBuffer','',1),(70,'2019-07-10 13:45:19',100,'conversion','OnGetCounterTypes','advertising','','\\Bitrix\\Advertising\\Internals\\ConversionHandlers','onGetCounterTypes','',1),(71,'2019-07-10 13:45:19',100,'conversion','OnGetRateTypes','advertising','','\\Bitrix\\Advertising\\Internals\\ConversionHandlers','onGetRateTypes','',1),(72,'2019-07-10 13:45:19',100,'advertising','onBannerClick','advertising','','\\Bitrix\\Advertising\\Internals\\ConversionHandlers','onBannerClick','',1),(73,'2019-07-10 13:45:21',100,'main','OnBuildGlobalMenu','b24connector','','\\Bitrix\\B24Connector\\Helper','onBuildGlobalMenu','',1),(74,'2019-07-10 13:45:21',100,'main','OnBeforeProlog','b24connector','','\\Bitrix\\B24Connector\\Helper','onBeforeProlog','',1),(75,'2019-07-10 13:45:22',100,'main','OnBeforeProlog','bitrix.eshop','','CEShop','ShowPanel','',1),(76,'2019-07-10 13:45:23',100,'main','OnBeforeProlog','bitrix.sitecommunity','','CSiteCommunity','ShowPanel','',1),(77,'2019-07-10 13:45:24',100,'main','OnBeforeProlog','bitrix.sitecorporate','','CSiteCorporate','ShowPanel','',1),(78,'2019-07-10 13:45:25',100,'main','OnBeforeProlog','bitrix.siteinfoportal','','CSiteInfoportal','ShowPanel','',1),(79,'2019-07-10 13:45:26',100,'main','OnBeforeProlog','bitrix.sitepersonal','','CSitePersonal','ShowPanel','',1),(80,'2019-07-10 13:45:27',100,'main','OnAdminInformerInsertItems','bitrixcloud','','CBitrixCloudBackup','OnAdminInformerInsertItems','',1),(81,'2019-07-10 13:45:27',100,'mobileapp','OnBeforeAdminMobileMenuBuild','bitrixcloud','','CBitrixCloudMobile','OnBeforeAdminMobileMenuBuild','',1),(82,'2019-07-10 13:45:29',100,'iblock','OnAfterIBlockElementDelete','bizproc','','CBPVirtualDocument','OnAfterIBlockElementDelete','',1),(83,'2019-07-10 13:45:29',100,'main','OnAdminInformerInsertItems','bizproc','','CBPAllTaskService','OnAdminInformerInsertItems','',1),(84,'2019-07-10 13:45:29',100,'rest','OnRestServiceBuildDescription','bizproc','','\\Bitrix\\Bizproc\\RestService','onRestServiceBuildDescription','',1),(85,'2019-07-10 13:45:29',100,'rest','OnRestAppDelete','bizproc','','\\Bitrix\\Bizproc\\RestService','onRestAppDelete','',1),(86,'2019-07-10 13:45:29',100,'rest','OnRestAppUpdate','bizproc','','\\Bitrix\\Bizproc\\RestService','onRestAppUpdate','',1),(87,'2019-07-10 13:45:29',100,'timeman','OnAfterTMDayStart','bizproc','','CBPDocument','onAfterTMDayStart','',1),(88,'2019-07-10 13:45:34',100,'search','OnReindex','blog','','CBlogSearch','OnSearchReindex','',1),(89,'2019-07-10 13:45:34',100,'main','OnUserDelete','blog','','CBlogUser','Delete','',1),(90,'2019-07-10 13:45:34',100,'main','OnSiteDelete','blog','','CBlogSitePath','DeleteBySiteID','',1),(91,'2019-07-10 13:45:34',100,'socialnetwork','OnSocNetGroupDelete','blog','','CBlogSoNetPost','OnGroupDelete','',1),(92,'2019-07-10 13:45:34',100,'socialnetwork','OnSocNetFeaturesAdd','blog','','CBlogSearch','SetSoNetFeatureIndexSearch','',1),(93,'2019-07-10 13:45:34',100,'socialnetwork','OnSocNetFeaturesUpdate','blog','','CBlogSearch','SetSoNetFeatureIndexSearch','',1),(94,'2019-07-10 13:45:34',100,'socialnetwork','OnBeforeSocNetFeaturesPermsAdd','blog','','CBlogSearch','OnBeforeSocNetFeaturesPermsAdd','',1),(95,'2019-07-10 13:45:34',100,'socialnetwork','OnSocNetFeaturesPermsAdd','blog','','CBlogSearch','SetSoNetFeaturePermIndexSearch','',1),(96,'2019-07-10 13:45:34',100,'socialnetwork','OnBeforeSocNetFeaturesPermsUpdate','blog','','CBlogSearch','OnBeforeSocNetFeaturesPermsUpdate','',1),(97,'2019-07-10 13:45:34',100,'socialnetwork','OnSocNetFeaturesPermsUpdate','blog','','CBlogSearch','SetSoNetFeaturePermIndexSearch','',1),(98,'2019-07-10 13:45:34',200,'main','OnAfterAddRating','blog','','CRatingsComponentsBlog','OnAfterAddRating','',1),(99,'2019-07-10 13:45:34',200,'main','OnAfterUpdateRating','blog','','CRatingsComponentsBlog','OnAfterUpdateRating','',1),(100,'2019-07-10 13:45:34',200,'main','OnSetRatingsConfigs','blog','','CRatingsComponentsBlog','OnSetRatingConfigs','',1),(101,'2019-07-10 13:45:34',200,'main','OnGetRatingsConfigs','blog','','CRatingsComponentsBlog','OnGetRatingConfigs','',1),(102,'2019-07-10 13:45:34',200,'main','OnGetRatingsObjects','blog','','CRatingsComponentsBlog','OnGetRatingObject','',1),(103,'2019-07-10 13:45:34',200,'main','OnGetRatingContentOwner','blog','','CRatingsComponentsBlog','OnGetRatingContentOwner','',1),(104,'2019-07-10 13:45:34',100,'im','OnGetNotifySchema','blog','','CBlogNotifySchema','OnGetNotifySchema','',1),(105,'2019-07-10 13:45:34',100,'im','OnAnswerNotify','blog','','CBlogNotifySchema','CBlogEventsIMCallback','',1),(106,'2019-07-10 13:45:34',100,'main','OnAfterRegisterModule','main','/modules/blog/install/index.php','blog','installUserFields','',1),(107,'2019-07-10 13:45:34',100,'conversion','OnGetCounterTypes','blog','','\\Bitrix\\Blog\\Internals\\ConversionHandlers','onGetCounterTypes','',1),(108,'2019-07-10 13:45:34',100,'conversion','OnGetRateTypes','blog','','\\Bitrix\\Blog\\Internals\\ConversionHandlers','onGetRateTypes','',1),(109,'2019-07-10 13:45:34',100,'blog','OnPostAdd','blog','','\\Bitrix\\Blog\\Internals\\ConversionHandlers','onPostAdd','',1),(110,'2019-07-10 13:45:34',100,'mail','onReplyReceivedBLOG_POST','blog','','\\Bitrix\\Blog\\Internals\\MailHandler','handleReplyReceivedBlogPost','',2),(111,'2019-07-10 13:45:34',100,'mail','onForwardReceivedBLOG_POST','blog','','\\Bitrix\\Blog\\Internals\\MailHandler','handleForwardReceivedBlogPost','',2),(112,'2019-07-10 13:45:34',100,'socialnetwork','onLogIndexGetContent','blog','','\\Bitrix\\Blog\\Integration\\Socialnetwork\\Log','onIndexGetContent','',2),(113,'2019-07-10 13:45:34',100,'socialnetwork','onLogCommentIndexGetContent','blog','','\\Bitrix\\Blog\\Integration\\Socialnetwork\\LogComment','onIndexGetContent','',2),(114,'2019-07-10 13:45:34',100,'socialnetwork','onContentViewed','blog','','\\Bitrix\\Blog\\Integration\\Socialnetwork\\ContentViewHandler','onContentViewed','',2),(115,'2019-07-10 13:45:37',100,'pull','OnGetDependentModule','calendar','','CCalendarPullSchema','OnGetDependentModule','',1),(116,'2019-07-10 13:45:37',100,'im','OnGetNotifySchema','calendar','','CCalendarNotifySchema','OnGetNotifySchema','',1),(117,'2019-07-10 13:45:37',100,'im','OnBeforeConfirmNotify','calendar','','CCalendar','HandleImCallback','',1),(118,'2019-07-10 13:45:37',100,'intranet','OnPlannerInit','calendar','','CCalendarEventHandlers','OnPlannerInit','',1),(119,'2019-07-10 13:45:37',100,'intranet','OnPlannerAction','calendar','','CCalendarEventHandlers','OnPlannerAction','',1),(120,'2019-07-10 13:45:38',100,'rest','OnRestServiceBuildDescription','calendar','','CCalendarRestService','OnRestServiceBuildDescription','',1),(121,'2019-07-10 13:45:38',100,'socialnetwork','OnFillSocNetFeaturesList','calendar','','CCalendarLiveFeed','AddEvent','',1),(122,'2019-07-10 13:45:38',100,'socialnetwork','OnSonetLogEntryMenuCreate','calendar','','CCalendarLiveFeed','OnSonetLogEntryMenuCreate','',1),(123,'2019-07-10 13:45:38',100,'socialnetwork','OnAfterSonetLogEntryAddComment','calendar','','CCalendarLiveFeed','OnAfterSonetLogEntryAddComment','',1),(124,'2019-07-10 13:45:38',100,'socialnetwork','OnForumCommentIMNotify','calendar','','CCalendarLiveFeed','OnForumCommentIMNotify','',1),(125,'2019-07-10 13:45:38',100,'socialnetwork','onAfterCommentAddAfter','calendar','','CCalendarLiveFeed','OnAfterCommentAddAfter','',1),(126,'2019-07-10 13:45:38',100,'socialnetwork','onAfterCommentUpdateAfter','calendar','','CCalendarLiveFeed','OnAfterCommentUpdateAfter','',1),(127,'2019-07-10 13:45:38',100,'socialnetwork','onAfterCommentAddBefore','calendar','','CCalendarLiveFeed','OnAfterCommentAddBefore','',1),(128,'2019-07-10 13:45:38',100,'socialnetwork','OnSocNetGroupDelete','calendar','','CCalendar','OnSocNetGroupDelete','',1),(129,'2019-07-10 13:45:38',100,'search','BeforeIndex','calendar','','CCalendarLiveFeed','FixForumCommentURL','',1),(130,'2019-07-10 13:45:38',100,'main','OnAfterRegisterModule','main','/modules/calendar/install/index.php','calendar','InstallUserFields','',1),(131,'2019-07-10 13:45:38',100,'dav','OnDavCalendarProperties','calendar','','CCalendar','OnDavCalendarSync','',2),(132,'2019-07-10 13:45:38',100,'dav','OnExchandeCalendarDataSync','calendar','','CCalendar','OnExchangeCalendarSync','',2),(133,'2019-07-10 13:45:38',100,'socialnetwork','onLogIndexGetContent','calendar','','\\Bitrix\\Calendar\\Integration\\Socialnetwork\\Log','onIndexGetContent','',2),(134,'2019-07-10 13:45:38',100,'main','OnBeforeUserTypeAdd','calendar','','\\Bitrix\\Calendar\\UserField\\ResourceBooking','onBeforeUserTypeAdd','',2),(135,'2019-07-10 13:45:38',154,'main','OnUserTypeBuildList','calendar','','\\Bitrix\\Calendar\\UserField\\ResourceBooking','getUserTypeDescription','',1),(136,'2019-07-10 13:45:42',100,'sale','onBuildCouponProviders','catalog','','\\Bitrix\\Catalog\\DiscountCouponTable','couponManager','',2),(137,'2019-07-10 13:45:42',100,'sale','onBuildDiscountProviders','catalog','','\\Bitrix\\Catalog\\Discount\\DiscountManager','catalogDiscountManager','',2),(138,'2019-07-10 13:45:42',100,'sale','onExtendOrderData','catalog','','\\Bitrix\\Catalog\\Discount\\DiscountManager','extendOrderData','',2),(139,'2019-07-10 13:45:42',100,'currency','onAfterUpdateCurrencyBaseRate','catalog','','\\Bitrix\\Catalog\\Product\\Price','handlerAfterUpdateCurrencyBaseRate','',2),(140,'2019-07-10 13:45:42',100,'iblock','Bitrix\\Iblock\\Model\\PropertyFeature::OnPropertyFeatureBuildList','catalog','','\\Bitrix\\Catalog\\Product\\PropertyCatalogFeature','handlerPropertyFeatureBuildList','',2),(141,'2019-07-10 13:45:42',100,'main','onUserDelete','catalog','','\\Bitrix\\Catalog\\SubscribeTable','onUserDelete','',1),(142,'2019-07-10 13:45:42',100,'catalog','onAddContactType','catalog','','\\Bitrix\\Catalog\\SubscribeTable','onAddContactType','',1),(143,'2019-07-10 13:45:42',100,'sale','OnSaleOrderSaved','catalog','','\\Bitrix\\Catalog\\SubscribeTable','onSaleOrderSaved','',2),(144,'2019-07-10 13:45:42',100,'iblock','OnBeforeIBlockUpdate','catalog','','CCatalog','OnBeforeIBlockUpdate','',1),(145,'2019-07-10 13:45:42',100,'iblock','OnAfterIBlockUpdate','catalog','','CCatalog','OnAfterIBlockUpdate','',1),(146,'2019-07-10 13:45:42',100,'iblock','OnIBlockDelete','catalog','','CCatalog','OnIBlockDelete','',1),(147,'2019-07-10 13:45:42',100,'iblock','OnIBlockElementDelete','catalog','','CCatalogProduct','OnIBlockElementDelete','',1),(148,'2019-07-10 13:45:42',100,'iblock','OnIBlockElementDelete','catalog','','CCatalogDocs','OnIBlockElementDelete','',1),(149,'2019-07-10 13:45:42',100,'iblock','OnBeforeIBlockElementDelete','catalog','','CCatalogDocs','OnBeforeIBlockElementDelete','',1),(150,'2019-07-10 13:45:42',100,'currency','OnCurrencyDelete','catalog','','CPrice','OnCurrencyDelete','',1),(151,'2019-07-10 13:45:42',100,'main','OnGroupDelete','catalog','','CCatalogProductGroups','OnGroupDelete','',1),(152,'2019-07-10 13:45:42',100,'currency','OnModuleUnInstall','catalog','','','CurrencyModuleUnInstallCatalog','',1),(153,'2019-07-10 13:45:42',300,'iblock','OnBeforeIBlockDelete','catalog','','CCatalog','OnBeforeCatalogDelete','',1),(154,'2019-07-10 13:45:42',10000,'iblock','OnBeforeIBlockElementDelete','catalog','','CCatalog','OnBeforeIBlockElementDelete','',1),(155,'2019-07-10 13:45:42',100,'main','OnEventLogGetAuditTypes','catalog','','CCatalogEvent','GetAuditTypes','',1),(156,'2019-07-10 13:45:42',100,'main','OnBuildGlobalMenu','catalog','','CCatalogAdmin','OnBuildGlobalMenu','',1),(157,'2019-07-10 13:45:42',100,'main','OnAdminListDisplay','catalog','','CCatalogAdmin','OnAdminListDisplay','',1),(158,'2019-07-10 13:45:42',100,'main','OnBuildGlobalMenu','catalog','','CCatalogAdmin','OnBuildSaleMenu','',1),(159,'2019-07-10 13:45:42',100,'catalog','OnCondCatControlBuildList','catalog','','CCatalogCondCtrlGroup','GetControlDescr','',1),(160,'2019-07-10 13:45:42',200,'catalog','OnCondCatControlBuildList','catalog','','CCatalogCondCtrlIBlockFields','GetControlDescr','',1),(161,'2019-07-10 13:45:42',300,'catalog','OnCondCatControlBuildList','catalog','','CCatalogCondCtrlIBlockProps','GetControlDescr','',1),(162,'2019-07-10 13:45:42',100,'catalog','OnDocumentBarcodeDelete','catalog','','CCatalogStoreDocsElement','OnDocumentBarcodeDelete','',1),(163,'2019-07-10 13:45:42',100,'catalog','OnBeforeDocumentDelete','catalog','','CCatalogStoreDocsBarcode','OnBeforeDocumentDelete','',1),(164,'2019-07-10 13:45:42',100,'catalog','OnCatalogStoreDelete','catalog','','CCatalogDocs','OnCatalogStoreDelete','',1),(165,'2019-07-10 13:45:42',100,'iblock','OnBeforeIBlockPropertyDelete','catalog','','CCatalog','OnBeforeIBlockPropertyDelete','',1),(166,'2019-07-10 13:45:42',1100,'sale','OnCondSaleControlBuildList','catalog','','CCatalogCondCtrlBasketProductFields','GetControlDescr','',1),(167,'2019-07-10 13:45:42',1200,'sale','OnCondSaleControlBuildList','catalog','','CCatalogCondCtrlBasketProductProps','GetControlDescr','',1),(168,'2019-07-10 13:45:42',1200,'sale','OnCondSaleActionsControlBuildList','catalog','','CCatalogActionCtrlBasketProductFields','GetControlDescr','',1),(169,'2019-07-10 13:45:42',1300,'sale','OnCondSaleActionsControlBuildList','catalog','','CCatalogActionCtrlBasketProductProps','GetControlDescr','',1),(170,'2019-07-10 13:45:42',200,'sale','OnCondSaleActionsControlBuildList','catalog','','CCatalogGifterProduct','GetControlDescr','',1),(171,'2019-07-10 13:45:42',100,'sale','OnExtendBasketItems','catalog','','CCatalogDiscount','ExtendBasketItems','',1),(172,'2019-07-10 13:45:42',100,'iblock','OnModuleUnInstall','catalog','','CCatalog','OnIBlockModuleUnInstall','',1),(173,'2019-07-10 13:45:42',100,'iblock','OnIBlockElementAdd','catalog','','\\Bitrix\\Catalog\\Product\\Sku','handlerIblockElementAdd','',1),(174,'2019-07-10 13:45:42',100,'iblock','OnAfterIBlockElementAdd','catalog','','\\Bitrix\\Catalog\\Product\\Sku','handlerAfterIblockElementAdd','',1),(175,'2019-07-10 13:45:42',100,'iblock','OnIBlockElementUpdate','catalog','','\\Bitrix\\Catalog\\Product\\Sku','handlerIblockElementUpdate','',1),(176,'2019-07-10 13:45:42',100,'iblock','OnAfterIBlockElementUpdate','catalog','','\\Bitrix\\Catalog\\Product\\Sku','handlerAfterIblockElementUpdate','',1),(177,'2019-07-10 13:45:42',100,'iblock','OnIBlockElementDelete','catalog','','\\Bitrix\\Catalog\\Product\\Sku','handlerIblockElementDelete','',1),(178,'2019-07-10 13:45:42',100,'iblock','OnAfterIBlockElementDelete','catalog','','\\Bitrix\\Catalog\\Product\\Sku','handlerAfterIblockElementDelete','',1),(179,'2019-07-10 13:45:42',100,'iblock','OnIBlockElementSetPropertyValues','catalog','','\\Bitrix\\Catalog\\Product\\Sku','handlerIblockElementSetPropertyValues','',1),(180,'2019-07-10 13:45:42',100,'iblock','OnAfterIBlockElementSetPropertyValues','catalog','','\\Bitrix\\Catalog\\Product\\Sku','handlerAfterIBlockElementSetPropertyValues','',1),(181,'2019-07-10 13:45:42',100,'iblock','OnIBlockElementSetPropertyValuesEx','catalog','','\\Bitrix\\Catalog\\Product\\Sku','handlerIblockElementSetPropertyValuesEx','',1),(182,'2019-07-10 13:45:42',100,'iblock','OnAfterIBlockElementSetPropertyValuesEx','catalog','','\\Bitrix\\Catalog\\Product\\Sku','handlerAfterIblockElementSetPropertyValuesEx','',1),(183,'2019-07-10 13:45:42',100,'perfmon','OnGetTableSchema','catalog','','catalog','getTableSchema','',1),(184,'2019-07-10 13:45:44',100,'main','OnEventLogGetAuditTypes','clouds','','CCloudStorage','GetAuditTypes','',1),(185,'2019-07-10 13:45:44',90,'main','OnBeforeProlog','clouds','','CCloudStorage','OnBeforeProlog','',1),(186,'2019-07-10 13:45:44',100,'main','OnAdminListDisplay','clouds','','CCloudStorage','OnAdminListDisplay','',1),(187,'2019-07-10 13:45:45',100,'main','OnBuildGlobalMenu','clouds','','CCloudStorage','OnBuildGlobalMenu','',1),(188,'2019-07-10 13:45:45',100,'main','OnFileSave','clouds','','CCloudStorage','OnFileSave','',1),(189,'2019-07-10 13:45:45',100,'main','OnGetFileSRC','clouds','','CCloudStorage','OnGetFileSRC','',1),(190,'2019-07-10 13:45:45',100,'main','OnFileCopy','clouds','','CCloudStorage','OnFileCopy','',1),(191,'2019-07-10 13:45:45',100,'main','OnFileDelete','clouds','','CCloudStorage','OnFileDelete','',1),(192,'2019-07-10 13:45:45',100,'main','OnMakeFileArray','clouds','','CCloudStorage','OnMakeFileArray','',1),(193,'2019-07-10 13:45:45',100,'main','OnBeforeResizeImage','clouds','','CCloudStorage','OnBeforeResizeImage','',1),(194,'2019-07-10 13:45:45',100,'main','OnAfterResizeImage','clouds','','CCloudStorage','OnAfterResizeImage','',1),(195,'2019-07-10 13:45:45',100,'clouds','OnGetStorageService','clouds','','CCloudStorageService_AmazonS3','GetObjectInstance','',1),(196,'2019-07-10 13:45:45',100,'clouds','OnGetStorageService','clouds','','CCloudStorageService_GoogleStorage','GetObjectInstance','',1),(197,'2019-07-10 13:45:45',100,'clouds','OnGetStorageService','clouds','','CCloudStorageService_OpenStackStorage','GetObjectInstance','',1),(198,'2019-07-10 13:45:45',100,'clouds','OnGetStorageService','clouds','','CCloudStorageService_RackSpaceCloudFiles','GetObjectInstance','',1),(199,'2019-07-10 13:45:45',100,'clouds','OnGetStorageService','clouds','','CCloudStorageService_ClodoRU','GetObjectInstance','',1),(200,'2019-07-10 13:45:45',100,'clouds','OnGetStorageService','clouds','','CCloudStorageService_Selectel','GetObjectInstance','',1),(201,'2019-07-10 13:45:45',100,'clouds','OnGetStorageService','clouds','','CCloudStorageService_HotBox','GetObjectInstance','',1),(202,'2019-07-10 13:45:46',1,'main','OnPageStart','compression','','CCompress','OnPageStart','',1),(203,'2019-07-10 13:45:46',10000,'main','OnAfterEpilog','compression','','CCompress','OnAfterEpilog','',1),(204,'2019-07-10 13:45:47',100,'conversion','OnGetCounterTypes','conversion','','\\Bitrix\\Conversion\\Internals\\Handlers','onGetCounterTypes','',1),(205,'2019-07-10 13:45:47',100,'conversion','OnGetAttributeTypes','conversion','','\\Bitrix\\Conversion\\Internals\\Handlers','onGetAttributeTypes','',1),(206,'2019-07-10 13:45:47',100,'conversion','OnGetAttributeGroupTypes','conversion','','\\Bitrix\\Conversion\\Internals\\Handlers','onGetAttributeGroupTypes','',1),(207,'2019-07-10 13:45:47',100,'conversion','OnSetDayContextAttributes','conversion','','\\Bitrix\\Conversion\\Internals\\Handlers','onSetDayContextAttributes','',1),(208,'2019-07-10 13:45:47',100,'main','OnProlog','conversion','','\\Bitrix\\Conversion\\Internals\\Handlers','onProlog','',1),(209,'2019-07-10 13:45:49',100,'iblock','OnIBlockPropertyBuildList','currency','','\\Bitrix\\Currency\\Integration\\IblockMoneyProperty','getUserTypeDescription','',1),(210,'2019-07-10 13:45:49',100,'main','OnUserTypeBuildList','currency','','\\Bitrix\\Currency\\UserField\\Money','getUserTypeDescription','',1),(211,'2019-07-10 13:45:50',100,'main','OnGroupDelete','fileman','','CFileman','OnGroupDelete','',1),(212,'2019-07-10 13:45:50',100,'main','OnPanelCreate','fileman','','CFileman','OnPanelCreate','',1),(213,'2019-07-10 13:45:50',100,'main','OnModuleUpdate','fileman','','CFileman','OnModuleUpdate','',1),(214,'2019-07-10 13:45:50',100,'main','OnModuleInstalled','fileman','','CFileman','ClearComponentsListCache','',1),(215,'2019-07-10 13:45:50',100,'iblock','OnIBlockPropertyBuildList','fileman','','CIBlockPropertyMapGoogle','GetUserTypeDescription','',1),(216,'2019-07-10 13:45:50',100,'iblock','OnIBlockPropertyBuildList','fileman','','CIBlockPropertyMapYandex','GetUserTypeDescription','',1),(217,'2019-07-10 13:45:50',100,'iblock','OnIBlockPropertyBuildList','fileman','','CIBlockPropertyVideo','GetUserTypeDescription','',1),(218,'2019-07-10 13:45:50',100,'main','OnUserTypeBuildList','fileman','','CUserTypeVideo','GetUserTypeDescription','',1),(219,'2019-07-10 13:45:50',100,'main','OnEventLogGetAuditTypes','fileman','','CEventFileman','GetAuditTypes','',1),(220,'2019-07-10 13:45:50',100,'main','OnEventLogGetAuditHandlers','fileman','','CEventFileman','MakeFilemanObject','',1),(221,'2019-07-10 13:45:50',154,'main','OnUserTypeBuildList','fileman','','\\Bitrix\\Fileman\\UserField\\Address','getUserTypeDescription','',1),(222,'2019-07-10 13:45:53',100,'sender','OnConnectorList','form','','\\Bitrix\\Form\\SenderEventHandler','onConnectorListForm','',1),(223,'2019-07-10 13:45:57',100,'main','OnAfterUserUpdate','forum','','CForumUser','OnAfterUserUpdate','',1),(224,'2019-07-10 13:45:57',100,'main','OnGroupDelete','forum','','CForumNew','OnGroupDelete','',1),(225,'2019-07-10 13:45:57',100,'main','OnBeforeLangDelete','forum','','CForumNew','OnBeforeLangDelete','',1),(226,'2019-07-10 13:45:57',100,'main','OnFileDelete','forum','','CForumFiles','OnFileDelete','',1),(227,'2019-07-10 13:45:57',100,'search','OnReindex','forum','','CForumNew','OnReindex','',1),(228,'2019-07-10 13:45:57',100,'main','OnUserDelete','forum','','CForumUser','OnUserDelete','',1),(229,'2019-07-10 13:45:57',100,'iblock','OnIBlockPropertyBuildList','main','/modules/forum/tools/prop_topicid.php','CIBlockPropertyTopicID','GetUserTypeDescription','',1),(230,'2019-07-10 13:45:57',100,'iblock','OnBeforeIBlockElementDelete','forum','','CForumTopic','OnBeforeIBlockElementDelete','',1),(231,'2019-07-10 13:45:57',100,'main','OnEventLogGetAuditTypes','forum','','CForumEventLog','GetAuditTypes','',1),(232,'2019-07-10 13:45:57',100,'main','OnEventLogGetAuditHandlers','forum','','CEventForum','MakeForumObject','',1),(233,'2019-07-10 13:45:57',100,'socialnetwork','OnSocNetGroupDelete','forum','','CForumUser','OnSocNetGroupDelete','',1),(234,'2019-07-10 13:45:57',100,'socialnetwork','OnSocNetLogFormatEvent','forum','','CForumMessage','OnSocNetLogFormatEvent','',1),(235,'2019-07-10 13:45:57',100,'mail','OnGetFilterList','forum','','CForumEMail','OnGetSocNetFilterList','',1),(236,'2019-07-10 13:45:57',100,'main','OnAfterAddRating','forum','','CRatingsComponentsForum','OnAfterAddRating','',1),(237,'2019-07-10 13:45:57',100,'main','OnAfterUpdateRating','forum','','CRatingsComponentsForum','OnAfterUpdateRating','',1),(238,'2019-07-10 13:45:57',100,'main','OnSetRatingsConfigs','forum','','CRatingsComponentsForum','OnSetRatingConfigs','',1),(239,'2019-07-10 13:45:57',100,'main','OnGetRatingsConfigs','forum','','CRatingsComponentsForum','OnGetRatingConfigs','',1),(240,'2019-07-10 13:45:57',100,'main','OnGetRatingsObjects','forum','','CRatingsComponentsForum','OnGetRatingObject','',1),(241,'2019-07-10 13:45:57',100,'main','OnGetRatingContentOwner','forum','','CRatingsComponentsForum','OnGetRatingContentOwner','',1),(242,'2019-07-10 13:45:57',100,'im','OnGetNotifySchema','forum','','CForumNotifySchema','OnGetNotifySchema','',1),(243,'2019-07-10 13:45:57',100,'main','OnAfterRegisterModule','main','/modules/forum/install/index.php','forum','InstallUserFields','',1),(244,'2019-07-10 13:45:57',100,'rest','OnRestServiceBuildDescription','forum','','CForumRestService','OnRestServiceBuildDescription','',1),(245,'2019-07-10 13:45:57',100,'conversion','OnGetCounterTypes','forum','','\\Bitrix\\Forum\\Internals\\ConversionHandlers','onGetCounterTypes','',1),(246,'2019-07-10 13:45:57',100,'conversion','OnGetRateTypes','forum','','\\Bitrix\\Forum\\Internals\\ConversionHandlers','onGetRateTypes','',1),(247,'2019-07-10 13:45:57',100,'forum','onAfterTopicAdd','forum','','\\Bitrix\\Forum\\Internals\\ConversionHandlers','onTopicAdd','',1),(248,'2019-07-10 13:45:57',100,'forum','onAfterMessageAdd','forum','','\\Bitrix\\Forum\\Internals\\ConversionHandlers','onMessageAdd','',1),(249,'2019-07-10 13:45:57',100,'socialnetwork','onLogIndexGetContent','forum','','\\Bitrix\\Forum\\Integration\\Socialnetwork\\Log','onIndexGetContent','',2),(250,'2019-07-10 13:45:57',100,'socialnetwork','onLogCommentIndexGetContent','forum','','\\Bitrix\\Forum\\Integration\\Socialnetwork\\LogComment','onIndexGetContent','',2),(251,'2019-07-10 13:45:57',100,'socialnetwork','onContentViewed','forum','','\\Bitrix\\Forum\\Integration\\Socialnetwork\\ContentViewHandler','onContentViewed','',2),(252,'2019-07-10 13:46:03',100,'main','OnBeforeUserTypeAdd','highloadblock','','\\Bitrix\\Highloadblock\\HighloadBlockTable','OnBeforeUserTypeAdd','',1),(253,'2019-07-10 13:46:03',100,'main','OnAfterUserTypeAdd','highloadblock','','\\Bitrix\\Highloadblock\\HighloadBlockTable','onAfterUserTypeAdd','',1),(254,'2019-07-10 13:46:03',100,'main','OnBeforeUserTypeDelete','highloadblock','','\\Bitrix\\Highloadblock\\HighloadBlockTable','OnBeforeUserTypeDelete','',1),(255,'2019-07-10 13:46:03',100,'main','OnUserTypeBuildList','highloadblock','','CUserTypeHlblock','GetUserTypeDescription','',1),(256,'2019-07-10 13:46:03',100,'iblock','OnIBlockPropertyBuildList','highloadblock','','CIBlockPropertyDirectory','GetUserTypeDescription','',1),(257,'2019-07-10 13:46:06',100,'main','OnGroupDelete','iblock','','CIBlock','OnGroupDelete','',1),(258,'2019-07-10 13:46:06',100,'main','OnBeforeLangDelete','iblock','','CIBlock','OnBeforeLangDelete','',1),(259,'2019-07-10 13:46:06',100,'main','OnLangDelete','iblock','','CIBlock','OnLangDelete','',1),(260,'2019-07-10 13:46:06',100,'main','OnUserTypeRightsCheck','iblock','','CIBlockSection','UserTypeRightsCheck','',1),(261,'2019-07-10 13:46:06',100,'search','OnReindex','iblock','','CIBlock','OnSearchReindex','',1),(262,'2019-07-10 13:46:06',100,'search','OnSearchGetURL','iblock','','CIBlock','OnSearchGetURL','',1),(263,'2019-07-10 13:46:06',100,'main','OnEventLogGetAuditTypes','iblock','','CIBlock','GetAuditTypes','',1),(264,'2019-07-10 13:46:06',100,'main','OnEventLogGetAuditHandlers','iblock','','CEventIBlock','MakeIBlockObject','',1),(265,'2019-07-10 13:46:06',200,'main','OnGetRatingContentOwner','iblock','','CRatingsComponentsIBlock','OnGetRatingContentOwner','',1),(266,'2019-07-10 13:46:06',100,'main','OnTaskOperationsChanged','iblock','','CIBlockRightsStorage','OnTaskOperationsChanged','',1),(267,'2019-07-10 13:46:06',100,'main','OnGroupDelete','iblock','','CIBlockRightsStorage','OnGroupDelete','',1),(268,'2019-07-10 13:46:06',100,'main','OnUserDelete','iblock','','CIBlockRightsStorage','OnUserDelete','',1),(269,'2019-07-10 13:46:06',100,'perfmon','OnGetTableSchema','iblock','','iblock','OnGetTableSchema','',1),(270,'2019-07-10 13:46:06',100,'sender','OnConnectorList','iblock','','\\Bitrix\\Iblock\\SenderEventHandler','onConnectorListIblock','',1),(271,'2019-07-10 13:46:06',10,'iblock','OnIBlockPropertyBuildList','iblock','','CIBlockPropertyDate','GetUserTypeDescription','',1),(272,'2019-07-10 13:46:06',20,'iblock','OnIBlockPropertyBuildList','iblock','','CIBlockPropertyDateTime','GetUserTypeDescription','',1),(273,'2019-07-10 13:46:06',30,'iblock','OnIBlockPropertyBuildList','iblock','','CIBlockPropertyXmlID','GetUserTypeDescription','',1),(274,'2019-07-10 13:46:06',40,'iblock','OnIBlockPropertyBuildList','iblock','','CIBlockPropertyFileMan','GetUserTypeDescription','',1),(275,'2019-07-10 13:46:06',50,'iblock','OnIBlockPropertyBuildList','iblock','','CIBlockPropertyHTML','GetUserTypeDescription','',1),(276,'2019-07-10 13:46:06',60,'iblock','OnIBlockPropertyBuildList','iblock','','CIBlockPropertyElementList','GetUserTypeDescription','',1),(277,'2019-07-10 13:46:06',70,'iblock','OnIBlockPropertyBuildList','iblock','','CIBlockPropertySequence','GetUserTypeDescription','',1),(278,'2019-07-10 13:46:06',80,'iblock','OnIBlockPropertyBuildList','iblock','','CIBlockPropertyElementAutoComplete','GetUserTypeDescription','',1),(279,'2019-07-10 13:46:06',90,'iblock','OnIBlockPropertyBuildList','iblock','','CIBlockPropertySKU','GetUserTypeDescription','',1),(280,'2019-07-10 13:46:06',100,'iblock','OnIBlockPropertyBuildList','iblock','','CIBlockPropertySectionAutoComplete','GetUserTypeDescription','',1),(281,'2019-07-10 13:46:09',100,'socialnetwork','OnFillSocNetLogEvents','idea','','CIdeaManagmentSonetNotify','AddLogEvent','',1),(282,'2019-07-10 13:46:12',100,'main','OnAddRatingVote','im','','CIMEvent','OnAddRatingVote','',1),(283,'2019-07-10 13:46:12',100,'main','OnChangeRatingVote','im','','CIMEvent','OnAddRatingVote','',1),(284,'2019-07-10 13:46:12',100,'main','OnCancelRatingVote','im','','CIMEvent','OnCancelRatingVote','',1),(285,'2019-07-10 13:46:12',100,'main','OnAfterUserAdd','im','','CIMEvent','OnAfterUserAdd','',1),(286,'2019-07-10 13:46:12',100,'main','OnAfterUserUpdate','im','','CIMEvent','OnAfterUserUpdate','',1),(287,'2019-07-10 13:46:12',100,'main','OnUserDelete','im','','CIMEvent','OnUserDelete','',1),(288,'2019-07-10 13:46:12',100,'main','OnBeforeUserSendPassword','im','','CIMEvent','OnBeforeUserSendPassword','',1),(289,'2019-07-10 13:46:12',100,'pull','OnGetDependentModule','im','','CIMEvent','OnGetDependentModule','',1),(290,'2019-07-10 13:46:12',3,'main','OnProlog','main','/modules/im/ajax_hit.php','','','',1),(291,'2019-07-10 13:46:12',100,'perfmon','OnGetTableSchema','im','','CIMTableSchema','OnGetTableSchema','',1),(292,'2019-07-10 13:46:12',100,'im','OnGetNotifySchema','im','','CIMNotifySchema','OnGetNotifySchema','',1),(293,'2019-07-10 13:46:12',100,'main','OnFileDelete','im','','CIMEvent','OnFileDelete','',1),(294,'2019-07-10 13:46:12',100,'disk','onAfterDeleteFile','im','','CIMDisk','OnAfterDeleteFile','',1),(295,'2019-07-10 13:46:12',100,'main','OnApplicationsBuildList','im','','DesktopApplication','OnApplicationsBuildList','',1),(296,'2019-07-10 13:46:12',100,'main','OnUserOnlineStatusGetCustomOnlineStatus','im','','CIMStatus','OnUserOnlineStatusGetCustomStatus','',1),(297,'2019-07-10 13:46:12',100,'main','OnUserOnlineStatusGetCustomOfflineStatus','im','','CIMStatus','OnUserOnlineStatusGetCustomStatus','',1),(298,'2019-07-10 13:46:12',100,'rest','OnRestServiceBuildDescription','im','','CIMRestService','OnRestServiceBuildDescription','',1),(299,'2019-07-10 13:46:12',100,'rest','OnRestAppDelete','im','','CIMRestService','OnRestAppDelete','',1),(300,'2019-07-10 13:46:12',100,'pull','onGetMobileCounter','im','','\\Bitrix\\Im\\Counter','onGetMobileCounter','',2),(301,'2019-07-10 13:46:12',100,'pull','onGetMobileCounterTypes','im','','\\Bitrix\\Im\\Counter','onGetMobileCounterTypes','',2),(302,'2019-07-10 13:46:16',1,'main','OnUserLoginExternal','ldap','','CLdap','OnUserLogin','',1),(303,'2019-07-10 13:46:16',100,'main','OnExternalAuthList','ldap','','CLdap','OnExternalAuthList','',1),(304,'2019-07-10 13:46:16',100,'main','OnFindExternalUser','ldap','','CLDAP','OnFindExternalUser','',1),(305,'2019-07-10 13:46:19',100,'main','OnGroupDelete','learning','','CCourse','OnGroupDelete','',1),(306,'2019-07-10 13:46:19',100,'main','OnBeforeLangDelete','learning','','CCourse','OnBeforeLangDelete','',1),(307,'2019-07-10 13:46:19',100,'main','OnUserDelete','learning','','CCourse','OnUserDelete','',1),(308,'2019-07-10 13:46:19',100,'main','OnSiteDelete','learning','','CSitePath','DeleteBySiteID','',1),(309,'2019-07-10 13:46:19',100,'search','OnReindex','learning','','CCourse','OnSearchReindex','',1),(310,'2019-07-10 13:46:19',200,'main','OnGetRatingContentOwner','learning','','CRatingsComponentsLearning','OnGetRatingContentOwner','',1),(311,'2019-07-10 13:46:19',200,'main','OnAddRatingVote','learning','','CRatingsComponentsLearning','OnAddRatingVote','',1),(312,'2019-07-10 13:46:19',200,'main','OnCancelRatingVote','learning','','CRatingsComponentsLearning','OnCancelRatingVote','',1),(313,'2019-07-10 13:46:19',100,'main','OnEventLogGetAuditTypes','learning','','CLearningEvent','GetAuditTypes','',1),(314,'2019-07-10 13:46:19',100,'main','OnEventLogGetAuditHandlers','learning','','CLearningEvent','MakeMainObject','',1),(315,'2019-07-10 13:46:19',100,'learning','OnAfterLearningGroupDelete','learning','','CLearningGroupMember','onAfterLearningGroupDelete','',1),(316,'2019-07-10 13:46:19',100,'learning','OnAfterLearningGroupDelete','learning','','CLearningGroupLesson','onAfterLearningGroupDelete','',1),(317,'2019-07-10 13:46:20',100,'iblock','OnAfterIBlockUpdate','lists','','CLists','OnAfterIBlockUpdate','',1),(318,'2019-07-10 13:46:20',100,'iblock','OnIBlockDelete','lists','','CLists','OnIBlockDelete','',1),(319,'2019-07-10 13:46:20',100,'iblock','OnAfterIBlockDelete','lists','','CLists','OnAfterIBlockDelete','',1),(320,'2019-07-10 13:46:20',100,'iblock','CIBlockDocument_OnGetDocumentAdminPage','lists','','CList','OnGetDocumentAdminPage','',1),(321,'2019-07-10 13:46:20',100,'intranet','OnSharepointCreateProperty','lists','','CLists','OnSharepointCreateProperty','',1),(322,'2019-07-10 13:46:20',100,'intranet','OnSharepointCheckAccess','lists','','CLists','OnSharepointCheckAccess','',1),(323,'2019-07-10 13:46:20',100,'perfmon','OnGetTableSchema','lists','','lists','OnGetTableSchema','',1),(324,'2019-07-10 13:46:20',50,'search','OnSearchGetURL','lists','','CList','OnSearchGetURL','',1),(325,'2019-07-10 13:46:20',100,'socialnetwork','OnFillSocNetLogEvents','lists','','CListsLiveFeed','onFillSocNetLogEvents','',1),(326,'2019-07-10 13:46:20',100,'socialnetwork','OnFillSocNetAllowedSubscribeEntityTypes','lists','','CListsLiveFeed','onFillSocNetAllowedSubscribeEntityTypes','',1),(327,'2019-07-10 13:46:20',100,'socialnetwork','BeforeIndexSocNet','lists','','CListsLiveFeed','BeforeIndexSocNet','',1),(328,'2019-07-10 13:46:20',100,'socialnetwork','OnAfterSonetLogEntryAddComment','lists','','CListsLiveFeed','OnAfterSonetLogEntryAddComment','',1),(329,'2019-07-10 13:46:20',100,'socialnetwork','OnForumCommentIMNotify','lists','','CListsLiveFeed','OnForumCommentIMNotify','',1),(330,'2019-07-10 13:46:20',100,'socialnetwork','OnSendMentionGetEntityFields','lists','','CListsLiveFeed','OnSendMentionGetEntityFields','',1),(331,'2019-07-10 13:46:20',100,'socialnetwork','OnSocNetGroupDelete','lists','','CListsLiveFeed','OnSocNetGroupDelete','',1),(332,'2019-07-10 13:46:20',100,'rest','onRestServiceBuildDescription','lists','','\\Bitrix\\Lists\\Rest\\RestService','onRestServiceBuildDescription','',1),(333,'2019-07-10 13:46:20',100,'iblock','OnAfterIBlockElementDelete','lists','','CLists','OnAfterIBlockElementDelete','',1),(334,'2019-07-10 13:46:20',100,'iblock','OnAfterIBlockPropertyAdd','lists','','CLists','OnAfterIBlockPropertyAdd','',1),(335,'2019-07-10 13:46:20',100,'iblock','OnAfterIBlockPropertyUpdate','lists','','CLists','OnAfterIBlockPropertyUpdate','',1),(336,'2019-07-10 13:46:20',100,'iblock','OnAfterIBlockPropertyDelete','lists','','CLists','OnAfterIBlockPropertyDelete','',1),(337,'2019-07-10 13:46:20',100,'iblock','OnBeforeIBlockElementAdd','lists','','CLists','OnBeforeIBlockElementAdd','',1),(338,'2019-07-10 13:46:20',100,'iblock','OnBeforeIBlockElementUpdate','lists','','CLists','OnBeforeIBlockElementUpdate','',1),(339,'2019-07-10 13:46:20',100,'main','OnGetRatingContentOwner','lists','','\\Bitrix\\Lists\\Integration\\Main\\RatingVote','onGetRatingContentOwner','',1),(340,'2019-07-10 13:46:20',100,'socialnetwork','onLogIndexGetContent','lists','','\\Bitrix\\Lists\\Integration\\Socialnetwork\\Log','onIndexGetContent','',2),(341,'2019-07-10 13:46:23',100,'rest','OnRestServiceBuildDescription','mail','','CMailRestService','OnRestServiceBuildDescription','',1),(342,'2019-07-10 13:46:23',100,'main','OnAfterUserUpdate','mail','','CMail','onUserUpdate','',1),(343,'2019-07-10 13:46:23',100,'main','OnAfterUserDelete','mail','','CMail','onUserDelete','',1),(344,'2019-07-10 13:46:23',100,'main','OnBeforeSiteUpdate','mail','','Bitrix\\Mail\\User','handleSiteUpdate','',1),(345,'2019-07-10 13:46:23',100,'main','OnAfterSetOption_server_name','mail','','Bitrix\\Mail\\User','handleServerNameUpdate','',2),(346,'2019-07-10 13:46:23',100,'main','OnUserTypeBuildList','mail','','Bitrix\\Mail\\MessageUserType','getUserTypeDescription','',1),(347,'2019-07-10 13:46:23',100,'main','OnMailEventMailRead','mail','','Bitrix\\Mail\\Helper\\MessageEventManager','onMailEventMailRead','',1),(348,'2019-07-10 13:46:25',100,'main','OnAfterEpilog','messageservice','','\\Bitrix\\MessageService\\Queue','run','',1),(349,'2019-07-10 13:46:25',100,'rest','OnRestServiceBuildDescription','messageservice','','\\Bitrix\\MessageService\\RestService','onRestServiceBuildDescription','',1),(350,'2019-07-10 13:46:25',100,'rest','OnRestAppDelete','messageservice','','\\Bitrix\\MessageService\\RestService','onRestAppDelete','',1),(351,'2019-07-10 13:46:25',100,'rest','OnRestAppUpdate','messageservice','','\\Bitrix\\MessageService\\RestService','onRestAppUpdate','',1),(352,'2019-07-10 13:46:26',100,'pull','OnGetDependentModule','mobileapp','','CMobileAppPullSchema','OnGetDependentModule','',1),(353,'2019-07-10 13:46:29',100,'perfmon','OnGetTableSchema','perfmon','','perfmon','OnGetTableSchema','',1),(354,'2019-07-10 13:46:31',100,'iblock','OnBeforeIBlockElementDelete','photogallery','','CPhotogalleryElement','OnBeforeIBlockElementDelete','',1),(355,'2019-07-10 13:46:31',100,'iblock','OnAfterIBlockElementAdd','photogallery','','CPhotogalleryElement','OnAfterIBlockElementAdd','',1),(356,'2019-07-10 13:46:31',100,'search','BeforeIndex','photogallery','','CRatingsComponentsPhotogallery','BeforeIndex','',1),(357,'2019-07-10 13:46:31',100,'im','OnGetNotifySchema','photogallery','','CPhotogalleryNotifySchema','OnGetNotifySchema','',1),(358,'2019-07-10 13:46:31',100,'socialnetwork','OnSocNetGroupDelete','photogallery','','\\Bitrix\\Photogallery\\Integration\\Socialnetwork\\Group','onSocNetGroupDelete','',1),(359,'2019-07-10 13:46:32',50,'main','OnBeforeProlog','main','/modules/pull/ajax_hit_before.php','','','',1),(360,'2019-07-10 13:46:32',3,'main','OnProlog','main','/modules/pull/ajax_hit.php','','','',1),(361,'2019-07-10 13:46:32',100,'main','OnEpilog','pull','','CPullOptions','OnEpilog','',1),(362,'2019-07-10 13:46:32',100,'main','OnAfterEpilog','pull','','\\Bitrix\\Pull\\Event','onAfterEpilog','',1),(363,'2019-07-10 13:46:32',100,'main','OnAfterEpilog','pull','','CPullWatch','DeferredSql','',1),(364,'2019-07-10 13:46:32',100,'perfmon','OnGetTableSchema','pull','','CPullTableSchema','OnGetTableSchema','',1),(365,'2019-07-10 13:46:32',100,'main','OnAfterRegisterModule','pull','','CPullOptions','ClearCheckCache','',1),(366,'2019-07-10 13:46:32',100,'main','OnAfterUnRegisterModule','pull','','CPullOptions','ClearCheckCache','',1),(367,'2019-07-10 13:46:32',100,'socialnetwork','OnSonetLogCounterClear','pull','','\\Bitrix\\Pull\\MobileCounter','onSonetLogCounterClear','',1),(368,'2019-07-10 13:46:33',100,'rest','OnRestServiceBuildDescription','pull','','\\Bitrix\\Pull\\Rest','onRestServiceBuildDescription','',2),(369,'2019-07-10 13:46:34',100,'report','OnReportDelete','report','','\\Bitrix\\Report\\Sharing','OnReportDelete','',1),(370,'2019-07-10 13:46:34',100,'report','onReportCategoryCollect','report','','\\Bitrix\\Report\\VisualConstructor\\EventHandler','onCategoriesCollect','',2),(371,'2019-07-10 13:46:34',100,'report','onReportsCollect','report','','\\Bitrix\\Report\\VisualConstructor\\EventHandler','onReportsCollect','',2),(372,'2019-07-10 13:46:34',100,'report','onReportViewCollect','report','','\\Bitrix\\Report\\VisualConstructor\\EventHandler','onViewsCollect','',2),(373,'2019-07-10 13:46:34',100,'report','onWidgetCollect','report','','\\Bitrix\\Report\\VisualConstructor\\EventHandler','onWidgetCollect','',2),(374,'2019-07-10 13:46:36',49,'main','OnBeforeProlog','rest','','CRestEventHandlers','OnBeforeProlog','',2),(375,'2019-07-10 13:46:36',100,'rest','OnRestServiceBuildDescription','rest','','CBitrixRestEntity','OnRestServiceBuildDescription','',2),(376,'2019-07-10 13:46:36',100,'rest','OnRestServiceBuildDescription','rest','','\\Bitrix\\Rest\\Api\\User','onRestServiceBuildDescription','',2),(377,'2019-07-10 13:46:36',100,'rest','OnRestServiceBuildDescription','rest','','\\Bitrix\\Rest\\Api\\Placement','onRestServiceBuildDescription','',2),(378,'2019-07-10 13:46:36',100,'rest','OnRestServiceBuildDescription','rest','','\\Bitrix\\Rest\\Api\\Event','onRestServiceBuildDescription','',2),(379,'2019-07-10 13:46:36',100,'rest','OnRestServiceBuildDescription','rest','','\\Bitrix\\Rest\\Api\\UserFieldType','onRestServiceBuildDescription','',2),(380,'2019-07-10 13:46:36',100,'rest','onFindMethodDescription','rest','','\\Bitrix\\Rest\\Engine\\RestManager','onFindMethodDescription','',2),(381,'2019-07-10 13:46:36',100,'main','OnApplicationsBuildList','main','modules/rest/lib/apauth/application.php','\\Bitrix\\Rest\\APAuth\\Application','onApplicationsBuildList','',2),(382,'2019-07-10 13:46:36',100,'im','OnAfterConfirmNotify','rest','','\\Bitrix\\Rest\\NotifyIm','receive','',2),(383,'2019-07-10 13:46:36',100,'rest','\\Bitrix\\Rest\\APAuth\\Password::OnDelete','rest','','\\Bitrix\\Rest\\APAuth\\PermissionTable','onPasswordDelete','',2),(384,'2019-07-10 13:46:36',100,'rest','onRestCheckAuth','rest','','\\Bitrix\\Rest\\OAuth\\Auth','onRestCheckAuth','',2),(385,'2019-07-10 13:46:36',100,'rest','onRestCheckAuth','rest','','\\Bitrix\\Rest\\APAuth\\Auth','onRestCheckAuth','',2),(386,'2019-07-10 13:46:36',100,'rest','onRestCheckAuth','rest','','\\Bitrix\\Rest\\SessionAuth\\Auth','onRestCheckAuth','',2),(387,'2019-07-10 13:46:47',100,'main','OnUserLogout','sale','','\\Bitrix\\Sale\\DiscountCouponsManager','logout','',1),(388,'2019-07-10 13:46:47',100,'sale','OnSaleBasketItemRefreshData','sale','','\\Bitrix\\Sale\\Compatible\\DiscountCompatibility','OnSaleBasketItemRefreshData','',2),(389,'2019-07-10 13:46:47',100,'main','OnUserLogin','sale','','CSaleUser','OnUserLogin','',1),(390,'2019-07-10 13:46:47',100,'main','OnUserLogout','sale','','CSaleUser','OnUserLogout','',1),(391,'2019-07-10 13:46:47',100,'main','OnBeforeLangDelete','sale','','CSalePersonType','OnBeforeLangDelete','',1),(392,'2019-07-10 13:46:47',100,'main','OnLanguageDelete','sale','','CSaleLocation','OnLangDelete','',1),(393,'2019-07-10 13:46:47',100,'main','OnLanguageDelete','sale','','CSaleLocationGroup','OnLangDelete','',1),(394,'2019-07-10 13:46:47',100,'main','OnUserDelete','sale','','CSaleOrderUserProps','OnUserDelete','',1),(395,'2019-07-10 13:46:47',100,'main','OnUserDelete','sale','','CSaleUserAccount','OnUserDelete','',1),(396,'2019-07-10 13:46:47',100,'main','OnUserDelete','sale','','CSaleAuxiliary','OnUserDelete','',1),(397,'2019-07-10 13:46:47',100,'main','OnUserDelete','sale','','CSaleUser','OnUserDelete','',1),(398,'2019-07-10 13:46:47',100,'main','OnUserDelete','sale','','CSaleRecurring','OnUserDelete','',1),(399,'2019-07-10 13:46:47',100,'main','OnUserDelete','sale','','CSaleUserCards','OnUserDelete','',1),(400,'2019-07-10 13:46:47',100,'main','OnBeforeUserDelete','sale','','CSaleOrder','OnBeforeUserDelete','',1),(401,'2019-07-10 13:46:47',100,'main','OnBeforeUserDelete','sale','','CSaleAffiliate','OnBeforeUserDelete','',1),(402,'2019-07-10 13:46:47',100,'main','OnBeforeUserDelete','sale','','CSaleUserAccount','OnBeforeUserDelete','',1),(403,'2019-07-10 13:46:47',100,'main','OnBeforeProlog','main','/modules/sale/affiliate.php','','','',1),(404,'2019-07-10 13:46:47',100,'main','OnEventLogGetAuditTypes','sale','','CSaleYMHandler','OnEventLogGetAuditTypes','',1),(405,'2019-07-10 13:46:47',100,'main','OnEventLogGetAuditTypes','sale','','CSalePaySystemAction','OnEventLogGetAuditTypes','',1),(406,'2019-07-10 13:46:47',100,'main','OnUserConsentProviderList','sale','','\\Bitrix\\Sale\\UserConsent','onProviderList','',1),(407,'2019-07-10 13:46:47',100,'main','OnUserConsentDataProviderList','sale','','\\Bitrix\\Sale\\UserConsent','onDataProviderList','',1),(408,'2019-07-10 13:46:47',100,'currency','OnBeforeCurrencyDelete','sale','','CSaleOrder','OnBeforeCurrencyDelete','',1),(409,'2019-07-10 13:46:47',100,'currency','OnBeforeCurrencyDelete','sale','','CSaleLang','OnBeforeCurrencyDelete','',1),(410,'2019-07-10 13:46:47',100,'currency','OnModuleUnInstall','sale','','','CurrencyModuleUnInstallSale','',1),(411,'2019-07-10 13:46:47',100,'catalog','OnSaleOrderSumm','sale','','CSaleOrder','__SaleOrderCount','',1),(412,'2019-07-10 13:46:47',100,'mobileapp','OnBeforeAdminMobileMenuBuild','sale','','CSaleMobileOrderUtils','buildSaleAdminMobileMenu','',1),(413,'2019-07-10 13:46:47',100,'sender','OnConnectorList','sale','','\\Bitrix\\Sale\\SenderEventHandler','onConnectorListBuyer','',1),(414,'2019-07-10 13:46:47',100,'sender','OnTriggerList','sale','','\\Bitrix\\Sale\\Sender\\EventHandler','onTriggerList','',1),(415,'2019-07-10 13:46:47',100,'sender','OnPresetMailingList','sale','','\\Bitrix\\Sale\\Sender\\EventHandler','onPresetMailingList','',1),(416,'2019-07-10 13:46:47',100,'sender','OnPresetTemplateList','sale','','\\Bitrix\\Sale\\Sender\\EventHandler','onPresetTemplateList','',1),(417,'2019-07-10 13:46:47',100,'sender','OnConnectorList','sale','','Bitrix\\Sale\\Bigdata\\TargetSaleMailConnector','onConnectorList','',1),(418,'2019-07-10 13:46:47',100,'sale','OnCondSaleControlBuildList','sale','','CSaleCondCtrlGroup','GetControlDescr','',1),(419,'2019-07-10 13:46:47',200,'sale','OnCondSaleControlBuildList','sale','','CSaleCondCtrlBasketGroup','GetControlDescr','',1),(420,'2019-07-10 13:46:47',200,'sale','OnCondSaleActionsControlBuildList','sale','','CSaleActionGiftCtrlGroup','GetControlDescr','',1),(421,'2019-07-10 13:46:47',300,'sale','OnCondSaleControlBuildList','sale','','CSaleCondCtrlBasketFields','GetControlDescr','',1),(422,'2019-07-10 13:46:47',1000,'sale','OnCondSaleControlBuildList','sale','','CSaleCondCtrlOrderFields','GetControlDescr','',1),(423,'2019-07-10 13:46:47',1000,'sale','onBuildDiscountConditionInterfaceControls','sale','','CSaleCondCtrlPastOrder','onBuildDiscountConditionInterfaceControls','',1),(424,'2019-07-10 13:46:47',1000,'sale','onBuildDiscountConditionInterfaceControls','sale','','CSaleCondCumulativeCtrl','onBuildDiscountConditionInterfaceControls','',1),(425,'2019-07-10 13:46:47',10000,'sale','OnCondSaleControlBuildList','sale','','CSaleCondCtrlCommon','GetControlDescr','',1),(426,'2019-07-10 13:46:47',100,'sale','OnCondSaleActionsControlBuildList','sale','','CSaleActionCtrlGroup','GetControlDescr','',1),(427,'2019-07-10 13:46:47',200,'sale','OnCondSaleActionsControlBuildList','sale','','CSaleActionCtrlDelivery','GetControlDescr','',1),(428,'2019-07-10 13:46:47',300,'sale','OnCondSaleActionsControlBuildList','sale','','CSaleActionCtrlBasketGroup','GetControlDescr','',1),(429,'2019-07-10 13:46:47',1000,'sale','OnCondSaleActionsControlBuildList','sale','','CSaleActionCtrlSubGroup','GetControlDescr','',1),(430,'2019-07-10 13:46:47',1100,'sale','OnCondSaleActionsControlBuildList','sale','','CSaleActionCondCtrlBasketFields','GetControlDescr','',1),(431,'2019-07-10 13:46:47',1000,'sale','onBuildDiscountActionInterfaceControls','sale','','CSaleCumulativeAction','onBuildDiscountActionInterfaceControls','',1),(432,'2019-07-10 13:46:47',100,'sale','OnOrderDelete','sale','','CSaleMobileOrderPull','onOrderDelete','',1),(433,'2019-07-10 13:46:47',100,'sale','OnOrderAdd','sale','','CSaleMobileOrderPull','onOrderAdd','',1),(434,'2019-07-10 13:46:48',100,'sale','OnOrderUpdate','sale','','CSaleMobileOrderPull','onOrderUpdate','',1),(435,'2019-07-10 13:46:48',100,'sale','OnBasketOrder','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSaleOrderAdd','',1),(436,'2019-07-10 13:46:48',100,'sale','OnSaleStatusOrder','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSaleStatusOrderHandler','',1),(437,'2019-07-10 13:46:48',100,'sale','OnSaleDeliveryOrder','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSaleDeliveryOrderHandler','',1),(438,'2019-07-10 13:46:48',100,'sale','OnSaleDeductOrder','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSaleDeductOrderHandler','',1),(439,'2019-07-10 13:46:48',100,'sale','OnSaleCancelOrder','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSaleCancelOrderHandler','',1),(440,'2019-07-10 13:46:48',100,'sale','OnSalePayOrder','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSalePayOrderHandler','',1),(441,'2019-07-10 13:46:48',100,'conversion','OnGetCounterTypes','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onGetCounterTypes','',1),(442,'2019-07-10 13:46:48',100,'conversion','OnGetRateTypes','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onGetRateTypes','',1),(443,'2019-07-10 13:46:48',100,'conversion','OnGenerateInitialData','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onGenerateInitialData','',1),(444,'2019-07-10 13:46:48',100,'sale','OnBeforeBasketAdd','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onBeforeBasketAdd','',1),(445,'2019-07-10 13:46:48',100,'sale','OnBasketAdd','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onBasketAdd','',1),(446,'2019-07-10 13:46:48',100,'sale','OnBeforeBasketUpdate','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onBeforeBasketUpdate','',1),(447,'2019-07-10 13:46:48',100,'sale','OnBasketUpdate','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onBasketUpdate','',1),(448,'2019-07-10 13:46:48',100,'sale','OnBeforeBasketDelete','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onBeforeBasketDelete','',1),(449,'2019-07-10 13:46:48',100,'sale','OnBasketDelete','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onBasketDelete','',1),(450,'2019-07-10 13:46:48',100,'sale','OnOrderAdd','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onOrderAdd','',1),(451,'2019-07-10 13:46:48',100,'sale','OnSalePayOrder','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onSalePayOrder','',1),(452,'2019-07-10 13:46:48',100,'sale','OnGetBusinessValueGroups','sale','','\\Bitrix\\Sale\\PaySystem\\Manager','getBusValueGroups','',1),(453,'2019-07-10 13:46:48',100,'sale','OnGetBusinessValueConsumers','sale','','\\Bitrix\\Sale\\PaySystem\\Manager','getConsumersList','',1),(454,'2019-07-10 13:46:48',100,'sale','OnGetBusinessValueGroups','sale','','\\Bitrix\\Sale\\Delivery\\Services\\Manager','onGetBusinessValueGroups','',1),(455,'2019-07-10 13:46:48',100,'sale','OnGetBusinessValueConsumers','sale','','\\Bitrix\\Sale\\Delivery\\Services\\Manager','onGetBusinessValueConsumers','',1),(456,'2019-07-10 13:46:48',100,'perfmon','OnGetTableSchema','sale','','sale','OnGetTableSchema','',1),(457,'2019-07-10 13:46:48',100,'rest','OnRestServiceBuildDescription','sale','','\\Bitrix\\Sale\\PaySystem\\RestService','onRestServiceBuildDescription','',1),(458,'2019-07-10 13:46:48',100,'main','onNumberGeneratorsClassesCollect','sale','','\\Bitrix\\Sale\\Integration\\Numerator\\OrderIdNumberGenerator','onGeneratorClassesCollect','',2),(459,'2019-07-10 13:46:48',100,'main','onNumberGeneratorsClassesCollect','sale','','\\Bitrix\\Sale\\Integration\\Numerator\\OrderUserOrdersNumberGenerator','onGeneratorClassesCollect','',2),(460,'2019-07-10 13:46:48',100,'main','onBuildNumeratorTemplateWordsList','sale','','\\Bitrix\\Sale\\Integration\\Numerator\\AccountNumberCompatibilityManager','onBuildNumeratorTemplateWordsList','',2),(461,'2019-07-10 13:46:48',100,'main','\\Bitrix\\Main\\Numerator\\Model\\Numerator::OnAfterAdd','sale','','\\Bitrix\\Sale\\Integration\\Numerator\\AccountNumberCompatibilityManager','updateAccountNumberType','',2),(462,'2019-07-10 13:46:48',100,'main','\\Bitrix\\Main\\Numerator\\Model\\Numerator::OnAfterUpdate','sale','','\\Bitrix\\Sale\\Integration\\Numerator\\AccountNumberCompatibilityManager','updateAccountNumberType','',2),(463,'2019-07-10 13:46:48',100,'main','\\Bitrix\\Main\\Numerator\\Model\\Numerator::OnAfterDelete','sale','','\\Bitrix\\Sale\\Integration\\Numerator\\AccountNumberCompatibilityManager','resetAccountNumberType','',2),(464,'2019-07-10 13:46:48',100,'landing','\\Bitrix\\Landing\\Internals\\Site::OnAfterAdd','sale','','\\Bitrix\\Sale\\TradingPlatform\\Landing\\Landing','onLandingSiteAdd','',2),(465,'2019-07-10 13:46:48',100,'landing','\\Bitrix\\Landing\\Internals\\Site::OnAfterDelete','sale','','\\Bitrix\\Sale\\TradingPlatform\\Landing\\Landing','onLandingSiteDelete','',2),(466,'2019-07-10 13:46:48',100,'landing','onBeforeSiteRecycle','sale','','\\Bitrix\\Sale\\TradingPlatform\\Landing\\Landing','onLandingBeforeSiteRecycle','',2),(467,'2019-07-10 13:46:48',100,'sale','OnSaleBasketItemEntitySaved','sale','','\\Bitrix\\Sale\\Internals\\Events','onSaleBasketItemEntitySaved','',2),(468,'2019-07-10 13:46:48',100,'sale','OnSaleBasketItemDeleted','sale','','\\Bitrix\\Sale\\Internals\\Events','onSaleBasketItemDeleted','',2),(469,'2019-07-10 13:46:48',100,'sale','OnCrmOrderBasketItemEntitySaved','sale','','\\Bitrix\\Sale\\Internals\\Events','onSaleBasketItemEntitySaved','',2),(470,'2019-07-10 13:46:48',100,'sale','OnCrmOrderBasketItemDeleted','sale','','\\Bitrix\\Sale\\Internals\\Events','onSaleBasketItemDeleted','',2),(471,'2019-07-10 13:46:49',100,'sale','OnSaleOrderPaid','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onSalePayOrder','',2),(472,'2019-07-10 13:46:49',100,'sale','OnSaleOrderBeforeSaved','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onOrderBeforeSaved','',2),(473,'2019-07-10 13:46:49',100,'sale','OnSaleBeforeOrderDelete','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onBeforeOrderDelete','',2),(474,'2019-07-10 13:46:49',100,'sale','OnSaleOrderDeleted','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onOrderDelete','',2),(475,'2019-07-10 13:46:49',100,'sale','OnShipmentAllowDelivery','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onSaleDeliveryOrder','',2),(476,'2019-07-10 13:46:49',100,'sale','OnSaleBeforeOrderCanceled','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onSaleBeforeCancelOrder','',2),(477,'2019-07-10 13:46:49',100,'sale','OnSaleOrderCanceled','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onSaleCancelOrder','',2),(478,'2019-07-10 13:46:49',500,'sale','OnSaleOrderPaidSendMail','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onSaleOrderPaidSendMail','',2),(479,'2019-07-10 13:46:49',500,'sale','OnSaleOrderCancelSendEmail','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onSaleOrderCancelSendEmail','',2),(480,'2019-07-10 13:46:49',100,'sale','OnSaleOrderEntitySaved','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onOrderSave','',2),(481,'2019-07-10 13:46:49',100,'sale','OnSaleOrderSaved','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onOrderSaved','',2),(482,'2019-07-10 13:46:49',100,'sale','OnSaleBasketItemBeforeSaved','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onBasketItemBeforeChange','',2),(483,'2019-07-10 13:46:49',100,'sale','OnSaleBasketItemEntitySaved','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onBasketItemChange','',2),(484,'2019-07-10 13:46:49',100,'sale','OnShipmentTrackingNumberChange','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onShipmentTrackingNumberChange','',2),(485,'2019-07-10 13:46:49',100,'sale','OnSaleBeforeStatusOrderChange','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onSaleBeforeStatusOrderChange','',2),(486,'2019-07-10 13:46:49',100,'sale','OnSaleStatusOrderChange','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onSaleStatusOrderChange','',2),(487,'2019-07-10 13:46:49',500,'sale','OnSaleOrderStatusChangeSendEmail','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onSaleOrderStatusChangeSendEmail','',2),(488,'2019-07-10 13:46:49',500,'sale','OnSaleOrderSaved','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onOrderNewSendEmail','',2),(489,'2019-07-10 13:46:49',500,'sale','OnOrderNewSendEmail','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onCallOrderNewSendEmail','',1),(490,'2019-07-10 13:46:49',100,'sale','OnBeforeSaleBasketItemEntityDeleted','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','OnBeforeBasketDelete','',2),(491,'2019-07-10 13:46:49',100,'sale','OnSaleBasketItemDeleted','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','OnBasketDelete','',2),(492,'2019-07-10 13:46:49',100,'sale','OnShipmentAllowDelivery','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onShipmentAllowDelivery','',2),(493,'2019-07-10 13:46:49',500,'sale','OnOrderCancelSendEmail','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onCallOrderCancelSendEmail','',1),(494,'2019-07-10 13:46:49',100,'sale','OnSaleOrderSaved','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSaleOrderAddEvent','',2),(495,'2019-07-10 13:46:49',100,'sale','OnSaleStatusOrderChange','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSaleStatusOrderHandlerEvent','',2),(496,'2019-07-10 13:46:49',100,'sale','OnShipmentAllowDelivery','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSaleDeliveryOrderHandlerEvent','',2),(497,'2019-07-10 13:46:49',100,'sale','OnShipmentDeducted','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSaleDeductOrderHandlerEvent','',2),(498,'2019-07-10 13:46:49',100,'sale','OnSaleOrderCanceled','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSaleCancelOrderHandlerEvent','',2),(499,'2019-07-10 13:46:49',100,'sale','OnSaleOrderPaid','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSalePayOrderHandlerEvent','',2),(500,'2019-07-10 13:46:53',100,'main','OnEventLogGetAuditTypes','scale','','\\Bitrix\\Scale\\Logger','onEventLogGetAuditTypes','',1),(501,'2019-07-10 13:46:55',100,'main','OnChangePermissions','search','','CSearch','OnChangeFilePermissions','',1),(502,'2019-07-10 13:46:55',100,'main','OnChangeFile','search','','CSearch','OnChangeFile','',1),(503,'2019-07-10 13:46:55',100,'main','OnGroupDelete','search','','CSearch','OnGroupDelete','',1),(504,'2019-07-10 13:46:55',100,'main','OnLangDelete','search','','CSearch','OnLangDelete','',1),(505,'2019-07-10 13:46:55',100,'main','OnAfterUserUpdate','search','','CSearchUser','OnAfterUserUpdate','',1),(506,'2019-07-10 13:46:55',100,'main','OnUserDelete','search','','CSearchUser','DeleteByUserID','',1),(507,'2019-07-10 13:46:55',100,'cluster','OnGetTableList','search','','search','OnGetTableList','',1),(508,'2019-07-10 13:46:55',100,'perfmon','OnGetTableSchema','search','','search','OnGetTableSchema','',1),(509,'2019-07-10 13:46:55',90,'main','OnEpilog','search','','CSearchStatistic','OnEpilog','',1),(510,'2019-07-10 13:46:58',100,'main','OnUserDelete','security','','CSecurityUser','OnUserDelete','',1),(511,'2019-07-10 13:46:58',100,'main','OnEventLogGetAuditTypes','security','','CSecurityFilter','GetAuditTypes','',1),(512,'2019-07-10 13:46:58',100,'main','OnEventLogGetAuditTypes','security','','CSecurityAntiVirus','GetAuditTypes','',1),(513,'2019-07-10 13:46:58',100,'main','OnAdminInformerInsertItems','security','','CSecurityFilter','OnAdminInformerInsertItems','',1),(514,'2019-07-10 13:46:58',100,'main','OnAdminInformerInsertItems','security','','CSecuritySiteChecker','OnAdminInformerInsertItems','',1),(515,'2019-07-10 13:46:58',5,'main','OnBeforeProlog','security','','CSecurityFilter','OnBeforeProlog','',1),(516,'2019-07-10 13:46:58',9999,'main','OnEndBufferContent','security','','CSecurityXSSDetect','OnEndBufferContent','',1),(517,'2019-07-10 13:46:58',1,'main','OnBeforeLocalRedirect','security','','CSecurityRedirect','BeforeLocalRedirect','',1),(518,'2019-07-10 13:46:58',1,'main','OnEndBufferContent','security','','CSecurityRedirect','EndBufferContent','',1),(519,'2019-07-10 13:47:02',100,'main','OnMailEventMailRead','sender','','bitrix\\sender\\postingmanager','onMailEventMailRead','',1),(520,'2019-07-10 13:47:02',100,'main','OnMailEventMailClick','sender','','bitrix\\sender\\postingmanager','onMailEventMailClick','',1),(521,'2019-07-10 13:47:02',100,'main','OnMailEventSubscriptionDisable','sender','','Bitrix\\Sender\\Subscription','onMailEventSubscriptionDisable','',1),(522,'2019-07-10 13:47:02',100,'main','OnMailEventSubscriptionEnable','sender','','Bitrix\\Sender\\Subscription','onMailEventSubscriptionEnable','',1),(523,'2019-07-10 13:47:02',100,'main','OnMailEventSubscriptionList','sender','','Bitrix\\Sender\\Subscription','onMailEventSubscriptionList','',1),(524,'2019-07-10 13:47:02',100,'main','OnMailEventMailChangeStatus','sender','','Bitrix\\Sender\\Integration\\EventHandler','onMailEventMailChangeStatus','',1),(525,'2019-07-10 13:47:02',100,'sender','OnConnectorList','sender','','bitrix\\sender\\connectormanager','onConnectorListContact','',1),(526,'2019-07-10 13:47:02',100,'sender','OnConnectorList','sender','','bitrix\\sender\\connectormanager','onConnectorListRecipient','',1),(527,'2019-07-10 13:47:02',100,'sender','OnConnectorList','sender','','bitrix\\sender\\connectormanager','onConnectorList','',1),(528,'2019-07-10 13:47:02',100,'sender','OnPresetTemplateList','sender','','Bitrix\\Sender\\Preset\\TemplateBase','onPresetTemplateList','',1),(529,'2019-07-10 13:47:02',100,'sender','OnPresetTemplateList','sender','','Bitrix\\Sender\\TemplateTable','onPresetTemplateList','',1),(530,'2019-07-10 13:47:02',100,'sender','OnPresetMailBlockList','sender','','Bitrix\\Sender\\Preset\\MailBlockBase','OnPresetMailBlockList','',1),(531,'2019-07-10 13:47:02',100,'sender','OnPresetTemplateList','sender','','Bitrix\\Sender\\Preset\\TemplateBase','onPresetTemplateListSite','',1),(532,'2019-07-10 13:47:02',100,'sender','OnTriggerList','sender','','bitrix\\sender\\triggermanager','onTriggerList','',1),(533,'2019-07-10 13:47:02',100,'sender','OnAfterRecipientUnsub','sender','','Bitrix\\Sender\\TriggerManager','onAfterRecipientUnsub','',1),(534,'2019-07-10 13:47:02',100,'sender','OnAfterRecipientClick','sender','','Bitrix\\Sender\\Internals\\ConversionHandler','onAfterRecipientClick','',1),(535,'2019-07-10 13:47:02',100,'conversion','OnSetDayContextAttributes','sender','','Bitrix\\Sender\\Internals\\ConversionHandler','onSetDayContextAttributes','',1),(536,'2019-07-10 13:47:02',100,'main','OnBeforeProlog','sender','','Bitrix\\Sender\\Internals\\ConversionHandler','onBeforeProlog','',1),(537,'2019-07-10 13:47:02',100,'conversion','OnGetAttributeTypes','sender','','Bitrix\\Sender\\Internals\\ConversionHandler','onGetAttributeTypes','',1),(538,'2019-07-10 13:47:02',100,'voximplant','OnInfoCallResult','sender','','Bitrix\\Sender\\Integration\\VoxImplant\\Service','onInfoCallResult','',1),(539,'2019-07-10 13:47:02',100,'sender','OnAfterMailingChainSend','sender','','Bitrix\\Sender\\Trigger\\Manager','onAfterMailingChainSend','',2),(540,'2019-07-10 13:47:02',100,'sender','OnAfterPostingSendRecipient','sender','','Bitrix\\Sender\\Trigger\\Manager','onAfterPostingSendRecipient','',2),(541,'2019-07-10 13:47:06',100,'main','OnPanelCreate','seo','','CSeoEventHandlers','SeoOnPanelCreate','',2),(542,'2019-07-10 13:47:06',100,'fileman','OnIncludeHTMLEditorScript','seo','','CSeoEventHandlers','OnIncludeHTMLEditorScript','',2),(543,'2019-07-10 13:47:06',100,'fileman','OnBeforeHTMLEditorScriptRuns','seo','','CSeoEventHandlers','OnBeforeHTMLEditorScriptRuns','',2),(544,'2019-07-10 13:47:06',100,'iblock','OnAfterIBlockSectionAdd','seo','','\\Bitrix\\Seo\\SitemapIblock','addSection','',2),(545,'2019-07-10 13:47:06',100,'iblock','OnAfterIBlockElementAdd','seo','','\\Bitrix\\Seo\\SitemapIblock','addElement','',2),(546,'2019-07-10 13:47:06',100,'iblock','OnBeforeIBlockSectionDelete','seo','','\\Bitrix\\Seo\\SitemapIblock','beforeDeleteSection','',2),(547,'2019-07-10 13:47:06',100,'iblock','OnBeforeIBlockElementDelete','seo','','\\Bitrix\\Seo\\SitemapIblock','beforeDeleteElement','',2),(548,'2019-07-10 13:47:06',100,'iblock','OnAfterIBlockSectionDelete','seo','','\\Bitrix\\Seo\\SitemapIblock','deleteSection','',2),(549,'2019-07-10 13:47:06',100,'iblock','OnAfterIBlockElementDelete','seo','','\\Bitrix\\Seo\\SitemapIblock','deleteElement','',2),(550,'2019-07-10 13:47:06',100,'iblock','OnBeforeIBlockSectionUpdate','seo','','\\Bitrix\\Seo\\SitemapIblock','beforeUpdateSection','',2),(551,'2019-07-10 13:47:06',100,'iblock','OnBeforeIBlockElementUpdate','seo','','\\Bitrix\\Seo\\SitemapIblock','beforeUpdateElement','',2),(552,'2019-07-10 13:47:06',100,'iblock','OnAfterIBlockSectionUpdate','seo','','\\Bitrix\\Seo\\SitemapIblock','updateSection','',2),(553,'2019-07-10 13:47:06',100,'iblock','OnAfterIBlockElementUpdate','seo','','\\Bitrix\\Seo\\SitemapIblock','updateElement','',2),(554,'2019-07-10 13:47:06',100,'forum','onAfterTopicAdd','seo','','\\Bitrix\\Seo\\SitemapForum','addTopic','',2),(555,'2019-07-10 13:47:06',100,'forum','onAfterTopicUpdate','seo','','\\Bitrix\\Seo\\SitemapForum','updateTopic','',2),(556,'2019-07-10 13:47:06',100,'forum','onAfterTopicDelete','seo','','\\Bitrix\\Seo\\SitemapForum','deleteTopic','',2),(557,'2019-07-10 13:47:06',100,'main','OnAdminIBlockElementEdit','seo','','\\Bitrix\\Seo\\AdvTabEngine','eventHandler','',2),(558,'2019-07-10 13:47:06',100,'main','OnBeforeProlog','seo','','\\Bitrix\\Seo\\AdvSession','checkSession','',2),(559,'2019-07-10 13:47:06',100,'sale','OnOrderSave','seo','','\\Bitrix\\Seo\\AdvSession','onOrderSave','',2),(560,'2019-07-10 13:47:06',100,'sale','OnBasketOrder','seo','','\\Bitrix\\Seo\\AdvSession','onBasketOrder','',2),(561,'2019-07-10 13:47:06',100,'sale','onSalePayOrder','seo','','\\Bitrix\\Seo\\AdvSession','onSalePayOrder','',2),(562,'2019-07-10 13:47:06',100,'sale','onSaleDeductOrder','seo','','\\Bitrix\\Seo\\AdvSession','onSaleDeductOrder','',2),(563,'2019-07-10 13:47:06',100,'sale','onSaleDeliveryOrder','seo','','\\Bitrix\\Seo\\AdvSession','onSaleDeliveryOrder','',2),(564,'2019-07-10 13:47:06',100,'sale','onSaleStatusOrder','seo','','\\Bitrix\\Seo\\AdvSession','onSaleStatusOrder','',2),(565,'2019-07-10 13:47:06',100,'conversion','OnSetDayContextAttributes','seo','','\\Bitrix\\Seo\\ConversionHandler','onSetDayContextAttributes','',2),(566,'2019-07-10 13:47:06',100,'conversion','OnGetAttributeTypes','seo','','\\Bitrix\\Seo\\ConversionHandler','onGetAttributeTypes','',2),(567,'2019-07-10 13:47:06',100,'catalog','OnProductUpdate','seo','','\\Bitrix\\Seo\\Adv\\Auto','checkQuantity','',2),(568,'2019-07-10 13:47:06',100,'catalog','OnProductSetAvailableUpdate','seo','','\\Bitrix\\Seo\\Adv\\Auto','checkQuantity','',2),(569,'2019-07-10 13:47:11',100,'search','OnBeforeFullReindexClear','socialnetwork','','CSocNetSearchReindex','OnBeforeFullReindexClear','',1),(570,'2019-07-10 13:47:11',100,'search','OnBeforeIndexDelete','socialnetwork','','CSocNetSearchReindex','OnBeforeIndexDelete','',1),(571,'2019-07-10 13:47:11',100,'search','OnReindex','socialnetwork','','CSocNetSearch','OnSearchReindex','',1),(572,'2019-07-10 13:47:11',100,'search','OnSearchCheckPermissions','socialnetwork','','CSocNetSearch','OnSearchCheckPermissions','',1),(573,'2019-07-10 13:47:11',100,'search','OnBeforeIndexUpdate','socialnetwork','','CSocNetSearch','OnBeforeIndexUpdate','',1),(574,'2019-07-10 13:47:11',1000,'search','BeforeIndex','socialnetwork','','CSocNetSearch','BeforeIndexLast','',1),(575,'2019-07-10 13:47:11',100,'search','OnAfterIndexAdd','socialnetwork','','CSocNetSearch','OnAfterIndexAdd','',1),(576,'2019-07-10 13:47:11',100,'search','OnSearchPrepareFilter','socialnetwork','','CSocNetSearch','OnSearchPrepareFilter','',1),(577,'2019-07-10 13:47:11',100,'main','OnUserDelete','socialnetwork','','CSocNetUser','OnUserDelete','',1),(578,'2019-07-10 13:47:11',100,'main','OnBeforeUserUpdate','socialnetwork','','CSocNetUser','OnBeforeUserUpdate','',1),(579,'2019-07-10 13:47:11',100,'main','OnAfterUserUpdate','socialnetwork','','CSocNetUser','OnAfterUserUpdate','',1),(580,'2019-07-10 13:47:11',100,'main','OnAfterUserAdd','socialnetwork','','CSocNetUser','OnAfterUserAdd','',1),(581,'2019-07-10 13:47:11',100,'main','OnAfterUserLogout','socialnetwork','','CSocNetUser','OnAfterUserLogout','',1),(582,'2019-07-10 13:47:11',100,'main','OnBeforeProlog','main','/modules/socialnetwork/prolog_before.php','','','',1),(583,'2019-07-10 13:47:11',100,'main','OnBeforeLangDelete','socialnetwork','','CSocNetGroup','OnBeforeLangDelete','',1),(584,'2019-07-10 13:47:11',100,'socialnetwork','OnSocNetLogFormatEvent','socialnetwork','','CSocNetLog','OnSocNetLogFormatEvent','',1),(585,'2019-07-10 13:47:11',100,'photogallery','OnAfterUpload','socialnetwork','','CSocNetLogTools','OnAfterPhotoUpload','',1),(586,'2019-07-10 13:47:11',100,'photogallery','OnAfterPhotoDrop','socialnetwork','','CSocNetLogTools','OnAfterPhotoDrop','',1),(587,'2019-07-10 13:47:11',100,'photogallery','OnBeforeSectionDrop','socialnetwork','','CSocNetLogTools','OnBeforeSectionDrop','',1),(588,'2019-07-10 13:47:11',100,'photogallery','OnAfterSectionDrop','socialnetwork','','CSocNetLogTools','OnAfterSectionDrop','',1),(589,'2019-07-10 13:47:11',100,'photogallery','OnAfterSectionEdit','socialnetwork','','CSocNetLogTools','OnAfterSectionEdit','',1),(590,'2019-07-10 13:47:11',100,'main','OnAuthProvidersBuildList','socialnetwork','','CSocNetGroupAuthProvider','GetProviders','',1),(591,'2019-07-10 13:47:11',100,'im','OnBeforeConfirmNotify','socialnetwork','','CSocNetUserToGroup','OnBeforeConfirmNotify','',1),(592,'2019-07-10 13:47:11',100,'im','OnBeforeConfirmNotify','socialnetwork','','CSocNetUserRelations','OnBeforeConfirmNotify','',1),(593,'2019-07-10 13:47:11',100,'im','OnBeforeConfirmNotify','socialnetwork','','CSocNetLogFollow','OnBeforeConfirmNotify','',1),(594,'2019-07-10 13:47:11',100,'im','OnGetNotifySchema','socialnetwork','','CSocNetNotifySchema','OnGetNotifySchema','',1),(595,'2019-07-10 13:47:11',100,'im','OnAfterChatMuteNotify','socialnetwork','','CSocNetSubscription','OnAfterChatMuteNotify','',1),(596,'2019-07-10 13:47:11',100,'pull','OnGetDependentModule','socialnetwork','','CSocNetPullSchema','OnGetDependentModule','',1),(597,'2019-07-10 13:47:11',100,'main','OnUserInitialize','socialnetwork','','CSocNetUser','OnUserInitialize','',1),(598,'2019-07-10 13:47:11',100,'blog','OnBlogDelete','socialnetwork','','CSocNetLogComments','OnBlogDelete','',1),(599,'2019-07-10 13:47:11',200,'blog','OnBlogDelete','socialnetwork','','CSocNetLog','OnBlogDelete','',1),(600,'2019-07-10 13:47:11',100,'blog','OnBlogPostMentionNotifyIm','socialnetwork','','CSocNetLogFollow','OnBlogPostMentionNotifyIm','',1),(601,'2019-07-10 13:47:11',100,'rest','OnRestServiceBuildDescription','socialnetwork','','CSocNetLogRestService','OnRestServiceBuildDescription','',1),(602,'2019-07-10 13:47:11',100,'main','OnAfterRegisterModule','main','/modules/socialnetwork/install/index.php','socialnetwork','InstallUserFields','',1),(603,'2019-07-10 13:47:11',100,'forum','OnAfterCommentAdd','socialnetwork','','CSocNetForumComments','onAfterCommentAdd','',1),(604,'2019-07-10 13:47:11',100,'forum','OnAfterCommentUpdate','socialnetwork','','CSocNetForumComments','OnAfterCommentUpdate','',1),(605,'2019-07-10 13:47:11',100,'main','OnAfterSetUserGroup','socialnetwork','','CSocNetUser','DeleteUserAdminCache','',1),(606,'2019-07-10 13:47:11',100,'main','OnAfterSetGroupRight','socialnetwork','','CSocNetUser','DeleteUserAdminCache','',1),(607,'2019-07-10 13:47:11',100,'main','OnAfterDelGroupRight','socialnetwork','','CSocNetUser','DeleteUserAdminCache','',1),(608,'2019-07-10 13:47:11',100,'main','OnAfterUserAdd','socialnetwork','','\\Bitrix\\Socialnetwork\\Item\\UserToGroup','onAfterUserAdd','',1),(609,'2019-07-10 13:47:11',100,'main','OnAfterUserUpdate','socialnetwork','','\\Bitrix\\Socialnetwork\\Item\\UserToGroup','onAfterUserUpdate','',1),(610,'2019-07-10 13:47:11',100,'main','OnGetRatingContentOwner','socialnetwork','','\\Bitrix\\Socialnetwork\\Integration\\Main\\RatingVote','onGetRatingContentOwner','',1),(611,'2019-07-10 13:47:11',100,'iblock','OnBeforeIBlockSectionUpdate','socialnetwork','','\\Bitrix\\Socialnetwork\\Item\\Workgroup','onBeforeIBlockSectionUpdate','',1),(612,'2019-07-10 13:47:11',100,'iblock','OnAfterIBlockSectionUpdate','socialnetwork','','\\Bitrix\\Socialnetwork\\Item\\Workgroup','onAfterIBlockSectionUpdate','',1),(613,'2019-07-10 13:47:11',100,'iblock','onBeforeIBlockSectionDelete','socialnetwork','','\\Bitrix\\Socialnetwork\\Item\\Workgroup','onBeforeIBlockSectionDelete','',1),(614,'2019-07-10 13:47:11',100,'iblock','OnAfterIBlockSectionDelete','socialnetwork','','\\Bitrix\\Socialnetwork\\Item\\Workgroup','onAfterIBlockSectionDelete','',1),(615,'2019-07-10 13:47:11',100,'mail','onReplyReceivedLOG_ENTRY','socialnetwork','','\\Bitrix\\Socialnetwork\\Internals\\MailHandler','handleReplyReceivedLogEntry','',2),(616,'2019-07-10 13:47:11',100,'main','OnUISelectorActionProcessAjax','socialnetwork','','\\Bitrix\\Socialnetwork\\Integration\\Main\\UISelector\\Handler','OnUISelectorActionProcessAjax','',2),(617,'2019-07-10 13:47:11',100,'main','OnUISelectorEntitiesGetList','socialnetwork','','\\Bitrix\\Socialnetwork\\Integration\\Main\\UISelector\\Handler','OnUISelectorEntitiesGetList','',2),(618,'2019-07-10 13:47:11',100,'main','OnUISelectorGetProviderByEntityType','socialnetwork','','\\Bitrix\\Socialnetwork\\Integration\\Main\\UISelector\\Handler','OnUISelectorGetProviderByEntityType','',2),(619,'2019-07-10 13:47:11',100,'tasks','onTaskUpdateViewed','socialnetwork','','\\Bitrix\\Socialnetwork\\Integration\\Tasks\\Task','onTaskUpdateViewed','',2),(620,'2019-07-10 13:47:11',100,'calendar','onViewEvent','socialnetwork','','\\Bitrix\\Socialnetwork\\Integration\\Calendar\\CalendarEvent','onViewEvent','',2),(621,'2019-07-10 13:47:11',100,'main','onRatingListViewed','socialnetwork','','\\Bitrix\\Socialnetwork\\Integration\\Main\\RatingVoteList','onViewed','',2),(622,'2019-07-10 13:47:11',100,'mobile','onSetContentView','socialnetwork','','\\Bitrix\\Socialnetwork\\Integration\\Mobile\\LogEntry','onSetContentView','',2),(623,'2019-07-10 13:47:11',100,'mobile','onGetContentId','socialnetwork','','\\Bitrix\\Socialnetwork\\Integration\\Mobile\\LogEntry','onGetContentId','',2),(624,'2019-07-10 13:47:11',100,'pull','onGetMobileCounter','socialnetwork','','\\Bitrix\\Socialnetwork\\Integration\\Pull\\Counter','onGetMobileCounter','',2),(625,'2019-07-10 13:47:11',100,'pull','onGetMobileCounterTypes','socialnetwork','','\\Bitrix\\Socialnetwork\\Integration\\Pull\\Counter','onGetMobileCounterTypes','',2),(626,'2019-07-10 13:47:11',100,'intranet','onEmployeeDepartmentsChanged','socialnetwork','','\\Bitrix\\Socialnetwork\\Integration\\Intranet\\Structure\\Employee','onEmployeeDepartmentsChanged','',2),(627,'2019-07-10 13:47:11',100,'socialnetwork','\\Bitrix\\Socialnetwork\\Log::OnAfterUpdate','socialnetwork','','\\Bitrix\\Socialnetwork\\Item\\LogRight','OnAfterLogUpdate','',2),(628,'2019-07-10 13:47:11',100,'socialnetwork','\\Bitrix\\Socialnetwork\\Log::OnAfterUpdate','socialnetwork','','\\Bitrix\\Socialnetwork\\Item\\LogIndex','OnAfterLogUpdate','',2),(629,'2019-07-10 13:47:17',100,'main','OnUserDelete','socialservices','','CSocServAuthDB','OnUserDelete','',1),(630,'2019-07-10 13:47:17',100,'timeman','OnAfterTMReportDailyAdd','socialservices','','CSocServAuthDB','OnAfterTMReportDailyAdd','',1),(631,'2019-07-10 13:47:17',100,'timeman','OnAfterTMDayStart','socialservices','','CSocServAuthDB','OnAfterTMDayStart','',1),(632,'2019-07-10 13:47:17',100,'timeman','OnTimeManShow','socialservices','','CSocServEventHandlers','OnTimeManShow','',1),(633,'2019-07-10 13:47:17',100,'main','OnFindExternalUser','socialservices','','CSocServAuthDB','OnFindExternalUser','',1),(634,'2019-07-10 13:47:17',100,'socialservices','OnFindSocialservicesUser','socialservices','','CSocServAuthManager','checkOldUser','',1),(635,'2019-07-10 13:47:17',100,'socialservices','OnFindSocialservicesUser','socialservices','','CSocServAuthManager','checkAbandonedUser','',1),(636,'2019-07-10 13:47:22',100,'main','OnPageStart','statistic','','CStopList','Check','',1),(637,'2019-07-10 13:47:22',100,'main','OnBeforeProlog','statistic','','CStatistics','Keep','',1),(638,'2019-07-10 13:47:22',100,'main','OnEpilog','statistic','','CStatistics','Set404','',1),(639,'2019-07-10 13:47:22',1000,'main','OnBeforeProlog','statistic','','CStatistics','StartBuffer','',1),(640,'2019-07-10 13:47:22',10,'main','OnAfterEpilog','statistic','','CStatistics','EndBuffer','',1),(641,'2019-07-10 13:47:22',10,'main','OnEventLogGetAuditTypes','statistic','','CStatistics','GetAuditTypes','',1),(642,'2019-07-10 13:47:22',100,'statistic','OnCityLookup','statistic','','CCityLookup_geoip_mod','OnCityLookup','',1),(643,'2019-07-10 13:47:22',200,'statistic','OnCityLookup','statistic','','CCityLookup_geoip_extension','OnCityLookup','',1),(644,'2019-07-10 13:47:22',300,'statistic','OnCityLookup','statistic','','CCityLookup_geoip_pure','OnCityLookup','',1),(645,'2019-07-10 13:47:22',400,'statistic','OnCityLookup','statistic','','CCityLookup_stat_table','OnCityLookup','',1),(646,'2019-07-10 13:47:22',100,'cluster','OnGetTableList','statistic','','statistic','OnGetTableList','',1),(647,'2019-07-10 13:47:48',100,'main','OnPrologAdminTitle','storeassist','','CStoreAssist','onPrologAdminTitle','',1),(648,'2019-07-10 13:47:48',100,'main','OnBuildGlobalMenu','storeassist','','CStoreAssist','onBuildGlobalMenu','',1),(649,'2019-07-10 13:47:49',100,'main','OnBeforeLangDelete','subscribe','','CRubric','OnBeforeLangDelete','',1),(650,'2019-07-10 13:47:49',100,'main','OnUserDelete','subscribe','','CSubscription','OnUserDelete','',1),(651,'2019-07-10 13:47:49',100,'main','OnUserLogout','subscribe','','CSubscription','OnUserLogout','',1),(652,'2019-07-10 13:47:49',100,'main','OnGroupDelete','subscribe','','CPosting','OnGroupDelete','',1),(653,'2019-07-10 13:47:49',100,'sender','OnConnectorList','subscribe','','Bitrix\\Subscribe\\SenderEventHandler','onConnectorListSubscriber','',1),(654,'2019-07-10 13:47:53',100,'main','OnPanelCreate','translate','','CTranslateEventHandlers','TranslatOnPanelCreate','',1),(655,'2019-07-10 13:47:56',100,'main','OnBeforeProlog','main','/modules/vote/keepvoting.php','','','',1),(656,'2019-07-10 13:47:56',200,'main','OnUserTypeBuildList','vote','','Bitrix\\Vote\\Uf\\VoteUserType','getUserTypeDescription','',1),(657,'2019-07-10 13:47:56',200,'main','OnUserLogin','vote','','CVoteUser','OnUserLogin','',1),(658,'2019-07-10 13:47:56',100,'im','OnGetNotifySchema','vote','','CVoteNotifySchema','OnGetNotifySchema','',1),(659,'2019-07-10 13:47:59',200,'main','OnAddRatingVote','wiki','','CRatingsComponentsWiki','OnAddRatingVote','',1),(660,'2019-07-10 13:47:59',200,'main','OnCancelRatingVote','wiki','','CRatingsComponentsWiki','OnCancelRatingVote','',1),(661,'2019-07-10 13:47:59',100,'search','BeforeIndex','wiki','','CRatingsComponentsWiki','BeforeIndex','',1),(662,'2019-07-10 13:47:59',100,'socialnetwork','BeforeIndexSocNet','wiki','','CWikiSocNet','BeforeIndexSocNet','',1),(663,'2019-07-10 13:47:59',100,'im','OnGetNotifySchema','wiki','','CWikiNotifySchema','OnGetNotifySchema','',1),(664,'2019-07-10 13:47:59',100,'socialnetwork','onLogIndexGetContent','wiki','','\\Bitrix\\Wiki\\Integration\\Socialnetwork\\Log','onIndexGetContent','',2),(665,'2019-07-10 13:48:01',200,'main','OnPanelCreate','workflow','','CWorkflow','OnPanelCreate','',1),(666,'2019-07-10 13:48:01',100,'main','OnChangeFile','workflow','','CWorkflow','OnChangeFile','',1),(667,'2019-07-10 13:48:24',100,'main','OnBeforeProlog','main','/modules/main/install/wizard_sol/panel_button.php','CWizardSolPanel','ShowPanel','',1);
+INSERT INTO `b_module_to_module` VALUES (1,'2019-10-17 11:02:32',100,'iblock','OnIBlockPropertyBuildList','main','/modules/main/tools/prop_userid.php','CIBlockPropertyUserID','GetUserTypeDescription','',1,'2b30c309bf87645959b9bfbed51b49c6'),(2,'2019-10-17 11:02:32',100,'main','OnUserDelete','main','/modules/main/classes/mysql/favorites.php','CFavorites','OnUserDelete','',1,'f437e170e4daf957766b0b0579f08fb4'),(3,'2019-10-17 11:02:32',100,'main','OnLanguageDelete','main','/modules/main/classes/mysql/favorites.php','CFavorites','OnLanguageDelete','',1,'9211999c5cfc3a4d374e4f957d5079f6'),(4,'2019-10-17 11:02:32',100,'main','OnUserDelete','main','','CUserOptions','OnUserDelete','',1,'9ef4e969f975b6425c7113444d210a90'),(5,'2019-10-17 11:02:32',100,'main','OnChangeFile','main','','CMain','OnChangeFileComponent','',1,'332179402f77c4d41c6c2e524acde4d0'),(6,'2019-10-17 11:02:32',100,'main','OnUserTypeRightsCheck','main','','CUser','UserTypeRightsCheck','',1,'e1aae03ea8eb08e7bbb6d8d42cbc2ebe'),(7,'2019-10-17 11:02:32',100,'main','OnUserLogin','main','','UpdateTools','CheckUpdates','',1,'a2986b9f6e9a99c0351c2ba858dafc85'),(8,'2019-10-17 11:02:32',100,'main','OnModuleUpdate','main','','UpdateTools','SetUpdateResult','',1,'f9b70c6a75b6341063b23bde5d32e582'),(9,'2019-10-17 11:02:32',100,'main','OnUpdateCheck','main','','UpdateTools','SetUpdateError','',1,'a0aecef95a192ec3dd134f71f0f4f175'),(10,'2019-10-17 11:02:32',100,'main','OnPanelCreate','main','','CUndo','CheckNotifyMessage','',1,'6476f96ffba6ab2b4a7dbe644f42edf6'),(11,'2019-10-17 11:02:32',100,'main','OnAfterAddRating','main','','CRatingsComponentsMain','OnAfterAddRating','',1,'6122bee2ad083f8f72e35655cee48859'),(12,'2019-10-17 11:02:32',100,'main','OnAfterUpdateRating','main','','CRatingsComponentsMain','OnAfterUpdateRating','',1,'f8f806e33dc35737bdbe6b9bc42626a4'),(13,'2019-10-17 11:02:32',100,'main','OnSetRatingsConfigs','main','','CRatingsComponentsMain','OnSetRatingConfigs','',1,'9244ca7fd6964757ca191c9407cb1218'),(14,'2019-10-17 11:02:32',100,'main','OnGetRatingsConfigs','main','','CRatingsComponentsMain','OnGetRatingConfigs','',1,'d8ae8e1f8889b1fbb6af276fb14c8411'),(15,'2019-10-17 11:02:32',100,'main','OnGetRatingsObjects','main','','CRatingsComponentsMain','OnGetRatingObject','',1,'129315715250c195ee115002b445a156'),(16,'2019-10-17 11:02:32',100,'main','OnGetRatingContentOwner','main','','CRatingsComponentsMain','OnGetRatingContentOwner','',1,'bf1f5deaa1532fe9a28acd6d19d23a80'),(17,'2019-10-17 11:02:32',100,'main','OnAfterAddRatingRule','main','','CRatingRulesMain','OnAfterAddRatingRule','',1,'298e763431f7f7d6c3af9798663f410d'),(18,'2019-10-17 11:02:32',100,'main','OnAfterUpdateRatingRule','main','','CRatingRulesMain','OnAfterUpdateRatingRule','',1,'4ecdc4a15e24c49f0fa8f44064bf1511'),(19,'2019-10-17 11:02:32',100,'main','OnGetRatingRuleObjects','main','','CRatingRulesMain','OnGetRatingRuleObjects','',1,'6ac10928b76183004ba0e88ace0a1b5b'),(20,'2019-10-17 11:02:32',100,'main','OnGetRatingRuleConfigs','main','','CRatingRulesMain','OnGetRatingRuleConfigs','',1,'06769c4f6bbba4fad79c1619a874ee97'),(21,'2019-10-17 11:02:32',100,'main','OnAfterUserAdd','main','','CRatings','OnAfterUserRegister','',1,'ecb9ae0476db69da6c95b06bcb3aebbb'),(22,'2019-10-17 11:02:32',100,'main','OnUserDelete','main','','CRatings','OnUserDelete','',1,'9fe6984fd29b7ab9508ac02c23690094'),(23,'2019-10-17 11:02:32',100,'main','OnUserDelete','main','','CAccess','OnUserDelete','',1,'71909f221d70fa277429e80412f97f41'),(24,'2019-10-17 11:02:32',100,'main','OnAfterGroupAdd','main','','CGroupAuthProvider','OnAfterGroupAdd','',1,'02f2fe70b9068a6b307192321fe74430'),(25,'2019-10-17 11:02:32',100,'main','OnBeforeGroupUpdate','main','','CGroupAuthProvider','OnBeforeGroupUpdate','',1,'ef0f2e4d0ae7bbf59d0798e8078143f9'),(26,'2019-10-17 11:02:32',100,'main','OnBeforeGroupDelete','main','','CGroupAuthProvider','OnBeforeGroupDelete','',1,'d3ec9527c0e77709402a05ae4249afca'),(27,'2019-10-17 11:02:32',100,'main','OnAfterSetUserGroup','main','','CGroupAuthProvider','OnAfterSetUserGroup','',1,'0de6c5b48e9382f6e857d79f76d95f25'),(28,'2019-10-17 11:02:32',100,'main','OnUserLogin','main','','CGroupAuthProvider','OnUserLogin','',1,'954e2c4ca8624f90f1aee6f40183d5fc'),(29,'2019-10-17 11:02:32',100,'main','OnEventLogGetAuditTypes','main','','CEventMain','GetAuditTypes','',1,'ac0b8b7a5e703131a3bd41b4399bc032'),(30,'2019-10-17 11:02:32',100,'main','OnEventLogGetAuditHandlers','main','','CEventMain','MakeMainObject','',1,'1ddb38ccf35a8a9da5d3b2bc80591ad6'),(31,'2019-10-17 11:02:32',100,'perfmon','OnGetTableSchema','main','','CTableSchema','OnGetTableSchema','',1,'c1f65f88d449e8b8a3b7af9d54ef3f50'),(32,'2019-10-17 11:02:32',100,'sender','OnConnectorList','main','','\\Bitrix\\Main\\SenderEventHandler','onConnectorListUser','',1,'8af99568465a1ccdb6a84e868cf5aad8'),(33,'2019-10-17 11:02:32',110,'main','OnUserTypeBuildList','main','','CUserTypeString','GetUserTypeDescription','',1,'09f8200652932044934bd3c522e920c5'),(34,'2019-10-17 11:02:32',120,'main','OnUserTypeBuildList','main','','CUserTypeInteger','GetUserTypeDescription','',1,'71ef247b3eb3b07e4bd6940791b89497'),(35,'2019-10-17 11:02:32',130,'main','OnUserTypeBuildList','main','','CUserTypeDouble','GetUserTypeDescription','',1,'4fe2008255fe567423cc0c2f080ca741'),(36,'2019-10-17 11:02:32',140,'main','OnUserTypeBuildList','main','','CUserTypeDateTime','GetUserTypeDescription','',1,'686c0679e60bee52dbcc27f5502277b6'),(37,'2019-10-17 11:02:32',145,'main','OnUserTypeBuildList','main','','CUserTypeDate','GetUserTypeDescription','',1,'7e19b5fc5fc48b1cd317a6ac44d84236'),(38,'2019-10-17 11:02:32',150,'main','OnUserTypeBuildList','main','','CUserTypeBoolean','GetUserTypeDescription','',1,'4d5e1dd2369089f2db9480549241205f'),(39,'2019-10-17 11:02:32',155,'main','OnUserTypeBuildList','main','','CUserTypeUrl','GetUserTypeDescription','',1,'79fcd650625b296abf13216cd5af2428'),(40,'2019-10-17 11:02:32',160,'main','OnUserTypeBuildList','main','','CUserTypeFile','GetUserTypeDescription','',1,'67b9a4fbc45240a7887b73e3a246eba0'),(41,'2019-10-17 11:02:32',170,'main','OnUserTypeBuildList','main','','CUserTypeEnum','GetUserTypeDescription','',1,'fbebdb289fe38c1fbfeda4d3d8ee43ef'),(42,'2019-10-17 11:02:32',180,'main','OnUserTypeBuildList','main','','CUserTypeIBlockSection','GetUserTypeDescription','',1,'2065f8305645790970bac0b99f127f47'),(43,'2019-10-17 11:02:32',190,'main','OnUserTypeBuildList','main','','CUserTypeIBlockElement','GetUserTypeDescription','',1,'65bda5818e3545f1683a3ff5271cc891'),(44,'2019-10-17 11:02:32',200,'main','OnUserTypeBuildList','main','','CUserTypeStringFormatted','GetUserTypeDescription','',1,'47e3cf1c280e01dbaed43f9989a6747b'),(45,'2019-10-17 11:02:32',210,'main','OnUserTypeBuildList','main','','\\Bitrix\\Main\\UrlPreview\\UrlPreviewUserType','getUserTypeDescription','',1,'719d15ee5f60f6348d2bd6a8911aeed1'),(46,'2019-10-17 11:02:32',100,'main','OnBeforeEndBufferContent','main','','\\Bitrix\\Main\\Analytics\\Counter','onBeforeEndBufferContent','',1,'ff5eb984fe6ce3e8d769bf3ba646b902'),(47,'2019-10-17 11:02:32',100,'main','OnBeforeRestartBuffer','main','','\\Bitrix\\Main\\Analytics\\Counter','onBeforeRestartBuffer','',1,'0782f5a6df6dd52d834caea88c3ba3a7'),(48,'2019-10-17 11:02:32',100,'main','OnFileDelete','main','','\\Bitrix\\Main\\UI\\Viewer\\FilePreviewTable','onFileDelete','',1,'54c80cd94412db221338aeb59902f059'),(49,'2019-10-17 11:02:32',100,'disk','onAfterAjaxActionCreateFolderWithSharing','main','','\\Bitrix\\Main\\FinderDestTable','onAfterDiskAjaxAction','',1,'bfd508b9d33aff2527add538ca8ce0da'),(50,'2019-10-17 11:02:32',100,'disk','onAfterAjaxActionAppendSharing','main','','\\Bitrix\\Main\\FinderDestTable','onAfterDiskAjaxAction','',1,'a98030c3e6d284d10916eadb1153cb68'),(51,'2019-10-17 11:02:32',100,'disk','onAfterAjaxActionChangeSharingAndRights','main','','\\Bitrix\\Main\\FinderDestTable','onAfterDiskAjaxAction','',1,'6787372096415bcfe93bd50d8b24f608'),(52,'2019-10-17 11:02:32',100,'socialnetwork','OnSocNetLogDelete','main','','CUserCounter','OnSocNetLogDelete','',1,'33e603755a0bc07abd51a1f8ed52966e'),(53,'2019-10-17 11:02:32',100,'socialnetwork','OnSocNetLogCommentDelete','main','','CUserCounter','OnSocNetLogCommentDelete','',1,'51ee2214895be904a880046f43e84138'),(54,'2019-10-17 11:02:32',100,'main','OnAdminInformerInsertItems','main','','CMpNotifications','OnAdminInformerInsertItemsHandlerMP','',1,'c89c0e94ac1110c334a24c70e1773daa'),(55,'2019-10-17 11:02:32',100,'rest','OnRestServiceBuildDescription','main','','\\Bitrix\\Main\\Rest\\Handlers','onRestServiceBuildDescription','',1,'c0b0c358a21b648d4f9c5d29d17a5ab2'),(56,'2019-10-17 11:02:32',100,'sale','OnSaleBasketItemSaved','main','','\\Bitrix\\Main\\Analytics\\Catalog','catchCatalogBasket','',2,'fa4fc3924ff2585e92f8bdabaf287864'),(57,'2019-10-17 11:02:32',100,'sale','OnSaleOrderSaved','main','','\\Bitrix\\Main\\Analytics\\Catalog','catchCatalogOrder','',2,'6b358bb17b30da91b105fb1451ed9aaa'),(58,'2019-10-17 11:02:32',100,'sale','OnSaleOrderPaid','main','','\\Bitrix\\Main\\Analytics\\Catalog','catchCatalogOrderPayment','',2,'8f5ca6e1c5136cb4bbf30474f0ff4183'),(59,'2019-10-17 11:02:32',1000,'sale','onBuildDiscountConditionInterfaceControls','main','','\\Bitrix\\Main\\Discount\\UserConditionControl','onBuildDiscountConditionInterfaceControls','',1,'9f0d91c081704e52b52f540b3acaf52e'),(60,'2019-10-17 11:02:32',100,'main','OnBeforePhpMail','main','','\\Bitrix\\Main\\Mail\\Sender','applyCustomSmtp','',2,'10fbf5b8dec05a02d8d7010e594f16ec'),(61,'2019-10-17 11:02:32',100,'main','OnBuildFilterFactoryMethods','main','','\\Bitrix\\Main\\Filter\\FactoryMain','onBuildFilterFactoryMethods','',2,'19f10c2686a955bd8b8116ea1f1ad829'),(62,'2019-10-17 11:02:38',100,'main','OnGetCurrentSiteTemplate','abtest','','\\Bitrix\\ABTest\\EventHandler','onGetCurrentSiteTemplate','',2,'60d538ac3cd74b48090c03bc66abd140'),(63,'2019-10-17 11:02:38',100,'main','OnFileRewrite','abtest','','\\Bitrix\\ABTest\\EventHandler','onFileRewrite','',2,'aa8cc0e27725772a1d4e6b918153df5b'),(64,'2019-10-17 11:02:38',100,'main','OnPageStart','abtest','','\\Bitrix\\ABTest\\EventHandler','onPageStart','',1,'5306ab7d79c018f275a2532408edd681'),(65,'2019-10-17 11:02:38',100,'main','OnPanelCreate','abtest','','\\Bitrix\\ABTest\\EventHandler','onPanelCreate','',1,'6dcaad114976a562ed063610737fbc47'),(66,'2019-10-17 11:02:38',100,'conversion','OnGetAttributeTypes','abtest','','\\Bitrix\\ABTest\\EventHandler','onGetAttributeTypes','',1,'661d636871147c62f9765e2e0e62b61d'),(67,'2019-10-17 11:02:38',100,'conversion','OnSetDayContextAttributes','abtest','','\\Bitrix\\ABTest\\EventHandler','onConversionSetContextAttributes','',1,'e11e780040f6e6e1fd5a648ed28d5d98'),(68,'2019-10-17 11:02:39',100,'main','OnBuildGlobalMenu','b24connector','','\\Bitrix\\B24Connector\\Helper','onBuildGlobalMenu','',1,'9c4452a442bacc2d4d70635962485be1'),(69,'2019-10-17 11:02:39',100,'main','OnBeforeProlog','b24connector','','\\Bitrix\\B24Connector\\Helper','onBeforeProlog','',1,'641053ff6ee8ff57518d7c30724530e5'),(70,'2019-10-17 11:02:41',100,'main','OnBeforeProlog','bitrix.eshop','','CEShop','ShowPanel','',1,'248b97b3af12fc019148a95482208075'),(71,'2019-10-17 11:02:42',100,'main','OnBeforeProlog','bitrix.sitecorporate','','CSiteCorporate','ShowPanel','',1,'bc7c322534797a9ed3493c40e1b8fdac'),(72,'2019-10-17 11:02:43',100,'main','OnAdminInformerInsertItems','bitrixcloud','','CBitrixCloudBackup','OnAdminInformerInsertItems','',1,'5499039afdd0fdb38d4b245c8b886dcb'),(73,'2019-10-17 11:02:43',100,'mobileapp','OnBeforeAdminMobileMenuBuild','bitrixcloud','','CBitrixCloudMobile','OnBeforeAdminMobileMenuBuild','',1,'5828a8cdb2cc45e2724ef1c76139df88'),(74,'2019-10-17 11:02:46',100,'search','OnReindex','blog','','CBlogSearch','OnSearchReindex','',1,'6c23ebfcdfc99d14541ad083b0ee7430'),(75,'2019-10-17 11:02:46',100,'main','OnUserDelete','blog','','CBlogUser','Delete','',1,'9e7cb3d757ecbfea5e1a218afcf30589'),(76,'2019-10-17 11:02:46',100,'main','OnSiteDelete','blog','','CBlogSitePath','DeleteBySiteID','',1,'33b1b3449b56990b745b251f3976521d'),(77,'2019-10-17 11:02:46',100,'socialnetwork','OnSocNetGroupDelete','blog','','CBlogSoNetPost','OnGroupDelete','',1,'4fa06723b7108652d8f6846f17c4bfda'),(78,'2019-10-17 11:02:46',100,'socialnetwork','OnSocNetFeaturesAdd','blog','','CBlogSearch','SetSoNetFeatureIndexSearch','',1,'5e642b195637a47eda278a2f769d72ae'),(79,'2019-10-17 11:02:46',100,'socialnetwork','OnSocNetFeaturesUpdate','blog','','CBlogSearch','SetSoNetFeatureIndexSearch','',1,'94116bd773c35830e32cabd264e1deac'),(80,'2019-10-17 11:02:46',100,'socialnetwork','OnBeforeSocNetFeaturesPermsAdd','blog','','CBlogSearch','OnBeforeSocNetFeaturesPermsAdd','',1,'ef99702762ccf8958b3bd05a0bc2bd21'),(81,'2019-10-17 11:02:46',100,'socialnetwork','OnSocNetFeaturesPermsAdd','blog','','CBlogSearch','SetSoNetFeaturePermIndexSearch','',1,'7e78a43487928787ac0665eb1eade0d5'),(82,'2019-10-17 11:02:46',100,'socialnetwork','OnBeforeSocNetFeaturesPermsUpdate','blog','','CBlogSearch','OnBeforeSocNetFeaturesPermsUpdate','',1,'13116dc44040b680c93a2b7f60ff2845'),(83,'2019-10-17 11:02:46',100,'socialnetwork','OnSocNetFeaturesPermsUpdate','blog','','CBlogSearch','SetSoNetFeaturePermIndexSearch','',1,'06ae1cde11216c73393f8720c0f31ea9'),(84,'2019-10-17 11:02:46',200,'main','OnAfterAddRating','blog','','CRatingsComponentsBlog','OnAfterAddRating','',1,'6dd70a97fa5c2f15e619721007813bd0'),(85,'2019-10-17 11:02:46',200,'main','OnAfterUpdateRating','blog','','CRatingsComponentsBlog','OnAfterUpdateRating','',1,'a2f4b906bc5e1e984c28ef37728d7007'),(86,'2019-10-17 11:02:46',200,'main','OnSetRatingsConfigs','blog','','CRatingsComponentsBlog','OnSetRatingConfigs','',1,'4461c77de3ca9dec12cd66c9554555a0'),(87,'2019-10-17 11:02:46',200,'main','OnGetRatingsConfigs','blog','','CRatingsComponentsBlog','OnGetRatingConfigs','',1,'6708964800c60ed28bb3ac095494d0f8'),(88,'2019-10-17 11:02:46',200,'main','OnGetRatingsObjects','blog','','CRatingsComponentsBlog','OnGetRatingObject','',1,'29df09132203259924e883921fed0971'),(89,'2019-10-17 11:02:46',200,'main','OnGetRatingContentOwner','blog','','CRatingsComponentsBlog','OnGetRatingContentOwner','',1,'a47b921e59710bdca16e2284d11e8aa0'),(90,'2019-10-17 11:02:46',100,'im','OnGetNotifySchema','blog','','CBlogNotifySchema','OnGetNotifySchema','',1,'cd6910b2ee2dd66f257a68a6406b9f79'),(91,'2019-10-17 11:02:46',100,'im','OnAnswerNotify','blog','','CBlogNotifySchema','CBlogEventsIMCallback','',1,'890d3be770eab6025cc54e120d3b51f5'),(92,'2019-10-17 11:02:46',100,'main','OnAfterRegisterModule','main','/modules/blog/install/index.php','blog','installUserFields','',1,'bfd07861166a9d51c1d21d18b291a1dc'),(93,'2019-10-17 11:02:46',100,'conversion','OnGetCounterTypes','blog','','\\Bitrix\\Blog\\Internals\\ConversionHandlers','onGetCounterTypes','',1,'e5df84e19828b3b95901e7b2a5d55cb1'),(94,'2019-10-17 11:02:46',100,'conversion','OnGetRateTypes','blog','','\\Bitrix\\Blog\\Internals\\ConversionHandlers','onGetRateTypes','',1,'75028a7a2551f7c677c09c367ed1a54c'),(95,'2019-10-17 11:02:46',100,'blog','OnPostAdd','blog','','\\Bitrix\\Blog\\Internals\\ConversionHandlers','onPostAdd','',1,'a3b637f0c0945089c95d5c08e1166938'),(96,'2019-10-17 11:02:46',100,'mail','onReplyReceivedBLOG_POST','blog','','\\Bitrix\\Blog\\Internals\\MailHandler','handleReplyReceivedBlogPost','',2,'5e3d8ad3f14c5b994981074e43a02cd7'),(97,'2019-10-17 11:02:46',100,'mail','onForwardReceivedBLOG_POST','blog','','\\Bitrix\\Blog\\Internals\\MailHandler','handleForwardReceivedBlogPost','',2,'6002badd4ffa13790a43d45c5c29fca3'),(98,'2019-10-17 11:02:46',100,'socialnetwork','onLogIndexGetContent','blog','','\\Bitrix\\Blog\\Integration\\Socialnetwork\\Log','onIndexGetContent','',2,'3fba13b74a731f896448388c082c24a4'),(99,'2019-10-17 11:02:46',100,'socialnetwork','onLogCommentIndexGetContent','blog','','\\Bitrix\\Blog\\Integration\\Socialnetwork\\LogComment','onIndexGetContent','',2,'57ce8e76c004b1447554d8ec64c48783'),(100,'2019-10-17 11:02:46',100,'socialnetwork','onContentViewed','blog','','\\Bitrix\\Blog\\Integration\\Socialnetwork\\ContentViewHandler','onContentViewed','',2,'d33a4b2ae579a2c9b5ddcea17bc62806'),(101,'2019-10-17 11:02:54',100,'sale','onBuildCouponProviders','catalog','','\\Bitrix\\Catalog\\DiscountCouponTable','couponManager','',2,'149987dca659cf0a46b8865379984e84'),(102,'2019-10-17 11:02:54',100,'sale','onBuildDiscountProviders','catalog','','\\Bitrix\\Catalog\\Discount\\DiscountManager','catalogDiscountManager','',2,'a79cb3305680338de199bdf06abb3180'),(103,'2019-10-17 11:02:54',100,'sale','onExtendOrderData','catalog','','\\Bitrix\\Catalog\\Discount\\DiscountManager','extendOrderData','',2,'2e6a5dca7c032410c247b458d46ad1a7'),(104,'2019-10-17 11:02:54',100,'currency','onAfterUpdateCurrencyBaseRate','catalog','','\\Bitrix\\Catalog\\Product\\Price','handlerAfterUpdateCurrencyBaseRate','',2,'2a27b8caf40ba22982116e32a677acb4'),(105,'2019-10-17 11:02:54',100,'iblock','Bitrix\\Iblock\\Model\\PropertyFeature::OnPropertyFeatureBuildList','catalog','','\\Bitrix\\Catalog\\Product\\PropertyCatalogFeature','handlerPropertyFeatureBuildList','',2,'b8d021ca1e770efee714313eeb0f395d'),(106,'2019-10-17 11:02:54',100,'main','onUserDelete','catalog','','\\Bitrix\\Catalog\\SubscribeTable','onUserDelete','',1,'d41d574baa35df8135453b6259370ab8'),(107,'2019-10-17 11:02:54',100,'catalog','onAddContactType','catalog','','\\Bitrix\\Catalog\\SubscribeTable','onAddContactType','',1,'5c357fdd782545c0d783b8cb5f69944e'),(108,'2019-10-17 11:02:54',100,'sale','OnSaleOrderSaved','catalog','','\\Bitrix\\Catalog\\SubscribeTable','onSaleOrderSaved','',2,'af377df5e882b2060677fe888e46708d'),(109,'2019-10-17 11:02:54',100,'iblock','OnBeforeIBlockUpdate','catalog','','CCatalog','OnBeforeIBlockUpdate','',1,'20473d108fa3453bdd23e83b4042fa6c'),(110,'2019-10-17 11:02:54',100,'iblock','OnAfterIBlockUpdate','catalog','','CCatalog','OnAfterIBlockUpdate','',1,'8a3510d500cd5f992df052dad4364351'),(111,'2019-10-17 11:02:54',100,'iblock','OnIBlockDelete','catalog','','CCatalog','OnIBlockDelete','',1,'5e967a8d54f1450c517271a242af9798'),(112,'2019-10-17 11:02:54',100,'iblock','OnIBlockElementDelete','catalog','','CCatalogProduct','OnIBlockElementDelete','',1,'7059003f9a69613a543217c843165806'),(113,'2019-10-17 11:02:54',100,'iblock','OnIBlockElementDelete','catalog','','CCatalogDocs','OnIBlockElementDelete','',1,'473e9ba98fd404232fbd4eaa6047b2e6'),(114,'2019-10-17 11:02:54',100,'iblock','OnBeforeIBlockElementDelete','catalog','','CCatalogDocs','OnBeforeIBlockElementDelete','',1,'0a2aa7b2cd035c519edb3b97f469659e'),(115,'2019-10-17 11:02:54',100,'currency','OnCurrencyDelete','catalog','','CPrice','OnCurrencyDelete','',1,'b1d8db27be88d8db06e2ca5cdb70d292'),(116,'2019-10-17 11:02:54',100,'main','OnGroupDelete','catalog','','CCatalogProductGroups','OnGroupDelete','',1,'f9a572224763e4f8a43d20e46ef3d42c'),(117,'2019-10-17 11:02:54',100,'currency','OnModuleUnInstall','catalog','','','CurrencyModuleUnInstallCatalog','',1,'d543b7b2808a90ee928b3fe064da3a3a'),(118,'2019-10-17 11:02:54',300,'iblock','OnBeforeIBlockDelete','catalog','','CCatalog','OnBeforeCatalogDelete','',1,'f800402b228a381afd80de0b08fbb74c'),(119,'2019-10-17 11:02:54',10000,'iblock','OnBeforeIBlockElementDelete','catalog','','CCatalog','OnBeforeIBlockElementDelete','',1,'c0b6450dbcf9d705d9dc58cc341b7764'),(120,'2019-10-17 11:02:54',100,'main','OnEventLogGetAuditTypes','catalog','','CCatalogEvent','GetAuditTypes','',1,'8c1b1ae868470a010947cfa9f4a94728'),(121,'2019-10-17 11:02:54',100,'main','OnBuildGlobalMenu','catalog','','CCatalogAdmin','OnBuildGlobalMenu','',1,'61985a8f756cd4ffc76d49f2c5847325'),(122,'2019-10-17 11:02:54',100,'main','OnAdminListDisplay','catalog','','CCatalogAdmin','OnAdminListDisplay','',1,'0598c76c5a6edce7a381fe0a00b6c14c'),(123,'2019-10-17 11:02:54',100,'main','OnBuildGlobalMenu','catalog','','CCatalogAdmin','OnBuildSaleMenu','',1,'82d8c99ecb0e9fa7a1ccde1159970ec0'),(124,'2019-10-17 11:02:54',100,'catalog','OnCondCatControlBuildList','catalog','','CCatalogCondCtrlGroup','GetControlDescr','',1,'5d91bdca64d0012fa2fe1436d06128b8'),(125,'2019-10-17 11:02:54',200,'catalog','OnCondCatControlBuildList','catalog','','CCatalogCondCtrlIBlockFields','GetControlDescr','',1,'438174b14c7b3e740a9c87aecb5000ff'),(126,'2019-10-17 11:02:54',300,'catalog','OnCondCatControlBuildList','catalog','','CCatalogCondCtrlIBlockProps','GetControlDescr','',1,'b84976e3ea98a89000a0ad48f940d954'),(127,'2019-10-17 11:02:54',100,'catalog','OnDocumentBarcodeDelete','catalog','','CCatalogStoreDocsElement','OnDocumentBarcodeDelete','',1,'6e1cbc640f4f96509fbe848236f4cd7e'),(128,'2019-10-17 11:02:54',100,'catalog','OnBeforeDocumentDelete','catalog','','CCatalogStoreDocsBarcode','OnBeforeDocumentDelete','',1,'2f3d49c7cdb6c6438f1de52a8e549e9f'),(129,'2019-10-17 11:02:54',100,'catalog','OnCatalogStoreDelete','catalog','','CCatalogDocs','OnCatalogStoreDelete','',1,'124e8e2d8f0119f76f27b7e2db942b03'),(130,'2019-10-17 11:02:54',100,'iblock','OnBeforeIBlockPropertyUpdate','catalog','','CCatalog','OnBeforeIBlockPropertyUpdate','',1,'3dfd37e5cbbc409c71590b637ee8e78f'),(131,'2019-10-17 11:02:54',100,'iblock','OnBeforeIBlockPropertyDelete','catalog','','CCatalog','OnBeforeIBlockPropertyDelete','',1,'10b5a82b111e7e6bfe85c5c9b41a20f9'),(132,'2019-10-17 11:02:54',1100,'sale','OnCondSaleControlBuildList','catalog','','CCatalogCondCtrlBasketProductFields','GetControlDescr','',1,'cf95069fe89b4889202838dfc207e221'),(133,'2019-10-17 11:02:54',1200,'sale','OnCondSaleControlBuildList','catalog','','CCatalogCondCtrlBasketProductProps','GetControlDescr','',1,'23f57eb479bb8b422d83907ad482c330'),(134,'2019-10-17 11:02:54',1200,'sale','OnCondSaleActionsControlBuildList','catalog','','CCatalogActionCtrlBasketProductFields','GetControlDescr','',1,'f7044eb787ef0bfe1863c19510e35eda'),(135,'2019-10-17 11:02:54',1300,'sale','OnCondSaleActionsControlBuildList','catalog','','CCatalogActionCtrlBasketProductProps','GetControlDescr','',1,'f82ea413fd04192063853f349184b14c'),(136,'2019-10-17 11:02:54',200,'sale','OnCondSaleActionsControlBuildList','catalog','','CCatalogGifterProduct','GetControlDescr','',1,'500f3bcdb2eb16b07afb49f728f14e0b'),(137,'2019-10-17 11:02:54',100,'sale','OnExtendBasketItems','catalog','','CCatalogDiscount','ExtendBasketItems','',1,'0d9379e11c541ae3937f6c8a2aa4d9cb'),(138,'2019-10-17 11:02:54',100,'iblock','OnModuleUnInstall','catalog','','CCatalog','OnIBlockModuleUnInstall','',1,'404386acb545579801ea359031480b8a'),(139,'2019-10-17 11:02:54',100,'iblock','OnIBlockElementAdd','catalog','','\\Bitrix\\Catalog\\Product\\Sku','handlerIblockElementAdd','',1,'0bc066519a069f3c7e8a9b1a924cbd93'),(140,'2019-10-17 11:02:54',100,'iblock','OnAfterIBlockElementAdd','catalog','','\\Bitrix\\Catalog\\Product\\Sku','handlerAfterIblockElementAdd','',1,'2bdbadf32a2739ca74207b5b6a3c57b4'),(141,'2019-10-17 11:02:54',100,'iblock','OnIBlockElementUpdate','catalog','','\\Bitrix\\Catalog\\Product\\Sku','handlerIblockElementUpdate','',1,'4d7b2e7645a78c0e811227dd0ad17196'),(142,'2019-10-17 11:02:55',100,'iblock','OnAfterIBlockElementUpdate','catalog','','\\Bitrix\\Catalog\\Product\\Sku','handlerAfterIblockElementUpdate','',1,'b4d8f2e66a6d0339464d06313d2a12e1'),(143,'2019-10-17 11:02:55',100,'iblock','OnIBlockElementDelete','catalog','','\\Bitrix\\Catalog\\Product\\Sku','handlerIblockElementDelete','',1,'a36bb73947c2bbcee47e99eeea6a7a9d'),(144,'2019-10-17 11:02:55',100,'iblock','OnAfterIBlockElementDelete','catalog','','\\Bitrix\\Catalog\\Product\\Sku','handlerAfterIblockElementDelete','',1,'710bc6d1d6caeebe07236d8ae7b13947'),(145,'2019-10-17 11:02:55',100,'iblock','OnIBlockElementSetPropertyValues','catalog','','\\Bitrix\\Catalog\\Product\\Sku','handlerIblockElementSetPropertyValues','',1,'736bc258d570c9e9f8c22f487aa2f5b2'),(146,'2019-10-17 11:02:55',100,'iblock','OnAfterIBlockElementSetPropertyValues','catalog','','\\Bitrix\\Catalog\\Product\\Sku','handlerAfterIBlockElementSetPropertyValues','',1,'eb62701827bbf2142607673287f40eba'),(147,'2019-10-17 11:02:55',100,'iblock','OnIBlockElementSetPropertyValuesEx','catalog','','\\Bitrix\\Catalog\\Product\\Sku','handlerIblockElementSetPropertyValuesEx','',1,'2406edbb8ef039316d6d74a6f8730339'),(148,'2019-10-17 11:02:55',100,'iblock','OnAfterIBlockElementSetPropertyValuesEx','catalog','','\\Bitrix\\Catalog\\Product\\Sku','handlerAfterIblockElementSetPropertyValuesEx','',1,'b74bcb119ced25572957202ee6fe4bb8'),(149,'2019-10-17 11:02:55',100,'perfmon','OnGetTableSchema','catalog','','catalog','getTableSchema','',1,'b4dab8df207b4cba0a73960116bf41be'),(150,'2019-10-17 11:02:58',100,'main','OnEventLogGetAuditTypes','clouds','','CCloudStorage','GetAuditTypes','',1,'da69722ba95497cf263381b46e24df40'),(151,'2019-10-17 11:02:58',90,'main','OnBeforeProlog','clouds','','CCloudStorage','OnBeforeProlog','',1,'f8c39ff182ad873715f10a7091f928a4'),(152,'2019-10-17 11:02:58',100,'main','OnAdminListDisplay','clouds','','CCloudStorage','OnAdminListDisplay','',1,'8ddf4f578e7229a63cba4d2124c7643c'),(153,'2019-10-17 11:02:58',100,'main','OnBuildGlobalMenu','clouds','','CCloudStorage','OnBuildGlobalMenu','',1,'d6d308843a6521ad50bfa230a2fcef8f'),(154,'2019-10-17 11:02:58',100,'main','OnFileSave','clouds','','CCloudStorage','OnFileSave','',1,'1e4f94a842d6166359ed1789a6f21245'),(155,'2019-10-17 11:02:58',100,'main','OnGetFileSRC','clouds','','CCloudStorage','OnGetFileSRC','',1,'7ec03b3b7ad3f2f54c1e438a1172e5a8'),(156,'2019-10-17 11:02:58',100,'main','OnFileCopy','clouds','','CCloudStorage','OnFileCopy','',1,'6880b56c76f7d3c5d09f887fca6341ca'),(157,'2019-10-17 11:02:58',100,'main','OnFileDelete','clouds','','CCloudStorage','OnFileDelete','',1,'fefe695dc9f0e579e949c2dfcbe90d9d'),(158,'2019-10-17 11:02:58',100,'main','OnMakeFileArray','clouds','','CCloudStorage','OnMakeFileArray','',1,'713ea8a7a25764b1af60f7a1ec3032d5'),(159,'2019-10-17 11:02:58',100,'main','OnBeforeResizeImage','clouds','','CCloudStorage','OnBeforeResizeImage','',1,'705cd310c52f9c7e8e0c8a0578a22667'),(160,'2019-10-17 11:02:58',100,'main','OnAfterResizeImage','clouds','','CCloudStorage','OnAfterResizeImage','',1,'a403ad2328227153475df0c478a465cc'),(161,'2019-10-17 11:02:58',100,'clouds','OnGetStorageService','clouds','','CCloudStorageService_AmazonS3','GetObjectInstance','',1,'a4eb7ed1f50b5931474c565f448a4069'),(162,'2019-10-17 11:02:58',100,'clouds','OnGetStorageService','clouds','','CCloudStorageService_GoogleStorage','GetObjectInstance','',1,'1e559e2225608e8d40eeede5b7526f2a'),(163,'2019-10-17 11:02:58',100,'clouds','OnGetStorageService','clouds','','CCloudStorageService_OpenStackStorage','GetObjectInstance','',1,'5ad09feff5dab28ab571ad034ccdf2ea'),(164,'2019-10-17 11:02:58',100,'clouds','OnGetStorageService','clouds','','CCloudStorageService_RackSpaceCloudFiles','GetObjectInstance','',1,'cc976773610cf809bb56871ac7dd9f01'),(165,'2019-10-17 11:02:58',100,'clouds','OnGetStorageService','clouds','','CCloudStorageService_ClodoRU','GetObjectInstance','',1,'faadad31436e94c420ed787e4424714b'),(166,'2019-10-17 11:02:58',100,'clouds','OnGetStorageService','clouds','','CCloudStorageService_Selectel','GetObjectInstance','',1,'5e63a8eebed42bd099b4a9ef62e8d52b'),(167,'2019-10-17 11:02:58',100,'clouds','OnGetStorageService','clouds','','CCloudStorageService_HotBox','GetObjectInstance','',1,'1913169adcd6d6f3b7fb5f3b70ba1fd8'),(168,'2019-10-17 11:02:58',100,'clouds','OnGetStorageService','clouds','','CCloudStorageService_Yandex','GetObjectInstance','',1,'12bd1d4f0d145d5b1681955612fe61c8'),(169,'2019-10-17 11:02:58',100,'perfmon','OnGetTableSchema','clouds','','clouds','OnGetTableSchema','',1,'d31a1f80f07441976eb1711db4902a71'),(170,'2019-10-17 11:03:00',1,'main','OnPageStart','compression','','CCompress','OnPageStart','',1,'b5b3b05c97cb867ae7494ab99fa9a119'),(171,'2019-10-17 11:03:01',10000,'main','OnAfterEpilog','compression','','CCompress','OnAfterEpilog','',1,'397a459912acd1c78fc9129065807860'),(172,'2019-10-17 11:03:04',100,'conversion','OnGetCounterTypes','conversion','','\\Bitrix\\Conversion\\Internals\\Handlers','onGetCounterTypes','',1,'de0c5305804499432c6cfe04f196d253'),(173,'2019-10-17 11:03:04',100,'conversion','OnGetAttributeTypes','conversion','','\\Bitrix\\Conversion\\Internals\\Handlers','onGetAttributeTypes','',1,'4315a9aa889ec27c69b846ae15121863'),(174,'2019-10-17 11:03:04',100,'conversion','OnGetAttributeGroupTypes','conversion','','\\Bitrix\\Conversion\\Internals\\Handlers','onGetAttributeGroupTypes','',1,'79466c29772530a40940cae056779af5'),(175,'2019-10-17 11:03:04',100,'conversion','OnSetDayContextAttributes','conversion','','\\Bitrix\\Conversion\\Internals\\Handlers','onSetDayContextAttributes','',1,'25facb7847c091eadeefef8ac4ea55f9'),(176,'2019-10-17 11:03:04',100,'main','OnProlog','conversion','','\\Bitrix\\Conversion\\Internals\\Handlers','onProlog','',1,'b47ab3ab76f0aa0632597e3097373bf7'),(177,'2019-10-17 11:03:07',100,'iblock','OnIBlockPropertyBuildList','currency','','\\Bitrix\\Currency\\Integration\\IblockMoneyProperty','getUserTypeDescription','',1,'610afb33335371bcc2e0d46b613d5bad'),(178,'2019-10-17 11:03:07',100,'main','OnUserTypeBuildList','currency','','\\Bitrix\\Currency\\UserField\\Money','getUserTypeDescription','',1,'24103a8cc99e412ed1e690c24300d973'),(179,'2019-10-17 11:03:10',100,'main','OnGroupDelete','fileman','','CFileman','OnGroupDelete','',1,'d10f791d422ba0e7551ab267db50404c'),(180,'2019-10-17 11:03:10',100,'main','OnPanelCreate','fileman','','CFileman','OnPanelCreate','',1,'b00a6174fb1763684c299ccf5e054c65'),(181,'2019-10-17 11:03:10',100,'main','OnModuleUpdate','fileman','','CFileman','OnModuleUpdate','',1,'58ae853e2b7c230b5cdb51129efd8a05'),(182,'2019-10-17 11:03:10',100,'main','OnModuleInstalled','fileman','','CFileman','ClearComponentsListCache','',1,'7bdbd354eab11f376fa257a998587277'),(183,'2019-10-17 11:03:10',100,'iblock','OnIBlockPropertyBuildList','fileman','','CIBlockPropertyMapGoogle','GetUserTypeDescription','',1,'d9d06fd05f80b33379359ebd8e36e655'),(184,'2019-10-17 11:03:10',100,'iblock','OnIBlockPropertyBuildList','fileman','','CIBlockPropertyMapYandex','GetUserTypeDescription','',1,'20ca1d02998884b5abec68b32fdb561d'),(185,'2019-10-17 11:03:10',100,'iblock','OnIBlockPropertyBuildList','fileman','','CIBlockPropertyVideo','GetUserTypeDescription','',1,'991c32062e05844708a5cf7aba37bf9a'),(186,'2019-10-17 11:03:10',100,'main','OnUserTypeBuildList','fileman','','CUserTypeVideo','GetUserTypeDescription','',1,'41bc5efb49ebf8d165acd4e4d556f60c'),(187,'2019-10-17 11:03:10',100,'main','OnEventLogGetAuditTypes','fileman','','CEventFileman','GetAuditTypes','',1,'e0a610651ffec1fbddb2f261223fb2e9'),(188,'2019-10-17 11:03:10',100,'main','OnEventLogGetAuditHandlers','fileman','','CEventFileman','MakeFilemanObject','',1,'fbfef1ef99530f6eae191da293f9566c'),(189,'2019-10-17 11:03:10',154,'main','OnUserTypeBuildList','fileman','','\\Bitrix\\Fileman\\UserField\\Address','getUserTypeDescription','',1,'f0583a376e38d3d2675513b1a367ed3c'),(190,'2019-10-17 11:03:15',100,'sender','OnConnectorList','form','','\\Bitrix\\Form\\SenderEventHandler','onConnectorListForm','',1,'182217f1803d20e2899086e379ada21c'),(191,'2019-10-17 11:03:20',100,'main','OnAfterUserUpdate','forum','','CForumUser','OnAfterUserUpdate','',1,'18ca0a9757a229b6290603235dfff0d1'),(192,'2019-10-17 11:03:20',100,'main','OnGroupDelete','forum','','CForumNew','OnGroupDelete','',1,'63f10ce39f269a9f1add6a0600aa05b9'),(193,'2019-10-17 11:03:20',100,'main','OnBeforeLangDelete','forum','','CForumNew','OnBeforeLangDelete','',1,'201c2a343960654a90382521e253328f'),(194,'2019-10-17 11:03:20',100,'main','OnFileDelete','forum','','CForumFiles','OnFileDelete','',1,'a00aa95408b2665018cb63e21cef4684'),(195,'2019-10-17 11:03:20',100,'search','OnReindex','forum','','CForumNew','OnReindex','',1,'3fe2c3077963069fee2360611d840816'),(196,'2019-10-17 11:03:20',100,'main','OnUserDelete','forum','','CForumUser','OnUserDelete','',1,'eb0cb7958d708be629eba740bcabd8c4'),(197,'2019-10-17 11:03:20',100,'iblock','OnIBlockPropertyBuildList','main','/modules/forum/tools/prop_topicid.php','CIBlockPropertyTopicID','GetUserTypeDescription','',1,'d5b04b52654500981293dbcf10ca1ef9'),(198,'2019-10-17 11:03:20',100,'iblock','OnBeforeIBlockElementDelete','forum','','CForumTopic','OnBeforeIBlockElementDelete','',1,'929cf569dd703b922e4a96a0a023f120'),(199,'2019-10-17 11:03:20',100,'main','OnEventLogGetAuditTypes','forum','','CForumEventLog','GetAuditTypes','',1,'30a759001702af8052ea65e700c519c7'),(200,'2019-10-17 11:03:20',100,'main','OnEventLogGetAuditHandlers','forum','','CEventForum','MakeForumObject','',1,'78ecc0524ac5d4fb0545c8a3fa28b3bd'),(201,'2019-10-17 11:03:20',100,'socialnetwork','OnSocNetGroupDelete','forum','','CForumUser','OnSocNetGroupDelete','',1,'94cfb4cf5460746b7b31a5b93a3805f6'),(202,'2019-10-17 11:03:20',100,'socialnetwork','OnSocNetLogFormatEvent','forum','','CForumMessage','OnSocNetLogFormatEvent','',1,'28c7a91a467c1190a064f597487abd5c'),(203,'2019-10-17 11:03:20',100,'mail','OnGetFilterList','forum','','CForumEMail','OnGetSocNetFilterList','',1,'e42fc61795fed0c5f397259bb6f1f6b9'),(204,'2019-10-17 11:03:20',100,'main','OnAfterAddRating','forum','','CRatingsComponentsForum','OnAfterAddRating','',1,'db966e6ee1f8b98f83e57411f4757858'),(205,'2019-10-17 11:03:20',100,'main','OnAfterUpdateRating','forum','','CRatingsComponentsForum','OnAfterUpdateRating','',1,'f5f6a93c1fe6d7dc61fbb5bf25f9965f'),(206,'2019-10-17 11:03:20',100,'main','OnSetRatingsConfigs','forum','','CRatingsComponentsForum','OnSetRatingConfigs','',1,'84556c2f1f7f23189f90603f45ad3942'),(207,'2019-10-17 11:03:20',100,'main','OnGetRatingsConfigs','forum','','CRatingsComponentsForum','OnGetRatingConfigs','',1,'7ead6be47d7bb2e297a2af57f85dc7ee'),(208,'2019-10-17 11:03:20',100,'main','OnGetRatingsObjects','forum','','CRatingsComponentsForum','OnGetRatingObject','',1,'99f4b68c8e6c1598377e0016b31234bb'),(209,'2019-10-17 11:03:20',100,'main','OnGetRatingContentOwner','forum','','CRatingsComponentsForum','OnGetRatingContentOwner','',1,'5ef51ecf36931b3a32f4fea00dc49c8c'),(210,'2019-10-17 11:03:20',100,'im','OnGetNotifySchema','forum','','CForumNotifySchema','OnGetNotifySchema','',1,'ad425ff862192078c050ea34d60f8d63'),(211,'2019-10-17 11:03:20',100,'main','OnAfterRegisterModule','main','/modules/forum/install/index.php','forum','InstallUserFields','',1,'205fd3e33648d7e1ed6f4b7f0298f603'),(212,'2019-10-17 11:03:20',100,'rest','OnRestServiceBuildDescription','forum','','CForumRestService','OnRestServiceBuildDescription','',1,'506b2a93cea64d73c9e7c187fdde2840'),(213,'2019-10-17 11:03:20',100,'conversion','OnGetCounterTypes','forum','','\\Bitrix\\Forum\\Internals\\ConversionHandlers','onGetCounterTypes','',1,'fa69bf6ff10a0fb9b2e91098f0c0bab3'),(214,'2019-10-17 11:03:20',100,'conversion','OnGetRateTypes','forum','','\\Bitrix\\Forum\\Internals\\ConversionHandlers','onGetRateTypes','',1,'9eb2b6d8edde63385655c1001d9e0c31'),(215,'2019-10-17 11:03:20',100,'forum','onAfterTopicAdd','forum','','\\Bitrix\\Forum\\Internals\\ConversionHandlers','onTopicAdd','',1,'ea61a319e93c2c3a9bfc9a63840b2155'),(216,'2019-10-17 11:03:20',100,'forum','onAfterMessageAdd','forum','','\\Bitrix\\Forum\\Internals\\ConversionHandlers','onMessageAdd','',1,'3cc5f27501dad77acdecb1c8a4e978de'),(217,'2019-10-17 11:03:20',100,'socialnetwork','onLogIndexGetContent','forum','','\\Bitrix\\Forum\\Integration\\Socialnetwork\\Log','onIndexGetContent','',2,'909a8b84bf80774a6a89bfbbd2258ce8'),(218,'2019-10-17 11:03:20',100,'socialnetwork','onLogCommentIndexGetContent','forum','','\\Bitrix\\Forum\\Integration\\Socialnetwork\\LogComment','onIndexGetContent','',2,'e6aaa86c7daeae2bc002e513f06ccffa'),(219,'2019-10-17 11:03:20',100,'socialnetwork','onContentViewed','forum','','\\Bitrix\\Forum\\Integration\\Socialnetwork\\ContentViewHandler','onContentViewed','',2,'5db6b373f6612f36c2ff6783dd4d6154'),(220,'2019-10-17 11:03:27',100,'main','OnBeforeUserTypeAdd','highloadblock','','\\Bitrix\\Highloadblock\\HighloadBlockTable','OnBeforeUserTypeAdd','',1,'f9dcff287cf7753e5c56974d37975507'),(221,'2019-10-17 11:03:27',100,'main','OnAfterUserTypeAdd','highloadblock','','\\Bitrix\\Highloadblock\\HighloadBlockTable','onAfterUserTypeAdd','',1,'d1fa2865e72eca144b964b6fb1eefc15'),(222,'2019-10-17 11:03:27',100,'main','OnBeforeUserTypeDelete','highloadblock','','\\Bitrix\\Highloadblock\\HighloadBlockTable','OnBeforeUserTypeDelete','',1,'1bf13707e1a45b8320c2ecd35534cbb4'),(223,'2019-10-17 11:03:27',100,'main','OnUserTypeBuildList','highloadblock','','CUserTypeHlblock','GetUserTypeDescription','',1,'2ac4a2154f4fd85d67b50f412ed5ed48'),(224,'2019-10-17 11:03:27',100,'iblock','OnIBlockPropertyBuildList','highloadblock','','CIBlockPropertyDirectory','GetUserTypeDescription','',1,'a6f7df502db8a04590e43188d7cbfc99'),(225,'2019-10-17 11:03:31',100,'main','OnGroupDelete','iblock','','CIBlock','OnGroupDelete','',1,'f2320df213f38adf32364d3169d5b197'),(226,'2019-10-17 11:03:32',100,'main','OnBeforeLangDelete','iblock','','CIBlock','OnBeforeLangDelete','',1,'46aef774958db327c1170a12d3a70ee5'),(227,'2019-10-17 11:03:32',100,'main','OnLangDelete','iblock','','CIBlock','OnLangDelete','',1,'861f6ee2ca56bf63c3af07db0553606b'),(228,'2019-10-17 11:03:32',100,'main','OnUserTypeRightsCheck','iblock','','CIBlockSection','UserTypeRightsCheck','',1,'2a6d446893d46f04f2c151f458d2908c'),(229,'2019-10-17 11:03:32',100,'search','OnReindex','iblock','','CIBlock','OnSearchReindex','',1,'c6c8111f129e0eb19e558106e354e6f6'),(230,'2019-10-17 11:03:32',100,'search','OnSearchGetURL','iblock','','CIBlock','OnSearchGetURL','',1,'0ae9fc756bfb1273309240cd8f535672'),(231,'2019-10-17 11:03:32',100,'main','OnEventLogGetAuditTypes','iblock','','CIBlock','GetAuditTypes','',1,'182d19c163e3a5a965bca170c3fb0e83'),(232,'2019-10-17 11:03:32',100,'main','OnEventLogGetAuditHandlers','iblock','','CEventIBlock','MakeIBlockObject','',1,'f7a182e8d9b204970d111e4703b9f523'),(233,'2019-10-17 11:03:32',200,'main','OnGetRatingContentOwner','iblock','','CRatingsComponentsIBlock','OnGetRatingContentOwner','',1,'6da245944e376d586a3fa2aaee02c70b'),(234,'2019-10-17 11:03:32',100,'main','OnTaskOperationsChanged','iblock','','CIBlockRightsStorage','OnTaskOperationsChanged','',1,'01b3f9984fa07b1dfb4bc35d107d5672'),(235,'2019-10-17 11:03:32',100,'main','OnGroupDelete','iblock','','CIBlockRightsStorage','OnGroupDelete','',1,'2dbbccdee3f2e7bd86446bec02be1d54'),(236,'2019-10-17 11:03:32',100,'main','OnUserDelete','iblock','','CIBlockRightsStorage','OnUserDelete','',1,'78f090ee29030c54788098b0782d28f9'),(237,'2019-10-17 11:03:32',100,'perfmon','OnGetTableSchema','iblock','','iblock','OnGetTableSchema','',1,'4b71a345c136beed338aa7137943d80b'),(238,'2019-10-17 11:03:32',100,'sender','OnConnectorList','iblock','','\\Bitrix\\Iblock\\SenderEventHandler','onConnectorListIblock','',1,'3de75587a47352dd3cb6d10866f69385'),(239,'2019-10-17 11:03:32',10,'iblock','OnIBlockPropertyBuildList','iblock','','CIBlockPropertyDate','GetUserTypeDescription','',1,'fa608e2c397b6793c54ad296619a22e2'),(240,'2019-10-17 11:03:32',20,'iblock','OnIBlockPropertyBuildList','iblock','','CIBlockPropertyDateTime','GetUserTypeDescription','',1,'78554c9e3c38ac383d51f0ee4d013120'),(241,'2019-10-17 11:03:32',30,'iblock','OnIBlockPropertyBuildList','iblock','','CIBlockPropertyXmlID','GetUserTypeDescription','',1,'952fe5f2ea67493fb9f9b924ce1b992b'),(242,'2019-10-17 11:03:32',40,'iblock','OnIBlockPropertyBuildList','iblock','','CIBlockPropertyFileMan','GetUserTypeDescription','',1,'fd688441d5e8203751fb47374931e011'),(243,'2019-10-17 11:03:32',50,'iblock','OnIBlockPropertyBuildList','iblock','','CIBlockPropertyHTML','GetUserTypeDescription','',1,'27645f81ce5d6d9f19a47cc171860beb'),(244,'2019-10-17 11:03:32',60,'iblock','OnIBlockPropertyBuildList','iblock','','CIBlockPropertyElementList','GetUserTypeDescription','',1,'c53e9314ae43c30267b32310a02d7df4'),(245,'2019-10-17 11:03:32',70,'iblock','OnIBlockPropertyBuildList','iblock','','CIBlockPropertySequence','GetUserTypeDescription','',1,'3ff9528d1264fc77697248957aafdab5'),(246,'2019-10-17 11:03:32',80,'iblock','OnIBlockPropertyBuildList','iblock','','CIBlockPropertyElementAutoComplete','GetUserTypeDescription','',1,'0d233a1e7a0d6a52a52e13df88291024'),(247,'2019-10-17 11:03:32',90,'iblock','OnIBlockPropertyBuildList','iblock','','CIBlockPropertySKU','GetUserTypeDescription','',1,'8678bc826ced4f66640fba3775b18516'),(248,'2019-10-17 11:03:32',100,'iblock','OnIBlockPropertyBuildList','iblock','','CIBlockPropertySectionAutoComplete','GetUserTypeDescription','',1,'26ff6f651cb94a1fe4ce9827566f0730'),(249,'2019-10-17 11:03:39',100,'main','OnAfterEpilog','messageservice','','\\Bitrix\\MessageService\\Queue','run','',1,'6bcb21b0ccc5ac89d9531ddf8b94683c'),(250,'2019-10-17 11:03:39',100,'rest','OnRestServiceBuildDescription','messageservice','','\\Bitrix\\MessageService\\RestService','onRestServiceBuildDescription','',1,'7524628243223e572590eea87cc03f73'),(251,'2019-10-17 11:03:39',100,'rest','OnRestAppDelete','messageservice','','\\Bitrix\\MessageService\\RestService','onRestAppDelete','',1,'5febc41cd526ecba95dbb4843dd9c134'),(252,'2019-10-17 11:03:39',100,'rest','OnRestAppUpdate','messageservice','','\\Bitrix\\MessageService\\RestService','onRestAppUpdate','',1,'7e77b4d550c200a4ec06872af7857ee6'),(253,'2019-10-17 11:03:42',100,'pull','OnGetDependentModule','mobileapp','','CMobileAppPullSchema','OnGetDependentModule','',1,'4833278dbe60d476fbccbaa54545cffa'),(254,'2019-10-17 11:03:46',100,'perfmon','OnGetTableSchema','perfmon','','perfmon','OnGetTableSchema','',1,'3a4da255b44f05899b64e66a40c12662'),(255,'2019-10-17 11:03:49',100,'iblock','OnBeforeIBlockElementDelete','photogallery','','CPhotogalleryElement','OnBeforeIBlockElementDelete','',1,'dc9ea0b8411dfa54929a022d44bc5b1a'),(256,'2019-10-17 11:03:49',100,'iblock','OnAfterIBlockElementAdd','photogallery','','CPhotogalleryElement','OnAfterIBlockElementAdd','',1,'7fc7f3cc71ad3188022388365d446ed2'),(257,'2019-10-17 11:03:49',100,'search','BeforeIndex','photogallery','','CRatingsComponentsPhotogallery','BeforeIndex','',1,'06e2330d56c3b972e67707d665383704'),(258,'2019-10-17 11:03:49',100,'im','OnGetNotifySchema','photogallery','','CPhotogalleryNotifySchema','OnGetNotifySchema','',1,'7ca75249042a033e858d90dc2473adac'),(259,'2019-10-17 11:03:49',100,'socialnetwork','OnSocNetGroupDelete','photogallery','','\\Bitrix\\Photogallery\\Integration\\Socialnetwork\\Group','onSocNetGroupDelete','',1,'bded61c39d768685fa7dd112c63c702b'),(260,'2019-10-17 11:03:52',50,'main','OnBeforeProlog','main','/modules/pull/ajax_hit_before.php','','','',1,'35432b5b287c5a9622e7ae248e0a242b'),(261,'2019-10-17 11:03:52',3,'main','OnProlog','main','/modules/pull/ajax_hit.php','','','',1,'1b433c8d8bb5e601f0987220031b2341'),(262,'2019-10-17 11:03:52',100,'main','OnEpilog','pull','','CPullOptions','OnEpilog','',1,'bb7e0fc082d756f249e671ad08855887'),(263,'2019-10-17 11:03:52',100,'main','OnAfterEpilog','pull','','\\Bitrix\\Pull\\Event','onAfterEpilog','',1,'b445d8564947a0a2dea040409e1a2d0e'),(264,'2019-10-17 11:03:52',100,'main','OnAfterEpilog','pull','','CPullWatch','DeferredSql','',1,'db06c5093078d22ca5da72f098aa24af'),(265,'2019-10-17 11:03:52',100,'perfmon','OnGetTableSchema','pull','','CPullTableSchema','OnGetTableSchema','',1,'9f818aba7cd2aa64ac9ff03429d135b9'),(266,'2019-10-17 11:03:52',100,'main','OnAfterRegisterModule','pull','','CPullOptions','ClearCheckCache','',1,'58b6710b583cd4138b6f917a062671a1'),(267,'2019-10-17 11:03:52',100,'main','OnAfterUnRegisterModule','pull','','CPullOptions','ClearCheckCache','',1,'e9004239eefab3942ab4dae8a06a429e'),(268,'2019-10-17 11:03:52',100,'socialnetwork','OnSonetLogCounterClear','pull','','\\Bitrix\\Pull\\MobileCounter','onSonetLogCounterClear','',1,'6977001fca2d9918bfcefc23e982048b'),(269,'2019-10-17 11:03:52',100,'rest','OnRestServiceBuildDescription','pull','','\\Bitrix\\Pull\\Rest','onRestServiceBuildDescription','',2,'88027baf05397dff4e3c9495143016a5'),(270,'2019-10-17 11:03:52',100,'rest','onRestCheckAuth','pull','','\\Bitrix\\Pull\\Rest\\GuestAuth','onRestCheckAuth','',2,'2ce8bc7027cb755d726ff410e5f62e26'),(271,'2019-10-17 11:03:56',100,'report','OnReportDelete','report','','\\Bitrix\\Report\\Sharing','OnReportDelete','',1,'0af86ddca38f06c21b79b407bf833070'),(272,'2019-10-17 11:03:56',100,'report','onReportCategoryCollect','report','','\\Bitrix\\Report\\VisualConstructor\\EventHandler','onCategoriesCollect','',2,'9e290dec0378c52950f3efe004b6948e'),(273,'2019-10-17 11:03:56',100,'report','onReportsCollect','report','','\\Bitrix\\Report\\VisualConstructor\\EventHandler','onReportsCollect','',2,'dcf1b3486cd9f68a1dc1217fe8f8d145'),(274,'2019-10-17 11:03:56',100,'report','onReportViewCollect','report','','\\Bitrix\\Report\\VisualConstructor\\EventHandler','onViewsCollect','',2,'f3e9eddd1d5b6bcf56fdcfcea32d60ae'),(275,'2019-10-17 11:03:56',100,'report','onWidgetCollect','report','','\\Bitrix\\Report\\VisualConstructor\\EventHandler','onWidgetCollect','',2,'60610767602e8878ddf24620bb80560f'),(276,'2019-10-17 11:03:59',49,'main','OnBeforeProlog','rest','','CRestEventHandlers','OnBeforeProlog','',2,'395c9c42c3cc9392de1e5887617afe6d'),(277,'2019-10-17 11:03:59',100,'rest','OnRestServiceBuildDescription','rest','','CBitrixRestEntity','OnRestServiceBuildDescription','',2,'f63068b1eb62c36219518206e1e2827c'),(278,'2019-10-17 11:03:59',100,'rest','OnRestServiceBuildDescription','rest','','\\Bitrix\\Rest\\Api\\User','onRestServiceBuildDescription','',2,'c9a03e9019564649e55f5409b661e050'),(279,'2019-10-17 11:03:59',100,'rest','OnRestServiceBuildDescription','rest','','\\Bitrix\\Rest\\Api\\Placement','onRestServiceBuildDescription','',2,'9751a266c2b6f6be5c34b1541bf7c194'),(280,'2019-10-17 11:03:59',100,'rest','OnRestServiceBuildDescription','rest','','\\Bitrix\\Rest\\Api\\Event','onRestServiceBuildDescription','',2,'842ad63f19aff6d810059c7e56739aae'),(281,'2019-10-17 11:03:59',100,'rest','OnRestServiceBuildDescription','rest','','\\Bitrix\\Rest\\Api\\UserFieldType','onRestServiceBuildDescription','',2,'4caf68a5256aabe4abef37f24562e59b'),(282,'2019-10-17 11:03:59',100,'rest','onFindMethodDescription','rest','','\\Bitrix\\Rest\\Engine\\RestManager','onFindMethodDescription','',2,'4d0614f880674af333326dd5ba9b2828'),(283,'2019-10-17 11:03:59',100,'main','OnApplicationsBuildList','main','modules/rest/lib/apauth/application.php','\\Bitrix\\Rest\\APAuth\\Application','onApplicationsBuildList','',2,'9c39129872987f8dcc8baacc0c446ed7'),(284,'2019-10-17 11:03:59',100,'im','OnAfterConfirmNotify','rest','','\\Bitrix\\Rest\\NotifyIm','receive','',2,'2ac9c19fe69d4e106deaa6f4a7a4371b'),(285,'2019-10-17 11:03:59',100,'rest','\\Bitrix\\Rest\\APAuth\\Password::OnDelete','rest','','\\Bitrix\\Rest\\APAuth\\PermissionTable','onPasswordDelete','',2,'f04447ca635f045ec1a64e593964fc90'),(286,'2019-10-17 11:03:59',100,'perfmon','OnGetTableSchema','rest','','rest','OnGetTableSchema','',2,'47a76003c8f9f2d8c820f446e084ff39'),(287,'2019-10-17 11:03:59',100,'rest','onRestCheckAuth','rest','','\\Bitrix\\Rest\\OAuth\\Auth','onRestCheckAuth','',2,'70e923729089b8cba69bb3b4311da11e'),(288,'2019-10-17 11:03:59',100,'rest','onRestCheckAuth','rest','','\\Bitrix\\Rest\\APAuth\\Auth','onRestCheckAuth','',2,'3550e6c95772564101770e0c9cb54470'),(289,'2019-10-17 11:04:00',100,'rest','onRestCheckAuth','rest','','\\Bitrix\\Rest\\SessionAuth\\Auth','onRestCheckAuth','',2,'8e33ae5a47b59d21df7d26f916d19e38'),(290,'2019-10-17 11:04:13',100,'main','OnUserLogout','sale','','\\Bitrix\\Sale\\DiscountCouponsManager','logout','',1,'f3b6f5a5983b0eb0813d05ab748e785c'),(291,'2019-10-17 11:04:13',100,'sale','OnSaleBasketItemRefreshData','sale','','\\Bitrix\\Sale\\Compatible\\DiscountCompatibility','OnSaleBasketItemRefreshData','',2,'422ac4f8d74803b148cac31bc967a851'),(292,'2019-10-17 11:04:13',100,'main','OnUserLogin','sale','','CSaleUser','OnUserLogin','',1,'0b9bdef4c3fa642374b8f3c82e52996b'),(293,'2019-10-17 11:04:13',100,'main','OnUserLogout','sale','','CSaleUser','OnUserLogout','',1,'a03aa5beb1c735fb2fc1fb5effe3ab26'),(294,'2019-10-17 11:04:13',100,'main','OnBeforeLangDelete','sale','','CSalePersonType','OnBeforeLangDelete','',1,'d3b3451b0ef1548263a45daf4d036f94'),(295,'2019-10-17 11:04:13',100,'main','OnLanguageDelete','sale','','CSaleLocation','OnLangDelete','',1,'93831dacf128b944396641a8c6fc867c'),(296,'2019-10-17 11:04:13',100,'main','OnLanguageDelete','sale','','CSaleLocationGroup','OnLangDelete','',1,'8d268fc5817d505c90a2203aa1e869e2'),(297,'2019-10-17 11:04:13',100,'main','OnUserDelete','sale','','CSaleOrderUserProps','OnUserDelete','',1,'a88042b0299509cc87f80716721a98b0'),(298,'2019-10-17 11:04:13',100,'main','OnUserDelete','sale','','CSaleUserAccount','OnUserDelete','',1,'8fcdf8d19c3a0eecacc8fa386b3e7d1e'),(299,'2019-10-17 11:04:13',100,'main','OnUserDelete','sale','','CSaleAuxiliary','OnUserDelete','',1,'81a3632cc005f2013f5bf3a0a5e25064'),(300,'2019-10-17 11:04:13',100,'main','OnUserDelete','sale','','CSaleUser','OnUserDelete','',1,'fd45c818ce346a62411434aa9de11184'),(301,'2019-10-17 11:04:13',100,'main','OnUserDelete','sale','','CSaleRecurring','OnUserDelete','',1,'74a5d488290b7b742db92d65056be8fe'),(302,'2019-10-17 11:04:13',100,'main','OnUserDelete','sale','','CSaleUserCards','OnUserDelete','',1,'5c30a886d8fc023396add7d228463866'),(303,'2019-10-17 11:04:13',100,'main','OnBeforeUserDelete','sale','','CSaleOrder','OnBeforeUserDelete','',1,'7c0632f0e53b7c7fa1e6bf52990d38de'),(304,'2019-10-17 11:04:13',100,'main','OnBeforeUserDelete','sale','','CSaleAffiliate','OnBeforeUserDelete','',1,'10564f34a76cd38c6dac9505e82b36b6'),(305,'2019-10-17 11:04:13',100,'main','OnBeforeUserDelete','sale','','CSaleUserAccount','OnBeforeUserDelete','',1,'fd7c207d58968cc98f81ab73ba8bacec'),(306,'2019-10-17 11:04:13',100,'main','OnBeforeProlog','main','/modules/sale/affiliate.php','','','',1,'bc20f3b5d6e0b729ef03147550bbca34'),(307,'2019-10-17 11:04:13',100,'main','OnEventLogGetAuditTypes','sale','','CSaleYMHandler','OnEventLogGetAuditTypes','',1,'a477cb3196e795663c24579dc3dabcb7'),(308,'2019-10-17 11:04:13',100,'main','OnEventLogGetAuditTypes','sale','','CSalePaySystemAction','OnEventLogGetAuditTypes','',1,'51144ac684c167b2a1a69be99ce5e9fd'),(309,'2019-10-17 11:04:13',100,'main','OnUserConsentProviderList','sale','','\\Bitrix\\Sale\\UserConsent','onProviderList','',1,'0e6cc9303769b80726918ec57a482a3b'),(310,'2019-10-17 11:04:13',100,'main','OnUserConsentDataProviderList','sale','','\\Bitrix\\Sale\\UserConsent','onDataProviderList','',1,'fd2c045cd3d413f1cd72c8212d0a3be5'),(311,'2019-10-17 11:04:13',100,'currency','OnBeforeCurrencyDelete','sale','','CSaleOrder','OnBeforeCurrencyDelete','',1,'43357684dca62b87766e2520897cc846'),(312,'2019-10-17 11:04:13',100,'currency','OnBeforeCurrencyDelete','sale','','CSaleLang','OnBeforeCurrencyDelete','',1,'6a894cb7f1238391705580372e1c02ed'),(313,'2019-10-17 11:04:13',100,'currency','OnModuleUnInstall','sale','','','CurrencyModuleUnInstallSale','',1,'4721b58c6a82c4a527a69ee4be5c53da'),(314,'2019-10-17 11:04:13',100,'catalog','OnSaleOrderSumm','sale','','CSaleOrder','__SaleOrderCount','',1,'4513000ebefe0bf698cc1f2b6621d869'),(315,'2019-10-17 11:04:13',100,'mobileapp','OnBeforeAdminMobileMenuBuild','sale','','CSaleMobileOrderUtils','buildSaleAdminMobileMenu','',1,'13a60b3ac8ad675f4da59230584b1e29'),(316,'2019-10-17 11:04:13',100,'sender','OnConnectorList','sale','','\\Bitrix\\Sale\\SenderEventHandler','onConnectorListBuyer','',1,'cc939d09a3ab294a111aa3fdc87f0e65'),(317,'2019-10-17 11:04:13',100,'sender','OnTriggerList','sale','','\\Bitrix\\Sale\\Sender\\EventHandler','onTriggerList','',1,'1ebc8fda63fc8d296b291c35ac5d408a'),(318,'2019-10-17 11:04:13',100,'sender','OnPresetMailingList','sale','','\\Bitrix\\Sale\\Sender\\EventHandler','onPresetMailingList','',1,'9aa9afbbf3d48dc058d418ae2d171f15'),(319,'2019-10-17 11:04:13',100,'sender','OnPresetTemplateList','sale','','\\Bitrix\\Sale\\Sender\\EventHandler','onPresetTemplateList','',1,'93d6f5d699b7761784c15d83ad3af026'),(320,'2019-10-17 11:04:13',100,'sender','OnConnectorList','sale','','Bitrix\\Sale\\Bigdata\\TargetSaleMailConnector','onConnectorList','',1,'8f2d8ee9b15da1a5b5dad688d21c264d'),(321,'2019-10-17 11:04:13',100,'sale','OnCondSaleControlBuildList','sale','','CSaleCondCtrlGroup','GetControlDescr','',1,'296ebcd61f919a6b82fcf3f5a127ef6a'),(322,'2019-10-17 11:04:13',200,'sale','OnCondSaleControlBuildList','sale','','CSaleCondCtrlBasketGroup','GetControlDescr','',1,'de1d757c37518b3143bba2f428e2e6a6'),(323,'2019-10-17 11:04:13',200,'sale','OnCondSaleActionsControlBuildList','sale','','CSaleActionGiftCtrlGroup','GetControlDescr','',1,'942abbd683115d308f25ff42985c8593'),(324,'2019-10-17 11:04:13',300,'sale','OnCondSaleControlBuildList','sale','','CSaleCondCtrlBasketFields','GetControlDescr','',1,'996070c5552ecca49e760126f7195bd4'),(325,'2019-10-17 11:04:13',1000,'sale','OnCondSaleControlBuildList','sale','','CSaleCondCtrlOrderFields','GetControlDescr','',1,'a1240fa3d2550434c0051526df614be5'),(326,'2019-10-17 11:04:13',1000,'sale','onBuildDiscountConditionInterfaceControls','sale','','CSaleCondCtrlPastOrder','onBuildDiscountConditionInterfaceControls','',1,'53a2a7b3be748c41b73ded0df7a3d2dc'),(327,'2019-10-17 11:04:13',1000,'sale','onBuildDiscountConditionInterfaceControls','sale','','CSaleCondCumulativeCtrl','onBuildDiscountConditionInterfaceControls','',1,'8bc639075919676f9e46f732debab26c'),(328,'2019-10-17 11:04:13',10000,'sale','OnCondSaleControlBuildList','sale','','CSaleCondCtrlCommon','GetControlDescr','',1,'2ce888cd7080ab5fd8b1a3961be06da7'),(329,'2019-10-17 11:04:13',100,'sale','OnCondSaleActionsControlBuildList','sale','','CSaleActionCtrlGroup','GetControlDescr','',1,'8bac88f4470a7272820165d8772c3811'),(330,'2019-10-17 11:04:13',200,'sale','OnCondSaleActionsControlBuildList','sale','','CSaleActionCtrlDelivery','GetControlDescr','',1,'99baf553cfad6c18ac20f1369dfa99d9'),(331,'2019-10-17 11:04:13',300,'sale','OnCondSaleActionsControlBuildList','sale','','CSaleActionCtrlBasketGroup','GetControlDescr','',1,'466e951d4006531a4e91cb9a09d3b326'),(332,'2019-10-17 11:04:13',1000,'sale','OnCondSaleActionsControlBuildList','sale','','CSaleActionCtrlSubGroup','GetControlDescr','',1,'6cad62059d56f54fde1db1713417062f'),(333,'2019-10-17 11:04:13',1100,'sale','OnCondSaleActionsControlBuildList','sale','','CSaleActionCondCtrlBasketFields','GetControlDescr','',1,'f70e8a86d473a6270174c4dd343b2950'),(334,'2019-10-17 11:04:13',1000,'sale','onBuildDiscountActionInterfaceControls','sale','','CSaleCumulativeAction','onBuildDiscountActionInterfaceControls','',1,'0fa84d452d74f2c4b44f7f29fc2c3639'),(335,'2019-10-17 11:04:13',100,'sale','OnOrderDelete','sale','','CSaleMobileOrderPull','onOrderDelete','',1,'2db07e311fd07d56998b741b0f162939'),(336,'2019-10-17 11:04:13',100,'sale','OnOrderAdd','sale','','CSaleMobileOrderPull','onOrderAdd','',1,'5c15a74863f008664f09699fc9d9d0e8'),(337,'2019-10-17 11:04:13',100,'sale','OnOrderUpdate','sale','','CSaleMobileOrderPull','onOrderUpdate','',1,'95cddfd1bc5484de204f2d9c8483e121'),(338,'2019-10-17 11:04:13',100,'sale','OnBasketOrder','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSaleOrderAdd','',1,'1cc1c5d7ef050fd2d6070dd14491d715'),(339,'2019-10-17 11:04:13',100,'sale','OnSaleStatusOrder','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSaleStatusOrderHandler','',1,'f5c1b31d3c2fd7068b7b6f745f53f9f4'),(340,'2019-10-17 11:04:13',100,'sale','OnSaleDeliveryOrder','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSaleDeliveryOrderHandler','',1,'c2903054f58ca673b723a3999dbcd88b'),(341,'2019-10-17 11:04:13',100,'sale','OnSaleDeductOrder','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSaleDeductOrderHandler','',1,'1f1f9143640be1dad9b04fd201ab4687'),(342,'2019-10-17 11:04:13',100,'sale','OnSaleCancelOrder','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSaleCancelOrderHandler','',1,'590d07e68853906060ecc33973fe66b7'),(343,'2019-10-17 11:04:13',100,'sale','OnSalePayOrder','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSalePayOrderHandler','',1,'dc4204dd3a382cb2b76bb7c38a8905c6'),(344,'2019-10-17 11:04:14',100,'conversion','OnGetCounterTypes','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onGetCounterTypes','',1,'5a2f8d96b831b4c7fca6a2e1df66d2d2'),(345,'2019-10-17 11:04:14',100,'conversion','OnGetRateTypes','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onGetRateTypes','',1,'c0229632674c536720d26bae1aa5f257'),(346,'2019-10-17 11:04:14',100,'conversion','OnGenerateInitialData','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onGenerateInitialData','',1,'6279d15bcac076fa09f210c1194dcef7'),(347,'2019-10-17 11:04:14',100,'sale','OnBeforeBasketAdd','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onBeforeBasketAdd','',1,'20bb277d56c9cf36b45ef071ae20f6fe'),(348,'2019-10-17 11:04:14',100,'sale','OnBasketAdd','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onBasketAdd','',1,'ddb7ea6af53fec4af453855b666c77de'),(349,'2019-10-17 11:04:14',100,'sale','OnBeforeBasketUpdate','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onBeforeBasketUpdate','',1,'484b91f62c25eec31167571a0aeeb2a6'),(350,'2019-10-17 11:04:14',100,'sale','OnBasketUpdate','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onBasketUpdate','',1,'aa0b2781b3777c3668f2e8866ffc8c1d'),(351,'2019-10-17 11:04:14',100,'sale','OnBeforeBasketDelete','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onBeforeBasketDelete','',1,'ffcd526a1ddacc9c3caf0486f54b939f'),(352,'2019-10-17 11:04:14',100,'sale','OnBasketDelete','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onBasketDelete','',1,'b47b268dada924f01486a01eb1005ff4'),(353,'2019-10-17 11:04:14',100,'sale','OnOrderAdd','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onOrderAdd','',1,'6ef955519ebcb4e88c7a7844e21bc01d'),(354,'2019-10-17 11:04:14',100,'sale','OnSalePayOrder','sale','','\\Bitrix\\Sale\\Internals\\ConversionHandlers','onSalePayOrder','',1,'d537062b14b373a4da3fcf3e7a81d2ce'),(355,'2019-10-17 11:04:14',100,'sale','OnGetBusinessValueGroups','sale','','\\Bitrix\\Sale\\PaySystem\\Manager','getBusValueGroups','',1,'1705ec5b3e07732aac14de24ab4af16f'),(356,'2019-10-17 11:04:14',100,'sale','OnGetBusinessValueConsumers','sale','','\\Bitrix\\Sale\\PaySystem\\Manager','getConsumersList','',1,'e0368b7180e00e7a14391f5a5bc4c0e6'),(357,'2019-10-17 11:04:14',100,'sale','OnGetBusinessValueGroups','sale','','\\Bitrix\\Sale\\Delivery\\Services\\Manager','onGetBusinessValueGroups','',1,'77ce66f46264dd8337aebdb21ca53f71'),(358,'2019-10-17 11:04:14',100,'sale','OnGetBusinessValueConsumers','sale','','\\Bitrix\\Sale\\Delivery\\Services\\Manager','onGetBusinessValueConsumers','',1,'14ade708ce6361ecf9c012cb22d67be8'),(359,'2019-10-17 11:04:14',100,'perfmon','OnGetTableSchema','sale','','sale','OnGetTableSchema','',1,'9936d730ab3c8c517df2c36b3a972479'),(360,'2019-10-17 11:04:14',100,'rest','OnRestServiceBuildDescription','sale','','\\Bitrix\\Sale\\PaySystem\\RestService','onRestServiceBuildDescription','',1,'8a80c7a16c92e0d1f9ff8bef114fb385'),(361,'2019-10-17 11:04:14',100,'main','onNumberGeneratorsClassesCollect','sale','','\\Bitrix\\Sale\\Integration\\Numerator\\OrderIdNumberGenerator','onGeneratorClassesCollect','',2,'256ff053109ceb4617b33f439dcd5d97'),(362,'2019-10-17 11:04:14',100,'main','onNumberGeneratorsClassesCollect','sale','','\\Bitrix\\Sale\\Integration\\Numerator\\OrderUserOrdersNumberGenerator','onGeneratorClassesCollect','',2,'9dc83ff561c43ccb14f2fd040c7fa466'),(363,'2019-10-17 11:04:14',100,'main','onBuildNumeratorTemplateWordsList','sale','','\\Bitrix\\Sale\\Integration\\Numerator\\AccountNumberCompatibilityManager','onBuildNumeratorTemplateWordsList','',2,'5f3b4e8c655f9045f49e4a9f66f3ba04'),(364,'2019-10-17 11:04:14',100,'main','\\Bitrix\\Main\\Numerator\\Model\\Numerator::OnAfterAdd','sale','','\\Bitrix\\Sale\\Integration\\Numerator\\AccountNumberCompatibilityManager','updateAccountNumberType','',2,'fcb8d9f3218f74cc4e7c5ca7fd4f1fcd'),(365,'2019-10-17 11:04:14',100,'main','\\Bitrix\\Main\\Numerator\\Model\\Numerator::OnAfterUpdate','sale','','\\Bitrix\\Sale\\Integration\\Numerator\\AccountNumberCompatibilityManager','updateAccountNumberType','',2,'44bc4351479b3061d1528f1e6b72bca6'),(366,'2019-10-17 11:04:14',100,'main','\\Bitrix\\Main\\Numerator\\Model\\Numerator::OnAfterDelete','sale','','\\Bitrix\\Sale\\Integration\\Numerator\\AccountNumberCompatibilityManager','resetAccountNumberType','',2,'abc9a028c4af6eabe411dcc6cc1b8612'),(367,'2019-10-17 11:04:14',100,'landing','\\Bitrix\\Landing\\Internals\\Site::OnAfterAdd','sale','','\\Bitrix\\Sale\\TradingPlatform\\Landing\\Landing','onLandingSiteAdd','',2,'3579225cef4481d1701e1795109f97f0'),(368,'2019-10-17 11:04:14',100,'landing','\\Bitrix\\Landing\\Internals\\Site::OnAfterDelete','sale','','\\Bitrix\\Sale\\TradingPlatform\\Landing\\Landing','onLandingSiteDelete','',2,'db9720307ded8d73485dd1b0d7ebcda9'),(369,'2019-10-17 11:04:14',100,'landing','onBeforeSiteRecycle','sale','','\\Bitrix\\Sale\\TradingPlatform\\Landing\\Landing','onLandingBeforeSiteRecycle','',2,'96214984567ac01f9d1f0c1f68a02cd5'),(370,'2019-10-17 11:04:14',100,'sale','OnSaleBasketItemEntitySaved','sale','','\\Bitrix\\Sale\\Internals\\Events','onSaleBasketItemEntitySaved','',2,'aa7396e90f202976598ed413d294a0bf'),(371,'2019-10-17 11:04:14',100,'sale','OnSaleBasketItemDeleted','sale','','\\Bitrix\\Sale\\Internals\\Events','onSaleBasketItemDeleted','',2,'9e1bcbc9929835522be6ccad34ba6bd0'),(372,'2019-10-17 11:04:15',100,'sale','OnSaleOrderPaid','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onSalePayOrder','',2,'404a61e031d7e64913dc7af1173ddd68'),(373,'2019-10-17 11:04:15',100,'sale','OnSaleOrderBeforeSaved','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onOrderBeforeSaved','',2,'ce6190944ef0658fff3ebca03847843c'),(374,'2019-10-17 11:04:15',100,'sale','OnSaleBeforeOrderDelete','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onBeforeOrderDelete','',2,'2ca7b7688dbc84dc39fee9463eb34ceb'),(375,'2019-10-17 11:04:15',100,'sale','OnSaleOrderDeleted','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onOrderDelete','',2,'1b5c90f772b51373f4a028bbaa433ed5'),(376,'2019-10-17 11:04:15',100,'sale','OnShipmentAllowDelivery','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onSaleDeliveryOrder','',2,'ad1a0e35e34f4627cd53de4eb34c4923'),(377,'2019-10-17 11:04:15',100,'sale','OnSaleBeforeOrderCanceled','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onSaleBeforeCancelOrder','',2,'3c30672b91e260ad4e7349f2dbe7b1fe'),(378,'2019-10-17 11:04:15',100,'sale','OnSaleOrderCanceled','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onSaleCancelOrder','',2,'fcc270505f16796cfd8abd2f4da4a034'),(379,'2019-10-17 11:04:15',500,'sale','OnSaleOrderPaidSendMail','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onSaleOrderPaidSendMail','',2,'34dd55a7ad6e7a7ab0cf97432224a8b9'),(380,'2019-10-17 11:04:15',500,'sale','OnSaleOrderCancelSendEmail','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onSaleOrderCancelSendEmail','',2,'f5d9c84017de8930323ff7514bcc4fbf'),(381,'2019-10-17 11:04:15',100,'sale','OnSaleOrderEntitySaved','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onOrderSave','',2,'02970339a219465944475e857aa0e10e'),(382,'2019-10-17 11:04:15',100,'sale','OnSaleOrderSaved','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onOrderSaved','',2,'c11acfd9099c4d6daa6ccbfb287a46d5'),(383,'2019-10-17 11:04:15',100,'sale','OnSaleBasketItemBeforeSaved','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onBasketItemBeforeChange','',2,'04ce367b2c90007c1a0e24c6c091dd35'),(384,'2019-10-17 11:04:15',100,'sale','OnSaleBasketItemEntitySaved','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onBasketItemChange','',2,'2591db198abf3234dbd6f296f5838a8e'),(385,'2019-10-17 11:04:15',100,'sale','OnShipmentTrackingNumberChange','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onShipmentTrackingNumberChange','',2,'96625412ef9b00c79fd2231988dc66ed'),(386,'2019-10-17 11:04:15',100,'sale','OnSaleBeforeStatusOrderChange','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onSaleBeforeStatusOrderChange','',2,'ab2683aa31831111d969dab169bb375b'),(387,'2019-10-17 11:04:15',100,'sale','OnSaleStatusOrderChange','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onSaleStatusOrderChange','',2,'6821dbbeaed6a06ffedc622ec3e2aa34'),(388,'2019-10-17 11:04:15',500,'sale','OnSaleOrderStatusChangeSendEmail','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onSaleOrderStatusChangeSendEmail','',2,'40471b5ebc8aba52365897ea49caa989'),(389,'2019-10-17 11:04:15',500,'sale','OnSaleOrderSaved','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onOrderNewSendEmail','',2,'793c28e6a64ce885aef509b6ffa2dda0'),(390,'2019-10-17 11:04:15',500,'sale','OnOrderNewSendEmail','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onCallOrderNewSendEmail','',1,'3b3d85660240e7754bab8e73eb70c1de'),(391,'2019-10-17 11:04:15',100,'sale','OnBeforeSaleBasketItemEntityDeleted','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','OnBeforeBasketDelete','',2,'446a0977617852417a690dbe4ed1c777'),(392,'2019-10-17 11:04:15',100,'sale','OnSaleBasketItemDeleted','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','OnBasketDelete','',2,'a1b50cb053479a69ce78536bc4b0ef80'),(393,'2019-10-17 11:04:15',100,'sale','OnShipmentAllowDelivery','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onShipmentAllowDelivery','',2,'c6a8e069d60fbf848e7583b5ddb5ffb6'),(394,'2019-10-17 11:04:15',500,'sale','OnOrderCancelSendEmail','sale','','\\Bitrix\\Sale\\Compatible\\EventCompatibility','onCallOrderCancelSendEmail','',1,'b6ed6599515cba8f9b04619ee9e3c24f'),(395,'2019-10-17 11:04:15',100,'sale','OnSaleOrderSaved','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSaleOrderAddEvent','',2,'2d06ef28f6bf716b75381e1af7eb644d'),(396,'2019-10-17 11:04:15',100,'sale','OnSaleStatusOrderChange','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSaleStatusOrderHandlerEvent','',2,'15bda58e8c57500dbe7d70c0071065da'),(397,'2019-10-17 11:04:15',100,'sale','OnShipmentAllowDelivery','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSaleDeliveryOrderHandlerEvent','',2,'cfe91e8c12575af526153234cba388b5'),(398,'2019-10-17 11:04:15',100,'sale','OnShipmentDeducted','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSaleDeductOrderHandlerEvent','',2,'a0c8700eda9efe6c2df2fc1d8bb9c3f7'),(399,'2019-10-17 11:04:15',100,'sale','OnSaleOrderCanceled','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSaleCancelOrderHandlerEvent','',2,'822ed61755449ab6a02a1b74021ee610'),(400,'2019-10-17 11:04:15',100,'sale','OnSaleOrderPaid','sale','','\\Bitrix\\Sale\\Product2ProductTable','onSalePayOrderHandlerEvent','',2,'7126e3a49875de2688d7178410705f00'),(401,'2019-10-17 11:04:21',100,'main','OnEventLogGetAuditTypes','scale','','\\Bitrix\\Scale\\Logger','onEventLogGetAuditTypes','',1,'d8192b7113f1652bdf8a37bcd4e38dea'),(402,'2019-10-17 11:04:25',100,'main','OnChangePermissions','search','','CSearch','OnChangeFilePermissions','',1,'1c37aedc2ec89f94624291d097fe7adf'),(403,'2019-10-17 11:04:25',100,'main','OnChangeFile','search','','CSearch','OnChangeFile','',1,'d51170fc3433fde7eab8edc1c2b933a0'),(404,'2019-10-17 11:04:25',100,'main','OnGroupDelete','search','','CSearch','OnGroupDelete','',1,'05382d7448b1ba259b89bf9e87e4eb44'),(405,'2019-10-17 11:04:25',100,'main','OnLangDelete','search','','CSearch','OnLangDelete','',1,'15ebda82514af5a966b3466cd26992a4'),(406,'2019-10-17 11:04:25',100,'main','OnAfterUserUpdate','search','','CSearchUser','OnAfterUserUpdate','',1,'9e0cea5039973193afc706ec8978d674'),(407,'2019-10-17 11:04:25',100,'main','OnUserDelete','search','','CSearchUser','DeleteByUserID','',1,'524a910f381ba144bf50caa152222ed6'),(408,'2019-10-17 11:04:25',100,'cluster','OnGetTableList','search','','search','OnGetTableList','',1,'a40ffd36df151e2c0294b5639e81d665'),(409,'2019-10-17 11:04:25',100,'perfmon','OnGetTableSchema','search','','search','OnGetTableSchema','',1,'9c8df2577e0cb80c68afa2030e193efb'),(410,'2019-10-17 11:04:25',90,'main','OnEpilog','search','','CSearchStatistic','OnEpilog','',1,'6b3591ad78ac2a3ce6ad411f0aff47fe'),(411,'2019-10-17 11:04:29',100,'main','OnUserDelete','security','','CSecurityUser','OnUserDelete','',1,'450a1c7509f5363a9bf7d1472f22f9cf'),(412,'2019-10-17 11:04:29',100,'main','OnEventLogGetAuditTypes','security','','CSecurityFilter','GetAuditTypes','',1,'893bc94df887141b4f3579561ea37454'),(413,'2019-10-17 11:04:29',100,'main','OnEventLogGetAuditTypes','security','','CSecurityAntiVirus','GetAuditTypes','',1,'9ba919b0537aa25fe47e438c2428b4d9'),(414,'2019-10-17 11:04:29',100,'main','OnAdminInformerInsertItems','security','','CSecurityFilter','OnAdminInformerInsertItems','',1,'c751923f396ccc4e102ed17e97cb8afb'),(415,'2019-10-17 11:04:29',100,'main','OnAdminInformerInsertItems','security','','CSecuritySiteChecker','OnAdminInformerInsertItems','',1,'0c7cea553d58a72f7c5521d282898bc7'),(416,'2019-10-17 11:04:29',5,'main','OnBeforeProlog','security','','CSecurityFilter','OnBeforeProlog','',1,'bb70fedd18267b1c5290068ae80dbc4d'),(417,'2019-10-17 11:04:29',9999,'main','OnEndBufferContent','security','','CSecurityXSSDetect','OnEndBufferContent','',1,'d1886589ecd51b020420e6c1415edeaf'),(418,'2019-10-17 11:04:29',1,'main','OnBeforeLocalRedirect','security','','CSecurityRedirect','BeforeLocalRedirect','',1,'2dbeb7fa7a8bec4d90e8940616976b3d'),(419,'2019-10-17 11:04:29',1,'main','OnEndBufferContent','security','','CSecurityRedirect','EndBufferContent','',1,'099871646b4df8c1263e26f9bd91f3bd'),(420,'2019-10-17 11:04:35',100,'main','OnMailEventMailRead','sender','','bitrix\\sender\\postingmanager','onMailEventMailRead','',1,'a302db7a7359f29def28e355f29f96f4'),(421,'2019-10-17 11:04:35',100,'main','OnMailEventMailClick','sender','','bitrix\\sender\\postingmanager','onMailEventMailClick','',1,'a80da54a2cd733c1adf4dbc683dd59a0'),(422,'2019-10-17 11:04:35',100,'main','OnMailEventSubscriptionDisable','sender','','Bitrix\\Sender\\Subscription','onMailEventSubscriptionDisable','',1,'5be80a355741c2d8921fceed9c125663'),(423,'2019-10-17 11:04:35',100,'main','OnMailEventSubscriptionEnable','sender','','Bitrix\\Sender\\Subscription','onMailEventSubscriptionEnable','',1,'ece0e5a0ae0b0a7cee733fdd6f18d971'),(424,'2019-10-17 11:04:35',100,'main','OnMailEventSubscriptionList','sender','','Bitrix\\Sender\\Subscription','onMailEventSubscriptionList','',1,'d941d7661683a3bea10eb48d23d77761'),(425,'2019-10-17 11:04:35',100,'main','OnMailEventMailChangeStatus','sender','','Bitrix\\Sender\\Integration\\EventHandler','onMailEventMailChangeStatus','',1,'2f5e7cf45b8b7d30edb46bd6bdad3a50'),(426,'2019-10-17 11:04:35',100,'sender','OnConnectorList','sender','','bitrix\\sender\\connectormanager','onConnectorListContact','',1,'3c6595f0bbc51244dff5f075b46bd066'),(427,'2019-10-17 11:04:35',100,'sender','OnConnectorList','sender','','bitrix\\sender\\connectormanager','onConnectorListRecipient','',1,'2e9d1255520f3863f1737442782f28a6'),(428,'2019-10-17 11:04:35',100,'sender','OnConnectorList','sender','','bitrix\\sender\\connectormanager','onConnectorList','',1,'c954cc6187ea48a82079b3e03693abd8'),(429,'2019-10-17 11:04:35',100,'sender','OnPresetTemplateList','sender','','Bitrix\\Sender\\Preset\\TemplateBase','onPresetTemplateList','',1,'1df99c747e7794f811410df57404836e'),(430,'2019-10-17 11:04:35',100,'sender','OnPresetTemplateList','sender','','Bitrix\\Sender\\TemplateTable','onPresetTemplateList','',1,'a6b93f66594654c65978a9b9299b1bb4'),(431,'2019-10-17 11:04:35',100,'sender','OnPresetMailBlockList','sender','','Bitrix\\Sender\\Preset\\MailBlockBase','OnPresetMailBlockList','',1,'d083b8ef9a32243fbf3df1e642146397'),(432,'2019-10-17 11:04:35',100,'sender','OnPresetTemplateList','sender','','Bitrix\\Sender\\Preset\\TemplateBase','onPresetTemplateListSite','',1,'c434f45cc9380e7de8dc636b48095caa'),(433,'2019-10-17 11:04:35',100,'sender','OnTriggerList','sender','','bitrix\\sender\\triggermanager','onTriggerList','',1,'a1b055daf8c721818afa6702226dee8d'),(434,'2019-10-17 11:04:35',100,'sender','OnAfterRecipientUnsub','sender','','Bitrix\\Sender\\TriggerManager','onAfterRecipientUnsub','',1,'23435551b6eb1a73c2de20de551e9f4d'),(435,'2019-10-17 11:04:35',100,'sender','OnAfterRecipientClick','sender','','Bitrix\\Sender\\Internals\\ConversionHandler','onAfterRecipientClick','',1,'b6cbf511e5fba2f85be2281447c43f82'),(436,'2019-10-17 11:04:35',100,'conversion','OnSetDayContextAttributes','sender','','Bitrix\\Sender\\Internals\\ConversionHandler','onSetDayContextAttributes','',1,'d597cbef84c88e9cc5bd127531034aa7'),(437,'2019-10-17 11:04:35',100,'main','OnBeforeProlog','sender','','Bitrix\\Sender\\Internals\\ConversionHandler','onBeforeProlog','',1,'4c5ff692bd48611c395ad84ce3a8477b'),(438,'2019-10-17 11:04:35',100,'conversion','OnGetAttributeTypes','sender','','Bitrix\\Sender\\Internals\\ConversionHandler','onGetAttributeTypes','',1,'23465bf12ffd96198f1ee02e46d989c6'),(439,'2019-10-17 11:04:35',100,'voximplant','OnInfoCallResult','sender','','Bitrix\\Sender\\Integration\\VoxImplant\\Service','onInfoCallResult','',1,'4fec3d1812baa0316165bb01c35cfc3d'),(440,'2019-10-17 11:04:35',100,'sender','OnAfterMailingChainSend','sender','','Bitrix\\Sender\\Trigger\\Manager','onAfterMailingChainSend','',2,'3d507265a6707d8e6bf510fdefcfcb67'),(441,'2019-10-17 11:04:35',100,'sender','OnAfterPostingSendRecipient','sender','','Bitrix\\Sender\\Trigger\\Manager','onAfterPostingSendRecipient','',2,'6ff2cb8915576312ea4085801d6f067c'),(442,'2019-10-17 11:04:40',100,'main','OnPanelCreate','seo','','CSeoEventHandlers','SeoOnPanelCreate','',2,'79688b0b4a106b805d09e63ffe88f580'),(443,'2019-10-17 11:04:40',100,'fileman','OnIncludeHTMLEditorScript','seo','','CSeoEventHandlers','OnIncludeHTMLEditorScript','',2,'7995eac5813e40f6b3e82b146631397e'),(444,'2019-10-17 11:04:40',100,'fileman','OnBeforeHTMLEditorScriptRuns','seo','','CSeoEventHandlers','OnBeforeHTMLEditorScriptRuns','',2,'313b34609f1fa34d34cde1c2103c09ff'),(445,'2019-10-17 11:04:40',100,'iblock','OnAfterIBlockSectionAdd','seo','','\\Bitrix\\Seo\\SitemapIblock','addSection','',2,'c61de21b0b0873525fa5c39427324664'),(446,'2019-10-17 11:04:40',100,'iblock','OnAfterIBlockElementAdd','seo','','\\Bitrix\\Seo\\SitemapIblock','addElement','',2,'1b167ab85d6d744bba456e559546f13e'),(447,'2019-10-17 11:04:40',100,'iblock','OnBeforeIBlockSectionDelete','seo','','\\Bitrix\\Seo\\SitemapIblock','beforeDeleteSection','',2,'148ce014df9dd9f99f17ebfc5d766e8a'),(448,'2019-10-17 11:04:40',100,'iblock','OnBeforeIBlockElementDelete','seo','','\\Bitrix\\Seo\\SitemapIblock','beforeDeleteElement','',2,'4b1e9896d9f0aa37a7039a321f25f9a5'),(449,'2019-10-17 11:04:40',100,'iblock','OnAfterIBlockSectionDelete','seo','','\\Bitrix\\Seo\\SitemapIblock','deleteSection','',2,'b699c1c0d6665f9cffe7ff76ab108a24'),(450,'2019-10-17 11:04:40',100,'iblock','OnAfterIBlockElementDelete','seo','','\\Bitrix\\Seo\\SitemapIblock','deleteElement','',2,'ff3a36654015c53890f4cf2204b030c4'),(451,'2019-10-17 11:04:40',100,'iblock','OnBeforeIBlockSectionUpdate','seo','','\\Bitrix\\Seo\\SitemapIblock','beforeUpdateSection','',2,'aa5f8c360ed88eb5e2884c57b6f1f2f3'),(452,'2019-10-17 11:04:40',100,'iblock','OnBeforeIBlockElementUpdate','seo','','\\Bitrix\\Seo\\SitemapIblock','beforeUpdateElement','',2,'a1022e0619263c0e91139fb3f9837085'),(453,'2019-10-17 11:04:40',100,'iblock','OnAfterIBlockSectionUpdate','seo','','\\Bitrix\\Seo\\SitemapIblock','updateSection','',2,'27930cffcd40b84666d0a22e1a953c41'),(454,'2019-10-17 11:04:40',100,'iblock','OnAfterIBlockElementUpdate','seo','','\\Bitrix\\Seo\\SitemapIblock','updateElement','',2,'f0151e07363564774d45acba4100aebe'),(455,'2019-10-17 11:04:40',100,'forum','onAfterTopicAdd','seo','','\\Bitrix\\Seo\\SitemapForum','addTopic','',2,'d4d54756116942c9ee0bda9b31e9d0e7'),(456,'2019-10-17 11:04:40',100,'forum','onAfterTopicUpdate','seo','','\\Bitrix\\Seo\\SitemapForum','updateTopic','',2,'3e0a8569016a4c941f3eb4aa9fca6e8b'),(457,'2019-10-17 11:04:40',100,'forum','onAfterTopicDelete','seo','','\\Bitrix\\Seo\\SitemapForum','deleteTopic','',2,'7f4379c818231561b41589d3de41e36b'),(458,'2019-10-17 11:04:40',100,'main','OnAdminIBlockElementEdit','seo','','\\Bitrix\\Seo\\AdvTabEngine','eventHandler','',2,'c894d167ef03c35375b8eb8f2551a798'),(459,'2019-10-17 11:04:40',100,'main','OnBeforeProlog','seo','','\\Bitrix\\Seo\\AdvSession','checkSession','',2,'5fdf8dd9fd70719e442efcb589175bf0'),(460,'2019-10-17 11:04:40',100,'sale','OnOrderSave','seo','','\\Bitrix\\Seo\\AdvSession','onOrderSave','',2,'07d4ab0b1aa0aa130a0cbc06403f6eae'),(461,'2019-10-17 11:04:40',100,'sale','OnBasketOrder','seo','','\\Bitrix\\Seo\\AdvSession','onBasketOrder','',2,'cf6298b090e92e955b32c358c1d14b25'),(462,'2019-10-17 11:04:40',100,'sale','onSalePayOrder','seo','','\\Bitrix\\Seo\\AdvSession','onSalePayOrder','',2,'745afed820778e33d5cd3e91cbd622f1'),(463,'2019-10-17 11:04:40',100,'sale','onSaleDeductOrder','seo','','\\Bitrix\\Seo\\AdvSession','onSaleDeductOrder','',2,'12861bd5c6c27ffa2abe5cac90ea58d8'),(464,'2019-10-17 11:04:40',100,'sale','onSaleDeliveryOrder','seo','','\\Bitrix\\Seo\\AdvSession','onSaleDeliveryOrder','',2,'ead8fb64fece572d1fabd3d6fd27af27'),(465,'2019-10-17 11:04:40',100,'sale','onSaleStatusOrder','seo','','\\Bitrix\\Seo\\AdvSession','onSaleStatusOrder','',2,'b7b9ac4bbf458d433e1cf3835ff4cb6c'),(466,'2019-10-17 11:04:40',100,'conversion','OnSetDayContextAttributes','seo','','\\Bitrix\\Seo\\ConversionHandler','onSetDayContextAttributes','',2,'c19eb7659342fabc34b953f69e8b9eee'),(467,'2019-10-17 11:04:40',100,'conversion','OnGetAttributeTypes','seo','','\\Bitrix\\Seo\\ConversionHandler','onGetAttributeTypes','',2,'379294eefad289e474bf0c5ce2a281d8'),(468,'2019-10-17 11:04:40',100,'catalog','OnProductUpdate','seo','','\\Bitrix\\Seo\\Adv\\Auto','checkQuantity','',2,'0f4deda4d57adb4389d85a19e5bbcf2b'),(469,'2019-10-17 11:04:40',100,'catalog','OnProductSetAvailableUpdate','seo','','\\Bitrix\\Seo\\Adv\\Auto','checkQuantity','',2,'3d040ae51f0f6a4b2a08be0e6e1494d4'),(470,'2019-10-17 11:04:44',100,'main','OnUserDelete','socialservices','','CSocServAuthDB','OnUserDelete','',1,'1f5b8fc024dfdf83952d6c723466cdf5'),(471,'2019-10-17 11:04:44',100,'timeman','OnAfterTMReportDailyAdd','socialservices','','CSocServAuthDB','OnAfterTMReportDailyAdd','',1,'a16159f6a90f1b67cb9ec15b0c1bab3a'),(472,'2019-10-17 11:04:44',100,'timeman','OnAfterTMDayStart','socialservices','','CSocServAuthDB','OnAfterTMDayStart','',1,'9567feb38890d6581a3204dc5e65e8b6'),(473,'2019-10-17 11:04:44',100,'timeman','OnTimeManShow','socialservices','','CSocServEventHandlers','OnTimeManShow','',1,'b728f3cea11d374f7638c29f84e8e15e'),(474,'2019-10-17 11:04:44',100,'main','OnFindExternalUser','socialservices','','CSocServAuthDB','OnFindExternalUser','',1,'1ab251d15efc87c5b5cfe6396f5dec1b'),(475,'2019-10-17 11:04:44',100,'socialservices','OnFindSocialservicesUser','socialservices','','CSocServAuthManager','checkOldUser','',1,'c3d7460e4ef694f5bc53b6a6ad902407'),(476,'2019-10-17 11:04:44',100,'socialservices','OnFindSocialservicesUser','socialservices','','CSocServAuthManager','checkAbandonedUser','',1,'331f99f0b265544c33777c299eab16f6'),(477,'2019-10-17 11:04:47',100,'main','OnPrologAdminTitle','storeassist','','CStoreAssist','onPrologAdminTitle','',1,'c8c32bd6c5f8cfa2c09ca7e64b8570cc'),(478,'2019-10-17 11:04:47',100,'main','OnBuildGlobalMenu','storeassist','','CStoreAssist','onBuildGlobalMenu','',1,'6279fb5f980eb4c26f4ac5f232ca50aa'),(479,'2019-10-17 11:04:50',100,'main','OnBeforeLangDelete','subscribe','','CRubric','OnBeforeLangDelete','',1,'ee539731a3e52fe65cb52596ce0856d2'),(480,'2019-10-17 11:04:50',100,'main','OnUserDelete','subscribe','','CSubscription','OnUserDelete','',1,'88c6e57a6f0f18341332db1879c0005b'),(481,'2019-10-17 11:04:50',100,'main','OnUserLogout','subscribe','','CSubscription','OnUserLogout','',1,'f4fa3b156b00fb4415c8612f8439f278'),(482,'2019-10-17 11:04:50',100,'main','OnGroupDelete','subscribe','','CPosting','OnGroupDelete','',1,'990d63845f75e93e670ed85f1aa15152'),(483,'2019-10-17 11:04:50',100,'sender','OnConnectorList','subscribe','','Bitrix\\Subscribe\\SenderEventHandler','onConnectorListSubscriber','',1,'8a1cffe1bd46a72108e48656a1bae99b'),(484,'2019-10-17 11:04:54',100,'main','OnPanelCreate','translate','','CTranslateEventHandlers','TranslatOnPanelCreate','',1,'38070e5e7a0aa6ff4876ffc7f3feb94b'),(485,'2019-10-17 11:05:00',10,'main','OnBeforeProlog','main','/modules/vote/keepvoting.php','','','',1,'251d4d100c1545ca5847d8d6d626dea9'),(486,'2019-10-17 11:05:00',200,'main','OnUserTypeBuildList','vote','','Bitrix\\Vote\\Uf\\VoteUserType','getUserTypeDescription','',1,'e30dd2d26df22ce2dcffef84256cf160'),(487,'2019-10-17 11:05:00',200,'main','OnUserLogin','vote','','Bitrix\\Vote\\User','onUserLogin','',1,'5047b245af7aede3f2474b40dfbc65be'),(488,'2019-10-17 11:05:00',100,'im','OnGetNotifySchema','vote','','CVoteNotifySchema','OnGetNotifySchema','',1,'97ffe9642e64dc7d68f9ec9bc789be47'),(489,'2019-10-17 11:06:51',100,'main','OnBeforeProlog','main','/modules/main/install/wizard_sol/panel_button.php','CWizardSolPanel','ShowPanel','',1,'bbd7b8c1e518a0b3eae815eb91a95c11');
 /*!40000 ALTER TABLE `b_module_to_module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -9536,7 +6282,7 @@ CREATE TABLE `b_operation` (
   `DESCRIPTION` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `BINDING` varchar(50) COLLATE utf8_unicode_ci DEFAULT 'module',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=162 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=141 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -9545,7 +6291,7 @@ CREATE TABLE `b_operation` (
 
 LOCK TABLES `b_operation` WRITE;
 /*!40000 ALTER TABLE `b_operation` DISABLE KEYS */;
-INSERT INTO `b_operation` VALUES (1,'edit_php','main',NULL,'module'),(2,'view_own_profile','main',NULL,'module'),(3,'edit_own_profile','main',NULL,'module'),(4,'view_all_users','main',NULL,'module'),(5,'view_groups','main',NULL,'module'),(6,'view_tasks','main',NULL,'module'),(7,'view_other_settings','main',NULL,'module'),(8,'view_subordinate_users','main',NULL,'module'),(9,'edit_subordinate_users','main',NULL,'module'),(10,'edit_all_users','main',NULL,'module'),(11,'edit_groups','main',NULL,'module'),(12,'edit_tasks','main',NULL,'module'),(13,'edit_other_settings','main',NULL,'module'),(14,'cache_control','main',NULL,'module'),(15,'lpa_template_edit','main',NULL,'module'),(16,'view_event_log','main',NULL,'module'),(17,'edit_ratings','main',NULL,'module'),(18,'manage_short_uri','main',NULL,'module'),(19,'fm_view_permission','main',NULL,'file'),(20,'fm_view_file','main',NULL,'file'),(21,'fm_view_listing','main',NULL,'file'),(22,'fm_edit_existent_folder','main',NULL,'file'),(23,'fm_create_new_file','main',NULL,'file'),(24,'fm_edit_existent_file','main',NULL,'file'),(25,'fm_create_new_folder','main',NULL,'file'),(26,'fm_delete_file','main',NULL,'file'),(27,'fm_delete_folder','main',NULL,'file'),(28,'fm_edit_in_workflow','main',NULL,'file'),(29,'fm_rename_file','main',NULL,'file'),(30,'fm_rename_folder','main',NULL,'file'),(31,'fm_upload_file','main',NULL,'file'),(32,'fm_add_to_menu','main',NULL,'file'),(33,'fm_download_file','main',NULL,'file'),(34,'fm_lpa','main',NULL,'file'),(35,'fm_edit_permission','main',NULL,'file'),(36,'bitrixcloud_monitoring','bitrixcloud',NULL,'module'),(37,'bitrixcloud_backup','bitrixcloud',NULL,'module'),(38,'bitrixcloud_cdn','bitrixcloud',NULL,'module'),(39,'calendar_view_time','calendar',NULL,'calendar_section'),(40,'calendar_view_title','calendar',NULL,'calendar_section'),(41,'calendar_view_full','calendar',NULL,'calendar_section'),(42,'calendar_add','calendar',NULL,'calendar_section'),(43,'calendar_edit','calendar',NULL,'calendar_section'),(44,'calendar_edit_section','calendar',NULL,'calendar_section'),(45,'calendar_edit_access','calendar',NULL,'calendar_section'),(46,'calendar_type_view','calendar',NULL,'calendar_type'),(47,'calendar_type_add','calendar',NULL,'calendar_type'),(48,'calendar_type_edit','calendar',NULL,'calendar_type'),(49,'calendar_type_edit_section','calendar',NULL,'calendar_type'),(50,'calendar_type_edit_access','calendar',NULL,'calendar_type'),(51,'catalog_view','catalog',NULL,'module'),(52,'catalog_read','catalog',NULL,'module'),(53,'catalog_price','catalog',NULL,'module'),(54,'catalog_group','catalog',NULL,'module'),(55,'catalog_discount','catalog',NULL,'module'),(56,'catalog_vat','catalog',NULL,'module'),(57,'catalog_extra','catalog',NULL,'module'),(58,'catalog_store','catalog',NULL,'module'),(59,'catalog_purchas_info','catalog',NULL,'module'),(60,'catalog_export_edit','catalog',NULL,'module'),(61,'catalog_export_exec','catalog',NULL,'module'),(62,'catalog_import_edit','catalog',NULL,'module'),(63,'catalog_import_exec','catalog',NULL,'module'),(64,'catalog_measure','catalog',NULL,'module'),(65,'catalog_settings','catalog',NULL,'module'),(66,'clouds_browse','clouds',NULL,'module'),(67,'clouds_upload','clouds',NULL,'module'),(68,'clouds_config','clouds',NULL,'module'),(69,'fileman_view_all_settings','fileman','','module'),(70,'fileman_edit_menu_types','fileman','','module'),(71,'fileman_add_element_to_menu','fileman','','module'),(72,'fileman_edit_menu_elements','fileman','','module'),(73,'fileman_edit_existent_files','fileman','','module'),(74,'fileman_edit_existent_folders','fileman','','module'),(75,'fileman_admin_files','fileman','','module'),(76,'fileman_admin_folders','fileman','','module'),(77,'fileman_view_permissions','fileman','','module'),(78,'fileman_edit_all_settings','fileman','','module'),(79,'fileman_upload_files','fileman','','module'),(80,'fileman_view_file_structure','fileman','','module'),(81,'fileman_install_control','fileman','','module'),(82,'medialib_view_collection','fileman','','medialib'),(83,'medialib_new_collection','fileman','','medialib'),(84,'medialib_edit_collection','fileman','','medialib'),(85,'medialib_del_collection','fileman','','medialib'),(86,'medialib_access','fileman','','medialib'),(87,'medialib_new_item','fileman','','medialib'),(88,'medialib_edit_item','fileman','','medialib'),(89,'medialib_del_item','fileman','','medialib'),(90,'sticker_view','fileman','','stickers'),(91,'sticker_edit','fileman','','stickers'),(92,'sticker_new','fileman','','stickers'),(93,'sticker_del','fileman','','stickers'),(94,'hl_element_read','highloadblock',NULL,'module'),(95,'hl_element_write','highloadblock',NULL,'module'),(96,'hl_element_delete','highloadblock',NULL,'module'),(97,'section_read','iblock',NULL,'iblock'),(98,'element_read','iblock',NULL,'iblock'),(99,'section_element_bind','iblock',NULL,'iblock'),(100,'iblock_admin_display','iblock',NULL,'iblock'),(101,'element_edit','iblock',NULL,'iblock'),(102,'element_edit_price','iblock',NULL,'iblock'),(103,'element_delete','iblock',NULL,'iblock'),(104,'element_bizproc_start','iblock',NULL,'iblock'),(105,'section_edit','iblock',NULL,'iblock'),(106,'section_delete','iblock',NULL,'iblock'),(107,'section_section_bind','iblock',NULL,'iblock'),(108,'element_edit_any_wf_status','iblock',NULL,'iblock'),(109,'iblock_edit','iblock',NULL,'iblock'),(110,'iblock_delete','iblock',NULL,'iblock'),(111,'iblock_rights_edit','iblock',NULL,'iblock'),(112,'iblock_export','iblock',NULL,'iblock'),(113,'section_rights_edit','iblock',NULL,'iblock'),(114,'element_rights_edit','iblock',NULL,'iblock'),(115,'lesson_read','learning',NULL,'lesson'),(116,'lesson_create','learning',NULL,'lesson'),(117,'lesson_write','learning',NULL,'lesson'),(118,'lesson_remove','learning',NULL,'lesson'),(119,'lesson_link_to_parents','learning',NULL,'lesson'),(120,'lesson_unlink_from_parents','learning',NULL,'lesson'),(121,'lesson_link_descendants','learning',NULL,'lesson'),(122,'lesson_unlink_descendants','learning',NULL,'lesson'),(123,'lesson_manage_rights','learning',NULL,'lesson'),(124,'sale_status_view','sale',NULL,'status'),(125,'sale_status_cancel','sale',NULL,'status'),(126,'sale_status_mark','sale',NULL,'status'),(127,'sale_status_delivery','sale',NULL,'status'),(128,'sale_status_deduction','sale',NULL,'status'),(129,'sale_status_payment','sale',NULL,'status'),(130,'sale_status_to','sale',NULL,'status'),(131,'sale_status_update','sale',NULL,'status'),(132,'sale_status_delete','sale',NULL,'status'),(133,'sale_status_from','sale',NULL,'status'),(134,'security_filter_bypass','security',NULL,'module'),(135,'security_edit_user_otp','security',NULL,'module'),(136,'security_module_settings_read','security',NULL,'module'),(137,'security_panel_view','security',NULL,'module'),(138,'security_filter_settings_read','security',NULL,'module'),(139,'security_otp_settings_read','security',NULL,'module'),(140,'security_iprule_admin_settings_read','security',NULL,'module'),(141,'security_session_settings_read','security',NULL,'module'),(142,'security_redirect_settings_read','security',NULL,'module'),(143,'security_stat_activity_settings_read','security',NULL,'module'),(144,'security_iprule_settings_read','security',NULL,'module'),(145,'security_antivirus_settings_read','security',NULL,'module'),(146,'security_frame_settings_read','security',NULL,'module'),(147,'security_module_settings_write','security',NULL,'module'),(148,'security_filter_settings_write','security',NULL,'module'),(149,'security_otp_settings_write','security',NULL,'module'),(150,'security_iprule_admin_settings_write','security',NULL,'module'),(151,'security_session_settings_write','security',NULL,'module'),(152,'security_redirect_settings_write','security',NULL,'module'),(153,'security_stat_activity_settings_write','security',NULL,'module'),(154,'security_iprule_settings_write','security',NULL,'module'),(155,'security_file_verifier_sign','security',NULL,'module'),(156,'security_file_verifier_collect','security',NULL,'module'),(157,'security_file_verifier_verify','security',NULL,'module'),(158,'security_antivirus_settings_write','security',NULL,'module'),(159,'security_frame_settings_write','security',NULL,'module'),(160,'seo_settings','seo','','module'),(161,'seo_tools','seo','','module');
+INSERT INTO `b_operation` VALUES (1,'edit_php','main',NULL,'module'),(2,'view_own_profile','main',NULL,'module'),(3,'edit_own_profile','main',NULL,'module'),(4,'view_all_users','main',NULL,'module'),(5,'view_groups','main',NULL,'module'),(6,'view_tasks','main',NULL,'module'),(7,'view_other_settings','main',NULL,'module'),(8,'view_subordinate_users','main',NULL,'module'),(9,'edit_subordinate_users','main',NULL,'module'),(10,'edit_all_users','main',NULL,'module'),(11,'edit_groups','main',NULL,'module'),(12,'edit_tasks','main',NULL,'module'),(13,'edit_other_settings','main',NULL,'module'),(14,'cache_control','main',NULL,'module'),(15,'lpa_template_edit','main',NULL,'module'),(16,'view_event_log','main',NULL,'module'),(17,'edit_ratings','main',NULL,'module'),(18,'manage_short_uri','main',NULL,'module'),(19,'fm_view_permission','main',NULL,'file'),(20,'fm_view_file','main',NULL,'file'),(21,'fm_view_listing','main',NULL,'file'),(22,'fm_edit_existent_folder','main',NULL,'file'),(23,'fm_create_new_file','main',NULL,'file'),(24,'fm_edit_existent_file','main',NULL,'file'),(25,'fm_create_new_folder','main',NULL,'file'),(26,'fm_delete_file','main',NULL,'file'),(27,'fm_delete_folder','main',NULL,'file'),(28,'fm_edit_in_workflow','main',NULL,'file'),(29,'fm_rename_file','main',NULL,'file'),(30,'fm_rename_folder','main',NULL,'file'),(31,'fm_upload_file','main',NULL,'file'),(32,'fm_add_to_menu','main',NULL,'file'),(33,'fm_download_file','main',NULL,'file'),(34,'fm_lpa','main',NULL,'file'),(35,'fm_edit_permission','main',NULL,'file'),(36,'bitrixcloud_monitoring','bitrixcloud',NULL,'module'),(37,'bitrixcloud_backup','bitrixcloud',NULL,'module'),(38,'bitrixcloud_cdn','bitrixcloud',NULL,'module'),(39,'catalog_view','catalog',NULL,'module'),(40,'catalog_read','catalog',NULL,'module'),(41,'catalog_price','catalog',NULL,'module'),(42,'catalog_group','catalog',NULL,'module'),(43,'catalog_discount','catalog',NULL,'module'),(44,'catalog_vat','catalog',NULL,'module'),(45,'catalog_extra','catalog',NULL,'module'),(46,'catalog_store','catalog',NULL,'module'),(47,'catalog_purchas_info','catalog',NULL,'module'),(48,'catalog_export_edit','catalog',NULL,'module'),(49,'catalog_export_exec','catalog',NULL,'module'),(50,'catalog_import_edit','catalog',NULL,'module'),(51,'catalog_import_exec','catalog',NULL,'module'),(52,'catalog_measure','catalog',NULL,'module'),(53,'catalog_settings','catalog',NULL,'module'),(54,'clouds_browse','clouds',NULL,'module'),(55,'clouds_upload','clouds',NULL,'module'),(56,'clouds_config','clouds',NULL,'module'),(57,'fileman_view_all_settings','fileman','','module'),(58,'fileman_edit_menu_types','fileman','','module'),(59,'fileman_add_element_to_menu','fileman','','module'),(60,'fileman_edit_menu_elements','fileman','','module'),(61,'fileman_edit_existent_files','fileman','','module'),(62,'fileman_edit_existent_folders','fileman','','module'),(63,'fileman_admin_files','fileman','','module'),(64,'fileman_admin_folders','fileman','','module'),(65,'fileman_view_permissions','fileman','','module'),(66,'fileman_edit_all_settings','fileman','','module'),(67,'fileman_upload_files','fileman','','module'),(68,'fileman_view_file_structure','fileman','','module'),(69,'fileman_install_control','fileman','','module'),(70,'medialib_view_collection','fileman','','medialib'),(71,'medialib_new_collection','fileman','','medialib'),(72,'medialib_edit_collection','fileman','','medialib'),(73,'medialib_del_collection','fileman','','medialib'),(74,'medialib_access','fileman','','medialib'),(75,'medialib_new_item','fileman','','medialib'),(76,'medialib_edit_item','fileman','','medialib'),(77,'medialib_del_item','fileman','','medialib'),(78,'sticker_view','fileman','','stickers'),(79,'sticker_edit','fileman','','stickers'),(80,'sticker_new','fileman','','stickers'),(81,'sticker_del','fileman','','stickers'),(82,'hl_element_read','highloadblock',NULL,'module'),(83,'hl_element_write','highloadblock',NULL,'module'),(84,'hl_element_delete','highloadblock',NULL,'module'),(85,'section_read','iblock',NULL,'iblock'),(86,'element_read','iblock',NULL,'iblock'),(87,'section_element_bind','iblock',NULL,'iblock'),(88,'iblock_admin_display','iblock',NULL,'iblock'),(89,'element_edit','iblock',NULL,'iblock'),(90,'element_edit_price','iblock',NULL,'iblock'),(91,'element_delete','iblock',NULL,'iblock'),(92,'element_bizproc_start','iblock',NULL,'iblock'),(93,'section_edit','iblock',NULL,'iblock'),(94,'section_delete','iblock',NULL,'iblock'),(95,'section_section_bind','iblock',NULL,'iblock'),(96,'element_edit_any_wf_status','iblock',NULL,'iblock'),(97,'iblock_edit','iblock',NULL,'iblock'),(98,'iblock_delete','iblock',NULL,'iblock'),(99,'iblock_rights_edit','iblock',NULL,'iblock'),(100,'iblock_export','iblock',NULL,'iblock'),(101,'section_rights_edit','iblock',NULL,'iblock'),(102,'element_rights_edit','iblock',NULL,'iblock'),(103,'sale_status_view','sale',NULL,'status'),(104,'sale_status_cancel','sale',NULL,'status'),(105,'sale_status_mark','sale',NULL,'status'),(106,'sale_status_delivery','sale',NULL,'status'),(107,'sale_status_deduction','sale',NULL,'status'),(108,'sale_status_payment','sale',NULL,'status'),(109,'sale_status_to','sale',NULL,'status'),(110,'sale_status_update','sale',NULL,'status'),(111,'sale_status_delete','sale',NULL,'status'),(112,'sale_status_from','sale',NULL,'status'),(113,'security_filter_bypass','security',NULL,'module'),(114,'security_edit_user_otp','security',NULL,'module'),(115,'security_module_settings_read','security',NULL,'module'),(116,'security_panel_view','security',NULL,'module'),(117,'security_filter_settings_read','security',NULL,'module'),(118,'security_otp_settings_read','security',NULL,'module'),(119,'security_iprule_admin_settings_read','security',NULL,'module'),(120,'security_session_settings_read','security',NULL,'module'),(121,'security_redirect_settings_read','security',NULL,'module'),(122,'security_stat_activity_settings_read','security',NULL,'module'),(123,'security_iprule_settings_read','security',NULL,'module'),(124,'security_antivirus_settings_read','security',NULL,'module'),(125,'security_frame_settings_read','security',NULL,'module'),(126,'security_module_settings_write','security',NULL,'module'),(127,'security_filter_settings_write','security',NULL,'module'),(128,'security_otp_settings_write','security',NULL,'module'),(129,'security_iprule_admin_settings_write','security',NULL,'module'),(130,'security_session_settings_write','security',NULL,'module'),(131,'security_redirect_settings_write','security',NULL,'module'),(132,'security_stat_activity_settings_write','security',NULL,'module'),(133,'security_iprule_settings_write','security',NULL,'module'),(134,'security_file_verifier_sign','security',NULL,'module'),(135,'security_file_verifier_collect','security',NULL,'module'),(136,'security_file_verifier_verify','security',NULL,'module'),(137,'security_antivirus_settings_write','security',NULL,'module'),(138,'security_frame_settings_write','security',NULL,'module'),(139,'seo_settings','seo','','module'),(140,'seo_tools','seo','','module');
 /*!40000 ALTER TABLE `b_operation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -9557,12 +6303,12 @@ DROP TABLE IF EXISTS `b_option`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `b_option` (
-  `MODULE_ID` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `MODULE_ID` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `NAME` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `VALUE` text COLLATE utf8_unicode_ci,
   `DESCRIPTION` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  UNIQUE KEY `ix_option` (`MODULE_ID`,`NAME`,`SITE_ID`),
+  PRIMARY KEY (`MODULE_ID`,`NAME`),
   KEY `ix_option_name` (`NAME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -9573,8 +6319,35 @@ CREATE TABLE `b_option` (
 
 LOCK TABLES `b_option` WRITE;
 /*!40000 ALTER TABLE `b_option` DISABLE KEYS */;
-INSERT INTO `b_option` VALUES ('main','~ft_b_user_index','a:3:{s:19:\"SEARCH_USER_CONTENT\";b:1;s:25:\"SEARCH_DEPARTMENT_CONTENT\";b:1;s:20:\"SEARCH_ADMIN_CONTENT\";b:1;}',NULL,NULL),('main','~crypto_b_user_phone_auth','a:1:{s:10:\"OTP_SECRET\";b:1;}',NULL,NULL),('main','rating_authority_rating','4',NULL,NULL),('main','rating_assign_rating_group_add','1',NULL,NULL),('main','rating_assign_rating_group_delete','1',NULL,NULL),('main','rating_assign_rating_group','3',NULL,NULL),('main','rating_assign_authority_group_add','2',NULL,NULL),('main','rating_assign_authority_group_delete','2',NULL,NULL),('main','rating_assign_authority_group','4',NULL,NULL),('main','rating_community_size','0',NULL,NULL),('main','rating_community_authority','',NULL,NULL),('main','rating_vote_weight','1',NULL,NULL),('main','rating_normalization_type','auto',NULL,NULL),('main','rating_normalization','10',NULL,NULL),('main','rating_count_vote','10',NULL,NULL),('main','rating_authority_weight_formula','Y',NULL,NULL),('main','rating_community_last_visit','90',NULL,NULL),('main','rating_text_like_y','Нравится',NULL,NULL),('main','rating_text_like_n','Не нравится',NULL,NULL),('main','rating_text_like_d','Это нравится',NULL,NULL),('main','rating_assign_type','auto',NULL,NULL),('main','rating_vote_type','standart',NULL,NULL),('main','rating_self_vote','Y',NULL,NULL),('main','rating_vote_show','Y',NULL,NULL),('main','rating_vote_template','like',NULL,NULL),('main','rating_start_authority','3',NULL,NULL),('main','PARAM_MAX_SITES','2',NULL,NULL),('main','PARAM_MAX_USERS','0',NULL,NULL),('main','distributive6','Y',NULL,NULL),('main','~new_license11_sign','Y',NULL,NULL),('main','GROUP_DEFAULT_TASK','1',NULL,NULL),('main','vendor','1c_bitrix',NULL,NULL),('main','admin_lid','ru',NULL,NULL),('main','update_site','www.bitrixsoft.com',NULL,NULL),('main','update_site_ns','Y',NULL,NULL),('main','optimize_css_files','Y',NULL,NULL),('main','optimize_js_files','Y',NULL,NULL),('main','admin_passwordh','FVgQcGYUBgYtCUVcDhcOCgsTAQ==',NULL,NULL),('main','server_uniq_id','2605d61155710ba83e3ef2f65427a6ff',NULL,NULL),('bizproc','SkipNonPublicCustomTypes','Y',NULL,NULL),('blog','socNetNewPerms','Y',NULL,NULL),('calendar','~ft_b_calendar_event','1',NULL,NULL),('intranet','calendar_2','Y',NULL,NULL),('catalog','subscribe_repeated_notify','Y',NULL,NULL),('conversion','START_DATE_TIME','2019-07-10 13:45:47',NULL,NULL),('conversion','GENERATE_INITIAL_DATA','generated',NULL,NULL),('currency','installed_currencies','RUB,USD,EUR,UAH,BYN',NULL,NULL),('fileman','use_editor_3','Y',NULL,NULL),('forum','FILTER_DICT_W','1',NULL,'ru'),('forum','FILTER_DICT_T','2',NULL,'ru'),('forum','FILTER_DICT_W','3',NULL,'en'),('forum','FILTER_DICT_T','4',NULL,'en'),('forum','FILTER','N',NULL,NULL),('learning','~LearnInstall201203ConvertDB::_IsAlreadyConverted','1',NULL,NULL),('main','~ft_b_mail_message','a:1:{s:14:\"SEARCH_CONTENT\";b:1;}',NULL,NULL),('mail','mail_invited_group','5',NULL,NULL),('messageservice','clean_up_period','14',NULL,NULL),('rest','server_path','/rest',NULL,NULL),('rest','entity_iblock_type','rest_entity',NULL,NULL),('sale','viewed_capability','N',NULL,NULL),('sale','viewed_count','10',NULL,NULL),('sale','viewed_time','5',NULL,NULL),('main','~sale_converted_15','Y',NULL,NULL),('main','~sale_paysystem_converted','Y',NULL,NULL),('sale','expiration_processing_events','Y',NULL,NULL),('sale','p2p_status_list','a:7:{i:0;s:1:\"N\";i:1;s:1:\"P\";i:2;s:1:\"F\";i:3;s:10:\"F_CANCELED\";i:4;s:10:\"F_DELIVERY\";i:5;s:5:\"F_PAY\";i:6;s:5:\"F_OUT\";}',NULL,NULL),('sale','basket_discount_converted','Y',NULL,NULL),('sale','use_sale_discount_only','Y',NULL,NULL),('sale','product_reserve_clear_period','3',NULL,NULL),('sale','sale_locationpro_import_performed','Y',NULL,NULL),('sale','product_viewed_save','N',NULL,NULL),('sale','sale_locationpro_migrated','Y',NULL,NULL),('sale','sale_locationpro_enabled','Y',NULL,NULL),('search','version','v2.0',NULL,NULL),('search','dbnode_id','N',NULL,NULL),('search','dbnode_status','ok',NULL,NULL),('security','ipcheck_disable_file','/bitrix/modules/ipcheck_disable_4b97f53bdaa937c6dd21c851daa0d6ed',NULL,NULL),('security','redirect_sid','g2cleabdzwhycnnkzgf3d1k83dc7q066',NULL,NULL),('main','~ft_b_sonet_group','a:1:{s:12:\"SEARCH_INDEX\";b:1;}',NULL,NULL),('main','~ft_b_sonet_log_index','a:1:{s:7:\"CONTENT\";b:1;}',NULL,NULL),('main','INSTALL_STATISTIC_TABLES','10.07.2019 13:47:18',NULL,NULL),('statistic','dbnode_id','N',NULL,NULL),('statistic','dbnode_status','ok',NULL,NULL),('vote','VOTE_DIR','',NULL,NULL),('vote','VOTE_COMPATIBLE_OLD_TEMPLATE','N',NULL,NULL),('wiki','GROUP_DEFAULT_RIGHT','R',NULL,NULL),('main','email_from','mail@example.com',NULL,NULL),('statistic','COUNTRY_INDEX_LOADED','Y',NULL,NULL),('statistic','IP_LOOKUP_CLASS','CCityLookup_stat_table',NULL,NULL),('main','wizard_site_logo','',NULL,NULL),('main','server_name','localhost',NULL,NULL),('main','site_name','Моя компания',NULL,NULL),('main','wizard_company_slogan','Быстро. Просто. Эффективно',NULL,NULL),('socialnetwork','tooltip_rating_id','a:2:{i:0;i:3;i:1;i:4;}',NULL,'WI'),('socialnetwork','tooltip_show_rating','Y',NULL,'WI'),('forum','SHOW_VOTES','N',NULL,NULL),('main','new_user_registration_def_group','6',NULL,NULL),('main','show_panel_for_users','a:1:{i:0;s:2:\"G7\";}',NULL,NULL),('main','upload_dir','upload',NULL,NULL),('main','component_cache_on','Y',NULL,NULL),('main','save_original_file_name','Y',NULL,NULL),('main','captcha_registration','Y',NULL,NULL),('main','use_secure_password_cookies','Y',NULL,NULL),('main','new_user_registration','Y',NULL,NULL),('main','auth_comp2','Y',NULL,NULL),('main','update_autocheck','7',NULL,NULL),('main','map_top_menu_type','top',NULL,NULL),('main','map_left_menu_type','left',NULL,NULL),('main','event_log_logout','Y',NULL,NULL),('main','event_log_login_success','Y',NULL,NULL),('main','event_log_login_fail','Y',NULL,NULL),('main','event_log_register','Y',NULL,NULL),('main','event_log_register_fail','Y',NULL,NULL),('main','event_log_password_request','Y',NULL,NULL),('main','event_log_password_change','Y',NULL,NULL),('main','event_log_user_delete','Y',NULL,NULL),('main','CAPTCHA_presets','2',NULL,NULL),('main','CAPTCHA_transparentTextPercent','0',NULL,NULL),('main','CAPTCHA_arBGColor_1','FFFFFF',NULL,NULL),('main','CAPTCHA_arBGColor_2','FFFFFF',NULL,NULL),('main','CAPTCHA_numEllipses','0',NULL,NULL),('main','CAPTCHA_numLines','0',NULL,NULL),('main','CAPTCHA_textStartX','40',NULL,NULL),('main','CAPTCHA_textFontSize','26',NULL,NULL),('main','CAPTCHA_arTextColor_1','000000',NULL,NULL),('main','CAPTCHA_arTextColor_2','000000',NULL,NULL),('main','CAPTCHA_textAngel_1','-15',NULL,NULL),('main','CAPTCHA_textAngel_2','15',NULL,NULL),('main','CAPTCHA_textDistance_1','-2',NULL,NULL),('main','CAPTCHA_textDistance_2','-2',NULL,NULL),('main','CAPTCHA_bWaveTransformation','N',NULL,NULL),('main','CAPTCHA_arBorderColor','000000',NULL,NULL),('main','CAPTCHA_arTTFFiles','bitrix_captcha.ttf',NULL,NULL),('fileman','menutypes','a:2:{s:4:\\\"left\\\";s:23:\\\"Меню раздела\\\";s:3:\\\"top\\\";s:23:\\\"Главное меню\\\";}',NULL,'s1'),('fileman','menutypes','a:2:{s:4:\\\"left\\\";s:23:\\\"Меню раздела\\\";s:3:\\\"top\\\";s:23:\\\"Главное меню\\\";}',NULL,NULL),('fileman','default_edit','html',NULL,NULL),('fileman','propstypes','a:4:{s:11:\"description\";s:33:\"Описание страницы\";s:8:\"keywords\";s:27:\"Ключевые слова\";s:5:\"title\";s:44:\"Заголовок окна браузера\";s:14:\"keywords_inner\";s:35:\"Продвигаемые слова\";}',NULL,NULL),('socialservices','auth_services','a:12:{s:9:\"VKontakte\";s:1:\"N\";s:8:\"MyMailRu\";s:1:\"N\";s:7:\"Twitter\";s:1:\"N\";s:8:\"Facebook\";s:1:\"N\";s:11:\"Livejournal\";s:1:\"Y\";s:12:\"YandexOpenID\";s:1:\"Y\";s:7:\"Rambler\";s:1:\"Y\";s:12:\"MailRuOpenID\";s:1:\"Y\";s:12:\"Liveinternet\";s:1:\"Y\";s:7:\"Blogger\";s:1:\"Y\";s:6:\"OpenID\";s:1:\"Y\";s:6:\"LiveID\";s:1:\"N\";}',NULL,NULL),('search','use_word_distance','Y',NULL,NULL),('search','use_social_rating','Y',NULL,NULL),('search','use_stemming','Y',NULL,NULL),('search','use_tf_cache','Y',NULL,NULL),('search','exclude_mask','/bitrix/*;/404.php;/upload/*;/auth*;*/search*;*/tags*;/personal/*;/e-store/affiliates/*;/content/*/my/*;/examples/*;/map.php;*/detail.php;/communication/voting/*;/club/index.php',NULL,NULL),('statistic','IMPORTANT_PAGE_PARAMS','ID, IBLOCK_ID, SECTION_ID, ELEMENT_ID, PARENT_ELEMENT_ID, FID, TID, MID, UID, VOTE_ID, print, goto',NULL,NULL),('statistic','DEFENCE_STACK_TIME','20',NULL,NULL),('iblock','use_htmledit','Y',NULL,NULL),('iblock','combined_list_mode','Y',NULL,NULL),('main','LAST_DB_OPTIMIZATION_TIME','1562766549',NULL,NULL),('fileman','stickers_use_hotkeys','N',NULL,NULL);
+INSERT INTO `b_option` VALUES ('blog','socNetNewPerms','Y',NULL,NULL),('catalog','subscribe_repeated_notify','Y',NULL,NULL),('conversion','GENERATE_INITIAL_DATA','generated',NULL,NULL),('conversion','START_DATE_TIME','2019-10-17 11:03:04',NULL,NULL),('currency','installed_currencies','RUB,USD,EUR,UAH,BYN',NULL,NULL),('fileman','stickers_use_hotkeys','N',NULL,NULL),('fileman','use_editor_3','Y',NULL,NULL),('forum','FILTER','N',NULL,NULL),('main','~crypto_b_user_phone_auth','a:1:{s:10:\"OTP_SECRET\";b:1;}',NULL,NULL),('main','~ft_b_sale_order','a:1:{s:14:\"SEARCH_CONTENT\";b:1;}',NULL,NULL),('main','~ft_b_sender_mailing_chain','a:1:{s:14:\"SEARCH_CONTENT\";b:1;}',NULL,NULL),('main','~ft_b_user_index','a:3:{s:19:\"SEARCH_USER_CONTENT\";b:1;s:25:\"SEARCH_DEPARTMENT_CONTENT\";b:1;s:20:\"SEARCH_ADMIN_CONTENT\";b:1;}',NULL,NULL),('main','~ft_b_user_index_selector','a:1:{s:23:\"SEARCH_SELECTOR_CONTENT\";b:1;}',NULL,NULL),('main','~new_license11_sign','Y',NULL,NULL),('main','~sale_converted_15','Y',NULL,NULL),('main','~sale_paysystem_converted','Y',NULL,NULL),('main','admin_lid','ru',NULL,NULL),('main','admin_passwordh','FVkQeWYUBwYtCUVcDhcBCgsTAQ==',NULL,NULL),('main','distributive6','Y',NULL,NULL),('main','email_from','admin@example.com',NULL,NULL),('main','GROUP_DEFAULT_TASK','1',NULL,NULL),('main','LAST_DB_OPTIMIZATION_TIME','1571310545',NULL,NULL),('main','optimize_css_files','Y',NULL,NULL),('main','optimize_js_files','Y',NULL,NULL),('main','PARAM_MAX_SITES','2',NULL,NULL),('main','PARAM_MAX_USERS','0',NULL,NULL),('main','rating_assign_authority_group','4',NULL,NULL),('main','rating_assign_authority_group_add','2',NULL,NULL),('main','rating_assign_authority_group_delete','2',NULL,NULL),('main','rating_assign_rating_group','3',NULL,NULL),('main','rating_assign_rating_group_add','1',NULL,NULL),('main','rating_assign_rating_group_delete','1',NULL,NULL),('main','rating_assign_type','auto',NULL,NULL),('main','rating_authority_rating','4',NULL,NULL),('main','rating_authority_weight_formula','Y',NULL,NULL),('main','rating_community_authority',NULL,NULL,NULL),('main','rating_community_last_visit','90',NULL,NULL),('main','rating_community_size','0',NULL,NULL),('main','rating_count_vote','10',NULL,NULL),('main','rating_normalization','10',NULL,NULL),('main','rating_normalization_type','auto',NULL,NULL),('main','rating_self_vote','Y',NULL,NULL),('main','rating_start_authority','3',NULL,NULL),('main','rating_text_like_d','Это нравится',NULL,NULL),('main','rating_text_like_n','Не нравится',NULL,NULL),('main','rating_text_like_y','Нравится',NULL,NULL),('main','rating_vote_show','Y',NULL,NULL),('main','rating_vote_template','like',NULL,NULL),('main','rating_vote_type','standart',NULL,NULL),('main','rating_vote_weight','1',NULL,NULL),('main','server_name','localhost',NULL,NULL),('main','server_uniq_id','99b772676bb177ede70578d6e864ed11',NULL,NULL),('main','site_name','Моя компания',NULL,NULL),('main','update_site','www.bitrixsoft.com',NULL,NULL),('main','update_site_ns','Y',NULL,NULL),('main','vendor','1c_bitrix',NULL,NULL),('main','wizard_company_slogan','Быстро. Просто. Эффективно',NULL,NULL),('main','wizard_site_logo',NULL,NULL,NULL),('messageservice','clean_up_period','14',NULL,NULL),('rest','entity_iblock_type','rest_entity',NULL,NULL),('rest','server_path','/rest',NULL,NULL),('sale','basket_discount_converted','Y',NULL,NULL),('sale','expiration_processing_events','Y',NULL,NULL),('sale','p2p_status_list','a:7:{i:0;s:1:\"N\";i:1;s:1:\"P\";i:2;s:1:\"F\";i:3;s:10:\"F_CANCELED\";i:4;s:10:\"F_DELIVERY\";i:5;s:5:\"F_PAY\";i:6;s:5:\"F_OUT\";}',NULL,NULL),('sale','product_reserve_clear_period','3',NULL,NULL),('sale','product_viewed_save','N',NULL,NULL),('sale','sale_locationpro_enabled','Y',NULL,NULL),('sale','sale_locationpro_import_performed','Y',NULL,NULL),('sale','sale_locationpro_migrated','Y',NULL,NULL),('sale','use_sale_discount_only','Y',NULL,NULL),('sale','viewed_capability','N',NULL,NULL),('sale','viewed_count','10',NULL,NULL),('sale','viewed_time','5',NULL,NULL),('search','dbnode_id','N',NULL,NULL),('search','dbnode_status','ok',NULL,NULL),('search','exclude_mask','/bitrix/*;/404.php;/upload/*;/auth*;*/search*;*/tags*;/personal/*;/e-store/affiliates/*;/content/*/my/*;/examples/*;/map.php;*/detail.php;/communication/voting/*;/club/index.php',NULL,NULL),('search','use_social_rating','Y',NULL,NULL),('search','use_stemming','Y',NULL,NULL),('search','use_tf_cache','Y',NULL,NULL),('search','use_word_distance','Y',NULL,NULL),('search','version','v2.0',NULL,NULL),('security','ipcheck_disable_file','/bitrix/modules/ipcheck_disable_65f82c51d523b8fa6b6bf12e2bcc40fb',NULL,NULL),('security','redirect_sid','9fehifay2cmhz294kg28hhd7ltr3kh8c',NULL,NULL),('vote','VOTE_COMPATIBLE_OLD_TEMPLATE','N',NULL,NULL),('vote','VOTE_DIR','',NULL,NULL);
 /*!40000 ALTER TABLE `b_option` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `b_option_site`
+--
+
+DROP TABLE IF EXISTS `b_option_site`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `b_option_site` (
+  `MODULE_ID` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `NAME` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `SITE_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
+  `VALUE` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`MODULE_ID`,`NAME`,`SITE_ID`),
+  KEY `ix_option_site_module_site` (`MODULE_ID`,`SITE_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `b_option_site`
+--
+
+LOCK TABLES `b_option_site` WRITE;
+/*!40000 ALTER TABLE `b_option_site` DISABLE KEYS */;
+INSERT INTO `b_option_site` VALUES ('forum','FILTER_DICT_T','en','4'),('forum','FILTER_DICT_T','ru','2'),('forum','FILTER_DICT_W','en','3'),('forum','FILTER_DICT_W','ru','1');
+/*!40000 ALTER TABLE `b_option_site` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -10173,7 +6946,7 @@ DROP TABLE IF EXISTS `b_pull_channel`;
 CREATE TABLE `b_pull_channel` (
   `ID` int(18) NOT NULL AUTO_INCREMENT,
   `USER_ID` int(18) NOT NULL,
-  `CHANNEL_TYPE` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `CHANNEL_TYPE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `CHANNEL_ID` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `CHANNEL_PUBLIC_ID` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `LAST_ID` int(18) DEFAULT NULL,
@@ -10349,7 +7122,7 @@ CREATE TABLE `b_rating` (
 
 LOCK TABLES `b_rating` WRITE;
 /*!40000 ALTER TABLE `b_rating` DISABLE KEYS */;
-INSERT INTO `b_rating` VALUES (3,'Y','Рейтинг','USER','SUM','2019-07-10 13:49:01','2019-07-10 13:49:01','2019-07-10 13:49:02','Y','N','Y','a:3:{s:4:\"MAIN\";a:1:{s:6:\"RATING\";a:1:{s:5:\"BONUS\";a:2:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:1:\"1\";}}}s:5:\"FORUM\";a:2:{s:4:\"VOTE\";a:2:{s:5:\"TOPIC\";a:3:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:3:\"0.5\";s:5:\"LIMIT\";s:2:\"30\";}s:4:\"POST\";a:3:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:3:\"0.1\";s:5:\"LIMIT\";s:2:\"30\";}}s:6:\"RATING\";a:1:{s:8:\"ACTIVITY\";a:9:{s:6:\"ACTIVE\";s:1:\"Y\";s:16:\"TODAY_TOPIC_COEF\";s:3:\"0.4\";s:15:\"WEEK_TOPIC_COEF\";s:3:\"0.2\";s:16:\"MONTH_TOPIC_COEF\";s:3:\"0.1\";s:14:\"ALL_TOPIC_COEF\";s:1:\"0\";s:15:\"TODAY_POST_COEF\";s:3:\"0.2\";s:14:\"WEEK_POST_COEF\";s:3:\"0.1\";s:15:\"MONTH_POST_COEF\";s:4:\"0.05\";s:13:\"ALL_POST_COEF\";s:1:\"0\";}}}s:4:\"BLOG\";a:2:{s:4:\"VOTE\";a:2:{s:4:\"POST\";a:3:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:1:\"1\";s:5:\"LIMIT\";s:2:\"30\";}s:7:\"COMMENT\";a:3:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:1:\"1\";s:5:\"LIMIT\";s:2:\"30\";}}s:6:\"RATING\";a:1:{s:8:\"ACTIVITY\";a:9:{s:6:\"ACTIVE\";s:1:\"Y\";s:15:\"TODAY_POST_COEF\";s:3:\"0.4\";s:14:\"WEEK_POST_COEF\";s:3:\"0.2\";s:15:\"MONTH_POST_COEF\";s:3:\"0.1\";s:13:\"ALL_POST_COEF\";s:1:\"0\";s:18:\"TODAY_COMMENT_COEF\";s:3:\"0.2\";s:17:\"WEEK_COMMENT_COEF\";s:3:\"0.1\";s:18:\"MONTH_COMMENT_COEF\";s:4:\"0.05\";s:16:\"ALL_COMMENT_COEF\";s:1:\"0\";}}}}'),(4,'Y','Авторитет','USER','SUM','2019-07-10 13:49:02','2019-07-10 13:49:02','2019-07-10 13:49:02','Y','Y','Y','a:3:{s:4:\"MAIN\";a:2:{s:4:\"VOTE\";a:1:{s:4:\"USER\";a:3:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:1:\"1\";s:5:\"LIMIT\";s:2:\"30\";}}s:6:\"RATING\";a:1:{s:5:\"BONUS\";a:2:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:1:\"1\";}}}s:5:\"FORUM\";N;s:4:\"BLOG\";N;}');
+INSERT INTO `b_rating` VALUES (3,'Y','Рейтинг','USER','SUM','2019-10-17 11:07:16','2019-10-17 11:07:16','2019-10-17 11:08:35','Y','N','Y','a:3:{s:4:\"MAIN\";a:1:{s:6:\"RATING\";a:1:{s:5:\"BONUS\";a:2:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:1:\"1\";}}}s:5:\"FORUM\";a:2:{s:4:\"VOTE\";a:2:{s:5:\"TOPIC\";a:3:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:3:\"0.5\";s:5:\"LIMIT\";s:2:\"30\";}s:4:\"POST\";a:3:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:3:\"0.1\";s:5:\"LIMIT\";s:2:\"30\";}}s:6:\"RATING\";a:1:{s:8:\"ACTIVITY\";a:9:{s:6:\"ACTIVE\";s:1:\"Y\";s:16:\"TODAY_TOPIC_COEF\";s:3:\"0.4\";s:15:\"WEEK_TOPIC_COEF\";s:3:\"0.2\";s:16:\"MONTH_TOPIC_COEF\";s:3:\"0.1\";s:14:\"ALL_TOPIC_COEF\";s:1:\"0\";s:15:\"TODAY_POST_COEF\";s:3:\"0.2\";s:14:\"WEEK_POST_COEF\";s:3:\"0.1\";s:15:\"MONTH_POST_COEF\";s:4:\"0.05\";s:13:\"ALL_POST_COEF\";s:1:\"0\";}}}s:4:\"BLOG\";a:2:{s:4:\"VOTE\";a:2:{s:4:\"POST\";a:3:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:1:\"1\";s:5:\"LIMIT\";s:2:\"30\";}s:7:\"COMMENT\";a:3:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:1:\"1\";s:5:\"LIMIT\";s:2:\"30\";}}s:6:\"RATING\";a:1:{s:8:\"ACTIVITY\";a:9:{s:6:\"ACTIVE\";s:1:\"Y\";s:15:\"TODAY_POST_COEF\";s:3:\"0.4\";s:14:\"WEEK_POST_COEF\";s:3:\"0.2\";s:15:\"MONTH_POST_COEF\";s:3:\"0.1\";s:13:\"ALL_POST_COEF\";s:1:\"0\";s:18:\"TODAY_COMMENT_COEF\";s:3:\"0.2\";s:17:\"WEEK_COMMENT_COEF\";s:3:\"0.1\";s:18:\"MONTH_COMMENT_COEF\";s:4:\"0.05\";s:16:\"ALL_COMMENT_COEF\";s:1:\"0\";}}}}'),(4,'Y','Авторитет','USER','SUM','2019-10-17 11:07:16','2019-10-17 11:07:16','2019-10-17 11:08:35','Y','Y','Y','a:3:{s:4:\"MAIN\";a:2:{s:4:\"VOTE\";a:1:{s:4:\"USER\";a:3:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:1:\"1\";s:5:\"LIMIT\";s:2:\"30\";}}s:6:\"RATING\";a:1:{s:5:\"BONUS\";a:2:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:1:\"1\";}}}s:5:\"FORUM\";N;s:4:\"BLOG\";N;}');
 /*!40000 ALTER TABLE `b_rating` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -10388,7 +7161,7 @@ CREATE TABLE `b_rating_component` (
 
 LOCK TABLES `b_rating_component` WRITE;
 /*!40000 ALTER TABLE `b_rating_component` DISABLE KEYS */;
-INSERT INTO `b_rating_component` VALUES (1,3,'Y','USER','MAIN','RATING','BONUS','USER_MAIN_RATING_BONUS','CRatingsComponentsMain','CalcUserBonus',NULL,'2019-07-10 13:49:01','2019-07-10 13:49:02','2019-07-10 14:49:02',3600,'a:2:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:1:\"1\";}'),(2,3,'Y','USER','FORUM','VOTE','TOPIC','USER_FORUM_VOTE_TOPIC','CRatingsComponentsForum','CalcUserVoteForumTopic',NULL,'2019-07-10 13:49:01','2019-07-10 13:49:02','2019-07-10 14:49:02',3600,'a:3:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:3:\"0.5\";s:5:\"LIMIT\";s:2:\"30\";}'),(3,3,'Y','USER','FORUM','VOTE','POST','USER_FORUM_VOTE_POST','CRatingsComponentsForum','CalcUserVoteForumPost',NULL,'2019-07-10 13:49:01','2019-07-10 13:49:02','2019-07-10 14:49:02',3600,'a:3:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:3:\"0.1\";s:5:\"LIMIT\";s:2:\"30\";}'),(4,3,'Y','USER','FORUM','RATING','ACTIVITY','USER_FORUM_RATING_ACTIVITY','CRatingsComponentsForum','CalcUserRatingForumActivity','ExceptionUserRatingForumActivity','2019-07-10 13:49:01','2019-07-10 13:49:02','2019-07-10 15:49:02',7200,'a:9:{s:6:\"ACTIVE\";s:1:\"Y\";s:16:\"TODAY_TOPIC_COEF\";s:3:\"0.4\";s:15:\"WEEK_TOPIC_COEF\";s:3:\"0.2\";s:16:\"MONTH_TOPIC_COEF\";s:3:\"0.1\";s:14:\"ALL_TOPIC_COEF\";s:1:\"0\";s:15:\"TODAY_POST_COEF\";s:3:\"0.2\";s:14:\"WEEK_POST_COEF\";s:3:\"0.1\";s:15:\"MONTH_POST_COEF\";s:4:\"0.05\";s:13:\"ALL_POST_COEF\";s:1:\"0\";}'),(5,3,'Y','USER','BLOG','VOTE','POST','USER_BLOG_VOTE_POST','CRatingsComponentsBlog','CalcPost',NULL,'2019-07-10 13:49:01','2019-07-10 13:49:02','2019-07-10 14:49:02',3600,'a:3:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:1:\"1\";s:5:\"LIMIT\";s:2:\"30\";}'),(6,3,'Y','USER','BLOG','VOTE','COMMENT','USER_BLOG_VOTE_COMMENT','CRatingsComponentsBlog','CalcComment',NULL,'2019-07-10 13:49:01','2019-07-10 13:49:02','2019-07-10 14:49:02',3600,'a:3:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:1:\"1\";s:5:\"LIMIT\";s:2:\"30\";}'),(7,3,'Y','USER','BLOG','RATING','ACTIVITY','USER_BLOG_RATING_ACTIVITY','CRatingsComponentsBlog','CalcActivity',NULL,'2019-07-10 13:49:01','2019-07-10 13:49:02','2019-07-10 15:49:02',7200,'a:9:{s:6:\"ACTIVE\";s:1:\"Y\";s:15:\"TODAY_POST_COEF\";s:3:\"0.4\";s:14:\"WEEK_POST_COEF\";s:3:\"0.2\";s:15:\"MONTH_POST_COEF\";s:3:\"0.1\";s:13:\"ALL_POST_COEF\";s:1:\"0\";s:18:\"TODAY_COMMENT_COEF\";s:3:\"0.2\";s:17:\"WEEK_COMMENT_COEF\";s:3:\"0.1\";s:18:\"MONTH_COMMENT_COEF\";s:4:\"0.05\";s:16:\"ALL_COMMENT_COEF\";s:1:\"0\";}'),(8,4,'Y','USER','MAIN','VOTE','USER','USER_MAIN_VOTE_USER','CRatingsComponentsMain','CalcVoteUser',NULL,'2019-07-10 13:49:02','2019-07-10 13:49:02','2019-07-10 14:49:02',3600,'a:3:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:1:\"1\";s:5:\"LIMIT\";s:2:\"30\";}'),(9,4,'Y','USER','MAIN','RATING','BONUS','USER_MAIN_RATING_BONUS','CRatingsComponentsMain','CalcUserBonus',NULL,'2019-07-10 13:49:02','2019-07-10 13:49:02','2019-07-10 14:49:02',3600,'a:2:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:1:\"1\";}');
+INSERT INTO `b_rating_component` VALUES (1,3,'Y','USER','MAIN','RATING','BONUS','USER_MAIN_RATING_BONUS','CRatingsComponentsMain','CalcUserBonus',NULL,'2019-10-17 11:07:16','2019-10-17 11:08:35','2019-10-17 12:08:35',3600,'a:2:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:1:\"1\";}'),(2,3,'Y','USER','FORUM','VOTE','TOPIC','USER_FORUM_VOTE_TOPIC','CRatingsComponentsForum','CalcUserVoteForumTopic',NULL,'2019-10-17 11:07:16','2019-10-17 11:08:35','2019-10-17 12:08:35',3600,'a:3:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:3:\"0.5\";s:5:\"LIMIT\";s:2:\"30\";}'),(3,3,'Y','USER','FORUM','VOTE','POST','USER_FORUM_VOTE_POST','CRatingsComponentsForum','CalcUserVoteForumPost',NULL,'2019-10-17 11:07:16','2019-10-17 11:08:35','2019-10-17 12:08:35',3600,'a:3:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:3:\"0.1\";s:5:\"LIMIT\";s:2:\"30\";}'),(4,3,'Y','USER','FORUM','RATING','ACTIVITY','USER_FORUM_RATING_ACTIVITY','CRatingsComponentsForum','CalcUserRatingForumActivity','ExceptionUserRatingForumActivity','2019-10-17 11:07:16','2019-10-17 11:08:35','2019-10-17 13:08:35',7200,'a:9:{s:6:\"ACTIVE\";s:1:\"Y\";s:16:\"TODAY_TOPIC_COEF\";s:3:\"0.4\";s:15:\"WEEK_TOPIC_COEF\";s:3:\"0.2\";s:16:\"MONTH_TOPIC_COEF\";s:3:\"0.1\";s:14:\"ALL_TOPIC_COEF\";s:1:\"0\";s:15:\"TODAY_POST_COEF\";s:3:\"0.2\";s:14:\"WEEK_POST_COEF\";s:3:\"0.1\";s:15:\"MONTH_POST_COEF\";s:4:\"0.05\";s:13:\"ALL_POST_COEF\";s:1:\"0\";}'),(5,3,'Y','USER','BLOG','VOTE','POST','USER_BLOG_VOTE_POST','CRatingsComponentsBlog','CalcPost',NULL,'2019-10-17 11:07:16','2019-10-17 11:08:35','2019-10-17 12:08:35',3600,'a:3:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:1:\"1\";s:5:\"LIMIT\";s:2:\"30\";}'),(6,3,'Y','USER','BLOG','VOTE','COMMENT','USER_BLOG_VOTE_COMMENT','CRatingsComponentsBlog','CalcComment',NULL,'2019-10-17 11:07:16','2019-10-17 11:08:35','2019-10-17 12:08:35',3600,'a:3:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:1:\"1\";s:5:\"LIMIT\";s:2:\"30\";}'),(7,3,'Y','USER','BLOG','RATING','ACTIVITY','USER_BLOG_RATING_ACTIVITY','CRatingsComponentsBlog','CalcActivity',NULL,'2019-10-17 11:07:16','2019-10-17 11:08:35','2019-10-17 13:08:35',7200,'a:9:{s:6:\"ACTIVE\";s:1:\"Y\";s:15:\"TODAY_POST_COEF\";s:3:\"0.4\";s:14:\"WEEK_POST_COEF\";s:3:\"0.2\";s:15:\"MONTH_POST_COEF\";s:3:\"0.1\";s:13:\"ALL_POST_COEF\";s:1:\"0\";s:18:\"TODAY_COMMENT_COEF\";s:3:\"0.2\";s:17:\"WEEK_COMMENT_COEF\";s:3:\"0.1\";s:18:\"MONTH_COMMENT_COEF\";s:4:\"0.05\";s:16:\"ALL_COMMENT_COEF\";s:1:\"0\";}'),(8,4,'Y','USER','MAIN','VOTE','USER','USER_MAIN_VOTE_USER','CRatingsComponentsMain','CalcVoteUser',NULL,'2019-10-17 11:07:16','2019-10-17 11:08:34','2019-10-17 12:08:34',3600,'a:3:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:1:\"1\";s:5:\"LIMIT\";s:2:\"30\";}'),(9,4,'Y','USER','MAIN','RATING','BONUS','USER_MAIN_RATING_BONUS','CRatingsComponentsMain','CalcUserBonus',NULL,'2019-10-17 11:07:16','2019-10-17 11:08:34','2019-10-17 12:08:34',3600,'a:2:{s:6:\"ACTIVE\";s:1:\"Y\";s:11:\"COEFFICIENT\";s:1:\"1\";}');
 /*!40000 ALTER TABLE `b_rating_component` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -10413,7 +7186,7 @@ CREATE TABLE `b_rating_component_results` (
   KEY `IX_ENTITY_TYPE_ID` (`ENTITY_TYPE_ID`),
   KEY `IX_COMPLEX_NAME` (`COMPLEX_NAME`),
   KEY `IX_RATING_ID_2` (`RATING_ID`,`COMPLEX_NAME`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -10422,7 +7195,7 @@ CREATE TABLE `b_rating_component_results` (
 
 LOCK TABLES `b_rating_component_results` WRITE;
 /*!40000 ALTER TABLE `b_rating_component_results` DISABLE KEYS */;
-INSERT INTO `b_rating_component_results` VALUES (1,4,'USER',1,'MAIN','RATING','BONUS','USER_MAIN_RATING_BONUS',30.0000);
+INSERT INTO `b_rating_component_results` VALUES (4,4,'USER',1,'MAIN','RATING','BONUS','USER_MAIN_RATING_BONUS',30.0000),(5,3,'USER',1,'MAIN','RATING','BONUS','USER_MAIN_RATING_BONUS',3.0000);
 /*!40000 ALTER TABLE `b_rating_component_results` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -10466,7 +7239,7 @@ CREATE TABLE `b_rating_results` (
   PRIMARY KEY (`ID`),
   KEY `IX_RATING_3` (`RATING_ID`,`ENTITY_TYPE_ID`,`ENTITY_ID`),
   KEY `IX_RATING_4` (`RATING_ID`,`ENTITY_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -10475,7 +7248,7 @@ CREATE TABLE `b_rating_results` (
 
 LOCK TABLES `b_rating_results` WRITE;
 /*!40000 ALTER TABLE `b_rating_results` DISABLE KEYS */;
-INSERT INTO `b_rating_results` VALUES (1,4,'USER',1,30.0000,0.0000,1,0);
+INSERT INTO `b_rating_results` VALUES (1,4,'USER',1,30.0000,0.0000,1,0),(2,3,'USER',1,3.0000,0.0000,1,0);
 /*!40000 ALTER TABLE `b_rating_results` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -10517,7 +7290,7 @@ CREATE TABLE `b_rating_rule` (
 
 LOCK TABLES `b_rating_rule` WRITE;
 /*!40000 ALTER TABLE `b_rating_rule` DISABLE KEYS */;
-INSERT INTO `b_rating_rule` VALUES (1,'N','Добавление в группу пользователей, имеющих право голосовать за рейтинг','USER','AUTHORITY',NULL,'CRatingRulesMain','ratingCheck','a:1:{s:9:\"AUTHORITY\";a:2:{s:16:\"RATING_CONDITION\";i:1;s:12:\"RATING_VALUE\";i:1;}}','ADD_TO_GROUP','a:1:{s:12:\"ADD_TO_GROUP\";a:1:{s:8:\"GROUP_ID\";s:1:\"3\";}}','N','CRatingRulesMain','addToGroup','N','CRatingRulesMain ','addToGroup','2019-07-10 13:45:10','2019-07-10 13:45:10',NULL),(2,'N','Удаление из группы пользователей, не имеющих права голосовать за рейтинг','USER','AUTHORITY',NULL,'CRatingRulesMain','ratingCheck','a:1:{s:9:\"AUTHORITY\";a:2:{s:16:\"RATING_CONDITION\";i:2;s:12:\"RATING_VALUE\";i:1;}}','REMOVE_FROM_GROUP','a:1:{s:17:\"REMOVE_FROM_GROUP\";a:1:{s:8:\"GROUP_ID\";s:1:\"3\";}}','N','CRatingRulesMain','removeFromGroup','N','CRatingRulesMain ','removeFromGroup','2019-07-10 13:45:10','2019-07-10 13:45:10',NULL),(3,'N','Добавление в группу пользователей, имеющих право голосовать за авторитет','USER','AUTHORITY',NULL,'CRatingRulesMain','ratingCheck','a:1:{s:9:\"AUTHORITY\";a:2:{s:16:\"RATING_CONDITION\";i:1;s:12:\"RATING_VALUE\";i:2;}}','ADD_TO_GROUP','a:1:{s:12:\"ADD_TO_GROUP\";a:1:{s:8:\"GROUP_ID\";s:1:\"4\";}}','N','CRatingRulesMain','addToGroup','N','CRatingRulesMain ','addToGroup','2019-07-10 13:45:10','2019-07-10 13:45:10',NULL),(4,'N','Удаление из группы пользователей, не имеющих права голосовать за авторитет','USER','AUTHORITY',NULL,'CRatingRulesMain','ratingCheck','a:1:{s:9:\"AUTHORITY\";a:2:{s:16:\"RATING_CONDITION\";i:2;s:12:\"RATING_VALUE\";i:2;}}','REMOVE_FROM_GROUP','a:1:{s:17:\"REMOVE_FROM_GROUP\";a:1:{s:8:\"GROUP_ID\";s:1:\"4\";}}','N','CRatingRulesMain','removeFromGroup','N','CRatingRulesMain ','removeFromGroup','2019-07-10 13:45:10','2019-07-10 13:45:10',NULL),(5,'Y','Автоматическое голосование за авторитет пользователя','USER','VOTE',NULL,'CRatingRulesMain','voteCheck','a:1:{s:4:\"VOTE\";a:6:{s:10:\"VOTE_LIMIT\";i:90;s:11:\"VOTE_RESULT\";i:10;s:16:\"VOTE_FORUM_TOPIC\";d:0.5;s:15:\"VOTE_FORUM_POST\";d:0.10000000000000001;s:14:\"VOTE_BLOG_POST\";d:0.5;s:17:\"VOTE_BLOG_COMMENT\";d:0.10000000000000001;}}','empty','a:0:{}','N','empty','empty','N','empty ','empty','2019-07-10 13:45:10','2019-07-10 13:45:10',NULL);
+INSERT INTO `b_rating_rule` VALUES (1,'N','Добавление в группу пользователей, имеющих право голосовать за рейтинг','USER','AUTHORITY',NULL,'CRatingRulesMain','ratingCheck','a:1:{s:9:\"AUTHORITY\";a:2:{s:16:\"RATING_CONDITION\";i:1;s:12:\"RATING_VALUE\";i:1;}}','ADD_TO_GROUP','a:1:{s:12:\"ADD_TO_GROUP\";a:1:{s:8:\"GROUP_ID\";s:1:\"3\";}}','N','CRatingRulesMain','addToGroup','N','CRatingRulesMain ','addToGroup','2019-10-17 11:02:31','2019-10-17 11:02:31',NULL),(2,'N','Удаление из группы пользователей, не имеющих права голосовать за рейтинг','USER','AUTHORITY',NULL,'CRatingRulesMain','ratingCheck','a:1:{s:9:\"AUTHORITY\";a:2:{s:16:\"RATING_CONDITION\";i:2;s:12:\"RATING_VALUE\";i:1;}}','REMOVE_FROM_GROUP','a:1:{s:17:\"REMOVE_FROM_GROUP\";a:1:{s:8:\"GROUP_ID\";s:1:\"3\";}}','N','CRatingRulesMain','removeFromGroup','N','CRatingRulesMain ','removeFromGroup','2019-10-17 11:02:31','2019-10-17 11:02:31',NULL),(3,'N','Добавление в группу пользователей, имеющих право голосовать за авторитет','USER','AUTHORITY',NULL,'CRatingRulesMain','ratingCheck','a:1:{s:9:\"AUTHORITY\";a:2:{s:16:\"RATING_CONDITION\";i:1;s:12:\"RATING_VALUE\";i:2;}}','ADD_TO_GROUP','a:1:{s:12:\"ADD_TO_GROUP\";a:1:{s:8:\"GROUP_ID\";s:1:\"4\";}}','N','CRatingRulesMain','addToGroup','N','CRatingRulesMain ','addToGroup','2019-10-17 11:02:31','2019-10-17 11:02:31',NULL),(4,'N','Удаление из группы пользователей, не имеющих права голосовать за авторитет','USER','AUTHORITY',NULL,'CRatingRulesMain','ratingCheck','a:1:{s:9:\"AUTHORITY\";a:2:{s:16:\"RATING_CONDITION\";i:2;s:12:\"RATING_VALUE\";i:2;}}','REMOVE_FROM_GROUP','a:1:{s:17:\"REMOVE_FROM_GROUP\";a:1:{s:8:\"GROUP_ID\";s:1:\"4\";}}','N','CRatingRulesMain','removeFromGroup','N','CRatingRulesMain ','removeFromGroup','2019-10-17 11:02:31','2019-10-17 11:02:31',NULL),(5,'Y','Автоматическое голосование за авторитет пользователя','USER','VOTE',NULL,'CRatingRulesMain','voteCheck','a:1:{s:4:\"VOTE\";a:6:{s:10:\"VOTE_LIMIT\";i:90;s:11:\"VOTE_RESULT\";i:10;s:16:\"VOTE_FORUM_TOPIC\";d:0.5;s:15:\"VOTE_FORUM_POST\";d:0.10000000000000001;s:14:\"VOTE_BLOG_POST\";d:0.5;s:17:\"VOTE_BLOG_COMMENT\";d:0.10000000000000001;}}','empty','a:0:{}','N','empty','empty','N','empty ','empty','2019-10-17 11:02:31','2019-10-17 11:02:31',NULL);
 /*!40000 ALTER TABLE `b_rating_rule` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -10575,7 +7348,7 @@ CREATE TABLE `b_rating_user` (
 
 LOCK TABLES `b_rating_user` WRITE;
 /*!40000 ALTER TABLE `b_rating_user` DISABLE KEYS */;
-INSERT INTO `b_rating_user` VALUES (2,4,1,3.0000,30.0000,40),(3,3,1,0.0000,0.0000,0);
+INSERT INTO `b_rating_user` VALUES (2,4,1,3.0000,30.0000,40),(3,3,1,3.0000,0.0000,0);
 /*!40000 ALTER TABLE `b_rating_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -11281,6 +8054,7 @@ CREATE TABLE `b_rest_placement` (
   `PLACEMENT` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `PLACEMENT_HANDLER` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `TITLE` varchar(255) COLLATE utf8_unicode_ci DEFAULT '',
+  `GROUP_NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT '',
   `COMMENT` varchar(255) COLLATE utf8_unicode_ci DEFAULT '',
   `DATE_CREATE` datetime DEFAULT NULL,
   `ADDITIONAL` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -11744,7 +8518,7 @@ CREATE TABLE `b_sale_bizval` (
   `CONSUMER_KEY` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `PERSON_TYPE_ID` int(11) NOT NULL,
   `PROVIDER_KEY` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `PROVIDER_VALUE` varchar(2000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `PROVIDER_VALUE` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`CODE_KEY`,`CONSUMER_KEY`,`PERSON_TYPE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -12583,6 +9357,33 @@ LOCK TABLES `b_sale_discount_module` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `b_sale_documentgenerator_callback_registry`
+--
+
+DROP TABLE IF EXISTS `b_sale_documentgenerator_callback_registry`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `b_sale_documentgenerator_callback_registry` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `DATE_INSERT` datetime NOT NULL,
+  `MODULE_ID` int(11) NOT NULL,
+  `DOCUMENT_ID` int(11) NOT NULL,
+  `CALLBACK_CLASS` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `CALLBACK_METHOD` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `b_sale_documentgenerator_callback_registry`
+--
+
+LOCK TABLES `b_sale_documentgenerator_callback_registry` WRITE;
+/*!40000 ALTER TABLE `b_sale_documentgenerator_callback_registry` DISABLE KEYS */;
+/*!40000 ALTER TABLE `b_sale_documentgenerator_callback_registry` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `b_sale_entity_marker`
 --
 
@@ -13349,6 +10150,7 @@ CREATE TABLE `b_sale_order` (
   `EXTERNAL_ORDER` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
   `RUNNING` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
   `BX_USER_ID` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `SEARCH_CONTENT` mediumtext COLLATE utf8_unicode_ci,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `IXS_ACCOUNT_NUMBER` (`ACCOUNT_NUMBER`),
   KEY `IXS_ORDER_PERSON_TYPE_ID` (`PERSON_TYPE_ID`),
@@ -13366,7 +10168,8 @@ CREATE TABLE `b_sale_order` (
   KEY `IX_BSO_CANCELED` (`CANCELED`),
   KEY `IX_BSO_DATE_PAYED` (`DATE_PAYED`),
   KEY `IX_BSO_DATE_INSERT` (`DATE_INSERT`),
-  KEY `IX_BSO_DATE_PAY_BEFORE` (`DATE_PAY_BEFORE`)
+  KEY `IX_BSO_DATE_PAY_BEFORE` (`DATE_PAY_BEFORE`),
+  FULLTEXT KEY `IX_B_SALE_ORDER_SEARCH` (`SEARCH_CONTENT`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -13484,6 +10287,30 @@ CREATE TABLE `b_sale_order_change` (
 LOCK TABLES `b_sale_order_change` WRITE;
 /*!40000 ALTER TABLE `b_sale_order_change` DISABLE KEYS */;
 /*!40000 ALTER TABLE `b_sale_order_change` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `b_sale_order_converter_crm_error`
+--
+
+DROP TABLE IF EXISTS `b_sale_order_converter_crm_error`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `b_sale_order_converter_crm_error` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ORDER_ID` int(11) NOT NULL,
+  `ERROR` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `b_sale_order_converter_crm_error`
+--
+
+LOCK TABLES `b_sale_order_converter_crm_error` WRITE;
+/*!40000 ALTER TABLE `b_sale_order_converter_crm_error` DISABLE KEYS */;
+/*!40000 ALTER TABLE `b_sale_order_converter_crm_error` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -14065,8 +10892,7 @@ CREATE TABLE `b_sale_order_props_relation` (
   `PROPERTY_ID` int(11) NOT NULL,
   `ENTITY_ID` varchar(35) COLLATE utf8_unicode_ci NOT NULL,
   `ENTITY_TYPE` char(1) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`PROPERTY_ID`,`ENTITY_ID`,`ENTITY_TYPE`),
-  KEY `IX_ENTITY_ID` (`ENTITY_ID`)
+  PRIMARY KEY (`PROPERTY_ID`,`ENTITY_ID`,`ENTITY_TYPE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -14607,8 +11433,7 @@ CREATE TABLE `b_sale_status_lang` (
   `LID` char(2) COLLATE utf8_unicode_ci NOT NULL,
   `NAME` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `DESCRIPTION` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`STATUS_ID`,`LID`),
-  UNIQUE KEY `ixs_status_lang_status_id` (`STATUS_ID`,`LID`)
+  PRIMARY KEY (`STATUS_ID`,`LID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -15224,7 +12049,6 @@ CREATE TABLE `b_sale_user_transact` (
   `PAYMENT_ID` int(11) DEFAULT NULL,
   `EMPLOYEE_ID` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  KEY `IX_S_U_T_USER_ID` (`USER_ID`),
   KEY `IX_S_U_T_USER_ID_CURRENCY` (`USER_ID`,`CURRENCY`),
   KEY `IX_S_U_T_ORDER_ID` (`ORDER_ID`),
   KEY `IX_S_U_T_PAYMENT_ID` (`PAYMENT_ID`)
@@ -15361,7 +12185,7 @@ CREATE TABLE `b_search_content` (
   UNIQUE KEY `UX_B_SEARCH_CONTENT` (`MODULE_ID`,`ITEM_ID`),
   KEY `IX_B_SEARCH_CONTENT_1` (`MODULE_ID`,`PARAM1`(50),`PARAM2`(50)),
   KEY `IX_B_SEARCH_CONTENT_2` (`ENTITY_ID`(50),`ENTITY_TYPE_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -15370,7 +12194,6 @@ CREATE TABLE `b_search_content` (
 
 LOCK TABLES `b_search_content` WRITE;
 /*!40000 ALTER TABLE `b_search_content` DISABLE KEYS */;
-INSERT INTO `b_search_content` VALUES (1,'2019-07-10 13:49:08','iblock','1',0,NULL,NULL,NULL,'=ID=1&EXTERNAL_ID=710&IBLOCK_SECTION_ID=&IBLOCK_TYPE_ID=lists&IBLOCK_ID=1&IBLOCK_CODE=CLIENTS&IBLOCK_EXTERNAL_ID=lists-clients&CODE=','ООО Копейка','','','lists','1',NULL,NULL,NULL),(2,'2019-07-10 13:49:08','iblock','2',0,NULL,NULL,NULL,'=ID=2&EXTERNAL_ID=711&IBLOCK_SECTION_ID=&IBLOCK_TYPE_ID=lists&IBLOCK_ID=1&IBLOCK_CODE=CLIENTS&IBLOCK_EXTERNAL_ID=lists-clients&CODE=','ЗАО Зайцы+','','','lists','1',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `b_search_content` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -15445,7 +12268,6 @@ CREATE TABLE `b_search_content_right` (
 
 LOCK TABLES `b_search_content_right` WRITE;
 /*!40000 ALTER TABLE `b_search_content_right` DISABLE KEYS */;
-INSERT INTO `b_search_content_right` VALUES (1,'G2'),(2,'G2');
 /*!40000 ALTER TABLE `b_search_content_right` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -15470,7 +12292,6 @@ CREATE TABLE `b_search_content_site` (
 
 LOCK TABLES `b_search_content_site` WRITE;
 /*!40000 ALTER TABLE `b_search_content_site` DISABLE KEYS */;
-INSERT INTO `b_search_content_site` VALUES (1,'s1',''),(2,'s1','');
 /*!40000 ALTER TABLE `b_search_content_site` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -15498,7 +12319,6 @@ CREATE TABLE `b_search_content_stem` (
 
 LOCK TABLES `b_search_content_stem` WRITE;
 /*!40000 ALTER TABLE `b_search_content_stem` DISABLE KEYS */;
-INSERT INTO `b_search_content_stem` VALUES (1,'ru',1,0.2314,1),(1,'ru',2,0.2314,2),(2,'ru',3,0.2314,2);
 /*!40000 ALTER TABLE `b_search_content_stem` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -15523,7 +12343,6 @@ CREATE TABLE `b_search_content_text` (
 
 LOCK TABLES `b_search_content_text` WRITE;
 /*!40000 ALTER TABLE `b_search_content_text` DISABLE KEYS */;
-INSERT INTO `b_search_content_text` VALUES (1,'b5fca2b40475654e7efa4d7c840254f8','ООО КОПЕЙКА\r\n\r\n'),(2,'7c718770836531d959c5eafb03d6af00','ЗАО ЗАЙЦЫ+\r\n\r\n');
 /*!40000 ALTER TABLE `b_search_content_text` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -15550,7 +12369,6 @@ CREATE TABLE `b_search_content_title` (
 
 LOCK TABLES `b_search_content_title` WRITE;
 /*!40000 ALTER TABLE `b_search_content_title` DISABLE KEYS */;
-INSERT INTO `b_search_content_title` VALUES (1,'s1',4,'КОПЕЙКА'),(1,'s1',0,'ООО'),(2,'s1',4,'ЗАЙЦЫ'),(2,'s1',0,'ЗАО');
 /*!40000 ALTER TABLE `b_search_content_title` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -15633,7 +12451,7 @@ CREATE TABLE `b_search_stem` (
   `STEM` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `UX_B_SEARCH_STEM` (`STEM`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -15642,7 +12460,6 @@ CREATE TABLE `b_search_stem` (
 
 LOCK TABLES `b_search_stem` WRITE;
 /*!40000 ALTER TABLE `b_search_stem` DISABLE KEYS */;
-INSERT INTO `b_search_stem` VALUES (3,'ЗАЙЦ'),(2,'КОПЕЙК'),(1,'ОО');
 /*!40000 ALTER TABLE `b_search_stem` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -16490,7 +13307,8 @@ CREATE TABLE `b_sender_mailing_chain` (
   `SEARCH_CONTENT` longtext COLLATE utf8_unicode_ci,
   PRIMARY KEY (`ID`),
   KEY `IX_SENDER_MAILING_CHAIN_MAILING` (`MAILING_ID`,`STATUS`),
-  KEY `IX_SENDER_MAILING_CHAIN_REITERATE` (`REITERATE`,`STATUS`)
+  KEY `IX_SENDER_MAILING_CHAIN_REITERATE` (`REITERATE`,`STATUS`),
+  FULLTEXT KEY `IXF_B_SENDER_MAILING_CHAIN_1` (`SEARCH_CONTENT`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -16636,8 +13454,7 @@ CREATE TABLE `b_sender_message_field` (
   `CODE` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `TYPE` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `VALUE` longtext COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`MESSAGE_ID`,`CODE`),
-  KEY `IX_SENDER_MESSAGE_FIELD` (`MESSAGE_ID`)
+  PRIMARY KEY (`MESSAGE_ID`,`CODE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -17023,7 +13840,7 @@ CREATE TABLE `b_seo_adv_campaign` (
   `XML_ID` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `LAST_UPDATE` timestamp NULL DEFAULT NULL,
-  `SETTINGS` text COLLATE utf8_unicode_ci,
+  `SETTINGS` mediumtext COLLATE utf8_unicode_ci,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ux_b_seo_adv_campaign` (`ENGINE_ID`,`XML_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -17557,7 +14374,7 @@ CREATE TABLE `b_site_template` (
   `TEMPLATE` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `ix_site_template_site` (`SITE_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -17566,8 +14383,32 @@ CREATE TABLE `b_site_template` (
 
 LOCK TABLES `b_site_template` WRITE;
 /*!40000 ALTER TABLE `b_site_template` DISABLE KEYS */;
-INSERT INTO `b_site_template` VALUES (2,'s1','',150,'web20'),(3,'s1','$_GET[\'print\']==\'Y\'',150,'print');
+INSERT INTO `b_site_template` VALUES (1,'s1','',150,'web20');
 /*!40000 ALTER TABLE `b_site_template` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `b_sm_version_history`
+--
+
+DROP TABLE IF EXISTS `b_sm_version_history`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `b_sm_version_history` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `DATE_INSERT` datetime DEFAULT NULL,
+  `VERSIONS` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `b_sm_version_history`
+--
+
+LOCK TABLES `b_sm_version_history` WRITE;
+/*!40000 ALTER TABLE `b_sm_version_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `b_sm_version_history` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -17916,2854 +14757,6 @@ LOCK TABLES `b_socialservices_user_link` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `b_sonet_event_user_view`
---
-
-DROP TABLE IF EXISTS `b_sonet_event_user_view`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_event_user_view` (
-  `ENTITY_TYPE` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'G',
-  `ENTITY_ID` int(11) NOT NULL,
-  `EVENT_ID` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `USER_ID` int(11) NOT NULL DEFAULT '0',
-  `USER_IM_ID` int(11) NOT NULL DEFAULT '0',
-  `USER_ANONYMOUS` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  PRIMARY KEY (`ENTITY_TYPE`,`ENTITY_ID`,`EVENT_ID`,`USER_ID`,`USER_IM_ID`),
-  KEY `IX_SONET_EVENT_USER_VIEW_1` (`USER_ID`,`EVENT_ID`,`ENTITY_TYPE`,`USER_ANONYMOUS`),
-  KEY `IX_SONET_EVENT_USER_VIEW_2` (`ENTITY_TYPE`,`EVENT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_event_user_view`
---
-
-LOCK TABLES `b_sonet_event_user_view` WRITE;
-/*!40000 ALTER TABLE `b_sonet_event_user_view` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_event_user_view` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_features`
---
-
-DROP TABLE IF EXISTS `b_sonet_features`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_features` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `ENTITY_TYPE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'G',
-  `ENTITY_ID` int(11) NOT NULL,
-  `FEATURE` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `FEATURE_NAME` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `DATE_CREATE` datetime NOT NULL,
-  `DATE_UPDATE` datetime NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `IX_SONET_GROUP_FEATURES_1` (`ENTITY_TYPE`,`ENTITY_ID`,`FEATURE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_features`
---
-
-LOCK TABLES `b_sonet_features` WRITE;
-/*!40000 ALTER TABLE `b_sonet_features` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_features` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_features2perms`
---
-
-DROP TABLE IF EXISTS `b_sonet_features2perms`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_features2perms` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `FEATURE_ID` int(11) NOT NULL,
-  `OPERATION_ID` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `ROLE` char(1) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `IX_SONET_GROUP_FEATURES2PERMS_1` (`FEATURE_ID`,`OPERATION_ID`),
-  KEY `IX_SONET_GROUP_FEATURES2PERMS_2` (`FEATURE_ID`,`ROLE`,`OPERATION_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_features2perms`
---
-
-LOCK TABLES `b_sonet_features2perms` WRITE;
-/*!40000 ALTER TABLE `b_sonet_features2perms` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_features2perms` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_group`
---
-
-DROP TABLE IF EXISTS `b_sonet_group`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_group` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `DATE_CREATE` datetime NOT NULL,
-  `DATE_UPDATE` datetime NOT NULL,
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `VISIBLE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `OPENED` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `SUBJECT_ID` int(11) NOT NULL,
-  `OWNER_ID` int(11) NOT NULL,
-  `KEYWORDS` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `IMAGE_ID` int(11) DEFAULT NULL,
-  `NUMBER_OF_MEMBERS` int(11) NOT NULL DEFAULT '0',
-  `NUMBER_OF_MODERATORS` int(11) NOT NULL DEFAULT '0',
-  `INITIATE_PERMS` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'K',
-  `DATE_ACTIVITY` datetime NOT NULL,
-  `CLOSED` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `SPAM_PERMS` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'K',
-  `PROJECT` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `PROJECT_DATE_START` datetime DEFAULT NULL,
-  `PROJECT_DATE_FINISH` datetime DEFAULT NULL,
-  `SEARCH_INDEX` mediumtext COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`ID`),
-  KEY `IX_SONET_GROUP_1` (`OWNER_ID`),
-  FULLTEXT KEY `IXF_SONET_GROUP` (`SEARCH_INDEX`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_group`
---
-
-LOCK TABLES `b_sonet_group` WRITE;
-/*!40000 ALTER TABLE `b_sonet_group` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_group` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_group_favorites`
---
-
-DROP TABLE IF EXISTS `b_sonet_group_favorites`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_group_favorites` (
-  `USER_ID` int(11) NOT NULL,
-  `GROUP_ID` int(11) NOT NULL,
-  `DATE_ADD` datetime DEFAULT NULL,
-  PRIMARY KEY (`USER_ID`,`GROUP_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_group_favorites`
---
-
-LOCK TABLES `b_sonet_group_favorites` WRITE;
-/*!40000 ALTER TABLE `b_sonet_group_favorites` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_group_favorites` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_group_site`
---
-
-DROP TABLE IF EXISTS `b_sonet_group_site`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_group_site` (
-  `GROUP_ID` int(11) NOT NULL,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`GROUP_ID`,`SITE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_group_site`
---
-
-LOCK TABLES `b_sonet_group_site` WRITE;
-/*!40000 ALTER TABLE `b_sonet_group_site` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_group_site` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_group_subject`
---
-
-DROP TABLE IF EXISTS `b_sonet_group_subject`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_group_subject` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `SORT` int(10) NOT NULL DEFAULT '100',
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_group_subject`
---
-
-LOCK TABLES `b_sonet_group_subject` WRITE;
-/*!40000 ALTER TABLE `b_sonet_group_subject` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_group_subject` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_group_subject_site`
---
-
-DROP TABLE IF EXISTS `b_sonet_group_subject_site`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_group_subject_site` (
-  `SUBJECT_ID` int(11) NOT NULL,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`SUBJECT_ID`,`SITE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_group_subject_site`
---
-
-LOCK TABLES `b_sonet_group_subject_site` WRITE;
-/*!40000 ALTER TABLE `b_sonet_group_subject_site` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_group_subject_site` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_group_tag`
---
-
-DROP TABLE IF EXISTS `b_sonet_group_tag`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_group_tag` (
-  `GROUP_ID` int(11) NOT NULL,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`GROUP_ID`,`NAME`),
-  KEY `IX_SONET_GROUP_TAG_1` (`GROUP_ID`),
-  KEY `IX_SONET_GROUP_TAG_2` (`NAME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_group_tag`
---
-
-LOCK TABLES `b_sonet_group_tag` WRITE;
-/*!40000 ALTER TABLE `b_sonet_group_tag` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_group_tag` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_group_template`
---
-
-DROP TABLE IF EXISTS `b_sonet_group_template`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_group_template` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `USER_ID` int(11) NOT NULL,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `OWNER_ID` int(11) NOT NULL,
-  `TYPE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `DATE_CREATE` datetime DEFAULT NULL,
-  `TIMESTAMP_X` datetime DEFAULT NULL,
-  `PARAMS` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`ID`),
-  KEY `IX_SONET_GROUP_TEMPLATE_1` (`USER_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_group_template`
---
-
-LOCK TABLES `b_sonet_group_template` WRITE;
-/*!40000 ALTER TABLE `b_sonet_group_template` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_group_template` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_group_template_right`
---
-
-DROP TABLE IF EXISTS `b_sonet_group_template_right`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_group_template_right` (
-  `TEMPLATE_ID` int(11) NOT NULL,
-  `GROUP_CODE` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  UNIQUE KEY `ix_b_sonet_group_template_right_1` (`TEMPLATE_ID`,`GROUP_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_group_template_right`
---
-
-LOCK TABLES `b_sonet_group_template_right` WRITE;
-/*!40000 ALTER TABLE `b_sonet_group_template_right` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_group_template_right` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_group_view`
---
-
-DROP TABLE IF EXISTS `b_sonet_group_view`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_group_view` (
-  `USER_ID` int(11) NOT NULL,
-  `GROUP_ID` int(11) NOT NULL,
-  `DATE_VIEW` datetime DEFAULT NULL,
-  PRIMARY KEY (`USER_ID`,`GROUP_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_group_view`
---
-
-LOCK TABLES `b_sonet_group_view` WRITE;
-/*!40000 ALTER TABLE `b_sonet_group_view` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_group_view` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_log`
---
-
-DROP TABLE IF EXISTS `b_sonet_log`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_log` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `ENTITY_TYPE` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'G',
-  `ENTITY_ID` int(11) NOT NULL,
-  `EVENT_ID` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `USER_ID` int(11) DEFAULT NULL,
-  `LOG_DATE` datetime NOT NULL,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `TITLE_TEMPLATE` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `TITLE` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-  `MESSAGE` mediumtext COLLATE utf8_unicode_ci,
-  `TEXT_MESSAGE` text COLLATE utf8_unicode_ci,
-  `URL` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `MODULE_ID` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `CALLBACK_FUNC` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `EXTERNAL_ID` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `PARAMS` text COLLATE utf8_unicode_ci,
-  `TMP_ID` int(11) DEFAULT NULL,
-  `SOURCE_ID` int(11) DEFAULT NULL,
-  `LOG_UPDATE` datetime NOT NULL,
-  `COMMENTS_COUNT` int(11) DEFAULT NULL,
-  `ENABLE_COMMENTS` char(1) COLLATE utf8_unicode_ci DEFAULT 'Y',
-  `RATING_TYPE_ID` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `RATING_ENTITY_ID` int(11) DEFAULT NULL,
-  `SOURCE_TYPE` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `TRANSFORM` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `INACTIVE` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_SONET_LOG_1` (`ENTITY_TYPE`,`ENTITY_ID`,`EVENT_ID`),
-  KEY `IX_SONET_LOG_2` (`USER_ID`,`LOG_DATE`,`EVENT_ID`),
-  KEY `IX_SONET_LOG_3` (`SOURCE_ID`),
-  KEY `IX_SONET_LOG_4` (`LOG_UPDATE`),
-  KEY `IX_SONET_LOG_5` (`USER_ID`,`ENTITY_TYPE`,`LOG_UPDATE`),
-  KEY `IX_SONET_LOG_6` (`MODULE_ID`),
-  KEY `IX_SONET_LOG_7` (`ENTITY_ID`,`EVENT_ID`),
-  KEY `IX_SONET_LOG_8` (`RATING_ENTITY_ID`,`RATING_TYPE_ID`),
-  KEY `IX_SONET_LOG_9` (`EXTERNAL_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_log`
---
-
-LOCK TABLES `b_sonet_log` WRITE;
-/*!40000 ALTER TABLE `b_sonet_log` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_log` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_log_comment`
---
-
-DROP TABLE IF EXISTS `b_sonet_log_comment`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_log_comment` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `LOG_ID` int(11) NOT NULL,
-  `ENTITY_TYPE` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'G',
-  `ENTITY_ID` int(11) NOT NULL,
-  `EVENT_ID` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `USER_ID` int(11) DEFAULT NULL,
-  `LOG_DATE` datetime NOT NULL,
-  `MESSAGE` text COLLATE utf8_unicode_ci,
-  `TEXT_MESSAGE` text COLLATE utf8_unicode_ci,
-  `MODULE_ID` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SOURCE_ID` int(11) DEFAULT NULL,
-  `URL` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `RATING_TYPE_ID` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `RATING_ENTITY_ID` int(11) DEFAULT NULL,
-  `SHARE_DEST` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_SONET_LOG_COMMENT_1` (`ENTITY_TYPE`,`ENTITY_ID`,`EVENT_ID`),
-  KEY `IX_SONET_LOG_COMMENT_2` (`USER_ID`,`LOG_DATE`,`EVENT_ID`),
-  KEY `IX_SONET_LOG_COMMENT_3` (`LOG_ID`),
-  KEY `IX_SONET_LOG_COMMENT_4` (`SOURCE_ID`),
-  KEY `IX_SONET_LOG_COMMENT_5` (`RATING_TYPE_ID`,`RATING_ENTITY_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_log_comment`
---
-
-LOCK TABLES `b_sonet_log_comment` WRITE;
-/*!40000 ALTER TABLE `b_sonet_log_comment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_log_comment` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_log_counter`
---
-
-DROP TABLE IF EXISTS `b_sonet_log_counter`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_log_counter` (
-  `USER_ID` int(11) NOT NULL,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci NOT NULL DEFAULT '**',
-  `CODE` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '**',
-  `CNT` int(11) NOT NULL DEFAULT '0',
-  `LAST_DATE` datetime DEFAULT NULL,
-  `PAGE_SIZE` int(11) DEFAULT NULL,
-  `PAGE_LAST_DATE_1` datetime DEFAULT NULL,
-  PRIMARY KEY (`USER_ID`,`SITE_ID`,`CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_log_counter`
---
-
-LOCK TABLES `b_sonet_log_counter` WRITE;
-/*!40000 ALTER TABLE `b_sonet_log_counter` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_log_counter` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_log_events`
---
-
-DROP TABLE IF EXISTS `b_sonet_log_events`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_log_events` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `USER_ID` int(11) NOT NULL,
-  `ENTITY_TYPE` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'G',
-  `ENTITY_ID` int(11) NOT NULL,
-  `ENTITY_CB` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `ENTITY_MY` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `EVENT_ID` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `MAIL_EVENT` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `TRANSPORT` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `VISIBLE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `IX_SONET_LOG_EVENTS_3` (`USER_ID`,`ENTITY_TYPE`,`ENTITY_ID`,`ENTITY_CB`,`ENTITY_MY`,`EVENT_ID`,`SITE_ID`),
-  KEY `IX_SONET_LOG_EVENTS_2` (`ENTITY_TYPE`,`ENTITY_ID`,`EVENT_ID`),
-  KEY `IX_SONET_LOG_EVENTS_4` (`USER_ID`,`ENTITY_CB`,`ENTITY_ID`),
-  KEY `IX_SONET_LOG_EVENTS_5` (`USER_ID`,`ENTITY_MY`,`ENTITY_TYPE`,`ENTITY_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_log_events`
---
-
-LOCK TABLES `b_sonet_log_events` WRITE;
-/*!40000 ALTER TABLE `b_sonet_log_events` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_log_events` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_log_favorites`
---
-
-DROP TABLE IF EXISTS `b_sonet_log_favorites`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_log_favorites` (
-  `USER_ID` int(11) NOT NULL,
-  `LOG_ID` int(11) NOT NULL,
-  PRIMARY KEY (`USER_ID`,`LOG_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_log_favorites`
---
-
-LOCK TABLES `b_sonet_log_favorites` WRITE;
-/*!40000 ALTER TABLE `b_sonet_log_favorites` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_log_favorites` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_log_follow`
---
-
-DROP TABLE IF EXISTS `b_sonet_log_follow`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_log_follow` (
-  `USER_ID` int(11) NOT NULL,
-  `CODE` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '**',
-  `REF_ID` int(11) NOT NULL,
-  `TYPE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `FOLLOW_DATE` datetime DEFAULT NULL,
-  `BY_WF` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`USER_ID`,`CODE`),
-  KEY `IX_SONET_FOLLOW_1` (`USER_ID`,`REF_ID`),
-  KEY `IX_SONET_FOLLOW_2` (`USER_ID`,`CODE`,`TYPE`,`FOLLOW_DATE`),
-  KEY `IX_SONET_FOLLOW_3` (`CODE`,`TYPE`,`USER_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_log_follow`
---
-
-LOCK TABLES `b_sonet_log_follow` WRITE;
-/*!40000 ALTER TABLE `b_sonet_log_follow` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_log_follow` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_log_index`
---
-
-DROP TABLE IF EXISTS `b_sonet_log_index`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_log_index` (
-  `LOG_ID` int(11) NOT NULL,
-  `ITEM_TYPE` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'L',
-  `ITEM_ID` int(11) NOT NULL,
-  `CONTENT` text COLLATE utf8_unicode_ci,
-  `LOG_UPDATE` datetime DEFAULT NULL,
-  `DATE_CREATE` datetime DEFAULT NULL,
-  PRIMARY KEY (`ITEM_TYPE`,`ITEM_ID`),
-  KEY `IX_SONET_LOG_INDEX_1` (`LOG_ID`),
-  KEY `IX_SONET_LOG_INDEX_2` (`LOG_UPDATE`),
-  KEY `IX_SONET_LOG_INDEX_3` (`DATE_CREATE`),
-  FULLTEXT KEY `IXF_SONET_LOG_INDEX` (`CONTENT`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_log_index`
---
-
-LOCK TABLES `b_sonet_log_index` WRITE;
-/*!40000 ALTER TABLE `b_sonet_log_index` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_log_index` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_log_page`
---
-
-DROP TABLE IF EXISTS `b_sonet_log_page`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_log_page` (
-  `USER_ID` int(11) NOT NULL,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci NOT NULL DEFAULT '**',
-  `GROUP_CODE` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '**',
-  `PAGE_SIZE` int(11) NOT NULL,
-  `PAGE_NUM` int(11) NOT NULL DEFAULT '1',
-  `PAGE_LAST_DATE` datetime DEFAULT NULL,
-  `TRAFFIC_AVG` int(11) DEFAULT NULL,
-  `TRAFFIC_CNT` int(11) DEFAULT NULL,
-  `TRAFFIC_LAST_DATE` datetime DEFAULT NULL,
-  PRIMARY KEY (`USER_ID`,`SITE_ID`,`GROUP_CODE`,`PAGE_SIZE`,`PAGE_NUM`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_log_page`
---
-
-LOCK TABLES `b_sonet_log_page` WRITE;
-/*!40000 ALTER TABLE `b_sonet_log_page` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_log_page` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_log_right`
---
-
-DROP TABLE IF EXISTS `b_sonet_log_right`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_log_right` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `LOG_ID` int(11) NOT NULL,
-  `GROUP_CODE` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `LOG_UPDATE` datetime DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `ix_b_sonet_log_right_group_code` (`LOG_ID`,`GROUP_CODE`),
-  KEY `ix_b_sonet_log_right_group_log` (`GROUP_CODE`,`LOG_ID`),
-  KEY `ix_b_sonet_log_right_logupdate` (`LOG_UPDATE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_log_right`
---
-
-LOCK TABLES `b_sonet_log_right` WRITE;
-/*!40000 ALTER TABLE `b_sonet_log_right` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_log_right` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_log_site`
---
-
-DROP TABLE IF EXISTS `b_sonet_log_site`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_log_site` (
-  `LOG_ID` int(11) NOT NULL,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`LOG_ID`,`SITE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_log_site`
---
-
-LOCK TABLES `b_sonet_log_site` WRITE;
-/*!40000 ALTER TABLE `b_sonet_log_site` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_log_site` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_log_smartfilter`
---
-
-DROP TABLE IF EXISTS `b_sonet_log_smartfilter`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_log_smartfilter` (
-  `USER_ID` int(11) NOT NULL,
-  `TYPE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  PRIMARY KEY (`USER_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_log_smartfilter`
---
-
-LOCK TABLES `b_sonet_log_smartfilter` WRITE;
-/*!40000 ALTER TABLE `b_sonet_log_smartfilter` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_log_smartfilter` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_log_subscribe`
---
-
-DROP TABLE IF EXISTS `b_sonet_log_subscribe`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_log_subscribe` (
-  `USER_ID` int(11) NOT NULL,
-  `LOG_ID` int(11) NOT NULL,
-  `TYPE` char(3) COLLATE utf8_unicode_ci NOT NULL,
-  `END_DATE` datetime DEFAULT NULL,
-  PRIMARY KEY (`USER_ID`,`LOG_ID`,`TYPE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_log_subscribe`
---
-
-LOCK TABLES `b_sonet_log_subscribe` WRITE;
-/*!40000 ALTER TABLE `b_sonet_log_subscribe` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_log_subscribe` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_log_tag`
---
-
-DROP TABLE IF EXISTS `b_sonet_log_tag`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_log_tag` (
-  `LOG_ID` int(11) NOT NULL,
-  `ITEM_TYPE` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'L',
-  `ITEM_ID` int(11) NOT NULL,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`ITEM_TYPE`,`ITEM_ID`,`NAME`),
-  KEY `IX_SONET_LOG_TAG_1` (`LOG_ID`),
-  KEY `IX_SONET_LOG_TAG_2` (`NAME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_log_tag`
---
-
-LOCK TABLES `b_sonet_log_tag` WRITE;
-/*!40000 ALTER TABLE `b_sonet_log_tag` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_log_tag` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_log_view`
---
-
-DROP TABLE IF EXISTS `b_sonet_log_view`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_log_view` (
-  `USER_ID` int(11) NOT NULL,
-  `EVENT_ID` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `TYPE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  PRIMARY KEY (`USER_ID`,`EVENT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_log_view`
---
-
-LOCK TABLES `b_sonet_log_view` WRITE;
-/*!40000 ALTER TABLE `b_sonet_log_view` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_log_view` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_messages`
---
-
-DROP TABLE IF EXISTS `b_sonet_messages`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_messages` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `FROM_USER_ID` int(11) NOT NULL,
-  `TO_USER_ID` int(11) NOT NULL,
-  `TITLE` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `MESSAGE` text COLLATE utf8_unicode_ci,
-  `DATE_CREATE` datetime NOT NULL,
-  `DATE_VIEW` datetime DEFAULT NULL,
-  `MESSAGE_TYPE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'P',
-  `FROM_DELETED` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `TO_DELETED` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `SEND_MAIL` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `EMAIL_TEMPLATE` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `IS_LOG` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_SONET_MESSAGES_1` (`FROM_USER_ID`),
-  KEY `IX_SONET_MESSAGES_2` (`TO_USER_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_messages`
---
-
-LOCK TABLES `b_sonet_messages` WRITE;
-/*!40000 ALTER TABLE `b_sonet_messages` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_messages` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_smile`
---
-
-DROP TABLE IF EXISTS `b_sonet_smile`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_smile` (
-  `ID` smallint(3) NOT NULL AUTO_INCREMENT,
-  `SMILE_TYPE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'S',
-  `TYPING` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `IMAGE` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `DESCRIPTION` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `CLICKABLE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `SORT` int(10) NOT NULL DEFAULT '150',
-  `IMAGE_WIDTH` int(11) NOT NULL DEFAULT '0',
-  `IMAGE_HEIGHT` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_smile`
---
-
-LOCK TABLES `b_sonet_smile` WRITE;
-/*!40000 ALTER TABLE `b_sonet_smile` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_smile` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_smile_lang`
---
-
-DROP TABLE IF EXISTS `b_sonet_smile_lang`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_smile_lang` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `SMILE_ID` int(11) NOT NULL DEFAULT '0',
-  `LID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `IX_SONET_SMILE_K` (`SMILE_ID`,`LID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_smile_lang`
---
-
-LOCK TABLES `b_sonet_smile_lang` WRITE;
-/*!40000 ALTER TABLE `b_sonet_smile_lang` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_smile_lang` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_subscription`
---
-
-DROP TABLE IF EXISTS `b_sonet_subscription`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_subscription` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `USER_ID` int(11) NOT NULL,
-  `CODE` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `IX_SONET_SUBSCRIPTION_1` (`USER_ID`,`CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_subscription`
---
-
-LOCK TABLES `b_sonet_subscription` WRITE;
-/*!40000 ALTER TABLE `b_sonet_subscription` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_subscription` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_user2group`
---
-
-DROP TABLE IF EXISTS `b_sonet_user2group`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_user2group` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `USER_ID` int(11) NOT NULL,
-  `GROUP_ID` int(11) NOT NULL,
-  `ROLE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'U',
-  `AUTO_MEMBER` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `DATE_CREATE` datetime NOT NULL,
-  `DATE_UPDATE` datetime NOT NULL,
-  `INITIATED_BY_TYPE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'U',
-  `INITIATED_BY_USER_ID` int(11) NOT NULL,
-  `MESSAGE` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `IX_SONET_USER2GROUP_1` (`USER_ID`,`GROUP_ID`),
-  KEY `IX_SONET_USER2GROUP_2` (`USER_ID`,`GROUP_ID`,`ROLE`),
-  KEY `IX_SONET_USER2GROUP_3` (`GROUP_ID`,`USER_ID`,`ROLE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_user2group`
---
-
-LOCK TABLES `b_sonet_user2group` WRITE;
-/*!40000 ALTER TABLE `b_sonet_user2group` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_user2group` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_user_content_view`
---
-
-DROP TABLE IF EXISTS `b_sonet_user_content_view`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_user_content_view` (
-  `USER_ID` int(11) NOT NULL,
-  `RATING_TYPE_ID` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `RATING_ENTITY_ID` int(11) NOT NULL,
-  `CONTENT_ID` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `DATE_VIEW` datetime DEFAULT NULL,
-  PRIMARY KEY (`USER_ID`,`RATING_TYPE_ID`,`RATING_ENTITY_ID`),
-  KEY `IX_SONET_USER_CONTENT_VIEW_1` (`CONTENT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_user_content_view`
---
-
-LOCK TABLES `b_sonet_user_content_view` WRITE;
-/*!40000 ALTER TABLE `b_sonet_user_content_view` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_user_content_view` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_user_events`
---
-
-DROP TABLE IF EXISTS `b_sonet_user_events`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_user_events` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `USER_ID` int(11) NOT NULL,
-  `EVENT_ID` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `IX_SONET_USER_PERMS_2` (`USER_ID`,`EVENT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_user_events`
---
-
-LOCK TABLES `b_sonet_user_events` WRITE;
-/*!40000 ALTER TABLE `b_sonet_user_events` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_user_events` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_user_perms`
---
-
-DROP TABLE IF EXISTS `b_sonet_user_perms`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_user_perms` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `USER_ID` int(11) NOT NULL,
-  `OPERATION_ID` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `RELATION_TYPE` char(1) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `IX_SONET_USER_PERMS_2` (`USER_ID`,`OPERATION_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_user_perms`
---
-
-LOCK TABLES `b_sonet_user_perms` WRITE;
-/*!40000 ALTER TABLE `b_sonet_user_perms` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_user_perms` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_sonet_user_relations`
---
-
-DROP TABLE IF EXISTS `b_sonet_user_relations`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_sonet_user_relations` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `FIRST_USER_ID` int(11) NOT NULL,
-  `SECOND_USER_ID` int(11) NOT NULL,
-  `RELATION` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `DATE_CREATE` datetime NOT NULL,
-  `DATE_UPDATE` datetime NOT NULL,
-  `MESSAGE` text COLLATE utf8_unicode_ci,
-  `INITIATED_BY` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'F',
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `IX_SONET_RELATIONS_1` (`FIRST_USER_ID`,`SECOND_USER_ID`),
-  KEY `IX_SONET_RELATIONS_2` (`FIRST_USER_ID`,`SECOND_USER_ID`,`RELATION`),
-  KEY `IX_SONET_RELATIONS_3` (`SECOND_USER_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_sonet_user_relations`
---
-
-LOCK TABLES `b_sonet_user_relations` WRITE;
-/*!40000 ALTER TABLE `b_sonet_user_relations` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_sonet_user_relations` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_adv`
---
-
-DROP TABLE IF EXISTS `b_stat_adv`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_adv` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `REFERER1` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `REFERER2` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `COST` decimal(18,4) NOT NULL DEFAULT '0.0000',
-  `REVENUE` decimal(18,4) NOT NULL DEFAULT '0.0000',
-  `EVENTS_VIEW` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `GUESTS` int(18) NOT NULL DEFAULT '0',
-  `NEW_GUESTS` int(18) NOT NULL DEFAULT '0',
-  `FAVORITES` int(18) NOT NULL DEFAULT '0',
-  `C_HOSTS` int(18) NOT NULL DEFAULT '0',
-  `SESSIONS` int(18) NOT NULL DEFAULT '0',
-  `HITS` int(18) NOT NULL DEFAULT '0',
-  `DATE_FIRST` datetime DEFAULT NULL,
-  `DATE_LAST` datetime DEFAULT NULL,
-  `GUESTS_BACK` int(18) NOT NULL DEFAULT '0',
-  `FAVORITES_BACK` int(18) NOT NULL DEFAULT '0',
-  `HOSTS_BACK` int(18) NOT NULL DEFAULT '0',
-  `SESSIONS_BACK` int(18) NOT NULL DEFAULT '0',
-  `HITS_BACK` int(18) NOT NULL DEFAULT '0',
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `PRIORITY` int(18) NOT NULL DEFAULT '100',
-  PRIMARY KEY (`ID`),
-  KEY `IX_REFERER1` (`REFERER1`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_adv`
---
-
-LOCK TABLES `b_stat_adv` WRITE;
-/*!40000 ALTER TABLE `b_stat_adv` DISABLE KEYS */;
-INSERT INTO `b_stat_adv` VALUES (1,'aport','',0.0000,0.0000,NULL,0,0,0,0,0,0,NULL,NULL,0,0,0,0,0,NULL,100),(2,'altavista','',0.0000,0.0000,NULL,0,0,0,0,0,0,NULL,NULL,0,0,0,0,0,NULL,100),(3,'aol','',0.0000,0.0000,NULL,0,0,0,0,0,0,NULL,NULL,0,0,0,0,0,NULL,100),(5,'google',NULL,0.0000,0.0000,'',0,0,0,0,0,0,NULL,NULL,0,0,0,0,0,NULL,100),(6,'rambler','',0.0000,0.0000,NULL,0,0,0,0,0,0,NULL,NULL,0,0,0,0,0,NULL,100),(7,'yandex','',0.0000,0.0000,NULL,0,0,0,0,0,0,NULL,NULL,0,0,0,0,0,NULL,100),(8,'yahoo',NULL,0.0000,0.0000,'',0,0,0,0,0,0,NULL,NULL,0,0,0,0,0,NULL,100),(10,'msn',NULL,0.0000,0.0000,'',0,0,0,0,0,0,NULL,NULL,0,0,0,0,0,NULL,100);
-/*!40000 ALTER TABLE `b_stat_adv` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_adv_day`
---
-
-DROP TABLE IF EXISTS `b_stat_adv_day`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_adv_day` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `ADV_ID` int(18) NOT NULL DEFAULT '0',
-  `DATE_STAT` date DEFAULT NULL,
-  `GUESTS` int(18) NOT NULL DEFAULT '0',
-  `GUESTS_DAY` int(18) NOT NULL DEFAULT '0',
-  `NEW_GUESTS` int(18) NOT NULL DEFAULT '0',
-  `FAVORITES` int(18) NOT NULL DEFAULT '0',
-  `C_HOSTS` int(18) NOT NULL DEFAULT '0',
-  `C_HOSTS_DAY` int(18) NOT NULL DEFAULT '0',
-  `SESSIONS` int(18) NOT NULL DEFAULT '0',
-  `HITS` int(18) NOT NULL DEFAULT '0',
-  `GUESTS_BACK` int(18) NOT NULL DEFAULT '0',
-  `GUESTS_DAY_BACK` int(18) NOT NULL DEFAULT '0',
-  `FAVORITES_BACK` int(18) NOT NULL DEFAULT '0',
-  `HOSTS_BACK` int(18) NOT NULL DEFAULT '0',
-  `HOSTS_DAY_BACK` int(18) NOT NULL DEFAULT '0',
-  `SESSIONS_BACK` int(18) NOT NULL DEFAULT '0',
-  `HITS_BACK` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  KEY `IX_ADV_ID_DATE_STAT` (`ADV_ID`,`DATE_STAT`),
-  KEY `IX_DATE_STAT` (`DATE_STAT`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_adv_day`
---
-
-LOCK TABLES `b_stat_adv_day` WRITE;
-/*!40000 ALTER TABLE `b_stat_adv_day` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_stat_adv_day` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_adv_event`
---
-
-DROP TABLE IF EXISTS `b_stat_adv_event`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_adv_event` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `ADV_ID` int(18) DEFAULT '0',
-  `EVENT_ID` int(18) DEFAULT '0',
-  `COUNTER` int(18) NOT NULL DEFAULT '0',
-  `COUNTER_BACK` int(18) NOT NULL DEFAULT '0',
-  `MONEY` decimal(18,4) NOT NULL DEFAULT '0.0000',
-  `MONEY_BACK` decimal(18,4) NOT NULL DEFAULT '0.0000',
-  PRIMARY KEY (`ID`),
-  KEY `IX_ADV_EVENT_ID` (`ADV_ID`,`EVENT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_adv_event`
---
-
-LOCK TABLES `b_stat_adv_event` WRITE;
-/*!40000 ALTER TABLE `b_stat_adv_event` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_stat_adv_event` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_adv_event_day`
---
-
-DROP TABLE IF EXISTS `b_stat_adv_event_day`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_adv_event_day` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `ADV_ID` int(18) DEFAULT '0',
-  `EVENT_ID` int(18) DEFAULT '0',
-  `DATE_STAT` date DEFAULT NULL,
-  `COUNTER` int(18) NOT NULL DEFAULT '0',
-  `COUNTER_BACK` int(18) NOT NULL DEFAULT '0',
-  `MONEY` decimal(18,4) NOT NULL DEFAULT '0.0000',
-  `MONEY_BACK` decimal(18,4) NOT NULL DEFAULT '0.0000',
-  PRIMARY KEY (`ID`),
-  KEY `IX_ADV_ID_EVENT_ID_DATE_STAT` (`ADV_ID`,`EVENT_ID`,`DATE_STAT`),
-  KEY `IX_DATE_STAT` (`DATE_STAT`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_adv_event_day`
---
-
-LOCK TABLES `b_stat_adv_event_day` WRITE;
-/*!40000 ALTER TABLE `b_stat_adv_event_day` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_stat_adv_event_day` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_adv_guest`
---
-
-DROP TABLE IF EXISTS `b_stat_adv_guest`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_adv_guest` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `ADV_ID` int(11) NOT NULL DEFAULT '0',
-  `BACK` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `GUEST_ID` int(11) NOT NULL DEFAULT '0',
-  `DATE_GUEST_HIT` datetime DEFAULT NULL,
-  `DATE_HOST_HIT` datetime DEFAULT NULL,
-  `SESSION_ID` int(11) NOT NULL DEFAULT '0',
-  `IP` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `IP_NUMBER` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_ADV_ID_GUEST` (`ADV_ID`,`GUEST_ID`),
-  KEY `IX_ADV_ID_IP_NUMBER` (`ADV_ID`,`IP_NUMBER`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_adv_guest`
---
-
-LOCK TABLES `b_stat_adv_guest` WRITE;
-/*!40000 ALTER TABLE `b_stat_adv_guest` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_stat_adv_guest` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_adv_page`
---
-
-DROP TABLE IF EXISTS `b_stat_adv_page`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_adv_page` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `ADV_ID` int(18) NOT NULL DEFAULT '0',
-  `PAGE` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `C_TYPE` varchar(5) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'TO',
-  PRIMARY KEY (`ID`),
-  KEY `IX_ADV_ID_TYPE` (`ADV_ID`,`C_TYPE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_adv_page`
---
-
-LOCK TABLES `b_stat_adv_page` WRITE;
-/*!40000 ALTER TABLE `b_stat_adv_page` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_stat_adv_page` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_adv_searcher`
---
-
-DROP TABLE IF EXISTS `b_stat_adv_searcher`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_adv_searcher` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `ADV_ID` int(18) NOT NULL,
-  `SEARCHER_ID` int(18) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_adv_searcher`
---
-
-LOCK TABLES `b_stat_adv_searcher` WRITE;
-/*!40000 ALTER TABLE `b_stat_adv_searcher` DISABLE KEYS */;
-INSERT INTO `b_stat_adv_searcher` VALUES (1,5,2),(2,7,3),(3,6,4),(4,1,6),(5,10,7),(6,8,8),(7,2,9),(8,3,10);
-/*!40000 ALTER TABLE `b_stat_adv_searcher` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_browser`
---
-
-DROP TABLE IF EXISTS `b_stat_browser`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_browser` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `USER_AGENT` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_browser`
---
-
-LOCK TABLES `b_stat_browser` WRITE;
-/*!40000 ALTER TABLE `b_stat_browser` DISABLE KEYS */;
-INSERT INTO `b_stat_browser` VALUES (1,'Mozilla%'),(2,'Opera%'),(3,'%Netscape%'),(4,'%Mosaic%'),(5,'%AOL%'),(6,'%Lynx%'),(7,'%Avant Browser%'),(8,'%Firefox/%'),(9,'%SonyEricsson%'),(10,'%Nokia%'),(11,'%SAMSUNG%'),(12,'%Microsoft Pocket Internet Explorer%'),(13,'%Konqueror%'),(14,'%RSS%Reader%');
-/*!40000 ALTER TABLE `b_stat_browser` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_city`
---
-
-DROP TABLE IF EXISTS `b_stat_city`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_city` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `COUNTRY_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  `REGION` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `XML_ID` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SESSIONS` int(18) NOT NULL DEFAULT '0',
-  `NEW_GUESTS` int(18) NOT NULL DEFAULT '0',
-  `HITS` int(18) NOT NULL DEFAULT '0',
-  `C_EVENTS` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  KEY `UX_B_STAT_CITY` (`COUNTRY_ID`,`REGION`(50),`NAME`(50)),
-  KEY `IX_B_STAT_CITY_XML_ID` (`XML_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_city`
---
-
-LOCK TABLES `b_stat_city` WRITE;
-/*!40000 ALTER TABLE `b_stat_city` DISABLE KEYS */;
-INSERT INTO `b_stat_city` VALUES (1,'N0',NULL,NULL,NULL,1,1,27,0);
-/*!40000 ALTER TABLE `b_stat_city` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_city_day`
---
-
-DROP TABLE IF EXISTS `b_stat_city_day`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_city_day` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `CITY_ID` int(18) NOT NULL,
-  `DATE_STAT` date NOT NULL,
-  `SESSIONS` int(18) NOT NULL DEFAULT '0',
-  `NEW_GUESTS` int(18) NOT NULL DEFAULT '0',
-  `HITS` int(18) NOT NULL DEFAULT '0',
-  `C_EVENTS` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  KEY `IX_B_STAT_CITY_DAY_1` (`CITY_ID`,`DATE_STAT`),
-  KEY `IX_B_STAT_CITY_DAY_2` (`DATE_STAT`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_city_day`
---
-
-LOCK TABLES `b_stat_city_day` WRITE;
-/*!40000 ALTER TABLE `b_stat_city_day` DISABLE KEYS */;
-INSERT INTO `b_stat_city_day` VALUES (1,1,'2019-07-10',1,1,27,0);
-/*!40000 ALTER TABLE `b_stat_city_day` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_city_ip`
---
-
-DROP TABLE IF EXISTS `b_stat_city_ip`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_city_ip` (
-  `START_IP` bigint(18) NOT NULL,
-  `END_IP` bigint(18) NOT NULL,
-  `COUNTRY_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  `CITY_ID` int(18) NOT NULL,
-  PRIMARY KEY (`START_IP`),
-  KEY `IX_B_STAT_CITY_IP_END_IP` (`END_IP`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_city_ip`
---
-
-LOCK TABLES `b_stat_city_ip` WRITE;
-/*!40000 ALTER TABLE `b_stat_city_ip` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_stat_city_ip` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_country`
---
-
-DROP TABLE IF EXISTS `b_stat_country`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_country` (
-  `ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  `SHORT_NAME` char(3) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `NAME` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SESSIONS` int(18) NOT NULL DEFAULT '0',
-  `NEW_GUESTS` int(18) NOT NULL DEFAULT '0',
-  `HITS` int(18) NOT NULL DEFAULT '0',
-  `C_EVENTS` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_country`
---
-
-LOCK TABLES `b_stat_country` WRITE;
-/*!40000 ALTER TABLE `b_stat_country` DISABLE KEYS */;
-INSERT INTO `b_stat_country` VALUES ('AD','AND','ANDORRA',0,0,0,0),('AE','ARE','UNITED ARAB EMIRATES',0,0,0,0),('AF','AFG','AFGHANISTAN',0,0,0,0),('AG','ATG','ANTIGUA AND BARBUDA',0,0,0,0),('AI','AIA','ANGUILLA',0,0,0,0),('AL','ALB','ALBANIA',0,0,0,0),('AM','ARM','ARMENIA',0,0,0,0),('AN','ANT','NETHERLANDS ANTILLES',0,0,0,0),('AO','AGO','ANGOLA',0,0,0,0),('AQ','ATA','ANTARCTICA',0,0,0,0),('AR','ARG','ARGENTINA',0,0,0,0),('AS','ASM','AMERICAN SAMOA',0,0,0,0),('AT','AUT','AUSTRIA',0,0,0,0),('AU','AUS','AUSTRALIA',0,0,0,0),('AW','ABW','ARUBA',0,0,0,0),('AX','FIN','FINLAND',0,0,0,0),('AZ','AZE','AZERBAIJAN',0,0,0,0),('BA','BIH','BOSNIA AND HERZEGOVINA',0,0,0,0),('BB','BRB','BARBADOS',0,0,0,0),('BD','BGD','BANGLADESH',0,0,0,0),('BE','BEL','BELGIUM',0,0,0,0),('BF','BFA','BURKINA FASO',0,0,0,0),('BG','BGR','BULGARIA',0,0,0,0),('BH','BHR','BAHRAIN',0,0,0,0),('BI','BDI','BURUNDI',0,0,0,0),('BJ','BEN','BENIN',0,0,0,0),('BM','BMU','BERMUDA',0,0,0,0),('BN','BRN','BRUNEI DARUSSALAM',0,0,0,0),('BO','BOL','BOLIVIA',0,0,0,0),('BR','BRA','BRAZIL',0,0,0,0),('BS','BHS','BAHAMAS',0,0,0,0),('BT','BTN','BHUTAN',0,0,0,0),('BV','BVT','BOUVET ISLAND',0,0,0,0),('BW','BWA','BOTSWANA',0,0,0,0),('BY','BLR','BELARUS',0,0,0,0),('BZ','BLZ','BELIZE',0,0,0,0),('CA','CAN','CANADA',0,0,0,0),('CD','COD','THE DEMOCRATIC REPUBLIC OF THE CONGO',0,0,0,0),('CF','CAF','CENTRAL AFRICAN REPUBLIC',0,0,0,0),('CG','COG','CONGO',0,0,0,0),('CH','CHE','SWITZERLAND',0,0,0,0),('CI','CIV','COTE D\'IVOIRE',0,0,0,0),('CK','COK','COOK ISLANDS',0,0,0,0),('CL','CHL','CHILE',0,0,0,0),('CM','CMR','CAMEROON',0,0,0,0),('CN','CHN','CHINA',0,0,0,0),('CO','COL','COLOMBIA',0,0,0,0),('CR','CRI','COSTA RICA',0,0,0,0),('CS','SCG','SERBIA AND MONTENEGRO',0,0,0,0),('CU','CUB','CUBA',0,0,0,0),('CV','CPV','CAPE VERDE',0,0,0,0),('CY','CYP','CYPRUS',0,0,0,0),('CZ','CZE','CZECH REPUBLIC',0,0,0,0),('DE','DEU','GERMANY',0,0,0,0),('DJ','DJI','DJIBOUTI',0,0,0,0),('DK','DNK','DENMARK',0,0,0,0),('DM','DMA','DOMINICA',0,0,0,0),('DO','DOM','DOMINICAN REPUBLIC',0,0,0,0),('DZ','DZA','ALGERIA',0,0,0,0),('EC','ECU','ECUADOR',0,0,0,0),('EE','EST','ESTONIA',0,0,0,0),('EG','EGY','EGYPT',0,0,0,0),('ER','ERI','ERITREA',0,0,0,0),('ES','ESP','SPAIN',0,0,0,0),('ET','ETH','ETHIOPIA',0,0,0,0),('FI','FIN','FINLAND',0,0,0,0),('FJ','FJI','FIJI',0,0,0,0),('FK','FLK','FALKLAND ISLANDS (MALVINAS)',0,0,0,0),('FM','FSM','FEDERATED STATES OF MICRONESIA',0,0,0,0),('FO','FRO','FAROE ISLANDS',0,0,0,0),('FR','FRA','FRANCE',0,0,0,0),('GA','GAB','GABON',0,0,0,0),('GB','GBR','UNITED KINGDOM',0,0,0,0),('GD','GRD','GRENADA',0,0,0,0),('GE','GEO','GEORGIA',0,0,0,0),('GF','GUF','FRENCH GUIANA',0,0,0,0),('GG','GGY','GUERNSEY',0,0,0,0),('GH','GHA','GHANA',0,0,0,0),('GI','GIB','GIBRALTAR',0,0,0,0),('GL','GRL','GREENLAND',0,0,0,0),('GM','GMB','GAMBIA',0,0,0,0),('GN','GIN','GUINEA',0,0,0,0),('GP','GLP','GUADELOUPE',0,0,0,0),('GQ','GNQ','EQUATORIAL GUINEA',0,0,0,0),('GR','GRC','GREECE',0,0,0,0),('GS','SGS','SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS',0,0,0,0),('GT','GTM','GUATEMALA',0,0,0,0),('GU','GUM','GUAM',0,0,0,0),('GW','GNB','GUINEA-BISSAU',0,0,0,0),('GY','GUY','GUYANA',0,0,0,0),('HK','HKG','HONG KONG',0,0,0,0),('HN','HND','HONDURAS',0,0,0,0),('HR','HRV','CROATIA',0,0,0,0),('HT','HTI','HAITI',0,0,0,0),('HU','HUN','HUNGARY',0,0,0,0),('ID','IDN','INDONESIA',0,0,0,0),('IE','IRL','IRELAND',0,0,0,0),('IL','ISR','ISRAEL',0,0,0,0),('IM','IMN','ISLE OF MAN',0,0,0,0),('IN','IND','INDIA',0,0,0,0),('IO','IOT','BRITISH INDIAN OCEAN TERRITORY',0,0,0,0),('IQ','IRQ','IRAQ',0,0,0,0),('IR','IRN','ISLAMIC REPUBLIC OF IRAN',0,0,0,0),('IS','ISL','ICELAND',0,0,0,0),('IT','ITA','ITALY',0,0,0,0),('JE','JEY','JERSEY',0,0,0,0),('JM','JAM','JAMAICA',0,0,0,0),('JO','JOR','JORDAN',0,0,0,0),('JP','JPN','JAPAN',0,0,0,0),('KE','KEN','KENYA',0,0,0,0),('KG','KGZ','KYRGYZSTAN',0,0,0,0),('KH','KHM','CAMBODIA',0,0,0,0),('KI','KIR','KIRIBATI',0,0,0,0),('KM','COM','COMOROS',0,0,0,0),('KN','KNA','SAINT KITTS AND NEVIS',0,0,0,0),('KP','PRK','DEMOCRATIC PEOPLE\'S REPUBLIC OF KOREA',0,0,0,0),('KR','KOR','REPUBLIC OF KOREA',0,0,0,0),('KW','KWT','KUWAIT',0,0,0,0),('KY','CYM','CAYMAN ISLANDS',0,0,0,0),('KZ','KAZ','KAZAKHSTAN',0,0,0,0),('LA','LAO','LAO PEOPLE\'S DEMOCRATIC REPUBLIC',0,0,0,0),('LB','LBN','LEBANON',0,0,0,0),('LC','LCA','SAINT LUCIA',0,0,0,0),('LI','LIE','LIECHTENSTEIN',0,0,0,0),('LK','LKA','SRI LANKA',0,0,0,0),('LR','LBR','LIBERIA',0,0,0,0),('LS','LSO','LESOTHO',0,0,0,0),('LT','LTU','LITHUANIA',0,0,0,0),('LU','LUX','LUXEMBOURG',0,0,0,0),('LV','LVA','LATVIA',0,0,0,0),('LY','LBY','LIBYAN ARAB JAMAHIRIYA',0,0,0,0),('MA','MAR','MOROCCO',0,0,0,0),('MC','MCO','MONACO',0,0,0,0),('MD','MDA','REPUBLIC OF MOLDOVA',0,0,0,0),('ME','MNE','MONTENEGRO',0,0,0,0),('MF','MAF','SAINT MARTIN',0,0,0,0),('MG','MDG','MADAGASCAR',0,0,0,0),('MH','MHL','MARSHALL ISLANDS',0,0,0,0),('MK','MKD','THE FORMER YUGOSLAV REPUBLIC OF MACEDONIA',0,0,0,0),('ML','MLI','MALI',0,0,0,0),('MM','MMR','MYANMAR',0,0,0,0),('MN','MNG','MONGOLIA',0,0,0,0),('MO','MAC','MACAO',0,0,0,0),('MP','MNP','NORTHERN MARIANA ISLANDS',0,0,0,0),('MQ','MTQ','MARTINIQUE',0,0,0,0),('MR','MRT','MAURITANIA',0,0,0,0),('MS','MSR','MONTSERRAT',0,0,0,0),('MT','MLT','MALTA',0,0,0,0),('MU','MUS','MAURITIUS',0,0,0,0),('MV','MDV','MALDIVES',0,0,0,0),('MW','MWI','MALAWI',0,0,0,0),('MX','MEX','MEXICO',0,0,0,0),('MY','MYS','MALAYSIA',0,0,0,0),('MZ','MOZ','MOZAMBIQUE',0,0,0,0),('N0','N00','NA',1,1,27,0),('NA','NAM','NAMIBIA',0,0,0,0),('NC','NCL','NEW CALEDONIA',0,0,0,0),('NE','NER','NIGER',0,0,0,0),('NF','NFK','NORFOLK ISLAND',0,0,0,0),('NG','NGA','NIGERIA',0,0,0,0),('NI','NIC','NICARAGUA',0,0,0,0),('NL','NLD','NETHERLANDS',0,0,0,0),('NO','NOR','NORWAY',0,0,0,0),('NP','NPL','NEPAL',0,0,0,0),('NR','NRU','NAURU',0,0,0,0),('NU','NIU','NIUE',0,0,0,0),('NZ','NZL','NEW ZEALAND',0,0,0,0),('OM','OMN','OMAN',0,0,0,0),('PA','PAN','PANAMA',0,0,0,0),('PE','PER','PERU',0,0,0,0),('PF','PYF','FRENCH POLYNESIA',0,0,0,0),('PG','PNG','PAPUA NEW GUINEA',0,0,0,0),('PH','PHL','PHILIPPINES',0,0,0,0),('PK','PAK','PAKISTAN',0,0,0,0),('PL','POL','POLAND',0,0,0,0),('PM','SPM','SAINT PIERRE AND MIQUELON',0,0,0,0),('PR','PRI','PUERTO RICO',0,0,0,0),('PS','PSE','PALESTINIAN TERRITORY, OCCUPIED',0,0,0,0),('PT','PRT','PORTUGAL',0,0,0,0),('PW','PLW','PALAU',0,0,0,0),('PY','PRY','PARAGUAY',0,0,0,0),('QA','QAT','QATAR',0,0,0,0),('RE','REU','REUNION',0,0,0,0),('RO','ROM','ROMANIA',0,0,0,0),('RS','SRB','SERBIA',0,0,0,0),('RU','RUS','RUSSIAN FEDERATION',0,0,0,0),('RW','RWA','RWANDA',0,0,0,0),('SA','SAU','SAUDI ARABIA',0,0,0,0),('SB','SLB','SOLOMON ISLANDS',0,0,0,0),('SC','SYC','SEYCHELLES',0,0,0,0),('SD','SDN','SUDAN',0,0,0,0),('SE','SWE','SWEDEN',0,0,0,0),('SG','SGP','SINGAPORE',0,0,0,0),('SI','SVN','SLOVENIA',0,0,0,0),('SK','SVK','SLOVAKIA',0,0,0,0),('SL','SLE','SIERRA LEONE',0,0,0,0),('SM','SMR','SAN MARINO',0,0,0,0),('SN','SEN','SENEGAL',0,0,0,0),('SO','SOM','SOMALIA',0,0,0,0),('SR','SUR','SURINAME',0,0,0,0),('ST','STP','SAO TOME AND PRINCIPE',0,0,0,0),('SV','SLV','EL SALVADOR',0,0,0,0),('SY','SYR','SYRIAN ARAB REPUBLIC',0,0,0,0),('SZ','SWZ','SWAZILAND',0,0,0,0),('TC','TCA','TURKS AND CAICOS ISLANDS',0,0,0,0),('TD','TCD','CHAD',0,0,0,0),('TF','ATF','FRENCH SOUTHERN TERRITORIES',0,0,0,0),('TG','TGO','TOGO',0,0,0,0),('TH','THA','THAILAND',0,0,0,0),('TJ','TJK','TAJIKISTAN',0,0,0,0),('TK','TKL','TOKELAU',0,0,0,0),('TL','TLS','TIMOR-LESTE',0,0,0,0),('TM','TKM','TURKMENISTAN',0,0,0,0),('TN','TUN','TUNISIA',0,0,0,0),('TO','TON','TONGA',0,0,0,0),('TR','TUR','TURKEY',0,0,0,0),('TT','TTO','TRINIDAD AND TOBAGO',0,0,0,0),('TV','TUV','TUVALU',0,0,0,0),('TW','TWN','TAIWAN',0,0,0,0),('TZ','TZA','UNITED REPUBLIC OF TANZANIA',0,0,0,0),('UA','UKR','UKRAINE',0,0,0,0),('UG','UGA','UGANDA',0,0,0,0),('UM','UMI','UNITED STATES MINOR OUTLYING ISLANDS',0,0,0,0),('US','USA','UNITED STATES',0,0,0,0),('UY','URY','URUGUAY',0,0,0,0),('UZ','UZB','UZBEKISTAN',0,0,0,0),('VA','VAT','HOLY SEE (VATICAN CITY STATE)',0,0,0,0),('VC','VCT','SAINT VINCENT AND THE GRENADINES',0,0,0,0),('VE','VEN','VENEZUELA',0,0,0,0),('VG','VGB','VIRGIN ISLANDS, BRITISH',0,0,0,0),('VI','VIR','VIRGIN ISLANDS, U.S.',0,0,0,0),('VN','VNM','VIET NAM',0,0,0,0),('VU','VUT','VANUATU',0,0,0,0),('WF','WLF','WALLIS AND FUTUNA',0,0,0,0),('WS','WSM','SAMOA',0,0,0,0),('YE','YEM','YEMEN',0,0,0,0),('YT','MYT','MAYOTTE',0,0,0,0),('ZA','ZAF','SOUTH AFRICA',0,0,0,0),('ZM','ZMB','ZAMBIA',0,0,0,0),('ZW','ZWE','ZIMBABWE',0,0,0,0);
-/*!40000 ALTER TABLE `b_stat_country` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_country_day`
---
-
-DROP TABLE IF EXISTS `b_stat_country_day`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_country_day` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `COUNTRY_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  `DATE_STAT` date DEFAULT NULL,
-  `SESSIONS` int(18) NOT NULL DEFAULT '0',
-  `NEW_GUESTS` int(18) NOT NULL DEFAULT '0',
-  `HITS` int(18) NOT NULL DEFAULT '0',
-  `C_EVENTS` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  KEY `IX_COUNTRY_ID_DATE_STAT` (`COUNTRY_ID`,`DATE_STAT`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_country_day`
---
-
-LOCK TABLES `b_stat_country_day` WRITE;
-/*!40000 ALTER TABLE `b_stat_country_day` DISABLE KEYS */;
-INSERT INTO `b_stat_country_day` VALUES (1,'N0','2019-07-10',1,1,27,0);
-/*!40000 ALTER TABLE `b_stat_country_day` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_day`
---
-
-DROP TABLE IF EXISTS `b_stat_day`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_day` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `DATE_STAT` date DEFAULT NULL,
-  `HITS` int(18) NOT NULL DEFAULT '0',
-  `C_HOSTS` int(18) NOT NULL DEFAULT '0',
-  `SESSIONS` int(18) NOT NULL DEFAULT '0',
-  `C_EVENTS` int(18) NOT NULL DEFAULT '0',
-  `GUESTS` int(18) NOT NULL DEFAULT '0',
-  `NEW_GUESTS` int(18) NOT NULL DEFAULT '0',
-  `FAVORITES` int(18) NOT NULL DEFAULT '0',
-  `TOTAL_HOSTS` int(18) NOT NULL DEFAULT '0',
-  `AM_AVERAGE_TIME` decimal(18,2) NOT NULL DEFAULT '0.00',
-  `AM_1` int(18) NOT NULL DEFAULT '0',
-  `AM_1_3` int(18) NOT NULL DEFAULT '0',
-  `AM_3_6` int(18) NOT NULL DEFAULT '0',
-  `AM_6_9` int(18) NOT NULL DEFAULT '0',
-  `AM_9_12` int(18) NOT NULL DEFAULT '0',
-  `AM_12_15` int(18) NOT NULL DEFAULT '0',
-  `AM_15_18` int(18) NOT NULL DEFAULT '0',
-  `AM_18_21` int(18) NOT NULL DEFAULT '0',
-  `AM_21_24` int(18) NOT NULL DEFAULT '0',
-  `AM_24` int(18) NOT NULL DEFAULT '0',
-  `AH_AVERAGE_HITS` decimal(18,2) NOT NULL DEFAULT '0.00',
-  `AH_1` int(18) NOT NULL DEFAULT '0',
-  `AH_2_5` int(18) NOT NULL DEFAULT '0',
-  `AH_6_9` int(18) NOT NULL DEFAULT '0',
-  `AH_10_13` int(18) NOT NULL DEFAULT '0',
-  `AH_14_17` int(18) NOT NULL DEFAULT '0',
-  `AH_18_21` int(18) NOT NULL DEFAULT '0',
-  `AH_22_25` int(18) NOT NULL DEFAULT '0',
-  `AH_26_29` int(18) NOT NULL DEFAULT '0',
-  `AH_30_33` int(18) NOT NULL DEFAULT '0',
-  `AH_34` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_0` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_1` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_2` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_3` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_4` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_5` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_6` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_7` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_8` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_9` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_10` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_11` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_12` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_13` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_14` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_15` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_16` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_17` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_18` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_19` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_20` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_21` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_22` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_23` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_0` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_1` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_2` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_3` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_4` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_5` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_6` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_7` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_8` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_9` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_10` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_11` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_12` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_13` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_14` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_15` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_16` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_17` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_18` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_19` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_20` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_21` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_22` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_23` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_0` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_1` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_2` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_3` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_4` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_5` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_6` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_7` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_8` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_9` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_10` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_11` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_12` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_13` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_14` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_15` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_16` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_17` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_18` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_19` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_20` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_21` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_22` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_23` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_0` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_1` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_2` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_3` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_4` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_5` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_6` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_7` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_8` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_9` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_10` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_11` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_12` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_13` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_14` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_15` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_16` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_17` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_18` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_19` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_20` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_21` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_22` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_23` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_0` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_1` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_2` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_3` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_4` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_5` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_6` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_7` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_8` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_9` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_10` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_11` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_12` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_13` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_14` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_15` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_16` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_17` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_18` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_19` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_20` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_21` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_22` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_23` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_0` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_1` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_2` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_3` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_4` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_5` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_6` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_7` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_8` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_9` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_10` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_11` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_12` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_13` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_14` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_15` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_16` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_17` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_18` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_19` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_20` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_21` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_22` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_23` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_0` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_1` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_2` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_3` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_4` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_5` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_6` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_7` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_8` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_9` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_10` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_11` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_12` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_13` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_14` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_15` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_16` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_17` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_18` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_19` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_20` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_21` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_22` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_23` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HOST_0` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HOST_1` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HOST_2` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HOST_3` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HOST_4` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HOST_5` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HOST_6` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_GUEST_0` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_GUEST_1` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_GUEST_2` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_GUEST_3` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_GUEST_4` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_GUEST_5` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_GUEST_6` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_NEW_GUEST_0` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_NEW_GUEST_1` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_NEW_GUEST_2` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_NEW_GUEST_3` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_NEW_GUEST_4` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_NEW_GUEST_5` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_NEW_GUEST_6` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_SESSION_0` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_SESSION_1` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_SESSION_2` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_SESSION_3` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_SESSION_4` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_SESSION_5` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_SESSION_6` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HIT_0` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HIT_1` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HIT_2` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HIT_3` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HIT_4` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HIT_5` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HIT_6` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_EVENT_0` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_EVENT_1` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_EVENT_2` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_EVENT_3` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_EVENT_4` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_EVENT_5` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_EVENT_6` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_FAVORITE_0` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_FAVORITE_1` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_FAVORITE_2` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_FAVORITE_3` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_FAVORITE_4` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_FAVORITE_5` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_FAVORITE_6` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_1` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_2` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_3` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_4` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_5` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_6` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_7` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_8` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_9` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_10` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_11` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_12` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_1` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_2` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_3` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_4` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_5` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_6` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_7` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_8` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_9` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_10` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_11` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_12` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_1` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_2` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_3` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_4` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_5` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_6` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_7` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_8` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_9` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_10` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_11` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_12` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_1` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_2` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_3` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_4` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_5` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_6` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_7` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_8` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_9` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_10` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_11` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_12` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_1` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_2` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_3` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_4` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_5` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_6` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_7` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_8` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_9` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_10` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_11` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_12` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_1` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_2` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_3` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_4` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_5` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_6` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_7` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_8` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_9` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_10` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_11` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_12` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_1` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_2` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_3` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_4` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_5` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_6` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_7` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_8` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_9` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_10` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_11` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_12` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `IX_DATE_STAT` (`DATE_STAT`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_day`
---
-
-LOCK TABLES `b_stat_day` WRITE;
-/*!40000 ALTER TABLE `b_stat_day` DISABLE KEYS */;
-INSERT INTO `b_stat_day` VALUES (1,'2019-07-10',27,1,1,0,1,1,0,0,0.00,0,0,0,0,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-/*!40000 ALTER TABLE `b_stat_day` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_day_site`
---
-
-DROP TABLE IF EXISTS `b_stat_day_site`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_day_site` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `DATE_STAT` date DEFAULT NULL,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  `HITS` int(18) NOT NULL DEFAULT '0',
-  `C_HOSTS` int(18) NOT NULL DEFAULT '0',
-  `SESSIONS` int(18) NOT NULL DEFAULT '0',
-  `C_EVENTS` int(18) NOT NULL DEFAULT '0',
-  `GUESTS` int(18) NOT NULL DEFAULT '0',
-  `NEW_GUESTS` int(18) NOT NULL DEFAULT '0',
-  `FAVORITES` int(18) NOT NULL DEFAULT '0',
-  `TOTAL_HOSTS` int(18) NOT NULL DEFAULT '0',
-  `AM_AVERAGE_TIME` decimal(18,2) NOT NULL DEFAULT '0.00',
-  `AM_1` int(18) NOT NULL DEFAULT '0',
-  `AM_1_3` int(18) NOT NULL DEFAULT '0',
-  `AM_3_6` int(18) NOT NULL DEFAULT '0',
-  `AM_6_9` int(18) NOT NULL DEFAULT '0',
-  `AM_9_12` int(18) NOT NULL DEFAULT '0',
-  `AM_12_15` int(18) NOT NULL DEFAULT '0',
-  `AM_15_18` int(18) NOT NULL DEFAULT '0',
-  `AM_18_21` int(18) NOT NULL DEFAULT '0',
-  `AM_21_24` int(18) NOT NULL DEFAULT '0',
-  `AM_24` int(18) NOT NULL DEFAULT '0',
-  `AH_AVERAGE_HITS` decimal(18,2) NOT NULL DEFAULT '0.00',
-  `AH_1` int(18) NOT NULL DEFAULT '0',
-  `AH_2_5` int(18) NOT NULL DEFAULT '0',
-  `AH_6_9` int(18) NOT NULL DEFAULT '0',
-  `AH_10_13` int(18) NOT NULL DEFAULT '0',
-  `AH_14_17` int(18) NOT NULL DEFAULT '0',
-  `AH_18_21` int(18) NOT NULL DEFAULT '0',
-  `AH_22_25` int(18) NOT NULL DEFAULT '0',
-  `AH_26_29` int(18) NOT NULL DEFAULT '0',
-  `AH_30_33` int(18) NOT NULL DEFAULT '0',
-  `AH_34` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_0` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_1` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_2` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_3` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_4` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_5` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_6` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_7` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_8` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_9` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_10` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_11` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_12` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_13` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_14` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_15` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_16` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_17` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_18` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_19` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_20` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_21` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_22` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HOST_23` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_0` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_1` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_2` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_3` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_4` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_5` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_6` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_7` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_8` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_9` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_10` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_11` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_12` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_13` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_14` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_15` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_16` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_17` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_18` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_19` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_20` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_21` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_22` int(18) NOT NULL DEFAULT '0',
-  `HOUR_GUEST_23` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_0` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_1` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_2` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_3` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_4` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_5` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_6` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_7` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_8` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_9` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_10` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_11` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_12` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_13` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_14` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_15` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_16` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_17` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_18` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_19` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_20` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_21` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_22` int(18) NOT NULL DEFAULT '0',
-  `HOUR_NEW_GUEST_23` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_0` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_1` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_2` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_3` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_4` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_5` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_6` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_7` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_8` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_9` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_10` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_11` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_12` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_13` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_14` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_15` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_16` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_17` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_18` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_19` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_20` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_21` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_22` int(18) NOT NULL DEFAULT '0',
-  `HOUR_SESSION_23` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_0` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_1` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_2` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_3` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_4` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_5` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_6` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_7` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_8` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_9` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_10` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_11` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_12` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_13` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_14` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_15` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_16` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_17` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_18` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_19` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_20` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_21` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_22` int(18) NOT NULL DEFAULT '0',
-  `HOUR_HIT_23` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_0` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_1` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_2` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_3` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_4` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_5` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_6` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_7` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_8` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_9` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_10` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_11` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_12` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_13` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_14` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_15` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_16` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_17` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_18` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_19` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_20` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_21` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_22` int(18) NOT NULL DEFAULT '0',
-  `HOUR_EVENT_23` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_0` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_1` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_2` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_3` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_4` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_5` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_6` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_7` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_8` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_9` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_10` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_11` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_12` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_13` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_14` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_15` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_16` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_17` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_18` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_19` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_20` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_21` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_22` int(18) NOT NULL DEFAULT '0',
-  `HOUR_FAVORITE_23` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HOST_0` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HOST_1` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HOST_2` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HOST_3` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HOST_4` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HOST_5` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HOST_6` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_GUEST_0` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_GUEST_1` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_GUEST_2` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_GUEST_3` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_GUEST_4` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_GUEST_5` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_GUEST_6` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_NEW_GUEST_0` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_NEW_GUEST_1` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_NEW_GUEST_2` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_NEW_GUEST_3` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_NEW_GUEST_4` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_NEW_GUEST_5` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_NEW_GUEST_6` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_SESSION_0` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_SESSION_1` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_SESSION_2` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_SESSION_3` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_SESSION_4` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_SESSION_5` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_SESSION_6` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HIT_0` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HIT_1` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HIT_2` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HIT_3` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HIT_4` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HIT_5` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_HIT_6` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_EVENT_0` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_EVENT_1` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_EVENT_2` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_EVENT_3` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_EVENT_4` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_EVENT_5` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_EVENT_6` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_FAVORITE_0` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_FAVORITE_1` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_FAVORITE_2` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_FAVORITE_3` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_FAVORITE_4` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_FAVORITE_5` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_FAVORITE_6` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_1` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_2` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_3` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_4` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_5` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_6` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_7` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_8` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_9` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_10` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_11` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HOST_12` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_1` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_2` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_3` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_4` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_5` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_6` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_7` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_8` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_9` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_10` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_11` int(18) NOT NULL DEFAULT '0',
-  `MONTH_GUEST_12` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_1` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_2` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_3` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_4` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_5` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_6` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_7` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_8` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_9` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_10` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_11` int(18) NOT NULL DEFAULT '0',
-  `MONTH_NEW_GUEST_12` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_1` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_2` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_3` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_4` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_5` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_6` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_7` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_8` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_9` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_10` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_11` int(18) NOT NULL DEFAULT '0',
-  `MONTH_SESSION_12` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_1` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_2` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_3` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_4` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_5` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_6` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_7` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_8` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_9` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_10` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_11` int(18) NOT NULL DEFAULT '0',
-  `MONTH_HIT_12` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_1` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_2` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_3` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_4` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_5` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_6` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_7` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_8` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_9` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_10` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_11` int(18) NOT NULL DEFAULT '0',
-  `MONTH_EVENT_12` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_1` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_2` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_3` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_4` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_5` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_6` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_7` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_8` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_9` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_10` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_11` int(18) NOT NULL DEFAULT '0',
-  `MONTH_FAVORITE_12` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `IX_SITE_ID_DATE_STAT` (`SITE_ID`,`DATE_STAT`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_day_site`
---
-
-LOCK TABLES `b_stat_day_site` WRITE;
-/*!40000 ALTER TABLE `b_stat_day_site` DISABLE KEYS */;
-INSERT INTO `b_stat_day_site` VALUES (1,'2019-07-10','s1',26,1,1,0,0,0,0,0,0.00,0,0,0,0,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-/*!40000 ALTER TABLE `b_stat_day_site` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_ddl`
---
-
-DROP TABLE IF EXISTS `b_stat_ddl`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_ddl` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `SQL_TEXT` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_ddl`
---
-
-LOCK TABLES `b_stat_ddl` WRITE;
-/*!40000 ALTER TABLE `b_stat_ddl` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_stat_ddl` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_event`
---
-
-DROP TABLE IF EXISTS `b_stat_event`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_event` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `EVENT1` varchar(166) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `EVENT2` varchar(166) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `MONEY` decimal(18,4) NOT NULL DEFAULT '0.0000',
-  `DATE_ENTER` datetime DEFAULT NULL,
-  `DATE_CLEANUP` datetime DEFAULT NULL,
-  `C_SORT` int(18) DEFAULT '100',
-  `COUNTER` int(18) NOT NULL DEFAULT '0',
-  `ADV_VISIBLE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `NAME` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `KEEP_DAYS` int(18) DEFAULT NULL,
-  `DYNAMIC_KEEP_DAYS` int(18) DEFAULT NULL,
-  `DIAGRAM_DEFAULT` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  PRIMARY KEY (`ID`),
-  KEY `IX_EVENT1_EVENT2` (`EVENT1`,`EVENT2`),
-  KEY `IX_B_STAT_EVENT_2` (`KEEP_DAYS`,`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_event`
---
-
-LOCK TABLES `b_stat_event` WRITE;
-/*!40000 ALTER TABLE `b_stat_event` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_stat_event` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_event_day`
---
-
-DROP TABLE IF EXISTS `b_stat_event_day`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_event_day` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `DATE_STAT` date DEFAULT NULL,
-  `DATE_LAST` datetime DEFAULT NULL,
-  `EVENT_ID` int(18) NOT NULL DEFAULT '0',
-  `MONEY` decimal(18,4) NOT NULL DEFAULT '0.0000',
-  `COUNTER` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  KEY `IX_EVENT_ID_DATE_STAT` (`EVENT_ID`,`DATE_STAT`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_event_day`
---
-
-LOCK TABLES `b_stat_event_day` WRITE;
-/*!40000 ALTER TABLE `b_stat_event_day` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_stat_event_day` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_event_list`
---
-
-DROP TABLE IF EXISTS `b_stat_event_list`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_event_list` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `EVENT_ID` int(18) NOT NULL DEFAULT '0',
-  `EVENT3` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `MONEY` decimal(18,4) NOT NULL DEFAULT '0.0000',
-  `DATE_ENTER` datetime NOT NULL,
-  `REFERER_URL` text COLLATE utf8_unicode_ci,
-  `URL` text COLLATE utf8_unicode_ci,
-  `REDIRECT_URL` text COLLATE utf8_unicode_ci,
-  `SESSION_ID` int(18) DEFAULT NULL,
-  `GUEST_ID` int(18) DEFAULT NULL,
-  `ADV_ID` int(18) DEFAULT NULL,
-  `ADV_BACK` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `HIT_ID` int(18) DEFAULT NULL,
-  `COUNTRY_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `KEEP_DAYS` int(18) DEFAULT NULL,
-  `CHARGEBACK` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `REFERER_SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_GUEST_ID` (`GUEST_ID`),
-  KEY `IX_B_STAT_EVENT_LIST_2` (`EVENT_ID`,`DATE_ENTER`),
-  KEY `IX_B_STAT_EVENT_LIST_3` (`KEEP_DAYS`,`DATE_ENTER`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_event_list`
---
-
-LOCK TABLES `b_stat_event_list` WRITE;
-/*!40000 ALTER TABLE `b_stat_event_list` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_stat_event_list` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_guest`
---
-
-DROP TABLE IF EXISTS `b_stat_guest`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_guest` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `TIMESTAMP_X` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `FAVORITES` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `C_EVENTS` int(18) NOT NULL DEFAULT '0',
-  `SESSIONS` int(18) NOT NULL DEFAULT '0',
-  `HITS` int(18) NOT NULL DEFAULT '0',
-  `REPAIR` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `FIRST_SESSION_ID` int(18) DEFAULT NULL,
-  `FIRST_DATE` datetime DEFAULT NULL,
-  `FIRST_URL_FROM` text COLLATE utf8_unicode_ci,
-  `FIRST_URL_TO` text COLLATE utf8_unicode_ci,
-  `FIRST_URL_TO_404` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `FIRST_SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FIRST_ADV_ID` int(18) DEFAULT NULL,
-  `FIRST_REFERER1` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FIRST_REFERER2` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FIRST_REFERER3` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `LAST_SESSION_ID` int(18) DEFAULT NULL,
-  `LAST_DATE` datetime DEFAULT NULL,
-  `LAST_USER_ID` int(18) DEFAULT NULL,
-  `LAST_USER_AUTH` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `LAST_URL_LAST` text COLLATE utf8_unicode_ci,
-  `LAST_URL_LAST_404` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `LAST_USER_AGENT` text COLLATE utf8_unicode_ci,
-  `LAST_IP` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `LAST_COOKIE` text COLLATE utf8_unicode_ci,
-  `LAST_LANGUAGE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `LAST_ADV_ID` int(18) DEFAULT NULL,
-  `LAST_ADV_BACK` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `LAST_REFERER1` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `LAST_REFERER2` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `LAST_REFERER3` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `LAST_SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `LAST_COUNTRY_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `LAST_CITY_ID` int(18) DEFAULT NULL,
-  `LAST_CITY_INFO` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`ID`),
-  KEY `IX_LAST_DATE` (`LAST_DATE`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_guest`
---
-
-LOCK TABLES `b_stat_guest` WRITE;
-/*!40000 ALTER TABLE `b_stat_guest` DISABLE KEYS */;
-INSERT INTO `b_stat_guest` VALUES (1,'2019-07-10 13:49:24','N',0,1,27,'N',1,'2019-07-10 13:48:32','http://localhost/','http://localhost/index.php','N','s1',0,'','','',1,'2019-07-10 13:49:24',1,'Y','http://localhost/?finish=&back_url_admin=%2Fbitrix%2Fadmin%2F%3Flang%3Dru','N','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36','172.20.0.1','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_CONVERSION_CONTEXT_s1] = {\"ID\":1,\"EXPIRE\":1562803140,\"UNIQUE\":[\"conversion_visit_day\"]}\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:49:17\n','ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',NULL,'N',NULL,NULL,NULL,'s1','N0',1,'a:4:{s:2:\"LC\";s:22:\"CCityLookup_stat_table\";s:2:\"LD\";a:3:{s:3:\"IPA\";s:10:\"172.20.0.1\";s:3:\"IPN\";s:10:\"2886991873\";s:3:\"COC\";s:2:\"N0\";}s:2:\"CC\";s:2:\"N0\";s:2:\"CI\";i:1;}');
-/*!40000 ALTER TABLE `b_stat_guest` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_hit`
---
-
-DROP TABLE IF EXISTS `b_stat_hit`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_hit` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `SESSION_ID` int(18) NOT NULL DEFAULT '0',
-  `DATE_HIT` datetime DEFAULT NULL,
-  `GUEST_ID` int(18) DEFAULT NULL,
-  `NEW_GUEST` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `USER_ID` int(18) DEFAULT NULL,
-  `USER_AUTH` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `URL` text COLLATE utf8_unicode_ci,
-  `URL_404` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `URL_FROM` text COLLATE utf8_unicode_ci,
-  `IP` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `METHOD` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `COOKIES` text COLLATE utf8_unicode_ci,
-  `USER_AGENT` text COLLATE utf8_unicode_ci,
-  `STOP_LIST_ID` int(18) DEFAULT NULL,
-  `COUNTRY_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `CITY_ID` int(18) DEFAULT NULL,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_DATE_HIT` (`DATE_HIT`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_hit`
---
-
-LOCK TABLES `b_stat_hit` WRITE;
-/*!40000 ALTER TABLE `b_stat_hit` DISABLE KEYS */;
-INSERT INTO `b_stat_hit` VALUES (1,1,'2019-07-10 13:48:32',1,'Y',1,'N','http://localhost/index.php','N','http://localhost/','172.20.0.1','GET','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(2,1,'2019-07-10 13:48:33',1,'Y',1,'Y','http://localhost/favicon.ico','N','http://localhost/index.php','172.20.0.1','GET','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:48:32\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(3,1,'2019-07-10 13:48:35',1,'Y',1,'Y','http://localhost/index.php','N','http://localhost/index.php','172.20.0.1','POST','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:48:33\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(4,1,'2019-07-10 13:48:35',1,'Y',1,'Y','http://localhost/favicon.ico','N','http://localhost/index.php','172.20.0.1','GET','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:48:35\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(5,1,'2019-07-10 13:48:38',1,'Y',1,'Y','http://localhost/index.php','N','http://localhost/index.php','172.20.0.1','POST','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:48:35\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(6,1,'2019-07-10 13:48:38',1,'Y',1,'Y','http://localhost/favicon.ico','N','http://localhost/index.php','172.20.0.1','GET','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:48:38\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(7,1,'2019-07-10 13:48:40',1,'Y',1,'Y','http://localhost/index.php','N','http://localhost/index.php','172.20.0.1','POST','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:48:38\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(8,1,'2019-07-10 13:48:40',1,'Y',1,'Y','http://localhost/favicon.ico','N','http://localhost/index.php','172.20.0.1','GET','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:48:40\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(9,1,'2019-07-10 13:48:42',1,'Y',1,'Y','http://localhost/index.php','N','http://localhost/index.php','172.20.0.1','POST','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:48:40\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(10,1,'2019-07-10 13:48:43',1,'Y',1,'Y','http://localhost/favicon.ico','N','http://localhost/index.php','172.20.0.1','GET','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:48:42\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(11,1,'2019-07-10 13:48:58',1,'Y',1,'Y','http://localhost/index.php','N','http://localhost/index.php','172.20.0.1','POST','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:48:43\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(12,1,'2019-07-10 13:48:59',1,'Y',1,'Y','http://localhost/favicon.ico','N','http://localhost/index.php','172.20.0.1','GET','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:48:58\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(13,1,'2019-07-10 13:48:59',1,'Y',1,'Y','http://localhost/index.php','N','http://localhost/index.php','172.20.0.1','POST','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:48:59\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(14,1,'2019-07-10 13:49:00',1,'Y',1,'Y','http://localhost/favicon.ico','N','http://localhost/index.php','172.20.0.1','GET','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:48:59\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(15,1,'2019-07-10 13:49:00',1,'Y',1,'Y','http://localhost/index.php','N','http://localhost/index.php','172.20.0.1','POST','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:49:00\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(16,1,'2019-07-10 13:49:01',1,'Y',1,'Y','http://localhost/index.php','N','http://localhost/index.php','172.20.0.1','POST','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:49:00\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(17,1,'2019-07-10 13:49:01',1,'Y',1,'Y','http://localhost/index.php','N','http://localhost/index.php','172.20.0.1','POST','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:49:00\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(18,1,'2019-07-10 13:49:02',1,'Y',1,'Y','http://localhost/index.php','N','http://localhost/index.php','172.20.0.1','POST','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:49:00\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(19,1,'2019-07-10 13:49:03',1,'Y',1,'Y','http://localhost/index.php','N','http://localhost/index.php','172.20.0.1','POST','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:49:00\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(20,1,'2019-07-10 13:49:04',1,'Y',1,'Y','http://localhost/index.php','N','http://localhost/index.php','172.20.0.1','POST','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:49:00\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(21,1,'2019-07-10 13:49:04',1,'Y',1,'Y','http://localhost/index.php','N','http://localhost/index.php','172.20.0.1','POST','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:49:00\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(22,1,'2019-07-10 13:49:05',1,'Y',1,'Y','http://localhost/index.php','N','http://localhost/index.php','172.20.0.1','POST','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:49:00\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(23,1,'2019-07-10 13:49:09',1,'Y',1,'Y','http://localhost/index.php','N','http://localhost/index.php','172.20.0.1','POST','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:49:00\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(24,1,'2019-07-10 13:49:09',1,'Y',1,'Y','http://localhost/index.php','N','http://localhost/index.php','172.20.0.1','POST','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:49:00\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(25,1,'2019-07-10 13:49:12',1,'Y',1,'Y','http://localhost/?finish','N','http://localhost/index.php','172.20.0.1','GET','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:49:09\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1'),(26,1,'2019-07-10 13:49:17',1,'Y',1,'Y','http://localhost/bitrix/admin/index.php?lang=ru&back_url_pub=%2F%3Ffinish%3D','N','http://localhost/?finish','172.20.0.1','GET','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:49:12\n[BITRIX_CONVERSION_CONTEXT_s1] = {\"ID\":1,\"EXPIRE\":1562803140,\"UNIQUE\":[\"conversion_visit_day\"]}\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,NULL),(27,1,'2019-07-10 13:49:24',1,'Y',1,'Y','http://localhost/?finish=&back_url_admin=%2Fbitrix%2Fadmin%2F%3Flang%3Dru','N','http://localhost/bitrix/admin/index.php?lang=ru&back_url_pub=%2F%3Ffinish%3D','172.20.0.1','GET','[PHPSESSID] = 9e532b7e08b274b46f2a191ddba63f04\n[BITRIX_SM_SOUND_LOGIN_PLAYED] = Y\n[BITRIX_SM_GUEST_ID] = 1\n[BITRIX_CONVERSION_CONTEXT_s1] = {\"ID\":1,\"EXPIRE\":1562803140,\"UNIQUE\":[\"conversion_visit_day\"]}\n[BITRIX_SM_LAST_VISIT] = 10.07.2019 13:49:17\n','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',0,'N0',1,'s1');
-/*!40000 ALTER TABLE `b_stat_hit` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_page`
---
-
-DROP TABLE IF EXISTS `b_stat_page`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_page` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `DATE_STAT` date NOT NULL,
-  `DIR` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `URL` text COLLATE utf8_unicode_ci NOT NULL,
-  `URL_404` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `URL_HASH` int(32) DEFAULT NULL,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `COUNTER` int(11) NOT NULL DEFAULT '0',
-  `ENTER_COUNTER` int(18) NOT NULL DEFAULT '0',
-  `EXIT_COUNTER` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  KEY `IX_DATE_STAT` (`DATE_STAT`),
-  KEY `IX_URL_HASH` (`URL_HASH`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_page`
---
-
-LOCK TABLES `b_stat_page` WRITE;
-/*!40000 ALTER TABLE `b_stat_page` DISABLE KEYS */;
-INSERT INTO `b_stat_page` VALUES (1,'2019-07-10','Y','http://localhost/','N',1262856048,'s1',26,1,1),(2,'2019-07-10','N','http://localhost/index.php','N',-143630026,'s1',17,1,0),(3,'2019-07-10','N','http://localhost/favicon.ico','N',88217194,'s1',7,0,0),(4,'2019-07-10','N','http://localhost/','N',1262856048,'s1',2,0,1),(5,'2019-07-10','Y','http://localhost/bitrix/admin/','N',-658030865,NULL,1,0,0),(6,'2019-07-10','N','http://localhost/bitrix/admin/index.php','N',1458101301,NULL,1,0,0);
-/*!40000 ALTER TABLE `b_stat_page` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_page_adv`
---
-
-DROP TABLE IF EXISTS `b_stat_page_adv`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_page_adv` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `DATE_STAT` date DEFAULT NULL,
-  `PAGE_ID` int(18) NOT NULL DEFAULT '0',
-  `ADV_ID` int(18) NOT NULL DEFAULT '0',
-  `COUNTER` int(18) NOT NULL DEFAULT '0',
-  `ENTER_COUNTER` int(18) NOT NULL DEFAULT '0',
-  `EXIT_COUNTER` int(18) NOT NULL DEFAULT '0',
-  `COUNTER_BACK` int(18) NOT NULL DEFAULT '0',
-  `ENTER_COUNTER_BACK` int(18) NOT NULL DEFAULT '0',
-  `EXIT_COUNTER_BACK` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  KEY `IX_PAGE_ID_ADV_ID` (`PAGE_ID`,`ADV_ID`),
-  KEY `IX_DATE_STAT` (`DATE_STAT`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_page_adv`
---
-
-LOCK TABLES `b_stat_page_adv` WRITE;
-/*!40000 ALTER TABLE `b_stat_page_adv` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_stat_page_adv` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_path`
---
-
-DROP TABLE IF EXISTS `b_stat_path`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_path` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `PATH_ID` int(32) NOT NULL DEFAULT '0',
-  `PARENT_PATH_ID` int(32) DEFAULT NULL,
-  `DATE_STAT` date DEFAULT NULL,
-  `COUNTER` int(18) NOT NULL DEFAULT '0',
-  `COUNTER_ABNORMAL` int(18) NOT NULL DEFAULT '0',
-  `COUNTER_FULL_PATH` int(18) NOT NULL DEFAULT '0',
-  `PAGES` text COLLATE utf8_unicode_ci,
-  `FIRST_PAGE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FIRST_PAGE_404` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `FIRST_PAGE_SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `PREV_PAGE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `PREV_PAGE_HASH` int(32) DEFAULT NULL,
-  `LAST_PAGE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `LAST_PAGE_404` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `LAST_PAGE_SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `LAST_PAGE_HASH` int(32) DEFAULT NULL,
-  `STEPS` int(18) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`ID`),
-  KEY `IX_PATH_ID_DATE_STAT` (`PATH_ID`,`DATE_STAT`),
-  KEY `IX_PREV_PAGE_HASH_LAST_PAGE_HASH` (`PREV_PAGE_HASH`,`LAST_PAGE_HASH`),
-  KEY `IX_DATE_STAT` (`DATE_STAT`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_path`
---
-
-LOCK TABLES `b_stat_path` WRITE;
-/*!40000 ALTER TABLE `b_stat_path` DISABLE KEYS */;
-INSERT INTO `b_stat_path` VALUES (1,-143630026,NULL,'2019-07-10',1,0,0,'[s1] http://localhost/index.php\n','http://localhost/index.php','N','s1','',0,'http://localhost/index.php','N','s1',-143630026,1),(2,450390405,-143630026,'2019-07-10',7,0,7,'[s1] http://localhost/index.php\n[s1] http://localhost/favicon.ico\n','http://localhost/index.php','N','s1','http://localhost/index.php',-143630026,'http://localhost/favicon.ico','N','s1',88217194,2),(3,1807395655,-143630026,'2019-07-10',1,0,0,'[s1] http://localhost/index.php\n[s1] http://localhost/\n','http://localhost/index.php','N','s1','http://localhost/index.php',-143630026,'http://localhost/','N','s1',1262856048,2),(4,1221331651,1807395655,'2019-07-10',1,0,0,'[s1] http://localhost/index.php\n[s1] http://localhost/\nhttp://localhost/bitrix/admin/index.php\n','http://localhost/index.php','N','s1','http://localhost/',1262856048,'http://localhost/bitrix/admin/index.php','N',NULL,1458101301,3);
-/*!40000 ALTER TABLE `b_stat_path` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_path_adv`
---
-
-DROP TABLE IF EXISTS `b_stat_path_adv`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_path_adv` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `ADV_ID` int(18) NOT NULL DEFAULT '0',
-  `PATH_ID` int(32) NOT NULL DEFAULT '0',
-  `DATE_STAT` date DEFAULT NULL,
-  `COUNTER` int(18) NOT NULL DEFAULT '0',
-  `COUNTER_BACK` int(18) NOT NULL DEFAULT '0',
-  `COUNTER_FULL_PATH` int(18) NOT NULL DEFAULT '0',
-  `COUNTER_FULL_PATH_BACK` int(18) NOT NULL DEFAULT '0',
-  `STEPS` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  KEY `IX_PATH_ID_ADV_ID_DATE_STAT` (`PATH_ID`,`ADV_ID`,`DATE_STAT`),
-  KEY `IX_DATE_STAT` (`DATE_STAT`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_path_adv`
---
-
-LOCK TABLES `b_stat_path_adv` WRITE;
-/*!40000 ALTER TABLE `b_stat_path_adv` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_stat_path_adv` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_path_cache`
---
-
-DROP TABLE IF EXISTS `b_stat_path_cache`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_path_cache` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `SESSION_ID` int(18) NOT NULL DEFAULT '0',
-  `DATE_HIT` datetime DEFAULT NULL,
-  `PATH_ID` int(32) DEFAULT NULL,
-  `PATH_PAGES` text COLLATE utf8_unicode_ci,
-  `PATH_FIRST_PAGE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `PATH_FIRST_PAGE_404` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `PATH_FIRST_PAGE_SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `PATH_LAST_PAGE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `PATH_LAST_PAGE_404` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `PATH_LAST_PAGE_SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `PATH_STEPS` int(18) NOT NULL DEFAULT '1',
-  `IS_LAST_PAGE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  PRIMARY KEY (`ID`),
-  KEY `IX_SESSION_ID` (`SESSION_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_path_cache`
---
-
-LOCK TABLES `b_stat_path_cache` WRITE;
-/*!40000 ALTER TABLE `b_stat_path_cache` DISABLE KEYS */;
-INSERT INTO `b_stat_path_cache` VALUES (1,1,'2019-07-10 13:48:32',-143630026,'[s1] http://localhost/index.php\n','http://localhost/index.php','N','s1','http://localhost/index.php','N','s1',1,'N'),(2,1,'2019-07-10 13:48:33',450390405,'[s1] http://localhost/index.php\n[s1] http://localhost/favicon.ico\n','http://localhost/index.php','N','s1','http://localhost/favicon.ico','N','s1',2,'Y'),(3,1,'2019-07-10 13:48:35',450390405,'[s1] http://localhost/index.php\n[s1] http://localhost/favicon.ico\n','http://localhost/index.php','N','s1','http://localhost/favicon.ico','N','s1',2,'Y'),(4,1,'2019-07-10 13:48:38',450390405,'[s1] http://localhost/index.php\n[s1] http://localhost/favicon.ico\n','http://localhost/index.php','N','s1','http://localhost/favicon.ico','N','s1',2,'Y'),(5,1,'2019-07-10 13:48:40',450390405,'[s1] http://localhost/index.php\n[s1] http://localhost/favicon.ico\n','http://localhost/index.php','N','s1','http://localhost/favicon.ico','N','s1',2,'Y'),(6,1,'2019-07-10 13:48:43',450390405,'[s1] http://localhost/index.php\n[s1] http://localhost/favicon.ico\n','http://localhost/index.php','N','s1','http://localhost/favicon.ico','N','s1',2,'Y'),(7,1,'2019-07-10 13:48:59',450390405,'[s1] http://localhost/index.php\n[s1] http://localhost/favicon.ico\n','http://localhost/index.php','N','s1','http://localhost/favicon.ico','N','s1',2,'Y'),(8,1,'2019-07-10 13:49:00',450390405,'[s1] http://localhost/index.php\n[s1] http://localhost/favicon.ico\n','http://localhost/index.php','N','s1','http://localhost/favicon.ico','N','s1',2,'Y'),(9,1,'2019-07-10 13:49:12',1807395655,'[s1] http://localhost/index.php\n[s1] http://localhost/\n','http://localhost/index.php','N','s1','http://localhost/','N','s1',2,'N'),(10,1,'2019-07-10 13:49:17',1221331651,'[s1] http://localhost/index.php\n[s1] http://localhost/\nhttp://localhost/bitrix/admin/index.php\n','http://localhost/index.php','N','s1','http://localhost/bitrix/admin/index.php','N',NULL,3,'N'),(11,1,'2019-07-10 13:49:24',59533130,'[s1] http://localhost/index.php\n[s1] http://localhost/\nhttp://localhost/bitrix/admin/index.php\n[s1] http://localhost/\n','http://localhost/index.php','N','s1','http://localhost/','N','s1',4,'Y');
-/*!40000 ALTER TABLE `b_stat_path_cache` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_phrase_list`
---
-
-DROP TABLE IF EXISTS `b_stat_phrase_list`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_phrase_list` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `DATE_HIT` datetime DEFAULT NULL,
-  `SEARCHER_ID` int(18) DEFAULT NULL,
-  `REFERER_ID` int(18) DEFAULT NULL,
-  `PHRASE` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `URL_FROM` text COLLATE utf8_unicode_ci,
-  `URL_TO` text COLLATE utf8_unicode_ci,
-  `URL_TO_404` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `SESSION_ID` int(18) DEFAULT NULL,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_DATE_HIT` (`DATE_HIT`),
-  KEY `IX_URL_TO_SEARCHER_ID` (`URL_TO`(100),`SEARCHER_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_phrase_list`
---
-
-LOCK TABLES `b_stat_phrase_list` WRITE;
-/*!40000 ALTER TABLE `b_stat_phrase_list` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_stat_phrase_list` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_referer`
---
-
-DROP TABLE IF EXISTS `b_stat_referer`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_referer` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `DATE_FIRST` datetime DEFAULT NULL,
-  `DATE_LAST` datetime NOT NULL,
-  `SITE_NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `SESSIONS` int(18) NOT NULL DEFAULT '0',
-  `HITS` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  KEY `IX_SITE_NAME` (`SITE_NAME`),
-  KEY `IX_B_STAT_REFERER_2` (`DATE_LAST`,`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_referer`
---
-
-LOCK TABLES `b_stat_referer` WRITE;
-/*!40000 ALTER TABLE `b_stat_referer` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_stat_referer` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_referer_list`
---
-
-DROP TABLE IF EXISTS `b_stat_referer_list`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_referer_list` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `REFERER_ID` int(18) DEFAULT NULL,
-  `DATE_HIT` datetime DEFAULT NULL,
-  `PROTOCOL` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `SITE_NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `URL_FROM` text COLLATE utf8_unicode_ci NOT NULL,
-  `URL_TO` text COLLATE utf8_unicode_ci,
-  `URL_TO_404` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `SESSION_ID` int(18) DEFAULT NULL,
-  `ADV_ID` int(18) DEFAULT NULL,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_DATE_HIT` (`DATE_HIT`),
-  KEY `IX_SITE_NAME` (`SITE_NAME`(100),`URL_TO`(100))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_referer_list`
---
-
-LOCK TABLES `b_stat_referer_list` WRITE;
-/*!40000 ALTER TABLE `b_stat_referer_list` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_stat_referer_list` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_searcher`
---
-
-DROP TABLE IF EXISTS `b_stat_searcher`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_searcher` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `DATE_CLEANUP` datetime DEFAULT NULL,
-  `TOTAL_HITS` int(18) NOT NULL DEFAULT '0',
-  `SAVE_STATISTIC` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `USER_AGENT` text COLLATE utf8_unicode_ci,
-  `DIAGRAM_DEFAULT` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `HIT_KEEP_DAYS` int(18) DEFAULT NULL,
-  `DYNAMIC_KEEP_DAYS` int(18) DEFAULT NULL,
-  `PHRASES` int(18) NOT NULL DEFAULT '0',
-  `PHRASES_HITS` int(18) NOT NULL DEFAULT '0',
-  `CHECK_ACTIVITY` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  PRIMARY KEY (`ID`),
-  KEY `IX_B_STAT_SEARCHER_1` (`HIT_KEEP_DAYS`,`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=218 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_searcher`
---
-
-LOCK TABLES `b_stat_searcher` WRITE;
-/*!40000 ALTER TABLE `b_stat_searcher` DISABLE KEYS */;
-INSERT INTO `b_stat_searcher` VALUES (1,NULL,0,'Y','Y','<internal>',NULL,'N',NULL,NULL,0,0,'Y'),(2,NULL,0,'Y','Y','Google','Googlebot/','Y',NULL,NULL,0,0,'N'),(3,NULL,0,'Y','Y','Yandex','YandexBot/','Y',NULL,NULL,0,0,'N'),(4,NULL,0,'Y','Y','Rambler','StackRambler/','Y',NULL,NULL,0,0,'N'),(5,NULL,0,'Y','Y','Mail.ru','Mail.Ru','Y',NULL,NULL,0,0,'N'),(6,NULL,0,'Y','Y','Aport','Aport','Y',NULL,NULL,0,0,'N'),(7,NULL,0,'Y','Y','MSN','MSNBot','Y',NULL,NULL,0,0,'N'),(8,NULL,0,'Y','Y','Yahoo','Yahoo! Slurp','Y',NULL,NULL,0,0,'N'),(9,NULL,0,'Y','Y','Altavista','Scooter','Y',NULL,NULL,0,0,'N'),(10,NULL,0,'Y','Y','AOL','','Y',NULL,NULL,0,0,'N'),(11,NULL,0,'Y','Y','NIGMA','','Y',NULL,NULL,0,0,'N'),(12,NULL,0,'N','Y','Zao-Crawler','Zao-Crawler','N',NULL,NULL,0,0,'Y'),(13,NULL,0,'N','Y','YottaShopping_Bot','YottaShopping_Bot','N',NULL,NULL,0,0,'Y'),(14,NULL,0,'N','Y','YM','YM/','N',NULL,NULL,0,0,'Y'),(15,NULL,0,'N','Y','YandexBlog','YandexBlog','N',NULL,NULL,0,0,'Y'),(16,NULL,0,'N','Y','Yahoo-MMCrawler','Yahoo-MMCrawler','N',NULL,NULL,0,0,'Y'),(17,NULL,0,'N','Y','YahooFeedSeeker','YahooFeedSeeker','N',NULL,NULL,0,0,'Y'),(18,NULL,0,'N','Y','WinHttp-Autoproxy-Service','WinHttp-Autoproxy-Service','N',NULL,NULL,0,0,'Y'),(19,NULL,0,'N','Y','Windows-RSS-Platform','Windows-RSS-Platform','N',NULL,NULL,0,0,'Y'),(20,NULL,0,'N','Y','YaDirectBot','YaDirectBot/','N',NULL,NULL,0,0,'Y'),(21,NULL,0,'N','Y','Xenu Link Sleuth','Xenu Link Sleuth','N',NULL,NULL,0,0,'Y'),(22,NULL,0,'N','Y','wish-la','wish-la','N',NULL,NULL,0,0,'Y'),(23,NULL,0,'N','Y','Wget','Wget','N',NULL,NULL,0,0,'Y'),(24,NULL,0,'N','Y','WebZIP','WebZIP','N',NULL,NULL,0,0,'Y'),(25,NULL,0,'N','Y','WebImages','WebImages','N',NULL,NULL,0,0,'Y'),(26,NULL,0,'N','Y','weblist','weblist/','N',NULL,NULL,0,0,'Y'),(27,NULL,0,'N','Y','webcrawl.net','webcrawl.net','N',NULL,NULL,0,0,'Y'),(28,NULL,0,'N','Y','WebCopier','WebCopier','N',NULL,NULL,0,0,'Y'),(29,NULL,0,'N','Y','webcollage','webcollage','N',NULL,NULL,0,0,'Y'),(30,NULL,0,'N','Y','Webbot.ru','webbot.ru','N',NULL,NULL,0,0,'Y'),(31,NULL,0,'N','Y','WebAlta Crawler','WebAlta Crawler/','N',NULL,NULL,0,0,'Y'),(32,NULL,0,'N','Y','Web Downloader','Web Downloader','N',NULL,NULL,0,0,'Y'),(33,NULL,0,'N','Y','voyager','voyager/','N',NULL,NULL,0,0,'Y'),(34,NULL,0,'N','Y','VisBot','VisBot/','N',NULL,NULL,0,0,'Y'),(35,NULL,0,'N','Y','VadixBot','VadixBot','N',NULL,NULL,0,0,'Y'),(36,NULL,0,'N','Y','updated','updated/','N',NULL,NULL,0,0,'Y'),(37,NULL,0,'N','Y','Twiceler','Twiceler','N',NULL,NULL,0,0,'Y'),(38,NULL,0,'N','Y','TurtleScanner','TurtleScanner/','N',NULL,NULL,0,0,'Y'),(39,NULL,0,'N','Y','TurnitinBot','TurnitinBot/','N',NULL,NULL,0,0,'Y'),(40,NULL,0,'N','Y','TulipChain','TulipChain/','N',NULL,NULL,0,0,'Y'),(41,NULL,0,'N','Y','TMCrawler','TMCrawler','N',NULL,NULL,0,0,'Y'),(42,NULL,0,'N','Y','TinEye','TinEye','N',NULL,NULL,0,0,'Y'),(43,NULL,0,'N','Y','SurveyBot','SurveyBot/','N',NULL,NULL,0,0,'Y'),(44,NULL,0,'N','Y','Subscribe.Ru','Subscribe.Ru','N',NULL,NULL,0,0,'Y'),(45,NULL,0,'N','Y','Speedy Spider','Speedy Spider','N',NULL,NULL,0,0,'Y'),(46,NULL,0,'N','Y','sohu-search','sohu-search','N',NULL,NULL,0,0,'Y'),(47,NULL,0,'N','Y','SoftSearch','SoftSearch','N',NULL,NULL,0,0,'Y'),(48,NULL,0,'N','Y','Snapbot','Snapbot','N',NULL,NULL,0,0,'Y'),(49,NULL,0,'N','Y','snap.com beta crawler','snap.com beta crawler','N',NULL,NULL,0,0,'Y'),(50,NULL,0,'N','Y','SMILESEOTools','SMILESEOTools','N',NULL,NULL,0,0,'Y'),(51,NULL,0,'N','Y','SMILE SEO Tools','SMILE SEO Tools','N',NULL,NULL,0,0,'Y'),(52,NULL,0,'N','Y','SiteScripts.com Link Checker','SiteScripts.com Link Checker','N',NULL,NULL,0,0,'Y'),(53,NULL,0,'N','Y','ShopWiki','ShopWiki','N',NULL,NULL,0,0,'Y'),(54,NULL,0,'N','Y','Shim-Crawler','Shim-Crawler','N',NULL,NULL,0,0,'Y'),(55,NULL,0,'N','Y','sherlock','sherlock','N',NULL,NULL,0,0,'Y'),(56,NULL,0,'N','Y','shelob','shelob','N',NULL,NULL,0,0,'Y'),(57,NULL,0,'N','Y','SeznamBot','SeznamBot','N',NULL,NULL,0,0,'Y'),(58,NULL,0,'N','Y','Sensis Web Crawler','Sensis Web Crawler','N',NULL,NULL,0,0,'Y'),(59,NULL,0,'N','Y','ScSpider','ScSpider/','N',NULL,NULL,0,0,'Y'),(60,NULL,0,'N','Y','Schmozilla','Schmozilla/','N',NULL,NULL,0,0,'Y'),(61,NULL,0,'N','Y','SBIder','SBIder/','N',NULL,NULL,0,0,'Y'),(62,NULL,0,'N','Y','RufusBot','RufusBot','N',NULL,NULL,0,0,'Y'),(63,NULL,0,'N','Y','RSSreader.ru','RSSreader.ru','N',NULL,NULL,0,0,'Y'),(64,NULL,0,'N','Y','RSS Xpress','RSS Xpress','N',NULL,NULL,0,0,'Y'),(65,NULL,0,'N','Y','RedTram.com','RedTram.com','N',NULL,NULL,0,0,'Y'),(66,NULL,0,'N','Y','RedBot','RedBot/','N',NULL,NULL,0,0,'Y'),(67,NULL,0,'N','Y','Recentsoft.com PAD Spider','Recentsoft.com PAD Spider','N',NULL,NULL,0,0,'Y'),(68,NULL,0,'N','Y','QuepasaCreep ( crawler@quepasacorp.com )','QuepasaCreep ( crawler@quepasacorp.com )','N',NULL,NULL,0,0,'Y'),(69,NULL,0,'N','Y','PTsecurity','PTsecurity','N',NULL,NULL,0,0,'Y'),(70,NULL,0,'N','Y','psbot','psbot/','N',NULL,NULL,0,0,'Y'),(71,NULL,0,'N','Y','ProjectWF-java-test-crawler','ProjectWF-java-test-crawler','N',NULL,NULL,0,0,'Y'),(72,NULL,0,'N','Y','Pompos','Pompos','N',NULL,NULL,0,0,'Y'),(73,NULL,0,'N','Y','POE-Component-Client-HTTP','POE-Component-Client-HTTP/','N',NULL,NULL,0,0,'Y'),(74,NULL,0,'N','Y','PlantyNet_WebRobot','PlantyNet_WebRobot','N',NULL,NULL,0,0,'Y'),(75,NULL,0,'N','Y','pipeLiner','pipeLiner/','N',NULL,NULL,0,0,'Y'),(76,NULL,0,'N','Y','Pingdom GIGRIB','Pingdom GIGRIB','N',NULL,NULL,0,0,'Y'),(77,NULL,0,'N','Y','PHP','PHP/','N',NULL,NULL,0,0,'Y'),(78,NULL,0,'N','Y','PHP version tracker','PHP version tracker','N',NULL,NULL,0,0,'Y'),(79,NULL,0,'N','Y','Pete-Spider Light','Pete-Spider Light/','N',NULL,NULL,0,0,'Y'),(80,NULL,0,'N','Y','panscient.com','panscient.com','N',NULL,NULL,0,0,'Y'),(81,NULL,0,'N','Y','PageriesHyperBot','PageBitesHyperBot/','N',NULL,NULL,0,0,'Y'),(82,NULL,0,'N','Y','PADLibrary Spider','PADLibrary Spider','N',NULL,NULL,0,0,'Y'),(83,NULL,0,'N','Y','OrangeSpider','OrangeSpider','N',NULL,NULL,0,0,'Y'),(84,NULL,0,'N','Y','Openfind data gatherer, Openbot','Openfind data gatherer, Openbot/','N',NULL,NULL,0,0,'Y'),(85,NULL,0,'N','Y','OmniExplorer_Bot','OmniExplorer_Bot/','N',NULL,NULL,0,0,'Y'),(86,NULL,0,'N','Y','Offline Explorer','Offline Explorer','N',NULL,NULL,0,0,'Y'),(87,NULL,0,'N','Y','Ocelli','Ocelli','N',NULL,NULL,0,0,'Y'),(88,NULL,0,'N','Y','NutchCVS','NutchCVS','N',NULL,NULL,0,0,'Y'),(89,NULL,0,'N','Y','noxtrumbot','noxtrumbot/','N',NULL,NULL,0,0,'Y'),(90,NULL,0,'N','Y','Novoteka personal search','Novoteka personal search','N',NULL,NULL,0,0,'Y'),(91,NULL,0,'N','Y','NG/2.0','NG/2.0','N',NULL,NULL,0,0,'Y'),(92,NULL,0,'N','Y','NewzCrawler','NewzCrawler/','N',NULL,NULL,0,0,'Y'),(93,NULL,0,'N','Y','NewsGatorOnline','NewsGatorOnline/','N',NULL,NULL,0,0,'Y'),(94,NULL,0,'N','Y','NewsGator','NewsGator/','N',NULL,NULL,0,0,'Y'),(95,NULL,0,'N','Y','NewsAlloy','NewsAlloy','N',NULL,NULL,0,0,'Y'),(96,NULL,0,'N','Y','Netvibes','Netvibes','N',NULL,NULL,0,0,'Y'),(97,NULL,0,'N','Y','NetStat.Ru Agent','NetStat.Ru Agent','N',NULL,NULL,0,0,'Y'),(98,NULL,0,'N','Y','NetResearchServer','NetResearchServer/','N',NULL,NULL,0,0,'Y'),(99,NULL,0,'N','Y','NaverBot','NaverBot','N',NULL,NULL,0,0,'Y'),(100,NULL,0,'N','Y','MSFrontPage','MSFrontPage','N',NULL,NULL,0,0,'Y'),(101,NULL,0,'N','Y','MQBOT/Nutch','MQBOT/Nutch','N',NULL,NULL,0,0,'Y'),(102,NULL,0,'N','Y','mozDex','mozDex','N',NULL,NULL,0,0,'Y'),(103,NULL,0,'N','Y','mogren','mogren','N',NULL,NULL,0,0,'Y'),(104,NULL,0,'N','Y','Mnogosearch','Mnogosearch','N',NULL,NULL,0,0,'Y'),(105,NULL,0,'N','Y','MJ12bot','MJ12bot/','N',NULL,NULL,0,0,'Y'),(106,NULL,0,'N','Y','Missigua Locator','Missigua Locator','N',NULL,NULL,0,0,'Y'),(107,NULL,0,'N','Y','Microsoft URL Control','Microsoft URL Control','N',NULL,NULL,0,0,'Y'),(108,NULL,0,'N','Y','Mediapartners-Google','Mediapartners-Google/','N',NULL,NULL,0,0,'Y'),(109,NULL,0,'N','Y','MarketGid.com','MarketGid.com','N',NULL,NULL,0,0,'Y'),(110,NULL,0,'N','Y','Mail Sweeper','Mail Sweeper','N',NULL,NULL,0,0,'Y'),(111,NULL,0,'N','Y','MagpieRSS','MagpieRSS','N',NULL,NULL,0,0,'Y'),(112,NULL,0,'N','Y','Lycos / EBay','FAST-WebCrawler','N',NULL,NULL,0,0,'Y'),(113,NULL,0,'N','Y','LWP::Simple','LWP::Simple','N',NULL,NULL,0,0,'Y'),(114,NULL,0,'N','Y','lwp-trivial','lwp-trivial','N',NULL,NULL,0,0,'Y'),(115,NULL,0,'N','Y','LinkWalker','LinkWalker','N',NULL,NULL,0,0,'Y'),(116,NULL,0,'N','Y','Links SQL','Links SQL','N',NULL,NULL,0,0,'Y'),(117,NULL,0,'N','Y','libwww-perl','libwww-perl','N',NULL,NULL,0,0,'Y'),(118,NULL,0,'N','Y','lanshanbot','lanshanbot/','N',NULL,NULL,0,0,'Y'),(119,NULL,0,'N','Y','Knowledge.com','Knowledge.com','N',NULL,NULL,0,0,'Y'),(120,NULL,0,'N','Y','Jyxobot','Jyxobot/','N',NULL,NULL,0,0,'Y'),(121,NULL,0,'N','Y','JetBrains Omea Reader','JetBrains Omea Reader','N',NULL,NULL,0,0,'Y'),(123,NULL,0,'N','Y','James Bond','James Bond','N',NULL,NULL,0,0,'Y'),(124,NULL,0,'N','Y','Jakarta Commons','Jakarta Commons','N',NULL,NULL,0,0,'Y'),(125,NULL,0,'N','Y','itLocation-URLChecker','itLocation-URLChecker','N',NULL,NULL,0,0,'Y'),(126,NULL,0,'N','Y','itLocation-PADBot','itLocation-PADBot','N',NULL,NULL,0,0,'Y'),(127,NULL,0,'N','Y','IS robot','IS robot','N',NULL,NULL,0,0,'Y'),(128,NULL,0,'N','Y','IRLbot','IRLbot/','N',NULL,NULL,0,0,'Y'),(129,NULL,0,'N','Y','InternetSeer','InternetSeer','N',NULL,NULL,0,0,'Y'),(130,NULL,0,'N','Y','Ipselonbot','Ipselonbot/','N',NULL,NULL,0,0,'Y'),(131,NULL,0,'N','Y','InternetArchive','InternetArchive/','N',NULL,NULL,0,0,'Y'),(132,NULL,0,'N','Y','inktomisearch.com','Slurp/si','N',NULL,NULL,0,0,'Y'),(133,NULL,0,'N','Y','Info.Web','Info.Web','N',NULL,NULL,0,0,'Y'),(134,NULL,0,'N','Y','InetURL','InetURL','N',NULL,NULL,0,0,'Y'),(135,NULL,0,'N','Y','Indy Library','Indy Library','N',NULL,NULL,0,0,'Y'),(136,NULL,0,'N','Y','IlTrovatore-Setaccio','IlTrovatore-Setaccio/','N',NULL,NULL,0,0,'Y'),(137,NULL,0,'N','Y','IlseBot','IlseBot/','N',NULL,NULL,0,0,'Y'),(138,NULL,0,'N','Y','ilial/Nutch','ilial/Nutch','N',NULL,NULL,0,0,'Y'),(139,NULL,0,'N','Y','ichiro','ichiro/','N',NULL,NULL,0,0,'Y'),(140,NULL,0,'N','Y','ia_archiver','ia_archiver','N',NULL,NULL,0,0,'Y'),(141,NULL,0,'N','Y','http://www.liveinternet.ru; valez@valez.ru','http://www.liveinternet.ru; valez@valez.ru','N',NULL,NULL,0,0,'Y'),(142,NULL,0,'N','Y','http://www.almaden.ibm.com/cs/crawler','http://www.almaden.ibm.com/cs/crawler','N',NULL,NULL,0,0,'Y'),(143,NULL,0,'N','Y','http://webbot.com','http://webbot.com','N',NULL,NULL,0,0,'Y'),(144,NULL,0,'N','Y','Holmes','Holmes','N',NULL,NULL,0,0,'Y'),(145,NULL,0,'N','Y','GurujiBot','GurujiBot/','N',NULL,NULL,0,0,'Y'),(146,NULL,0,'N','Y','GTS_Crawler','GTS_Crawler','N',NULL,NULL,0,0,'Y'),(147,NULL,0,'N','Y','Googlebot-Image','Googlebot-Image/','N',NULL,NULL,0,0,'Y'),(148,NULL,0,'N','Y','Gokubot','Gokubot/','N',NULL,NULL,0,0,'Y'),(149,NULL,0,'N','Y','Go2Web','Go2Web','N',NULL,NULL,0,0,'Y'),(150,NULL,0,'N','Y','Gigabot','Gigabot','N',NULL,NULL,0,0,'Y'),(151,NULL,0,'N','Y','Gaisbot','Gaisbot/','N',NULL,NULL,0,0,'Y'),(152,NULL,0,'N','Y','FlashGet','FlashGet','N',NULL,NULL,0,0,'Y'),(153,NULL,0,'N','Y','findlinks','findlinks','N',NULL,NULL,0,0,'Y'),(154,NULL,0,'N','Y','fileboost.net','fileboost.net/','N',NULL,NULL,0,0,'Y'),(155,NULL,0,'N','Y','favorstarbot','favorstarbot/','N',NULL,NULL,0,0,'Y'),(156,NULL,0,'N','Y','Fetch API Request','Fetch API Request','N',NULL,NULL,0,0,'Y'),(157,NULL,0,'N','Y','Feedster Crawler','Feedster Crawler/','N',NULL,NULL,0,0,'Y'),(158,NULL,0,'N','Y','Feedreader','Feedreader','N',NULL,NULL,0,0,'Y'),(159,NULL,0,'N','Y','Feedfetcher-Google','Feedfetcher-Google','N',NULL,NULL,0,0,'Y'),(160,NULL,0,'N','Y','FeedDemon','FeedDemon/','N',NULL,NULL,0,0,'Y'),(161,NULL,0,'N','Y','FavOrg','FavOrg','N',NULL,NULL,0,0,'Y'),(162,NULL,0,'N','Y','FAST MetaWeb Crawler','FAST MetaWeb Crawler','N',NULL,NULL,0,0,'Y'),(163,NULL,0,'N','Y','FAST Enterprise Crawler','FAST Enterprise Crawler','N',NULL,NULL,0,0,'Y'),(164,NULL,0,'N','Y','eStyleSearch','eStyleSearch','N',NULL,NULL,0,0,'Y'),(165,NULL,0,'N','Y','envolk','envolk','N',NULL,NULL,0,0,'Y'),(166,NULL,0,'N','Y','EmeraldShield.com WebBot','EmeraldShield.com WebBot','N',NULL,NULL,0,0,'Y'),(167,NULL,0,'N','Y','Egress','Egress','N',NULL,NULL,0,0,'Y'),(168,NULL,0,'N','Y','eDir-','eDir-','N',NULL,NULL,0,0,'Y'),(169,NULL,0,'N','Y','EasyDL','EasyDL','N',NULL,NULL,0,0,'Y'),(170,NULL,0,'N','Y','e-SocietyRobot','e-SocietyRobot','N',NULL,NULL,0,0,'Y'),(171,NULL,0,'N','Y','DTS Agent','DTS Agent','N',NULL,NULL,0,0,'Y'),(172,NULL,0,'N','Y','Dumbot','Dumbot%www.dumbfind.com','N',NULL,NULL,0,0,'Y'),(173,NULL,0,'N','Y','Download Master','Download Master','N',NULL,NULL,0,0,'Y'),(174,NULL,0,'N','Y','DomainsDB.net MetaCrawler','DomainsDB.net MetaCrawler','N',NULL,NULL,0,0,'Y'),(175,NULL,0,'N','Y','DoCoMo','DoCoMo/','N',NULL,NULL,0,0,'Y'),(176,NULL,0,'N','Y','DISCo Pump','DISCo Pump','N',NULL,NULL,0,0,'Y'),(177,NULL,0,'N','Y','DataCha0s','DataCha0s','N',NULL,NULL,0,0,'Y'),(178,NULL,0,'N','Y','CyberBuddy','CyberBuddy','N',NULL,NULL,0,0,'Y'),(179,NULL,0,'N','Y','cURL PHP','cURL PHP/','N',NULL,NULL,0,0,'Y'),(180,NULL,0,'N','Y','ConveraCrawler','ConveraCrawler','N',NULL,NULL,0,0,'Y'),(181,NULL,0,'N','Y','ColdFusion','ColdFusion','N',NULL,NULL,0,0,'Y'),(182,NULL,0,'N','Y','CLX Bot','CLX Bot','N',NULL,NULL,0,0,'Y'),(183,NULL,0,'N','Y','cfetch','cfetch/','N',NULL,NULL,0,0,'Y'),(184,NULL,0,'N','Y','CazoodleBot','CazoodleBot','N',NULL,NULL,0,0,'Y'),(185,NULL,0,'N','Y','bot','bot/','N',NULL,NULL,0,0,'Y'),(186,NULL,0,'N','Y','Butch','Butch','N',NULL,NULL,0,0,'Y'),(187,NULL,0,'N','Y','BurstFind Crawler','BurstFind Crawler','N',NULL,NULL,0,0,'Y'),(188,NULL,0,'N','Y','Booch','booch_','N',NULL,NULL,0,0,'Y'),(189,NULL,0,'N','Y','Bond, James Bond (version 0.07)','Bond, James Bond (version 0.07)','N',NULL,NULL,0,0,'Y'),(190,NULL,0,'N','Y','boitho.com-dc','boitho.com-dc','N',NULL,NULL,0,0,'Y'),(191,NULL,0,'N','Y','Bloglines','Bloglines/','N',NULL,NULL,0,0,'Y'),(192,NULL,0,'N','Y','BitrixSM','BitrixSM','N',NULL,NULL,0,0,'Y'),(193,NULL,0,'N','Y','BitrixSiteLoader','BitrixSiteLoader','N',NULL,NULL,0,0,'Y'),(194,NULL,0,'N','Y','Bitrix: Sitemanager Updater','BitrixSMUpdater','N',NULL,NULL,0,0,'Y'),(195,NULL,0,'N','Y','Bitrix: Sitemanager RSS','BitrixSMRSS','N',NULL,NULL,0,0,'Y'),(196,NULL,0,'N','Y','Bigsearch.ca','Bigsearch.ca','N',NULL,NULL,0,0,'Y'),(197,NULL,0,'N','Y','Begun Robot Crawler','Begun Robot Crawler','N',NULL,NULL,0,0,'Y'),(198,NULL,0,'N','Y','begun autocontext','begun autocontext','N',NULL,NULL,0,0,'Y'),(199,NULL,0,'N','Y','BecomeBot','BecomeBot','N',NULL,NULL,0,0,'Y'),(200,NULL,0,'N','Y','Baiduspider','Baiduspider','N',NULL,NULL,0,0,'Y'),(201,NULL,0,'N','Y','AutoLuba','AutoLuba','N',NULL,NULL,0,0,'Y'),(202,NULL,0,'N','Y','AttensaOnline','AttensaOnline','N',NULL,NULL,0,0,'Y'),(203,NULL,0,'N','Y','ArabyBot','ArabyBot','N',NULL,NULL,0,0,'Y'),(204,NULL,0,'N','Y','appie','appie','N',NULL,NULL,0,0,'Y'),(205,NULL,0,'N','Y','Amfibibot','Amfibibot/','N',NULL,NULL,0,0,'Y'),(206,NULL,0,'N','Y','almaden.ibm.com','almaden.ibm.com','N',NULL,NULL,0,0,'Y'),(207,NULL,0,'N','Y','allworldsoft.com robot','allworldsoft.com robot','N',NULL,NULL,0,0,'Y'),(208,NULL,0,'N','Y','aipbot','aipbot/','N',NULL,NULL,0,0,'Y'),(209,NULL,0,'N','Y','Agent-SharewarePlazaFileCheckBot','Agent-SharewarePlazaFileCheckBot/','N',NULL,NULL,0,0,'Y'),(210,NULL,0,'N','Y','AdsBot-Google','AdsBot-Google','N',NULL,NULL,0,0,'Y'),(211,NULL,0,'N','Y','ActiveBookmark','ActiveBookmark','N',NULL,NULL,0,0,'Y'),(212,NULL,0,'N','Y','abot','abot','N',NULL,NULL,0,0,'Y'),(213,NULL,0,'N','Y','Abilon','Abilon','N',NULL,NULL,0,0,'Y'),(214,NULL,0,'N','Y','NPBot','NPBot','N',NULL,NULL,0,0,'Y'),(215,NULL,0,'N','Y','ZyBorg','ZyBorg','N',NULL,NULL,0,0,'Y'),(216,NULL,0,'N','Y','BitrixControllerMember','BitrixControllerMember','N',NULL,NULL,0,0,'Y'),(217,NULL,0,'N','Y','BitrixCloud','BitrixCloud','N',NULL,NULL,0,0,'N');
-/*!40000 ALTER TABLE `b_stat_searcher` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_searcher_day`
---
-
-DROP TABLE IF EXISTS `b_stat_searcher_day`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_searcher_day` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `DATE_STAT` date DEFAULT NULL,
-  `DATE_LAST` datetime DEFAULT NULL,
-  `SEARCHER_ID` int(18) NOT NULL DEFAULT '0',
-  `TOTAL_HITS` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  KEY `IX_SEARCHER_ID_DATE_STAT` (`SEARCHER_ID`,`DATE_STAT`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_searcher_day`
---
-
-LOCK TABLES `b_stat_searcher_day` WRITE;
-/*!40000 ALTER TABLE `b_stat_searcher_day` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_stat_searcher_day` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_searcher_hit`
---
-
-DROP TABLE IF EXISTS `b_stat_searcher_hit`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_searcher_hit` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `DATE_HIT` datetime DEFAULT NULL,
-  `SEARCHER_ID` int(18) NOT NULL DEFAULT '0',
-  `URL` text COLLATE utf8_unicode_ci NOT NULL,
-  `URL_404` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `IP` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `USER_AGENT` text COLLATE utf8_unicode_ci,
-  `HIT_KEEP_DAYS` int(18) DEFAULT NULL,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_B_STAT_SEARCHER_HIT_1` (`SEARCHER_ID`,`DATE_HIT`),
-  KEY `IX_B_STAT_SEARCHER_HIT_2` (`HIT_KEEP_DAYS`,`DATE_HIT`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_searcher_hit`
---
-
-LOCK TABLES `b_stat_searcher_hit` WRITE;
-/*!40000 ALTER TABLE `b_stat_searcher_hit` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_stat_searcher_hit` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_searcher_params`
---
-
-DROP TABLE IF EXISTS `b_stat_searcher_params`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_searcher_params` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `SEARCHER_ID` int(18) NOT NULL DEFAULT '0',
-  `DOMAIN` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `VARIABLE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `CHAR_SET` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_SEARCHER_DOMAIN` (`SEARCHER_ID`,`DOMAIN`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_searcher_params`
---
-
-LOCK TABLES `b_stat_searcher_params` WRITE;
-/*!40000 ALTER TABLE `b_stat_searcher_params` DISABLE KEYS */;
-INSERT INTO `b_stat_searcher_params` VALUES (1,1,'','find_keywords',''),(2,2,'%google.%','q','UTF-8'),(3,3,'ya.ru','holdreq, text','Windows-1251'),(4,3,'yandex.ru','holdreq, text','Windows-1251'),(5,3,'tovar.yandex.ru','holdreq, text','Windows-1251'),(6,4,'%.rambler.ru','old_q, words','Windows-1251'),(7,5,'go.mail.ru','q','Windows-1251'),(8,6,'sm.aport.ru','r','Windows-1251'),(9,7,'msn.com','MT','UTF-8'),(10,7,'search.msn.com','q','UTF-8'),(11,7,'auto.search.msn.com','q','UTF-8'),(12,8,'search.yahoo.com','p','UTF-8'),(13,9,'%altavista.com','q','UTF-8'),(14,10,'search.aol.com','query','UTF-8'),(15,11,'www.nigma.ru','s','UTF-8');
-/*!40000 ALTER TABLE `b_stat_searcher_params` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_session`
---
-
-DROP TABLE IF EXISTS `b_stat_session`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_session` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `GUEST_ID` int(18) DEFAULT NULL,
-  `NEW_GUEST` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `USER_ID` int(18) DEFAULT NULL,
-  `USER_AUTH` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `C_EVENTS` int(18) NOT NULL DEFAULT '0',
-  `HITS` int(18) NOT NULL DEFAULT '0',
-  `FAVORITES` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `URL_FROM` text COLLATE utf8_unicode_ci,
-  `URL_TO` text COLLATE utf8_unicode_ci,
-  `URL_TO_404` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `URL_LAST` text COLLATE utf8_unicode_ci,
-  `URL_LAST_404` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `USER_AGENT` text COLLATE utf8_unicode_ci,
-  `DATE_STAT` date DEFAULT NULL,
-  `DATE_FIRST` datetime DEFAULT NULL,
-  `DATE_LAST` datetime DEFAULT NULL,
-  `IP_FIRST` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `IP_FIRST_NUMBER` bigint(20) DEFAULT NULL,
-  `IP_LAST` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `IP_LAST_NUMBER` bigint(20) DEFAULT NULL,
-  `FIRST_HIT_ID` int(18) DEFAULT NULL,
-  `LAST_HIT_ID` int(18) DEFAULT NULL,
-  `PHPSESSID` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ADV_ID` int(18) DEFAULT NULL,
-  `ADV_BACK` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `REFERER1` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `REFERER2` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `REFERER3` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `STOP_LIST_ID` int(18) DEFAULT NULL,
-  `COUNTRY_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `CITY_ID` int(18) DEFAULT NULL,
-  `FIRST_SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `LAST_SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_IP_FIRST_NUMBER_DATE_STAT` (`IP_FIRST_NUMBER`,`DATE_STAT`),
-  KEY `IX_B_STAT_SESSION_4` (`USER_ID`,`DATE_STAT`),
-  KEY `IX_DATE_STAT` (`DATE_STAT`),
-  KEY `IX_B_STAT_SESSION_5` (`DATE_LAST`),
-  KEY `IX_B_STAT_SESSION_6` (`GUEST_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_session`
---
-
-LOCK TABLES `b_stat_session` WRITE;
-/*!40000 ALTER TABLE `b_stat_session` DISABLE KEYS */;
-INSERT INTO `b_stat_session` VALUES (1,1,'Y',1,'Y',0,27,'N','http://localhost/','http://localhost/index.php','N','http://localhost/?finish=&back_url_admin=%2Fbitrix%2Fadmin%2F%3Flang%3Dru','N','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36','2019-07-10','2019-07-10 13:48:32','2019-07-10 13:49:24','172.20.0.1',2886991873,'172.20.0.1',2886991873,1,27,'9e532b7e08b274b46f2a191ddba63f04',NULL,NULL,NULL,NULL,NULL,0,'N0',1,'s1','s1');
-/*!40000 ALTER TABLE `b_stat_session` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stat_session_data`
---
-
-DROP TABLE IF EXISTS `b_stat_session_data`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stat_session_data` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `DATE_FIRST` datetime DEFAULT NULL,
-  `DATE_LAST` datetime DEFAULT NULL,
-  `GUEST_MD5` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `SESS_SESSION_ID` int(18) DEFAULT NULL,
-  `SESSION_DATA` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`ID`),
-  KEY `IX_GUEST_MD5` (`GUEST_MD5`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stat_session_data`
---
-
-LOCK TABLES `b_stat_session_data` WRITE;
-/*!40000 ALTER TABLE `b_stat_session_data` DISABLE KEYS */;
-INSERT INTO `b_stat_session_data` VALUES (1,'2019-07-10 13:48:32','2019-07-10 13:48:32','3950697ef6fa36e536e3712670eb694b',1,'a:33:{s:8:\"referer1\";N;s:8:\"referer2\";N;s:8:\"referer3\";N;s:16:\"SESS_SEARCHER_ID\";i:0;s:18:\"SESS_SEARCHER_NAME\";N;s:28:\"SESS_SEARCHER_CHECK_ACTIVITY\";N;s:28:\"SESS_SEARCHER_SAVE_STATISTIC\";N;s:27:\"SESS_SEARCHER_HIT_KEEP_DAYS\";N;s:18:\"SESS_LAST_PROTOCOL\";s:7:\"http://\";s:13:\"SESS_LAST_URI\";s:26:\"http://localhost/index.php\";s:14:\"SESS_LAST_HOST\";s:9:\"localhost\";s:14:\"SESS_LAST_PAGE\";s:26:\"http://localhost/index.php\";s:13:\"SESS_LAST_DIR\";s:17:\"http://localhost/\";s:17:\"SESS_HTTP_REFERER\";N;s:15:\"SESS_COUNTRY_ID\";s:2:\"N0\";s:12:\"SESS_CITY_ID\";i:1;s:15:\"SESS_SESSION_ID\";i:1;s:15:\"SESS_REFERER_ID\";N;s:16:\"FROM_SEARCHER_ID\";N;s:19:\"SESS_FROM_SEARCHERS\";N;s:23:\"SESS_REQUEST_URI_CHANGE\";N;s:16:\"SESS_LAST_DIR_ID\";i:1;s:17:\"SESS_LAST_PAGE_ID\";i:2;s:22:\"SESS_GRABBER_STOP_TIME\";N;s:26:\"SESS_GRABBER_DEFENCE_STACK\";N;s:27:\"ACTIVITY_EXCEEDING_NOTIFIED\";N;s:11:\"SESS_ADV_ID\";i:0;s:13:\"SESS_GUEST_ID\";i:1;s:14:\"SESS_GUEST_NEW\";s:1:\"Y\";s:17:\"SESS_LAST_USER_ID\";i:1;s:16:\"SESS_LAST_ADV_ID\";i:0;s:20:\"SESS_GUEST_FAVORITES\";s:1:\"N\";s:9:\"SESS_LAST\";N;}');
-/*!40000 ALTER TABLE `b_stat_session_data` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `b_sticker`
 --
 
@@ -20829,51 +14822,6 @@ CREATE TABLE `b_sticker_group_task` (
 LOCK TABLES `b_sticker_group_task` WRITE;
 /*!40000 ALTER TABLE `b_sticker_group_task` DISABLE KEYS */;
 /*!40000 ALTER TABLE `b_sticker_group_task` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_stop_list`
---
-
-DROP TABLE IF EXISTS `b_stop_list`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_stop_list` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `TIMESTAMP_X` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `DATE_START` datetime DEFAULT NULL,
-  `DATE_END` datetime DEFAULT NULL,
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `SAVE_STATISTIC` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `IP_1` int(18) DEFAULT NULL,
-  `IP_2` int(18) DEFAULT NULL,
-  `IP_3` int(18) DEFAULT NULL,
-  `IP_4` int(18) DEFAULT NULL,
-  `MASK_1` int(18) DEFAULT NULL,
-  `MASK_2` int(18) DEFAULT NULL,
-  `MASK_3` int(18) DEFAULT NULL,
-  `MASK_4` int(18) DEFAULT NULL,
-  `USER_AGENT` text COLLATE utf8_unicode_ci,
-  `USER_AGENT_IS_NULL` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `URL_TO` text COLLATE utf8_unicode_ci,
-  `URL_FROM` text COLLATE utf8_unicode_ci,
-  `MESSAGE` text COLLATE utf8_unicode_ci,
-  `MESSAGE_LID` char(2) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'en',
-  `URL_REDIRECT` text COLLATE utf8_unicode_ci,
-  `COMMENTS` text COLLATE utf8_unicode_ci,
-  `TEST` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_stop_list`
---
-
-LOCK TABLES `b_stop_list` WRITE;
-/*!40000 ALTER TABLE `b_stop_list` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_stop_list` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -20949,7 +14897,7 @@ CREATE TABLE `b_task` (
   `BINDING` varchar(50) COLLATE utf8_unicode_ci DEFAULT 'module',
   PRIMARY KEY (`ID`),
   KEY `ix_task` (`MODULE_ID`,`BINDING`,`LETTER`,`SYS`)
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -20958,7 +14906,7 @@ CREATE TABLE `b_task` (
 
 LOCK TABLES `b_task` WRITE;
 /*!40000 ALTER TABLE `b_task` DISABLE KEYS */;
-INSERT INTO `b_task` VALUES (1,'main_denied','D','main','Y',NULL,'module'),(2,'main_change_profile','P','main','Y',NULL,'module'),(3,'main_view_all_settings','R','main','Y',NULL,'module'),(4,'main_view_all_settings_change_profile','T','main','Y',NULL,'module'),(5,'main_edit_subordinate_users','V','main','Y',NULL,'module'),(6,'main_full_access','W','main','Y',NULL,'module'),(7,'fm_folder_access_denied','D','main','Y',NULL,'file'),(8,'fm_folder_access_read','R','main','Y',NULL,'file'),(9,'fm_folder_access_write','W','main','Y',NULL,'file'),(10,'fm_folder_access_full','X','main','Y',NULL,'file'),(11,'fm_folder_access_workflow','U','main','Y',NULL,'file'),(12,'bitrixcloud_deny','D','bitrixcloud','Y',NULL,'module'),(13,'bitrixcloud_control','W','bitrixcloud','Y',NULL,'module'),(14,'calendar_denied','D','calendar','Y',NULL,'calendar_section'),(15,'calendar_view_time','O','calendar','Y',NULL,'calendar_section'),(16,'calendar_view_title','P','calendar','Y',NULL,'calendar_section'),(17,'calendar_view','R','calendar','Y',NULL,'calendar_section'),(18,'calendar_edit','W','calendar','Y',NULL,'calendar_section'),(19,'calendar_access','X','calendar','Y',NULL,'calendar_section'),(20,'calendar_type_denied','D','calendar','Y',NULL,'calendar_type'),(21,'calendar_type_view','R','calendar','Y',NULL,'calendar_type'),(22,'calendar_type_edit','W','calendar','Y',NULL,'calendar_type'),(23,'calendar_type_access','X','calendar','Y',NULL,'calendar_type'),(24,'catalog_denied','D','catalog','Y',NULL,'module'),(25,'catalog_view','M','catalog','Y',NULL,'module'),(26,'catalog_read','R','catalog','Y',NULL,'module'),(27,'catalog_price_edit','T','catalog','Y',NULL,'module'),(28,'catalog_store_edit','S','catalog','Y',NULL,'module'),(29,'catalog_export_import','U','catalog','Y',NULL,'module'),(30,'catalog_full_access','W','catalog','Y',NULL,'module'),(31,'clouds_denied','D','clouds','Y',NULL,'module'),(32,'clouds_browse','F','clouds','Y',NULL,'module'),(33,'clouds_upload','U','clouds','Y',NULL,'module'),(34,'clouds_full_access','W','clouds','Y',NULL,'module'),(35,'fileman_denied','D','fileman','Y','','module'),(36,'fileman_allowed_folders','F','fileman','Y','','module'),(37,'fileman_full_access','W','fileman','Y','','module'),(38,'medialib_denied','D','fileman','Y','','medialib'),(39,'medialib_view','F','fileman','Y','','medialib'),(40,'medialib_only_new','R','fileman','Y','','medialib'),(41,'medialib_edit_items','V','fileman','Y','','medialib'),(42,'medialib_editor','W','fileman','Y','','medialib'),(43,'medialib_full','X','fileman','Y','','medialib'),(44,'stickers_denied','D','fileman','Y','','stickers'),(45,'stickers_read','R','fileman','Y','','stickers'),(46,'stickers_edit','W','fileman','Y','','stickers'),(47,'hblock_denied','D','highloadblock','Y',NULL,'module'),(48,'hblock_read','R','highloadblock','Y',NULL,'module'),(49,'hblock_write','W','highloadblock','Y',NULL,'module'),(50,'iblock_deny','D','iblock','Y',NULL,'iblock'),(51,'iblock_read','R','iblock','Y',NULL,'iblock'),(52,'iblock_element_add','E','iblock','Y',NULL,'iblock'),(53,'iblock_admin_read','S','iblock','Y',NULL,'iblock'),(54,'iblock_admin_add','T','iblock','Y',NULL,'iblock'),(55,'iblock_limited_edit','U','iblock','Y',NULL,'iblock'),(56,'iblock_full_edit','W','iblock','Y',NULL,'iblock'),(57,'iblock_full','X','iblock','Y',NULL,'iblock'),(58,'learning_lesson_access_denied',NULL,'learning','Y',NULL,'lesson'),(59,'learning_lesson_access_read',NULL,'learning','Y',NULL,'lesson'),(60,'learning_lesson_access_manage_basic',NULL,'learning','Y',NULL,'lesson'),(61,'learning_lesson_access_linkage_as_child',NULL,'learning','Y',NULL,'lesson'),(62,'learning_lesson_access_linkage_as_parent',NULL,'learning','Y',NULL,'lesson'),(63,'learning_lesson_access_linkage_any',NULL,'learning','Y',NULL,'lesson'),(64,'learning_lesson_access_manage_as_child',NULL,'learning','Y',NULL,'lesson'),(65,'learning_lesson_access_manage_as_parent',NULL,'learning','Y',NULL,'lesson'),(66,'learning_lesson_access_manage_dual',NULL,'learning','Y',NULL,'lesson'),(67,'learning_lesson_access_manage_full',NULL,'learning','Y',NULL,'lesson'),(68,'sale_status_none','D','sale','Y',NULL,'status'),(69,'sale_status_all','X','sale','Y',NULL,'status'),(70,'security_denied','D','security','Y',NULL,'module'),(71,'security_filter','F','security','Y',NULL,'module'),(72,'security_otp','S','security','Y',NULL,'module'),(73,'security_view_all_settings','T','security','Y',NULL,'module'),(74,'security_full_access','W','security','Y',NULL,'module'),(75,'seo_denied','D','seo','Y','','module'),(76,'seo_edit','F','seo','Y','','module'),(77,'seo_full_access','W','seo','Y','','module');
+INSERT INTO `b_task` VALUES (1,'main_denied','D','main','Y',NULL,'module'),(2,'main_change_profile','P','main','Y',NULL,'module'),(3,'main_view_all_settings','R','main','Y',NULL,'module'),(4,'main_view_all_settings_change_profile','T','main','Y',NULL,'module'),(5,'main_edit_subordinate_users','V','main','Y',NULL,'module'),(6,'main_full_access','W','main','Y',NULL,'module'),(7,'fm_folder_access_denied','D','main','Y',NULL,'file'),(8,'fm_folder_access_read','R','main','Y',NULL,'file'),(9,'fm_folder_access_write','W','main','Y',NULL,'file'),(10,'fm_folder_access_full','X','main','Y',NULL,'file'),(11,'fm_folder_access_workflow','U','main','Y',NULL,'file'),(12,'bitrixcloud_deny','D','bitrixcloud','Y',NULL,'module'),(13,'bitrixcloud_control','W','bitrixcloud','Y',NULL,'module'),(14,'catalog_denied','D','catalog','Y',NULL,'module'),(15,'catalog_view','M','catalog','Y',NULL,'module'),(16,'catalog_read','R','catalog','Y',NULL,'module'),(17,'catalog_price_edit','T','catalog','Y',NULL,'module'),(18,'catalog_store_edit','S','catalog','Y',NULL,'module'),(19,'catalog_export_import','U','catalog','Y',NULL,'module'),(20,'catalog_full_access','W','catalog','Y',NULL,'module'),(21,'clouds_denied','D','clouds','Y',NULL,'module'),(22,'clouds_browse','F','clouds','Y',NULL,'module'),(23,'clouds_upload','U','clouds','Y',NULL,'module'),(24,'clouds_full_access','W','clouds','Y',NULL,'module'),(25,'fileman_denied','D','fileman','Y','','module'),(26,'fileman_allowed_folders','F','fileman','Y','','module'),(27,'fileman_full_access','W','fileman','Y','','module'),(28,'medialib_denied','D','fileman','Y','','medialib'),(29,'medialib_view','F','fileman','Y','','medialib'),(30,'medialib_only_new','R','fileman','Y','','medialib'),(31,'medialib_edit_items','V','fileman','Y','','medialib'),(32,'medialib_editor','W','fileman','Y','','medialib'),(33,'medialib_full','X','fileman','Y','','medialib'),(34,'stickers_denied','D','fileman','Y','','stickers'),(35,'stickers_read','R','fileman','Y','','stickers'),(36,'stickers_edit','W','fileman','Y','','stickers'),(37,'hblock_denied','D','highloadblock','Y',NULL,'module'),(38,'hblock_read','R','highloadblock','Y',NULL,'module'),(39,'hblock_write','W','highloadblock','Y',NULL,'module'),(40,'iblock_deny','D','iblock','Y',NULL,'iblock'),(41,'iblock_read','R','iblock','Y',NULL,'iblock'),(42,'iblock_element_add','E','iblock','Y',NULL,'iblock'),(43,'iblock_admin_read','S','iblock','Y',NULL,'iblock'),(44,'iblock_admin_add','T','iblock','Y',NULL,'iblock'),(45,'iblock_limited_edit','U','iblock','Y',NULL,'iblock'),(46,'iblock_full_edit','W','iblock','Y',NULL,'iblock'),(47,'iblock_full','X','iblock','Y',NULL,'iblock'),(48,'sale_status_none','D','sale','Y',NULL,'status'),(49,'sale_status_all','X','sale','Y',NULL,'status'),(50,'security_denied','D','security','Y',NULL,'module'),(51,'security_filter','F','security','Y',NULL,'module'),(52,'security_otp','S','security','Y',NULL,'module'),(53,'security_view_all_settings','T','security','Y',NULL,'module'),(54,'security_full_access','W','security','Y',NULL,'module'),(55,'seo_denied','D','seo','Y','','module'),(56,'seo_edit','F','seo','Y','','module'),(57,'seo_full_access','W','seo','Y','','module');
 /*!40000 ALTER TABLE `b_task` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -20982,603 +14930,8 @@ CREATE TABLE `b_task_operation` (
 
 LOCK TABLES `b_task_operation` WRITE;
 /*!40000 ALTER TABLE `b_task_operation` DISABLE KEYS */;
-INSERT INTO `b_task_operation` VALUES (2,2),(2,3),(3,2),(3,4),(3,5),(3,6),(3,7),(4,2),(4,3),(4,4),(4,5),(4,6),(4,7),(5,2),(5,3),(5,5),(5,6),(5,7),(5,8),(5,9),(6,2),(6,3),(6,4),(6,5),(6,6),(6,7),(6,10),(6,11),(6,12),(6,13),(6,14),(6,15),(6,16),(6,17),(6,18),(8,19),(8,20),(8,21),(9,19),(9,20),(9,21),(9,22),(9,23),(9,24),(9,25),(9,26),(9,27),(9,28),(9,29),(9,30),(9,31),(9,32),(9,33),(9,34),(10,19),(10,20),(10,21),(10,22),(10,23),(10,24),(10,25),(10,26),(10,27),(10,28),(10,29),(10,30),(10,31),(10,32),(10,33),(10,34),(10,35),(11,19),(11,20),(11,21),(11,24),(11,28),(13,36),(13,37),(13,38),(15,39),(16,39),(16,40),(17,39),(17,40),(17,41),(18,39),(18,40),(18,41),(18,42),(18,43),(18,44),(19,39),(19,40),(19,41),(19,42),(19,43),(19,44),(19,45),(21,46),(22,46),(22,47),(22,48),(22,49),(23,46),(23,47),(23,48),(23,49),(23,50),(25,51),(26,52),(27,52),(27,53),(27,54),(27,55),(27,56),(27,57),(27,58),(28,52),(28,53),(28,57),(28,58),(28,59),(29,52),(29,60),(29,61),(29,62),(29,63),(30,52),(30,53),(30,54),(30,55),(30,56),(30,57),(30,58),(30,59),(30,60),(30,61),(30,62),(30,63),(30,64),(30,65),(32,66),(33,66),(33,67),(34,66),(34,67),(34,68),(36,71),(36,72),(36,73),(36,74),(36,75),(36,76),(36,77),(36,79),(36,80),(37,69),(37,70),(37,71),(37,72),(37,73),(37,74),(37,75),(37,76),(37,77),(37,78),(37,79),(37,80),(37,81),(39,82),(40,82),(40,83),(40,87),(41,82),(41,87),(41,88),(41,89),(42,82),(42,83),(42,84),(42,85),(42,87),(42,88),(42,89),(43,82),(43,83),(43,84),(43,85),(43,86),(43,87),(43,88),(43,89),(45,90),(46,90),(46,91),(46,92),(46,93),(48,94),(49,95),(49,96),(51,97),(51,98),(52,99),(53,97),(53,98),(53,100),(54,97),(54,98),(54,99),(54,100),(55,97),(55,98),(55,99),(55,100),(55,101),(55,102),(55,103),(55,104),(56,97),(56,98),(56,99),(56,100),(56,101),(56,102),(56,103),(56,104),(56,105),(56,106),(56,107),(56,108),(57,97),(57,98),(57,99),(57,100),(57,101),(57,102),(57,103),(57,104),(57,105),(57,106),(57,107),(57,108),(57,109),(57,110),(57,111),(57,112),(57,113),(57,114),(59,115),(60,115),(60,116),(60,117),(60,118),(61,115),(61,119),(61,120),(62,115),(62,121),(62,122),(63,115),(63,119),(63,120),(63,121),(63,122),(64,115),(64,116),(64,117),(64,118),(64,119),(64,120),(65,115),(65,116),(65,117),(65,118),(65,121),(65,122),(66,115),(66,116),(66,117),(66,118),(66,119),(66,120),(66,121),(66,122),(67,115),(67,116),(67,117),(67,118),(67,119),(67,120),(67,121),(67,122),(67,123),(69,124),(69,125),(69,126),(69,127),(69,128),(69,129),(69,130),(69,131),(69,132),(69,133),(71,134),(72,135),(73,136),(73,137),(73,138),(73,139),(73,140),(73,141),(73,142),(73,143),(73,144),(73,145),(73,146),(74,134),(74,135),(74,136),(74,137),(74,138),(74,139),(74,140),(74,141),(74,142),(74,143),(74,144),(74,145),(74,146),(74,147),(74,148),(74,149),(74,150),(74,151),(74,152),(74,153),(74,154),(74,155),(74,156),(74,157),(74,158),(74,159),(76,161),(77,160),(77,161);
+INSERT INTO `b_task_operation` VALUES (2,2),(2,3),(3,2),(3,4),(3,5),(3,6),(3,7),(4,2),(4,3),(4,4),(4,5),(4,6),(4,7),(5,2),(5,3),(5,5),(5,6),(5,7),(5,8),(5,9),(6,2),(6,3),(6,4),(6,5),(6,6),(6,7),(6,10),(6,11),(6,12),(6,13),(6,14),(6,15),(6,16),(6,17),(6,18),(8,19),(8,20),(8,21),(9,19),(9,20),(9,21),(9,22),(9,23),(9,24),(9,25),(9,26),(9,27),(9,28),(9,29),(9,30),(9,31),(9,32),(9,33),(9,34),(10,19),(10,20),(10,21),(10,22),(10,23),(10,24),(10,25),(10,26),(10,27),(10,28),(10,29),(10,30),(10,31),(10,32),(10,33),(10,34),(10,35),(11,19),(11,20),(11,21),(11,24),(11,28),(13,36),(13,37),(13,38),(15,39),(16,40),(17,40),(17,41),(17,42),(17,43),(17,44),(17,45),(17,46),(18,40),(18,41),(18,45),(18,46),(18,47),(19,40),(19,48),(19,49),(19,50),(19,51),(20,40),(20,41),(20,42),(20,43),(20,44),(20,45),(20,46),(20,47),(20,48),(20,49),(20,50),(20,51),(20,52),(20,53),(22,54),(23,54),(23,55),(24,54),(24,55),(24,56),(26,59),(26,60),(26,61),(26,62),(26,63),(26,64),(26,65),(26,67),(26,68),(27,57),(27,58),(27,59),(27,60),(27,61),(27,62),(27,63),(27,64),(27,65),(27,66),(27,67),(27,68),(27,69),(29,70),(30,70),(30,71),(30,75),(31,70),(31,75),(31,76),(31,77),(32,70),(32,71),(32,72),(32,73),(32,75),(32,76),(32,77),(33,70),(33,71),(33,72),(33,73),(33,74),(33,75),(33,76),(33,77),(35,78),(36,78),(36,79),(36,80),(36,81),(38,82),(39,83),(39,84),(41,85),(41,86),(42,87),(43,85),(43,86),(43,88),(44,85),(44,86),(44,87),(44,88),(45,85),(45,86),(45,87),(45,88),(45,89),(45,90),(45,91),(45,92),(46,85),(46,86),(46,87),(46,88),(46,89),(46,90),(46,91),(46,92),(46,93),(46,94),(46,95),(46,96),(47,85),(47,86),(47,87),(47,88),(47,89),(47,90),(47,91),(47,92),(47,93),(47,94),(47,95),(47,96),(47,97),(47,98),(47,99),(47,100),(47,101),(47,102),(49,103),(49,104),(49,105),(49,106),(49,107),(49,108),(49,109),(49,110),(49,111),(49,112),(51,113),(52,114),(53,115),(53,116),(53,117),(53,118),(53,119),(53,120),(53,121),(53,122),(53,123),(53,124),(53,125),(54,113),(54,114),(54,115),(54,116),(54,117),(54,118),(54,119),(54,120),(54,121),(54,122),(54,123),(54,124),(54,125),(54,126),(54,127),(54,128),(54,129),(54,130),(54,131),(54,132),(54,133),(54,134),(54,135),(54,136),(54,137),(54,138),(56,140),(57,139),(57,140);
 /*!40000 ALTER TABLE `b_task_operation` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_ticket`
---
-
-DROP TABLE IF EXISTS `b_ticket`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ticket` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  `DATE_CREATE` datetime DEFAULT NULL,
-  `DAY_CREATE` date DEFAULT NULL,
-  `TIMESTAMP_X` datetime DEFAULT NULL,
-  `DATE_CLOSE` datetime DEFAULT NULL,
-  `AUTO_CLOSED` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `AUTO_CLOSE_DAYS` int(3) DEFAULT NULL,
-  `SLA_ID` int(18) NOT NULL DEFAULT '1',
-  `NOTIFY_AGENT_ID` int(18) DEFAULT NULL,
-  `EXPIRE_AGENT_ID` int(18) DEFAULT NULL,
-  `OVERDUE_MESSAGES` int(18) NOT NULL DEFAULT '0',
-  `IS_NOTIFIED` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `IS_OVERDUE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `CATEGORY_ID` int(18) DEFAULT NULL,
-  `CRITICALITY_ID` int(18) DEFAULT NULL,
-  `STATUS_ID` int(18) DEFAULT NULL,
-  `MARK_ID` int(18) DEFAULT NULL,
-  `SOURCE_ID` int(18) DEFAULT NULL,
-  `DIFFICULTY_ID` int(18) DEFAULT NULL,
-  `TITLE` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `MESSAGES` int(11) NOT NULL DEFAULT '0',
-  `IS_SPAM` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `OWNER_USER_ID` int(11) DEFAULT NULL,
-  `OWNER_GUEST_ID` int(11) DEFAULT NULL,
-  `OWNER_SID` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `CREATED_USER_ID` int(18) DEFAULT NULL,
-  `CREATED_GUEST_ID` int(18) DEFAULT NULL,
-  `CREATED_MODULE_NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `RESPONSIBLE_USER_ID` int(11) DEFAULT NULL,
-  `MODIFIED_USER_ID` int(11) DEFAULT NULL,
-  `MODIFIED_GUEST_ID` int(11) DEFAULT NULL,
-  `MODIFIED_MODULE_NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `LAST_MESSAGE_USER_ID` int(18) DEFAULT NULL,
-  `LAST_MESSAGE_GUEST_ID` int(18) DEFAULT NULL,
-  `LAST_MESSAGE_SID` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `LAST_MESSAGE_BY_SUPPORT_TEAM` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `LAST_MESSAGE_DATE` datetime DEFAULT NULL,
-  `SUPPORT_COMMENTS` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `PROBLEM_TIME` int(18) DEFAULT NULL,
-  `HOLD_ON` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `REOPEN` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `COUPON` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SUPPORT_DEADLINE` datetime DEFAULT NULL,
-  `SUPPORT_DEADLINE_NOTIFY` datetime DEFAULT NULL,
-  `D_1_USER_M_AFTER_SUP_M` datetime DEFAULT NULL,
-  `ID_1_USER_M_AFTER_SUP_M` int(18) DEFAULT NULL,
-  `DEADLINE_SOURCE_DATE` datetime DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_OWNER_ID` (`OWNER_USER_ID`,`TIMESTAMP_X`),
-  KEY `IX_RESPONSIBLE_ID` (`RESPONSIBLE_USER_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ticket`
---
-
-LOCK TABLES `b_ticket` WRITE;
-/*!40000 ALTER TABLE `b_ticket` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ticket` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_ticket_dictionary`
---
-
-DROP TABLE IF EXISTS `b_ticket_dictionary`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ticket_dictionary` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `FIRST_SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `C_TYPE` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
-  `SID` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SET_AS_DEFAULT` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `C_SORT` int(11) DEFAULT '100',
-  `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `DESCR` text COLLATE utf8_unicode_ci,
-  `RESPONSIBLE_USER_ID` int(11) DEFAULT NULL,
-  `EVENT1` varchar(255) COLLATE utf8_unicode_ci DEFAULT 'ticket',
-  `EVENT2` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `EVENT3` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ticket_dictionary`
---
-
-LOCK TABLES `b_ticket_dictionary` WRITE;
-/*!40000 ALTER TABLE `b_ticket_dictionary` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ticket_dictionary` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_ticket_dictionary_2_site`
---
-
-DROP TABLE IF EXISTS `b_ticket_dictionary_2_site`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ticket_dictionary_2_site` (
-  `DICTIONARY_ID` int(18) NOT NULL DEFAULT '0',
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`DICTIONARY_ID`,`SITE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ticket_dictionary_2_site`
---
-
-LOCK TABLES `b_ticket_dictionary_2_site` WRITE;
-/*!40000 ALTER TABLE `b_ticket_dictionary_2_site` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ticket_dictionary_2_site` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_ticket_holidays`
---
-
-DROP TABLE IF EXISTS `b_ticket_holidays`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ticket_holidays` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `OPEN_TIME` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'HOLIDAY',
-  `DATE_FROM` datetime NOT NULL,
-  `DATE_TILL` datetime NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ticket_holidays`
---
-
-LOCK TABLES `b_ticket_holidays` WRITE;
-/*!40000 ALTER TABLE `b_ticket_holidays` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ticket_holidays` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_ticket_message`
---
-
-DROP TABLE IF EXISTS `b_ticket_message`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ticket_message` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `TIMESTAMP_X` datetime DEFAULT NULL,
-  `DATE_CREATE` datetime DEFAULT NULL,
-  `DAY_CREATE` date DEFAULT NULL,
-  `C_NUMBER` int(11) DEFAULT NULL,
-  `TICKET_ID` int(11) NOT NULL DEFAULT '0',
-  `IS_HIDDEN` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `IS_LOG` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `IS_OVERDUE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `CURRENT_RESPONSIBLE_USER_ID` int(18) DEFAULT NULL,
-  `NOTIFY_AGENT_DONE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `EXPIRE_AGENT_DONE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `MESSAGE` longtext COLLATE utf8_unicode_ci,
-  `MESSAGE_SEARCH` longtext COLLATE utf8_unicode_ci,
-  `IS_SPAM` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `EXTERNAL_ID` int(18) DEFAULT NULL,
-  `EXTERNAL_FIELD_1` text COLLATE utf8_unicode_ci,
-  `OWNER_USER_ID` int(11) DEFAULT NULL,
-  `OWNER_GUEST_ID` int(11) DEFAULT NULL,
-  `OWNER_SID` text COLLATE utf8_unicode_ci,
-  `SOURCE_ID` int(18) DEFAULT NULL,
-  `CREATED_USER_ID` int(18) DEFAULT NULL,
-  `CREATED_GUEST_ID` int(18) DEFAULT NULL,
-  `CREATED_MODULE_NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `MODIFIED_USER_ID` int(18) DEFAULT NULL,
-  `MODIFIED_GUEST_ID` int(18) DEFAULT NULL,
-  `MESSAGE_BY_SUPPORT_TEAM` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `TASK_TIME` int(18) DEFAULT NULL,
-  `NOT_CHANGE_STATUS` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  PRIMARY KEY (`ID`),
-  KEY `IX_TICKET_ID` (`TICKET_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ticket_message`
---
-
-LOCK TABLES `b_ticket_message` WRITE;
-/*!40000 ALTER TABLE `b_ticket_message` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ticket_message` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_ticket_message_2_file`
---
-
-DROP TABLE IF EXISTS `b_ticket_message_2_file`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ticket_message_2_file` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `HASH` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `MESSAGE_ID` int(18) NOT NULL DEFAULT '0',
-  `FILE_ID` int(18) NOT NULL DEFAULT '0',
-  `TICKET_ID` int(18) NOT NULL DEFAULT '0',
-  `EXTENSION_SUFFIX` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `IX_HASH` (`HASH`),
-  KEY `IX_MESSAGE_ID` (`MESSAGE_ID`),
-  KEY `IX_TICKET_ID` (`TICKET_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ticket_message_2_file`
---
-
-LOCK TABLES `b_ticket_message_2_file` WRITE;
-/*!40000 ALTER TABLE `b_ticket_message_2_file` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ticket_message_2_file` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_ticket_online`
---
-
-DROP TABLE IF EXISTS `b_ticket_online`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ticket_online` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `TIMESTAMP_X` datetime DEFAULT NULL,
-  `TICKET_ID` int(18) DEFAULT NULL,
-  `USER_ID` int(18) DEFAULT NULL,
-  `CURRENT_MODE` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_TICKET_ID` (`TICKET_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ticket_online`
---
-
-LOCK TABLES `b_ticket_online` WRITE;
-/*!40000 ALTER TABLE `b_ticket_online` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ticket_online` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_ticket_search`
---
-
-DROP TABLE IF EXISTS `b_ticket_search`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ticket_search` (
-  `TICKET_ID` int(18) NOT NULL,
-  `SEARCH_WORD` varchar(70) COLLATE utf8_unicode_ci NOT NULL,
-  KEY `IX_B_TICKET_SEARCH` (`SEARCH_WORD`,`TICKET_ID`),
-  KEY `IX_B_TICKET_SEARCH_T` (`TICKET_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ticket_search`
---
-
-LOCK TABLES `b_ticket_search` WRITE;
-/*!40000 ALTER TABLE `b_ticket_search` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ticket_search` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_ticket_sla`
---
-
-DROP TABLE IF EXISTS `b_ticket_sla`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ticket_sla` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `PRIORITY` int(18) NOT NULL DEFAULT '0',
-  `FIRST_SITE_ID` varchar(5) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `RESPONSE_TIME` int(18) DEFAULT NULL,
-  `RESPONSE_TIME_UNIT` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'hour',
-  `NOTICE_TIME` int(18) DEFAULT NULL,
-  `NOTICE_TIME_UNIT` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'hour',
-  `RESPONSIBLE_USER_ID` int(18) DEFAULT NULL,
-  `DATE_CREATE` datetime DEFAULT NULL,
-  `CREATED_USER_ID` int(18) DEFAULT NULL,
-  `CREATED_GUEST_ID` int(18) DEFAULT NULL,
-  `DATE_MODIFY` datetime DEFAULT NULL,
-  `MODIFIED_USER_ID` int(18) DEFAULT NULL,
-  `MODIFIED_GUEST_ID` int(18) DEFAULT NULL,
-  `TIMETABLE_ID` int(18) DEFAULT NULL,
-  `DEADLINE_SOURCE` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ticket_sla`
---
-
-LOCK TABLES `b_ticket_sla` WRITE;
-/*!40000 ALTER TABLE `b_ticket_sla` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ticket_sla` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_ticket_sla_2_category`
---
-
-DROP TABLE IF EXISTS `b_ticket_sla_2_category`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ticket_sla_2_category` (
-  `SLA_ID` int(18) NOT NULL DEFAULT '0',
-  `CATEGORY_ID` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`SLA_ID`,`CATEGORY_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ticket_sla_2_category`
---
-
-LOCK TABLES `b_ticket_sla_2_category` WRITE;
-/*!40000 ALTER TABLE `b_ticket_sla_2_category` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ticket_sla_2_category` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_ticket_sla_2_criticality`
---
-
-DROP TABLE IF EXISTS `b_ticket_sla_2_criticality`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ticket_sla_2_criticality` (
-  `SLA_ID` int(18) NOT NULL DEFAULT '0',
-  `CRITICALITY_ID` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`SLA_ID`,`CRITICALITY_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ticket_sla_2_criticality`
---
-
-LOCK TABLES `b_ticket_sla_2_criticality` WRITE;
-/*!40000 ALTER TABLE `b_ticket_sla_2_criticality` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ticket_sla_2_criticality` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_ticket_sla_2_holidays`
---
-
-DROP TABLE IF EXISTS `b_ticket_sla_2_holidays`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ticket_sla_2_holidays` (
-  `SLA_ID` int(18) NOT NULL,
-  `HOLIDAYS_ID` int(18) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ticket_sla_2_holidays`
---
-
-LOCK TABLES `b_ticket_sla_2_holidays` WRITE;
-/*!40000 ALTER TABLE `b_ticket_sla_2_holidays` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ticket_sla_2_holidays` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_ticket_sla_2_mark`
---
-
-DROP TABLE IF EXISTS `b_ticket_sla_2_mark`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ticket_sla_2_mark` (
-  `SLA_ID` int(18) NOT NULL DEFAULT '0',
-  `MARK_ID` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`SLA_ID`,`MARK_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ticket_sla_2_mark`
---
-
-LOCK TABLES `b_ticket_sla_2_mark` WRITE;
-/*!40000 ALTER TABLE `b_ticket_sla_2_mark` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ticket_sla_2_mark` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_ticket_sla_2_site`
---
-
-DROP TABLE IF EXISTS `b_ticket_sla_2_site`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ticket_sla_2_site` (
-  `SLA_ID` int(18) NOT NULL,
-  `SITE_ID` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`SLA_ID`,`SITE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ticket_sla_2_site`
---
-
-LOCK TABLES `b_ticket_sla_2_site` WRITE;
-/*!40000 ALTER TABLE `b_ticket_sla_2_site` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ticket_sla_2_site` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_ticket_sla_2_user_group`
---
-
-DROP TABLE IF EXISTS `b_ticket_sla_2_user_group`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ticket_sla_2_user_group` (
-  `SLA_ID` int(18) NOT NULL DEFAULT '0',
-  `GROUP_ID` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`SLA_ID`,`GROUP_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ticket_sla_2_user_group`
---
-
-LOCK TABLES `b_ticket_sla_2_user_group` WRITE;
-/*!40000 ALTER TABLE `b_ticket_sla_2_user_group` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ticket_sla_2_user_group` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_ticket_sla_shedule`
---
-
-DROP TABLE IF EXISTS `b_ticket_sla_shedule`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ticket_sla_shedule` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `SLA_ID` int(18) NOT NULL DEFAULT '0',
-  `WEEKDAY_NUMBER` int(2) NOT NULL DEFAULT '0',
-  `OPEN_TIME` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '24H',
-  `MINUTE_FROM` int(18) DEFAULT NULL,
-  `MINUTE_TILL` int(18) DEFAULT NULL,
-  `TIMETABLE_ID` int(18) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_SLA_ID` (`SLA_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ticket_sla_shedule`
---
-
-LOCK TABLES `b_ticket_sla_shedule` WRITE;
-/*!40000 ALTER TABLE `b_ticket_sla_shedule` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ticket_sla_shedule` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_ticket_timetable`
---
-
-DROP TABLE IF EXISTS `b_ticket_timetable`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ticket_timetable` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ticket_timetable`
---
-
-LOCK TABLES `b_ticket_timetable` WRITE;
-/*!40000 ALTER TABLE `b_ticket_timetable` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ticket_timetable` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_ticket_timetable_cache`
---
-
-DROP TABLE IF EXISTS `b_ticket_timetable_cache`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ticket_timetable_cache` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `SLA_ID` int(18) NOT NULL,
-  `DATE_FROM` datetime NOT NULL,
-  `DATE_TILL` datetime NOT NULL,
-  `W_TIME` int(18) NOT NULL,
-  `W_TIME_INC` int(18) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_B_TICKET_TIMETABLE_CACHE_S` (`SLA_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ticket_timetable_cache`
---
-
-LOCK TABLES `b_ticket_timetable_cache` WRITE;
-/*!40000 ALTER TABLE `b_ticket_timetable_cache` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ticket_timetable_cache` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_ticket_ugroups`
---
-
-DROP TABLE IF EXISTS `b_ticket_ugroups`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ticket_ugroups` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `XML_ID` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SORT` int(11) NOT NULL DEFAULT '100',
-  `IS_TEAM_GROUP` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ticket_ugroups`
---
-
-LOCK TABLES `b_ticket_ugroups` WRITE;
-/*!40000 ALTER TABLE `b_ticket_ugroups` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ticket_ugroups` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_ticket_user_ugroup`
---
-
-DROP TABLE IF EXISTS `b_ticket_user_ugroup`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_ticket_user_ugroup` (
-  `USER_ID` int(11) NOT NULL DEFAULT '0',
-  `GROUP_ID` int(11) NOT NULL DEFAULT '0',
-  `CAN_VIEW_GROUP_MESSAGES` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `CAN_MAIL_GROUP_MESSAGES` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `CAN_MAIL_UPDATE_GROUP_MESSAGES` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  PRIMARY KEY (`GROUP_ID`,`USER_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_ticket_user_ugroup`
---
-
-LOCK TABLES `b_ticket_user_ugroup` WRITE;
-/*!40000 ALTER TABLE `b_ticket_user_ugroup` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_ticket_user_ugroup` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -21754,7 +15107,7 @@ CREATE TABLE `b_user` (
 
 LOCK TABLES `b_user` WRITE;
 /*!40000 ALTER TABLE `b_user` DISABLE KEYS */;
-INSERT INTO `b_user` VALUES (1,'2019-07-10 13:49:01','admin','VpfP3iWgda024a93e5340c9d30853363d126ce8e','xdGctTkl0dbbb529f7fc92592e8fbec8d8089be1','Y','','','mail@example.com','2019-07-10 13:49:01','2019-07-10 13:48:24',NULL,NULL,NULL,NULL,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2019-07-10 13:48:24',NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `b_user` VALUES (1,'2019-10-17 11:08:34','admin','lXGSPczRea538681279d7c56b61dcf7cae79dbe2','YHoaAYD09d282699d44ad1e8d4fdaf85da443436','Y','','','admin@example.com','2019-10-17 11:08:34','2019-10-17 11:06:50',NULL,NULL,NULL,NULL,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2019-10-17 11:06:50',NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `b_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -21805,7 +15158,7 @@ CREATE TABLE `b_user_access_check` (
 
 LOCK TABLES `b_user_access_check` WRITE;
 /*!40000 ALTER TABLE `b_user_access_check` DISABLE KEYS */;
-INSERT INTO `b_user_access_check` VALUES (1,'group'),(1,'socnetgroup'),(1,'socnetuser'),(1,'user');
+INSERT INTO `b_user_access_check` VALUES (1,'group'),(1,'user');
 /*!40000 ALTER TABLE `b_user_access_check` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -21822,6 +15175,7 @@ CREATE TABLE `b_user_auth_action` (
   `PRIORITY` int(11) NOT NULL DEFAULT '100',
   `ACTION` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `ACTION_DATE` datetime NOT NULL,
+  `APPLICATION_ID` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `ix_auth_action_user` (`USER_ID`,`PRIORITY`),
   KEY `ix_auth_action_date` (`ACTION_DATE`)
@@ -21834,7 +15188,7 @@ CREATE TABLE `b_user_auth_action` (
 
 LOCK TABLES `b_user_auth_action` WRITE;
 /*!40000 ALTER TABLE `b_user_auth_action` DISABLE KEYS */;
-INSERT INTO `b_user_auth_action` VALUES (1,1,200,'update','2019-07-10 13:48:24');
+INSERT INTO `b_user_auth_action` VALUES (1,1,200,'update','2019-10-17 11:06:50',NULL);
 /*!40000 ALTER TABLE `b_user_auth_action` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -21904,7 +15258,7 @@ DROP TABLE IF EXISTS `b_user_field`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `b_user_field` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `ENTITY_ID` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ENTITY_ID` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `FIELD_NAME` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `USER_TYPE_ID` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `XML_ID` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -21918,7 +15272,7 @@ CREATE TABLE `b_user_field` (
   `SETTINGS` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ux_user_type_entity` (`ENTITY_ID`,`FIELD_NAME`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -21927,7 +15281,7 @@ CREATE TABLE `b_user_field` (
 
 LOCK TABLES `b_user_field` WRITE;
 /*!40000 ALTER TABLE `b_user_field` DISABLE KEYS */;
-INSERT INTO `b_user_field` VALUES (1,'BLOG_POST','UF_BLOG_POST_DOC','file','UF_BLOG_POST_DOC',100,'Y','N','N','N','Y','Y','a:0:{}'),(2,'BLOG_COMMENT','UF_BLOG_COMMENT_DOC','file','UF_BLOG_COMMENT_DOC',100,'Y','N','N','N','Y','Y','a:0:{}'),(3,'BLOG_POST','UF_BLOG_POST_URL_PRV','url_preview','UF_BLOG_POST_URL_PRV',100,'N','N','N','N','Y','Y','a:0:{}'),(4,'BLOG_COMMENT','UF_BLOG_COMM_URL_PRV','url_preview','UF_BLOG_COMM_URL_PRV',100,'N','N','N','N','Y','Y','a:0:{}'),(5,'BLOG_POST','UF_GRATITUDE','integer','UF_GRATITUDE',100,'N','N','N','N','Y','N','a:0:{}'),(6,'FORUM_MESSAGE','UF_FORUM_MES_URL_PRV','url_preview','UF_FORUM_MES_URL_PRV',100,'N','N','N','N','Y','N','a:0:{}'),(7,'BLOG_POST','UF_CATEGORY_CODE','string',NULL,100,'N','N','N','Y','Y','N','a:6:{s:4:\"SIZE\";i:20;s:4:\"ROWS\";i:1;s:6:\"REGEXP\";N;s:10:\"MIN_LENGTH\";i:0;s:10:\"MAX_LENGTH\";i:0;s:13:\"DEFAULT_VALUE\";N;}'),(8,'BLOG_POST','UF_ANSWER_ID','integer',NULL,100,'Y','N','N','Y','Y','N','a:4:{s:4:\"SIZE\";i:20;s:9:\"MIN_VALUE\";i:0;s:9:\"MAX_VALUE\";i:0;s:13:\"DEFAULT_VALUE\";s:0:\"\";}'),(9,'BLOG_POST','UF_ORIGINAL_ID','string',NULL,100,'N','N','N','Y','Y','N','a:6:{s:4:\"SIZE\";i:20;s:4:\"ROWS\";i:1;s:6:\"REGEXP\";N;s:10:\"MIN_LENGTH\";i:0;s:10:\"MAX_LENGTH\";i:0;s:13:\"DEFAULT_VALUE\";N;}'),(10,'BLOG_POST','UF_STATUS','enumeration',NULL,100,'N','N','N','Y','Y','N','a:4:{s:7:\"DISPLAY\";s:4:\"LIST\";s:11:\"LIST_HEIGHT\";i:1;s:16:\"CAPTION_NO_VALUE\";s:0:\"\";s:13:\"SHOW_NO_VALUE\";s:1:\"Y\";}'),(11,'USER','UF_IM_SEARCH','string',NULL,100,'N','N','N','N','N','N','a:6:{s:4:\"SIZE\";i:20;s:4:\"ROWS\";i:1;s:6:\"REGEXP\";N;s:10:\"MIN_LENGTH\";i:0;s:10:\"MAX_LENGTH\";i:0;s:13:\"DEFAULT_VALUE\";N;}'),(12,'SONET_LOG','UF_SONET_LOG_FILE','file','UF_SONET_LOG_FILE',100,'Y','N','N','N','Y','Y','a:0:{}'),(13,'SONET_COMMENT','UF_SONET_COM_FILE','file','UF_SONET_COM_FILE',100,'Y','N','N','N','Y','Y','a:0:{}'),(14,'BLOG_POST','UF_BLOG_POST_IMPRTNT','integer','UF_BLOG_POST_IMPRTNT',100,'N','N','N','Y','Y','N','a:0:{}'),(15,'BLOG_POST','UF_IMPRTANT_DATE_END','datetime','UF_IMPRTANT_DATE_END',100,'N','N','N','N','Y','N','a:0:{}'),(16,'SONET_LOG','UF_SONET_LOG_URL_PRV','url_preview','UF_SONET_LOG_URL_PRV',100,'N','N','N','N','Y','N','a:0:{}'),(17,'SONET_COMMENT','UF_SONET_COM_URL_PRV','url_preview','UF_SONET_COM_URL_PRV',100,'N','N','N','N','Y','N','a:0:{}'),(18,'BLOG_POST','UF_BLOG_POST_VOTE','vote','UF_BLOG_POST_VOTE',100,'N','N','N','Y','Y','N','a:4:{s:10:\"CHANNEL_ID\";i:1;s:6:\"UNIQUE\";i:8;s:15:\"UNIQUE_IP_DELAY\";a:2:{s:5:\"DELAY\";s:2:\"10\";s:10:\"DELAY_TYPE\";s:1:\"D\";}s:6:\"NOTIFY\";s:1:\"I\";}');
+INSERT INTO `b_user_field` VALUES (1,'BLOG_POST','UF_BLOG_POST_DOC','file','UF_BLOG_POST_DOC',100,'Y','N','N','N','Y','Y','a:0:{}'),(2,'BLOG_COMMENT','UF_BLOG_COMMENT_DOC','file','UF_BLOG_COMMENT_DOC',100,'Y','N','N','N','Y','Y','a:0:{}'),(3,'BLOG_POST','UF_BLOG_POST_URL_PRV','url_preview','UF_BLOG_POST_URL_PRV',100,'N','N','N','N','Y','Y','a:0:{}'),(4,'BLOG_COMMENT','UF_BLOG_COMM_URL_PRV','url_preview','UF_BLOG_COMM_URL_PRV',100,'N','N','N','N','Y','Y','a:0:{}'),(5,'BLOG_POST','UF_GRATITUDE','integer','UF_GRATITUDE',100,'N','N','N','N','Y','N','a:0:{}'),(6,'FORUM_MESSAGE','UF_FORUM_MES_URL_PRV','url_preview','UF_FORUM_MES_URL_PRV',100,'N','N','N','N','Y','N','a:0:{}');
 /*!40000 ALTER TABLE `b_user_field` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -21975,7 +15329,7 @@ CREATE TABLE `b_user_field_enum` (
   `XML_ID` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ux_user_field_enum` (`USER_FIELD_ID`,`XML_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -21984,7 +15338,6 @@ CREATE TABLE `b_user_field_enum` (
 
 LOCK TABLES `b_user_field_enum` WRITE;
 /*!40000 ALTER TABLE `b_user_field_enum` DISABLE KEYS */;
-INSERT INTO `b_user_field_enum` VALUES (1,10,'Новые','Y',100,'NEW'),(2,10,'В работе','N',200,'PROCESSING'),(3,10,'Внедрено','N',300,'COMPLETED');
 /*!40000 ALTER TABLE `b_user_field_enum` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -22013,7 +15366,6 @@ CREATE TABLE `b_user_field_lang` (
 
 LOCK TABLES `b_user_field_lang` WRITE;
 /*!40000 ALTER TABLE `b_user_field_lang` DISABLE KEYS */;
-INSERT INTO `b_user_field_lang` VALUES (7,'en','Category',NULL,NULL,NULL,NULL),(7,'ru','Категория',NULL,NULL,NULL,NULL),(8,'en','Official reply ID',NULL,NULL,NULL,NULL),(8,'ru','ID официального ответа',NULL,NULL,NULL,NULL),(9,'en','Copy',NULL,NULL,NULL,NULL),(9,'ru','Дубликат',NULL,NULL,NULL,NULL),(10,'en','Status',NULL,NULL,NULL,NULL),(10,'ru','Статус',NULL,NULL,NULL,NULL),(11,'en','IM: users can find','IM: users can find','IM: users can find',NULL,NULL),(11,'ru','IM: users can find','IM: users can find','IM: users can find',NULL,NULL),(14,'en','Announcement','Announcement','Announcement',NULL,NULL),(14,'ru','Важное сообщение','Важное','Важное',NULL,NULL),(15,'en','Active until','Active until',NULL,NULL,NULL),(15,'ru','Срок действия','Срок',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `b_user_field_lang` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -22104,8 +15456,33 @@ CREATE TABLE `b_user_index` (
 
 LOCK TABLES `b_user_index` WRITE;
 /*!40000 ALTER TABLE `b_user_index` DISABLE KEYS */;
-INSERT INTO `b_user_index` VALUES (1,'001','','001 znvy rknzcyr pbz znvy@rknzcyr.pbz nqzva','','','','','');
+INSERT INTO `b_user_index` VALUES (1,'001','','001 nqzva rknzcyr pbz nqzva@rknzcyr.pbz','','','','','');
 /*!40000 ALTER TABLE `b_user_index` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `b_user_index_selector`
+--
+
+DROP TABLE IF EXISTS `b_user_index_selector`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `b_user_index_selector` (
+  `USER_ID` int(11) NOT NULL,
+  `SEARCH_SELECTOR_CONTENT` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`USER_ID`),
+  FULLTEXT KEY `IXF_B_USER_INDEX_SELECTOR_1` (`SEARCH_SELECTOR_CONTENT`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `b_user_index_selector`
+--
+
+LOCK TABLES `b_user_index_selector` WRITE;
+/*!40000 ALTER TABLE `b_user_index_selector` DISABLE KEYS */;
+INSERT INTO `b_user_index_selector` VALUES (1,'');
+/*!40000 ALTER TABLE `b_user_index_selector` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -22124,7 +15501,7 @@ CREATE TABLE `b_user_option` (
   `COMMON` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ux_user_category_name` (`USER_ID`,`CATEGORY`,`NAME`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -22133,7 +15510,7 @@ CREATE TABLE `b_user_option` (
 
 LOCK TABLES `b_user_option` WRITE;
 /*!40000 ALTER TABLE `b_user_option` DISABLE KEYS */;
-INSERT INTO `b_user_option` VALUES (1,0,'intranet','~gadgets_admin_index','a:1:{i:0;a:1:{s:7:\"GADGETS\";a:13:{s:28:\"ADMIN_ORDERS_GRAPH@111111111\";a:3:{s:6:\"COLUMN\";i:0;s:3:\"ROW\";i:0;s:4:\"HIDE\";s:1:\"N\";}s:22:\"ADMIN_ORDERS@111111111\";a:3:{s:6:\"COLUMN\";i:0;s:3:\"ROW\";i:1;s:4:\"HIDE\";s:1:\"N\";}s:20:\"ADMIN_STAT@222222222\";a:3:{s:6:\"COLUMN\";i:0;s:3:\"ROW\";i:3;s:4:\"HIDE\";s:1:\"N\";}s:19:\"HTML_AREA@444444444\";a:5:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:0;s:4:\"HIDE\";s:1:\"N\";s:8:\"USERDATA\";a:1:{s:7:\"content\";s:797:\"<table class=\"bx-gadgets-info-site-table\" cellspacing=\"0\"><tr>	<td class=\"bx-gadget-gray\">Создатель сайта:</td>	<td>Группа компаний &laquo;1С-Битрикс&raquo;.</td>	<td class=\"bx-gadgets-info-site-logo\" rowspan=\"5\"><img src=\"/bitrix/components/bitrix/desktop/templates/admin/images/site_logo.png\"></td></tr><tr>	<td class=\"bx-gadget-gray\">Адрес сайта:</td>	<td><a href=\"http://www.1c-bitrix.ru\">www.1c-bitrix.ru</a></td></tr><tr>	<td class=\"bx-gadget-gray\">Сайт сдан:</td>	<td>12 декабря 2010 г.</td></tr><tr>	<td class=\"bx-gadget-gray\">Ответственное лицо:</td>	<td>Иван Иванов</td></tr><tr>	<td class=\"bx-gadget-gray\">E-mail:</td>	<td><a href=\"mailto:info@1c-bitrix.ru\">info@1c-bitrix.ru</a></td></tr></table>\";}s:8:\"SETTINGS\";a:1:{s:9:\"TITLE_STD\";s:34:\"Информация о сайте\";}}s:24:\"ADMIN_SECURITY@555555555\";a:3:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:1;s:4:\"HIDE\";s:1:\"N\";}s:25:\"ADMIN_SITESPEED@666666777\";a:3:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:2;s:4:\"HIDE\";s:1:\"N\";}s:23:\"ADMIN_PERFMON@666666666\";a:3:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:3;s:4:\"HIDE\";s:1:\"N\";}s:24:\"ADMIN_PRODUCTS@111111111\";a:3:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:65;s:4:\"HIDE\";s:1:\"N\";}s:20:\"ADMIN_INFO@333333333\";a:3:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:7;s:4:\"HIDE\";s:1:\"N\";}s:25:\"ADMIN_CHECKLIST@777888999\";a:3:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:8;s:4:\"HIDE\";s:1:\"N\";}s:19:\"RSSREADER@777777777\";a:4:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:9;s:4:\"HIDE\";s:1:\"N\";s:8:\"SETTINGS\";a:3:{s:9:\"TITLE_STD\";s:33:\"Новости 1С-Битрикс\";s:3:\"CNT\";i:10;s:7:\"RSS_URL\";s:45:\"https://www.1c-bitrix.ru/about/life/news/rss/\";}}s:23:\"ADMIN_MARKETPALCE@22549\";a:3:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:4;s:4:\"HIDE\";s:1:\"N\";}s:22:\"ADMIN_MOBILESHOP@13391\";a:3:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:5;s:4:\"HIDE\";s:1:\"N\";}}}}','Y'),(2,0,'intranet','~gadgets_sonet_user','a:1:{s:7:\"GADGETS\";a:10:{s:18:\"SONET_USER_LINKS@1\";a:4:{s:6:\"COLUMN\";i:0;s:3:\"ROW\";i:0;s:8:\"USERDATA\";N;s:4:\"HIDE\";s:1:\"N\";}s:20:\"SONET_USER_FRIENDS@2\";a:4:{s:6:\"COLUMN\";i:0;s:3:\"ROW\";i:1;s:8:\"USERDATA\";N;s:4:\"HIDE\";s:1:\"N\";}s:21:\"SONET_USER_BIRTHDAY@3\";a:4:{s:6:\"COLUMN\";i:0;s:3:\"ROW\";i:2;s:8:\"USERDATA\";N;s:4:\"HIDE\";s:1:\"N\";}s:19:\"SONET_USER_GROUPS@4\";a:4:{s:6:\"COLUMN\";i:0;s:3:\"ROW\";i:3;s:8:\"USERDATA\";N;s:4:\"HIDE\";s:1:\"N\";}s:17:\"SONET_USER_HEAD@5\";a:4:{s:6:\"COLUMN\";i:0;s:3:\"ROW\";i:4;s:8:\"USERDATA\";N;s:4:\"HIDE\";s:1:\"N\";}s:19:\"SONET_USER_HONOUR@6\";a:4:{s:6:\"COLUMN\";i:0;s:3:\"ROW\";i:5;s:8:\"USERDATA\";N;s:4:\"HIDE\";s:1:\"N\";}s:20:\"SONET_USER_ABSENCE@7\";a:4:{s:6:\"COLUMN\";i:0;s:3:\"ROW\";i:6;s:8:\"USERDATA\";N;s:4:\"HIDE\";s:1:\"N\";}s:17:\"SONET_USER_DESC@8\";a:4:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:0;s:8:\"USERDATA\";N;s:4:\"HIDE\";s:1:\"N\";}s:22:\"SONET_USER_ACTIVITY@21\";a:3:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:1;s:4:\"HIDE\";s:1:\"N\";}s:7:\"TASKS@9\";a:4:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:2;s:8:\"USERDATA\";N;s:4:\"HIDE\";s:1:\"N\";}}}','N'),(3,0,'intranet','~gadgets_sonet_group','a:1:{s:7:\"GADGETS\";a:7:{s:18:\"SONET_GROUP_DESC@1\";a:3:{s:6:\"COLUMN\";i:0;s:3:\"ROW\";i:0;s:4:\"HIDE\";s:1:\"N\";}s:16:\"UPDATES_ENTITY@9\";a:3:{s:6:\"COLUMN\";i:0;s:3:\"ROW\";i:1;s:4:\"HIDE\";s:1:\"N\";}s:7:\"TASKS@4\";a:3:{s:6:\"COLUMN\";i:0;s:3:\"ROW\";i:2;s:4:\"HIDE\";s:1:\"N\";}s:18:\"SONET_GROUP_TAGS@5\";a:3:{s:6:\"COLUMN\";i:0;s:3:\"ROW\";i:3;s:4:\"HIDE\";s:1:\"N\";}s:19:\"SONET_GROUP_LINKS@6\";a:3:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:0;s:4:\"HIDE\";s:1:\"N\";}s:19:\"SONET_GROUP_USERS@7\";a:3:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:1;s:4:\"HIDE\";s:1:\"N\";}s:18:\"SONET_GROUP_MODS@8\";a:3:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:2;s:4:\"HIDE\";s:1:\"N\";}}}','N'),(4,0,'socialnetwork','~log_filter_s1','a:4:{i:0;a:4:{s:2:\"ID\";s:4:\"work\";s:4:\"SORT\";i:100;s:4:\"NAME\";s:6:\"#WORK#\";s:6:\"FILTER\";a:1:{s:8:\"EVENT_ID\";a:3:{i:0;s:5:\"tasks\";i:1;s:13:\"timeman_entry\";i:2;s:6:\"report\";}}}i:1;a:4:{s:2:\"ID\";s:9:\"favorites\";s:4:\"SORT\";i:200;s:4:\"NAME\";s:11:\"#FAVORITES#\";s:6:\"FILTER\";a:1:{s:17:\"FAVORITES_USER_ID\";s:1:\"Y\";}}i:2;a:4:{s:2:\"ID\";s:2:\"my\";s:4:\"SORT\";i:300;s:4:\"NAME\";s:4:\"#MY#\";s:6:\"FILTER\";a:1:{s:13:\"CREATED_BY_ID\";s:17:\"#CURRENT_USER_ID#\";}}i:3;a:4:{s:2:\"ID\";s:9:\"important\";s:4:\"SORT\";i:350;s:4:\"NAME\";s:11:\"#important#\";s:6:\"FILTER\";a:1:{s:14:\"EXACT_EVENT_ID\";s:19:\"blog_post_important\";}}}','Y'),(5,0,'global','settings','a:2:{s:18:\"start_menu_preload\";s:1:\"Y\";s:16:\"start_menu_title\";s:1:\"N\";}','Y'),(6,0,'intranet','~gadgets_holder1','a:1:{s:7:\"GADGETS\";a:5:{s:15:\"RSSREADER@12333\";a:5:{s:6:\"COLUMN\";i:0;s:3:\"ROW\";i:0;s:8:\"USERDATA\";N;s:4:\"HIDE\";s:1:\"N\";s:8:\"SETTINGS\";a:2:{s:3:\"CNT\";s:2:\"10\";s:7:\"RSS_URL\";s:44:\"http://www.1c-bitrix.ru/about/life/news/rss/\";}}s:15:\"HTML_AREA@24648\";a:4:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:0;s:8:\"USERDATA\";N;s:4:\"HIDE\";s:1:\"N\";}s:15:\"FAVORITES@20837\";a:4:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:1;s:8:\"USERDATA\";a:1:{s:5:\"LINKS\";a:1:{i:0;a:2:{s:4:\"NAME\";s:0:\"\";s:3:\"URL\";s:24:\"http://www.1c-bitrix.ru/\";}}}s:4:\"HIDE\";s:1:\"N\";}s:12:\"PROBKI@28450\";a:4:{s:6:\"COLUMN\";i:2;s:3:\"ROW\";i:0;s:8:\"USERDATA\";N;s:4:\"HIDE\";s:1:\"N\";}s:13:\"WEATHER@23987\";a:4:{s:6:\"COLUMN\";i:2;s:3:\"ROW\";i:1;s:8:\"USERDATA\";N;s:4:\"HIDE\";s:1:\"N\";}}}','Y'),(7,0,'form','form_element_1','a:1:{s:4:\"tabs\";s:153:\"edit1--#--Клиент--,--NAME--#--*Название компании--,--PROPERTY_1--#--Руководитель--,--PROPERTY_2--#--Телефон--;--\";}','Y'),(8,1,'admin_panel','settings','a:1:{s:4:\"edit\";s:3:\"off\";}','N'),(9,1,'hot_keys','user_defined','b:1;','N'),(10,1,'favorite','favorite_menu','a:1:{s:5:\"stick\";s:1:\"Y\";}','N');
+INSERT INTO `b_user_option` VALUES (1,0,'intranet','~gadgets_admin_index','a:1:{i:0;a:1:{s:7:\"GADGETS\";a:12:{s:28:\"ADMIN_ORDERS_GRAPH@111111111\";a:3:{s:6:\"COLUMN\";i:0;s:3:\"ROW\";i:0;s:4:\"HIDE\";s:1:\"N\";}s:22:\"ADMIN_ORDERS@111111111\";a:3:{s:6:\"COLUMN\";i:0;s:3:\"ROW\";i:1;s:4:\"HIDE\";s:1:\"N\";}s:19:\"HTML_AREA@444444444\";a:5:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:0;s:4:\"HIDE\";s:1:\"N\";s:8:\"USERDATA\";a:1:{s:7:\"content\";s:797:\"<table class=\"bx-gadgets-info-site-table\" cellspacing=\"0\"><tr>	<td class=\"bx-gadget-gray\">Создатель сайта:</td>	<td>Группа компаний &laquo;1С-Битрикс&raquo;.</td>	<td class=\"bx-gadgets-info-site-logo\" rowspan=\"5\"><img src=\"/bitrix/components/bitrix/desktop/templates/admin/images/site_logo.png\"></td></tr><tr>	<td class=\"bx-gadget-gray\">Адрес сайта:</td>	<td><a href=\"http://www.1c-bitrix.ru\">www.1c-bitrix.ru</a></td></tr><tr>	<td class=\"bx-gadget-gray\">Сайт сдан:</td>	<td>12 декабря 2010 г.</td></tr><tr>	<td class=\"bx-gadget-gray\">Ответственное лицо:</td>	<td>Иван Иванов</td></tr><tr>	<td class=\"bx-gadget-gray\">E-mail:</td>	<td><a href=\"mailto:info@1c-bitrix.ru\">info@1c-bitrix.ru</a></td></tr></table>\";}s:8:\"SETTINGS\";a:1:{s:9:\"TITLE_STD\";s:34:\"Информация о сайте\";}}s:24:\"ADMIN_SECURITY@555555555\";a:3:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:1;s:4:\"HIDE\";s:1:\"N\";}s:25:\"ADMIN_SITESPEED@666666777\";a:3:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:2;s:4:\"HIDE\";s:1:\"N\";}s:23:\"ADMIN_PERFMON@666666666\";a:3:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:3;s:4:\"HIDE\";s:1:\"N\";}s:24:\"ADMIN_PRODUCTS@111111111\";a:3:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:6;s:4:\"HIDE\";s:1:\"N\";}s:20:\"ADMIN_INFO@333333333\";a:3:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:7;s:4:\"HIDE\";s:1:\"N\";}s:25:\"ADMIN_CHECKLIST@777888999\";a:3:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:8;s:4:\"HIDE\";s:1:\"N\";}s:19:\"RSSREADER@777777777\";a:4:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:9;s:4:\"HIDE\";s:1:\"N\";s:8:\"SETTINGS\";a:3:{s:9:\"TITLE_STD\";s:33:\"Новости 1С-Битрикс\";s:3:\"CNT\";i:10;s:7:\"RSS_URL\";s:45:\"https://www.1c-bitrix.ru/about/life/news/rss/\";}}s:23:\"ADMIN_MARKETPALCE@22549\";a:3:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:4;s:4:\"HIDE\";s:1:\"N\";}s:22:\"ADMIN_MOBILESHOP@13391\";a:3:{s:6:\"COLUMN\";i:1;s:3:\"ROW\";i:5;s:4:\"HIDE\";s:1:\"N\";}}}}','Y'),(2,1,'admin_panel','settings','a:2:{s:4:\"edit\";s:3:\"off\";s:9:\"collapsed\";s:2:\"on\";}','N'),(3,1,'hot_keys','user_defined','b:1;','N'),(5,1,'favorite','favorite_menu','a:1:{s:5:\"stick\";s:1:\"Y\";}','N');
 /*!40000 ALTER TABLE `b_user_option` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -22247,7 +15624,7 @@ CREATE TABLE `b_user_stored_auth` (
 
 LOCK TABLES `b_user_stored_auth` WRITE;
 /*!40000 ALTER TABLE `b_user_stored_auth` DISABLE KEYS */;
-INSERT INTO `b_user_stored_auth` VALUES (1,1,'2019-07-10 13:48:24','2019-07-10 13:48:24','d74def64e12358bac09887cb520305b1','N',2886991873);
+INSERT INTO `b_user_stored_auth` VALUES (1,1,'2019-10-17 11:06:51','2019-10-17 11:06:51','2e1646b3affb90dda721d5d17f4b0c85','N',2886991873);
 /*!40000 ALTER TABLE `b_user_stored_auth` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -22342,96 +15719,6 @@ LOCK TABLES `b_utm_forum_message` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `b_utm_sonet_comment`
---
-
-DROP TABLE IF EXISTS `b_utm_sonet_comment`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_utm_sonet_comment` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `VALUE_ID` int(11) NOT NULL,
-  `FIELD_ID` int(11) NOT NULL,
-  `VALUE` text COLLATE utf8_unicode_ci,
-  `VALUE_INT` int(11) DEFAULT NULL,
-  `VALUE_DOUBLE` float DEFAULT NULL,
-  `VALUE_DATE` datetime DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `ix_utm_SONET_COMMENT_1` (`FIELD_ID`),
-  KEY `ix_utm_SONET_COMMENT_2` (`VALUE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_utm_sonet_comment`
---
-
-LOCK TABLES `b_utm_sonet_comment` WRITE;
-/*!40000 ALTER TABLE `b_utm_sonet_comment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_utm_sonet_comment` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_utm_sonet_log`
---
-
-DROP TABLE IF EXISTS `b_utm_sonet_log`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_utm_sonet_log` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `VALUE_ID` int(11) NOT NULL,
-  `FIELD_ID` int(11) NOT NULL,
-  `VALUE` text COLLATE utf8_unicode_ci,
-  `VALUE_INT` int(11) DEFAULT NULL,
-  `VALUE_DOUBLE` float DEFAULT NULL,
-  `VALUE_DATE` datetime DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `ix_utm_SONET_LOG_1` (`FIELD_ID`),
-  KEY `ix_utm_SONET_LOG_2` (`VALUE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_utm_sonet_log`
---
-
-LOCK TABLES `b_utm_sonet_log` WRITE;
-/*!40000 ALTER TABLE `b_utm_sonet_log` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_utm_sonet_log` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_utm_user`
---
-
-DROP TABLE IF EXISTS `b_utm_user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_utm_user` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `VALUE_ID` int(11) NOT NULL,
-  `FIELD_ID` int(11) NOT NULL,
-  `VALUE` text COLLATE utf8_unicode_ci,
-  `VALUE_INT` int(11) DEFAULT NULL,
-  `VALUE_DOUBLE` float DEFAULT NULL,
-  `VALUE_DATE` datetime DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `ix_utm_USER_1` (`FIELD_ID`),
-  KEY `ix_utm_USER_2` (`VALUE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_utm_user`
---
-
-LOCK TABLES `b_utm_user` WRITE;
-/*!40000 ALTER TABLE `b_utm_user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_utm_user` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `b_uts_blog_comment`
 --
 
@@ -22467,16 +15754,7 @@ CREATE TABLE `b_uts_blog_post` (
   `UF_BLOG_POST_DOC` text COLLATE utf8_unicode_ci,
   `UF_BLOG_POST_URL_PRV` int(11) DEFAULT NULL,
   `UF_GRATITUDE` int(18) DEFAULT NULL,
-  `UF_CATEGORY_CODE` text COLLATE utf8_unicode_ci,
-  `UF_ANSWER_ID` text COLLATE utf8_unicode_ci,
-  `UF_ORIGINAL_ID` text COLLATE utf8_unicode_ci,
-  `UF_STATUS` int(18) DEFAULT NULL,
-  `UF_BLOG_POST_IMPRTNT` int(18) DEFAULT NULL,
-  `UF_IMPRTANT_DATE_END` datetime DEFAULT NULL,
-  `UF_BLOG_POST_VOTE` int(11) DEFAULT NULL,
-  PRIMARY KEY (`VALUE_ID`),
-  KEY `UX_UF_BLOG_POST_IMPRTNT` (`UF_BLOG_POST_IMPRTNT`,`VALUE_ID`),
-  KEY `UX_UF_BLOG_POST_IMPRTNT2` (`UF_IMPRTANT_DATE_END`,`UF_BLOG_POST_IMPRTNT`,`VALUE_ID`)
+  PRIMARY KEY (`VALUE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -22513,77 +15791,6 @@ LOCK TABLES `b_uts_forum_message` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `b_uts_sonet_comment`
---
-
-DROP TABLE IF EXISTS `b_uts_sonet_comment`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_uts_sonet_comment` (
-  `VALUE_ID` int(11) NOT NULL,
-  `UF_SONET_COM_FILE` text COLLATE utf8_unicode_ci,
-  `UF_SONET_COM_URL_PRV` int(11) DEFAULT NULL,
-  PRIMARY KEY (`VALUE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_uts_sonet_comment`
---
-
-LOCK TABLES `b_uts_sonet_comment` WRITE;
-/*!40000 ALTER TABLE `b_uts_sonet_comment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_uts_sonet_comment` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_uts_sonet_log`
---
-
-DROP TABLE IF EXISTS `b_uts_sonet_log`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_uts_sonet_log` (
-  `VALUE_ID` int(11) NOT NULL,
-  `UF_SONET_LOG_FILE` text COLLATE utf8_unicode_ci,
-  `UF_SONET_LOG_URL_PRV` int(11) DEFAULT NULL,
-  PRIMARY KEY (`VALUE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_uts_sonet_log`
---
-
-LOCK TABLES `b_uts_sonet_log` WRITE;
-/*!40000 ALTER TABLE `b_uts_sonet_log` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_uts_sonet_log` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_uts_user`
---
-
-DROP TABLE IF EXISTS `b_uts_user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_uts_user` (
-  `VALUE_ID` int(11) NOT NULL,
-  `UF_IM_SEARCH` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`VALUE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_uts_user`
---
-
-LOCK TABLES `b_uts_user` WRITE;
-/*!40000 ALTER TABLE `b_uts_user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_uts_user` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `b_vote`
 --
 
@@ -22595,6 +15802,7 @@ CREATE TABLE `b_vote` (
   `CHANNEL_ID` int(18) NOT NULL DEFAULT '0',
   `C_SORT` int(18) DEFAULT '100',
   `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
+  `ANONYMITY` int(11) NOT NULL DEFAULT '0',
   `NOTIFY` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
   `AUTHOR_ID` int(18) DEFAULT NULL,
   `TIMESTAMP_X` datetime NOT NULL,
@@ -22611,6 +15819,7 @@ CREATE TABLE `b_vote` (
   `EVENT3` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `UNIQUE_TYPE` int(18) NOT NULL DEFAULT '2',
   `KEEP_IP_SEC` int(18) DEFAULT NULL,
+  `OPTIONS` int(18) DEFAULT '1',
   `TEMPLATE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `RESULT_TEMPLATE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`ID`),
@@ -22640,6 +15849,7 @@ CREATE TABLE `b_vote_answer` (
   `TIMESTAMP_X` datetime NOT NULL,
   `QUESTION_ID` int(18) NOT NULL DEFAULT '0',
   `C_SORT` int(18) DEFAULT '100',
+  `IMAGE_ID` int(18) DEFAULT NULL,
   `MESSAGE` text COLLATE utf8_unicode_ci,
   `MESSAGE_TYPE` varchar(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'html',
   `COUNTER` int(18) NOT NULL DEFAULT '0',
@@ -22711,7 +15921,7 @@ CREATE TABLE `b_vote_channel` (
   `VOTE_SINGLE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
   `USE_CAPTCHA` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -22720,7 +15930,6 @@ CREATE TABLE `b_vote_channel` (
 
 LOCK TABLES `b_vote_channel` WRITE;
 /*!40000 ALTER TABLE `b_vote_channel` DISABLE KEYS */;
-INSERT INTO `b_vote_channel` VALUES (1,'UF_BLOG_POST_VOTE',100,NULL,'Y','Y','2019-07-10 13:47:56','UF_BLOG_POST_VOTE','N','N');
 /*!40000 ALTER TABLE `b_vote_channel` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -22738,7 +15947,7 @@ CREATE TABLE `b_vote_channel_2_group` (
   `PERMISSION` int(18) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`),
   KEY `IX_VOTE_CHANNEL_ID_GROUP_ID` (`CHANNEL_ID`,`GROUP_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -22747,7 +15956,6 @@ CREATE TABLE `b_vote_channel_2_group` (
 
 LOCK TABLES `b_vote_channel_2_group` WRITE;
 /*!40000 ALTER TABLE `b_vote_channel_2_group` DISABLE KEYS */;
-INSERT INTO `b_vote_channel_2_group` VALUES (1,1,2,1),(2,1,3,4),(3,1,4,4),(4,1,5,4);
 /*!40000 ALTER TABLE `b_vote_channel_2_group` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -22771,7 +15979,6 @@ CREATE TABLE `b_vote_channel_2_site` (
 
 LOCK TABLES `b_vote_channel_2_site` WRITE;
 /*!40000 ALTER TABLE `b_vote_channel_2_site` DISABLE KEYS */;
-INSERT INTO `b_vote_channel_2_site` VALUES (1,'s1');
 /*!40000 ALTER TABLE `b_vote_channel_2_site` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -22790,6 +15997,7 @@ CREATE TABLE `b_vote_event` (
   `STAT_SESSION_ID` int(18) DEFAULT NULL,
   `IP` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   `VALID` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
+  `VISIBLE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
   PRIMARY KEY (`ID`),
   KEY `IX_USER_ID` (`VOTE_USER_ID`),
   KEY `IX_B_VOTE_EVENT_2` (`VOTE_ID`,`IP`)
@@ -22869,12 +16077,13 @@ CREATE TABLE `b_vote_question` (
   `TIMESTAMP_X` datetime NOT NULL,
   `VOTE_ID` int(18) NOT NULL DEFAULT '0',
   `C_SORT` int(18) DEFAULT '100',
-  `COUNTER` int(11) NOT NULL DEFAULT '0',
+  `IMAGE_ID` int(18) DEFAULT NULL,
   `QUESTION` text COLLATE utf8_unicode_ci NOT NULL,
   `QUESTION_TYPE` varchar(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'html',
-  `IMAGE_ID` int(18) DEFAULT NULL,
-  `DIAGRAM` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
+  `FIELD_TYPE` int(5) NOT NULL DEFAULT '0',
   `REQUIRED` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
+  `COUNTER` int(11) NOT NULL DEFAULT '0',
+  `DIAGRAM` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
   `DIAGRAM_TYPE` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'histogram',
   `TEMPLATE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `TEMPLATE_NEW` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -22901,13 +16110,15 @@ DROP TABLE IF EXISTS `b_vote_user`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `b_vote_user` (
   `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `STAT_GUEST_ID` int(18) DEFAULT NULL,
+  `COOKIE_ID` int(18) NOT NULL,
   `AUTH_USER_ID` int(18) DEFAULT NULL,
   `COUNTER` int(18) NOT NULL DEFAULT '0',
   `DATE_FIRST` datetime NOT NULL,
   `DATE_LAST` datetime NOT NULL,
   `LAST_IP` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`)
+  `STAT_GUEST_ID` int(18) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `UX_VOTE_COOKIE_USER` (`COOKIE_ID`,`AUTH_USER_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -22919,249 +16130,6 @@ LOCK TABLES `b_vote_user` WRITE;
 /*!40000 ALTER TABLE `b_vote_user` DISABLE KEYS */;
 /*!40000 ALTER TABLE `b_vote_user` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `b_workflow_document`
---
-
-DROP TABLE IF EXISTS `b_workflow_document`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_workflow_document` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `STATUS_ID` int(18) NOT NULL DEFAULT '0',
-  `DATE_ENTER` datetime DEFAULT NULL,
-  `DATE_MODIFY` datetime DEFAULT NULL,
-  `DATE_LOCK` datetime DEFAULT NULL,
-  `ENTERED_BY` int(18) DEFAULT NULL,
-  `MODIFIED_BY` int(18) DEFAULT NULL,
-  `LOCKED_BY` int(18) DEFAULT NULL,
-  `FILENAME` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `TITLE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `BODY` longtext COLLATE utf8_unicode_ci,
-  `BODY_TYPE` varchar(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'html',
-  `PROLOG` longtext COLLATE utf8_unicode_ci,
-  `EPILOG` longtext COLLATE utf8_unicode_ci,
-  `COMMENTS` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_workflow_document`
---
-
-LOCK TABLES `b_workflow_document` WRITE;
-/*!40000 ALTER TABLE `b_workflow_document` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_workflow_document` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_workflow_file`
---
-
-DROP TABLE IF EXISTS `b_workflow_file`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_workflow_file` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `DOCUMENT_ID` int(18) DEFAULT '0',
-  `TIMESTAMP_X` datetime DEFAULT NULL,
-  `MODIFIED_BY` int(18) DEFAULT NULL,
-  `TEMP_FILENAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FILENAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FILESIZE` int(18) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `IX_TEMP_FILENAME` (`TEMP_FILENAME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_workflow_file`
---
-
-LOCK TABLES `b_workflow_file` WRITE;
-/*!40000 ALTER TABLE `b_workflow_file` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_workflow_file` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_workflow_log`
---
-
-DROP TABLE IF EXISTS `b_workflow_log`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_workflow_log` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `DOCUMENT_ID` int(18) NOT NULL DEFAULT '0',
-  `TIMESTAMP_X` datetime DEFAULT NULL,
-  `MODIFIED_BY` int(18) DEFAULT NULL,
-  `TITLE` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `FILENAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SITE_ID` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `BODY` longtext COLLATE utf8_unicode_ci,
-  `BODY_TYPE` varchar(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'html',
-  `STATUS_ID` int(18) NOT NULL DEFAULT '0',
-  `COMMENTS` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`ID`),
-  KEY `IX_DOCUMENT_ID` (`DOCUMENT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_workflow_log`
---
-
-LOCK TABLES `b_workflow_log` WRITE;
-/*!40000 ALTER TABLE `b_workflow_log` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_workflow_log` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_workflow_move`
---
-
-DROP TABLE IF EXISTS `b_workflow_move`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_workflow_move` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `TIMESTAMP_X` datetime NOT NULL,
-  `DOCUMENT_ID` int(18) DEFAULT NULL,
-  `IBLOCK_ELEMENT_ID` int(18) DEFAULT NULL,
-  `OLD_STATUS_ID` int(18) NOT NULL DEFAULT '0',
-  `STATUS_ID` int(18) NOT NULL DEFAULT '0',
-  `LOG_ID` int(18) DEFAULT NULL,
-  `USER_ID` int(18) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `IX_DOCUMENT_ID` (`DOCUMENT_ID`),
-  KEY `IX_B_WORKFLOW_MOVE_2` (`IBLOCK_ELEMENT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_workflow_move`
---
-
-LOCK TABLES `b_workflow_move` WRITE;
-/*!40000 ALTER TABLE `b_workflow_move` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_workflow_move` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_workflow_preview`
---
-
-DROP TABLE IF EXISTS `b_workflow_preview`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_workflow_preview` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `DOCUMENT_ID` int(18) NOT NULL DEFAULT '0',
-  `TIMESTAMP_X` datetime DEFAULT NULL,
-  `FILENAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_workflow_preview`
---
-
-LOCK TABLES `b_workflow_preview` WRITE;
-/*!40000 ALTER TABLE `b_workflow_preview` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_workflow_preview` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_workflow_status`
---
-
-DROP TABLE IF EXISTS `b_workflow_status`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_workflow_status` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `TIMESTAMP_X` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `C_SORT` int(18) DEFAULT '100',
-  `ACTIVE` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `TITLE` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `DESCRIPTION` text COLLATE utf8_unicode_ci,
-  `IS_FINAL` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `NOTIFY` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_workflow_status`
---
-
-LOCK TABLES `b_workflow_status` WRITE;
-/*!40000 ALTER TABLE `b_workflow_status` DISABLE KEYS */;
-INSERT INTO `b_workflow_status` VALUES (1,'2019-07-10 13:48:01',300,'Y','Опубликован',NULL,'Y','N'),(2,'2019-07-10 13:48:01',100,'Y','Черновик',NULL,'N','N'),(3,'2019-07-10 13:48:01',200,'Y','Готов',NULL,'N','Y');
-/*!40000 ALTER TABLE `b_workflow_status` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_workflow_status2group`
---
-
-DROP TABLE IF EXISTS `b_workflow_status2group`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_workflow_status2group` (
-  `ID` int(18) NOT NULL AUTO_INCREMENT,
-  `STATUS_ID` int(18) NOT NULL DEFAULT '0',
-  `GROUP_ID` int(18) NOT NULL DEFAULT '0',
-  `PERMISSION_TYPE` int(18) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  KEY `IX_STATUS_ID` (`STATUS_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_workflow_status2group`
---
-
-LOCK TABLES `b_workflow_status2group` WRITE;
-/*!40000 ALTER TABLE `b_workflow_status2group` DISABLE KEYS */;
-/*!40000 ALTER TABLE `b_workflow_status2group` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `b_xml_tree`
---
-
-DROP TABLE IF EXISTS `b_xml_tree`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `b_xml_tree` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `PARENT_ID` int(11) DEFAULT NULL,
-  `LEFT_MARGIN` int(11) DEFAULT NULL,
-  `RIGHT_MARGIN` int(11) DEFAULT NULL,
-  `DEPTH_LEVEL` int(11) DEFAULT NULL,
-  `NAME` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `VALUE` longtext COLLATE utf8_unicode_ci,
-  `ATTRIBUTES` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`ID`),
-  KEY `ix_b_xml_tree_parent` (`PARENT_ID`),
-  KEY `ix_b_xml_tree_left` (`LEFT_MARGIN`)
-) ENGINE=InnoDB AUTO_INCREMENT=196 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `b_xml_tree`
---
-
-LOCK TABLES `b_xml_tree` WRITE;
-/*!40000 ALTER TABLE `b_xml_tree` DISABLE KEYS */;
-INSERT INTO `b_xml_tree` VALUES (1,0,1,386,0,'КоммерческаяИнформация',NULL,'a:2:{s:22:\"ВерсияСхемы\";s:5:\"2.021\";s:32:\"ДатаФормирования\";s:19:\"2010-04-05T17:34:49\";}'),(2,1,2,143,1,'Классификатор',NULL,NULL),(3,2,3,4,2,'Ид','lists-clients',NULL),(4,2,5,6,2,'Наименование','Клиенты',NULL),(5,2,7,140,2,'Свойства',NULL,NULL),(6,5,8,15,3,'Свойство',NULL,NULL),(7,6,9,10,4,'Ид','CML2_ACTIVE',NULL),(8,6,11,12,4,'Наименование','БитриксАктивность',NULL),(9,6,13,14,4,'Множественное','false',NULL),(10,5,16,23,3,'Свойство',NULL,NULL),(11,10,17,18,4,'Ид','CML2_CODE',NULL),(12,10,19,20,4,'Наименование','Символьный код',NULL),(13,10,21,22,4,'Множественное','false',NULL),(14,5,24,31,3,'Свойство',NULL,NULL),(15,14,25,26,4,'Ид','CML2_SORT',NULL),(16,14,27,28,4,'Наименование','Сортировка',NULL),(17,14,29,30,4,'Множественное','false',NULL),(18,5,32,39,3,'Свойство',NULL,NULL),(19,18,33,34,4,'Ид','CML2_ACTIVE_FROM',NULL),(20,18,35,36,4,'Наименование','Начало активности',NULL),(21,18,37,38,4,'Множественное','false',NULL),(22,5,40,47,3,'Свойство',NULL,NULL),(23,22,41,42,4,'Ид','CML2_ACTIVE_TO',NULL),(24,22,43,44,4,'Наименование','Окончание активности',NULL),(25,22,45,46,4,'Множественное','false',NULL),(26,5,48,55,3,'Свойство',NULL,NULL),(27,26,49,50,4,'Ид','CML2_PREVIEW_TEXT',NULL),(28,26,51,52,4,'Наименование','Анонс',NULL),(29,26,53,54,4,'Множественное','false',NULL),(30,5,56,63,3,'Свойство',NULL,NULL),(31,30,57,58,4,'Ид','CML2_PREVIEW_PICTURE',NULL),(32,30,59,60,4,'Наименование','Картинка анонса',NULL),(33,30,61,62,4,'Множественное','false',NULL),(34,5,64,101,3,'Свойство',NULL,NULL),(35,34,65,66,4,'Ид','lists-clients-property-person',NULL),(36,34,67,68,4,'Наименование','Руководитель',NULL),(37,34,69,70,4,'Множественное','false',NULL),(38,34,71,72,4,'БитриксСортировка','20',NULL),(39,34,73,74,4,'БитриксКод','PERSON',NULL),(40,34,75,76,4,'БитриксЗначениеПоУмолчанию',NULL,NULL),(41,34,77,78,4,'БитриксТипСвойства','S',NULL),(42,34,79,80,4,'БитриксСтрок','1',NULL),(43,34,81,82,4,'БитриксКолонок','30',NULL),(44,34,83,84,4,'БитриксТипСписка','L',NULL),(45,34,85,86,4,'БитриксТипыФайлов',NULL,NULL),(46,34,87,88,4,'БитриксКоличествоПолей','5',NULL),(47,34,89,90,4,'БитриксСвязанныйИнфоблок',NULL,NULL),(48,34,91,92,4,'БитриксОписаниеРазрешено','false',NULL),(49,34,93,94,4,'БитриксПоискРазрешен','false',NULL),(50,34,95,96,4,'БитриксФильтрРазрешен','false',NULL),(51,34,97,98,4,'БитриксРасширениеТипа',NULL,NULL),(52,34,99,100,4,'БитриксОбязательное','false',NULL),(53,5,102,139,3,'Свойство',NULL,NULL),(54,53,103,104,4,'Ид','lists-clients-property-phone',NULL),(55,53,105,106,4,'Наименование','Телефон',NULL),(56,53,107,108,4,'Множественное','false',NULL),(57,53,109,110,4,'БитриксСортировка','30',NULL),(58,53,111,112,4,'БитриксКод','PHONE',NULL),(59,53,113,114,4,'БитриксЗначениеПоУмолчанию',NULL,NULL),(60,53,115,116,4,'БитриксТипСвойства','S',NULL),(61,53,117,118,4,'БитриксСтрок','1',NULL),(62,53,119,120,4,'БитриксКолонок','30',NULL),(63,53,121,122,4,'БитриксТипСписка','L',NULL),(64,53,123,124,4,'БитриксТипыФайлов',NULL,NULL),(65,53,125,126,4,'БитриксКоличествоПолей','5',NULL),(66,53,127,128,4,'БитриксСвязанныйИнфоблок',NULL,NULL),(67,53,129,130,4,'БитриксОписаниеРазрешено','false',NULL),(68,53,131,132,4,'БитриксПоискРазрешен','false',NULL),(69,53,133,134,4,'БитриксФильтрРазрешен','false',NULL),(70,53,135,136,4,'БитриксРасширениеТипа',NULL,NULL),(71,53,137,138,4,'БитриксОбязательное','false',NULL),(72,2,141,142,2,'Группы',NULL,NULL),(73,1,144,385,1,'Каталог',NULL,NULL),(74,73,145,146,2,'Ид','lists-clients',NULL),(75,73,147,148,2,'ИдКлассификатора','lists-clients',NULL),(76,73,149,150,2,'Наименование','Клиенты',NULL),(77,73,151,152,2,'БитриксКод','CLIENTS',NULL),(78,73,153,154,2,'БитриксСортировка','500',NULL),(79,73,155,156,2,'БитриксURLСписок','#SITE_DIR#/lists/index.php?ID=#IBLOCK_ID#',NULL),(80,73,157,158,2,'БитриксURLДеталь','#SITE_DIR#/lists/detail.php?ID=#ID#',NULL),(81,73,159,160,2,'БитриксURLРаздел','#SITE_DIR#/lists/list.php?SECTION_ID=#ID#',NULL),(82,73,161,162,2,'БитриксКартинка',NULL,NULL),(83,73,163,164,2,'БитриксИндексироватьЭлементы','true',NULL),(84,73,165,166,2,'БитриксИндексироватьРазделы','true',NULL),(85,73,167,168,2,'БитриксДокументооборот','false',NULL),(86,73,169,230,2,'БитриксПодписи',NULL,NULL),(87,86,170,175,3,'БитриксПодпись',NULL,NULL),(88,87,171,172,4,'Ид','ELEMENT_NAME',NULL),(89,87,173,174,4,'Значение','Клиент',NULL),(90,86,176,181,3,'БитриксПодпись',NULL,NULL),(91,90,177,178,4,'Ид','ELEMENTS_NAME',NULL),(92,90,179,180,4,'Значение','Клиенты',NULL),(93,86,182,187,3,'БитриксПодпись',NULL,NULL),(94,93,183,184,4,'Ид','ELEMENT_ADD',NULL),(95,93,185,186,4,'Значение','Добавить клиента',NULL),(96,86,188,193,3,'БитриксПодпись',NULL,NULL),(97,96,189,190,4,'Ид','ELEMENT_EDIT',NULL),(98,96,191,192,4,'Значение','Изменить клиента',NULL),(99,86,194,199,3,'БитриксПодпись',NULL,NULL),(100,99,195,196,4,'Ид','ELEMENT_DELETE',NULL),(101,99,197,198,4,'Значение','Удалить клиента',NULL),(102,86,200,205,3,'БитриксПодпись',NULL,NULL),(103,102,201,202,4,'Ид','SECTION_NAME',NULL),(104,102,203,204,4,'Значение','Раздел',NULL),(105,86,206,211,3,'БитриксПодпись',NULL,NULL),(106,105,207,208,4,'Ид','SECTIONS_NAME',NULL),(107,105,209,210,4,'Значение','Разделы',NULL),(108,86,212,217,3,'БитриксПодпись',NULL,NULL),(109,108,213,214,4,'Ид','SECTION_ADD',NULL),(110,108,215,216,4,'Значение','Добавить раздел',NULL),(111,86,218,223,3,'БитриксПодпись',NULL,NULL),(112,111,219,220,4,'Ид','SECTION_EDIT',NULL),(113,111,221,222,4,'Значение','Изменить раздел',NULL),(114,86,224,229,3,'БитриксПодпись',NULL,NULL),(115,114,225,226,4,'Ид','SECTION_DELETE',NULL),(116,114,227,228,4,'Значение','Удалить раздел',NULL),(117,73,231,384,2,'Товары',NULL,NULL),(118,117,232,307,3,'Товар',NULL,NULL),(119,118,233,234,4,'Ид','710',NULL),(120,118,235,236,4,'Наименование','ООО Копейка',NULL),(121,118,237,238,4,'БитриксТеги',NULL,NULL),(122,118,239,306,4,'ЗначенияСвойств',NULL,NULL),(123,122,240,245,5,'ЗначенияСвойства',NULL,NULL),(124,123,241,242,6,'Ид','CML2_ACTIVE',NULL),(125,123,243,244,6,'Значение','true',NULL),(126,122,246,251,5,'ЗначенияСвойства',NULL,NULL),(127,126,247,248,6,'Ид','CML2_CODE',NULL),(128,126,249,250,6,'Значение',NULL,NULL),(129,122,252,257,5,'ЗначенияСвойства',NULL,NULL),(130,129,253,254,6,'Ид','CML2_SORT',NULL),(131,129,255,256,6,'Значение','500',NULL),(132,122,258,263,5,'ЗначенияСвойства',NULL,NULL),(133,132,259,260,6,'Ид','CML2_ACTIVE_FROM',NULL),(134,132,261,262,6,'Значение',NULL,NULL),(135,122,264,269,5,'ЗначенияСвойства',NULL,NULL),(136,135,265,266,6,'Ид','CML2_ACTIVE_TO',NULL),(137,135,267,268,6,'Значение',NULL,NULL),(138,122,270,275,5,'ЗначенияСвойства',NULL,NULL),(139,138,271,272,6,'Ид','CML2_PREVIEW_TEXT',NULL),(140,138,273,274,6,'Значение',NULL,NULL),(141,122,276,281,5,'ЗначенияСвойства',NULL,NULL),(142,141,277,278,6,'Ид','CML2_PREVIEW_PICTURE',NULL),(143,141,279,280,6,'Значение',NULL,NULL),(144,122,282,293,5,'ЗначенияСвойства',NULL,NULL),(145,144,283,284,6,'Ид','lists-clients-property-person',NULL),(146,144,285,286,6,'Значение','Иванов Василий Петрович',NULL),(147,144,287,292,6,'ЗначениеСвойства',NULL,NULL),(148,147,288,289,7,'Значение','Иванов Василий Петрович',NULL),(149,147,290,291,7,'Описание',NULL,NULL),(150,122,294,305,5,'ЗначенияСвойства',NULL,NULL),(151,150,295,296,6,'Ид','lists-clients-property-phone',NULL),(152,150,297,298,6,'Значение','556677',NULL),(153,150,299,304,6,'ЗначениеСвойства',NULL,NULL),(154,153,300,301,7,'Значение','556677',NULL),(155,153,302,303,7,'Описание',NULL,NULL),(156,117,308,383,3,'Товар',NULL,NULL),(157,156,309,310,4,'Ид','711',NULL),(158,156,311,312,4,'Наименование','ЗАО Зайцы+',NULL),(159,156,313,314,4,'БитриксТеги',NULL,NULL),(160,156,315,382,4,'ЗначенияСвойств',NULL,NULL),(161,160,316,321,5,'ЗначенияСвойства',NULL,NULL),(162,161,317,318,6,'Ид','CML2_ACTIVE',NULL),(163,161,319,320,6,'Значение','true',NULL),(164,160,322,327,5,'ЗначенияСвойства',NULL,NULL),(165,164,323,324,6,'Ид','CML2_CODE',NULL),(166,164,325,326,6,'Значение',NULL,NULL),(167,160,328,333,5,'ЗначенияСвойства',NULL,NULL),(168,167,329,330,6,'Ид','CML2_SORT',NULL),(169,167,331,332,6,'Значение','500',NULL),(170,160,334,339,5,'ЗначенияСвойства',NULL,NULL),(171,170,335,336,6,'Ид','CML2_ACTIVE_FROM',NULL),(172,170,337,338,6,'Значение',NULL,NULL),(173,160,340,345,5,'ЗначенияСвойства',NULL,NULL),(174,173,341,342,6,'Ид','CML2_ACTIVE_TO',NULL),(175,173,343,344,6,'Значение',NULL,NULL),(176,160,346,351,5,'ЗначенияСвойства',NULL,NULL),(177,176,347,348,6,'Ид','CML2_PREVIEW_TEXT',NULL),(178,176,349,350,6,'Значение',NULL,NULL),(179,160,352,357,5,'ЗначенияСвойства',NULL,NULL),(180,179,353,354,6,'Ид','CML2_PREVIEW_PICTURE',NULL),(181,179,355,356,6,'Значение',NULL,NULL),(182,160,358,369,5,'ЗначенияСвойства',NULL,NULL),(183,182,359,360,6,'Ид','lists-clients-property-person',NULL),(184,182,361,362,6,'Значение','Лисицин Вольф Федерович',NULL),(185,182,363,368,6,'ЗначениеСвойства',NULL,NULL),(186,185,364,365,7,'Значение','Лисицин Вольф Федерович',NULL),(187,185,366,367,7,'Описание',NULL,NULL),(188,160,370,381,5,'ЗначенияСвойства',NULL,NULL),(189,188,371,372,6,'Ид','lists-clients-property-phone',NULL),(190,188,373,374,6,'Значение','557766',NULL),(191,188,375,380,6,'ЗначениеСвойства',NULL,NULL),(192,191,376,377,7,'Значение','557766',NULL),(193,191,378,379,7,'Описание',NULL,NULL),(194,0,1,0,0,'',NULL,NULL),(195,0,2,0,0,'',NULL,NULL);
-/*!40000 ALTER TABLE `b_xml_tree` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -23172,4 +16140,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-07-10 13:58:07
+-- Dump completed on 2019-10-17 11:27:15

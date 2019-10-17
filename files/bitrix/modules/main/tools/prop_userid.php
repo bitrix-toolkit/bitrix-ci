@@ -17,7 +17,8 @@ class CIBlockPropertyUserID
 			"ConvertFromDB" => array(__CLASS__, "ConvertFromDB"),
 			"GetSettingsHTML" => array(__CLASS__, "GetSettingsHTML"),
 			"AddFilterFields" => array(__CLASS__,'AddFilterFields'),
-			"GetAdminFilterHTML" => array(__CLASS__, "GetAdminFilterHTML")
+			"GetAdminFilterHTML" => array(__CLASS__, "GetAdminFilterHTML"),
+			"GetUIFilterProperty" => array(__CLASS__, 'GetUIFilterProperty')
 		);
 	}
 
@@ -151,6 +152,20 @@ class CIBlockPropertyUserID
 
 		$value = (string)self::getFilterValue($control);
 		return '<input type="text" name="'.$controlName.'" value="'.htmlspecialcharsbx($value).'" size="30">';
+	}
+
+	/**
+	 * @param array $property
+	 * @param array $strHTMLControlName
+	 * @param array &$fields
+	 * @return void
+	 */
+	public static function GetUIFilterProperty($property, $strHTMLControlName, &$fields)
+	{
+		$fields["type"] = "custom_entity";
+		$fields["filterable"] = "";
+		$fields["selector"] = array("type" => "user");
+		$fields["operators"] = array("default" => "=");
 	}
 
 	private static function getFilterValue($control)

@@ -195,4 +195,8 @@ $MESS["IBLOCK_XML2_MODULE_CATALOG_IS_ABSENT"] = "Отсутствует моду
 $MESS["IBLOCK_XML2_LINK"] = "Ссылка";
 $MESS["IBLOCK_XML2_FULL_DESCRIPTION"] = "ПолноеОписание";
 $MESS["IBLOCK_XML2_TEMPORARY_TABLE_EXIST_ERROR"] = "Временная таблица не существует";
+$MESS["IBLOCK_XML2_IBLOCK_CACHE_MODE_NORMAL"] = "сбрасывать после каждой операции";
+$MESS["IBLOCK_XML2_IBLOCK_CACHE_MODE_HIT"] = "сбрасывать в конце каждого шага импорта";
+$MESS["IBLOCK_XML2_IBLOCK_CACHE_MODE_FINAL"] = "сбрасывать после окончания импорта";
+$MESS["IBLOCK_XML2_IBLOCK_CACHE_MODE_FREEZE"] = "не сбрасывать";
 ?>
