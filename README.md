@@ -48,33 +48,16 @@ putenv('MYSQL_PASSWORD=password');
 ```php
 /**
  * @return array
- * @throws ReflectionException
- * @throws AnnotationException
  */
-public function testCanSaveNewObject()
+public function testCanSaveNewObject(array $stack)
 {
-    $book = new Book();
-    $book->title = 'Остров сокровищ';
-    $book->author = new Author('Р. Л. Стивенсон');
-    $book->isBestseller = true;
-    
-    $id = EntityMapper::save($book);
-    $this->assertNotEmpty($id);
+    $id = $stack['id'];
     
     $element = CIBlockElement::GetList(null, ['ID' => $id])->GetNextElement();
     $this->assertInstanceOf(_CIBElement::class, $element);
     
     $fields = $element->GetFields();
     $this->assertEquals($id, $fields['ID']);
-    $this->assertEquals('Остров сокровищ', $fields['NAME']);
-    
-    $properties = $element->GetProperties();
-    $this->assertEquals('Y', $properties['is_bestseller']['VALUE']);
-    
-    $this->assertNotEmpty($properties['author']['VALUE']);
-    $bitrixAuthor = CIBlockElement::GetList(null, ['ID' => $properties['author']['VALUE']])->Fetch();
-    $this->assertNotEmpty($bitrixAuthor['NAME']);
-    $this->assertEquals('Р. Л. Стивенсон', $bitrixAuthor['NAME']);
     
     return ['id' => $id];
 }
