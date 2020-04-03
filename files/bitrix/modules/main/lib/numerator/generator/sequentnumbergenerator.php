@@ -25,8 +25,12 @@ class SequentNumberGenerator extends NumberGenerator implements Sequenceable, Us
 
 	protected $start;
 	protected $step;
+	protected $length = 0;
+	protected $padString = '0';
 	protected $periodicBy;
 	protected $timezone;
+	protected $isDirectNumeration;
+
 	protected $nowTime;
 
 	/** value stored in database */
@@ -38,8 +42,6 @@ class SequentNumberGenerator extends NumberGenerator implements Sequenceable, Us
 	protected $lastInvocationTime;
 	protected $numeratorId;
 	protected $numberHash;
-	protected $isDirectNumeration;
-
 
 	/** @inheritdoc */
 	public function setConfig($config)
@@ -47,6 +49,8 @@ class SequentNumberGenerator extends NumberGenerator implements Sequenceable, Us
 		$this->setFromArrayOrDefault('timezone', $config);
 		$this->setFromArrayOrDefault('start', $config, 1, 'int');
 		$this->setFromArrayOrDefault('step', $config, 1, 'int');
+		$this->setFromArrayOrDefault('length', $config, 0, 'int');
+		$this->setFromArrayOrDefault('padString', $config, '0', 'string');
 		$this->setFromArrayOrDefault('isDirectNumeration', $config, false, 'bool');
 		$this->setFromArrayOrDefault('periodicBy', $config);
 		$this->setFromArrayOrDefault('nowTime', $config, time());
@@ -75,6 +79,14 @@ class SequentNumberGenerator extends NumberGenerator implements Sequenceable, Us
 			unset($timezonesSettings[$index]['name']);
 		}
 		return [
+			[
+				'settingName' => 'length', 'type' => 'int', 'default' => 0,
+				'title' => Loc::getMessage('TITLE_BITRIX_MAIN_NUMERATOR_GENERATOR_SEQUENTNUMBERGENERATOR_LENGTH'),
+			],
+			[
+				'settingName' => 'padString', 'type' => 'string', 'default' => '0',
+				'title' => Loc::getMessage('TITLE_BITRIX_MAIN_NUMERATOR_GENERATOR_SEQUENTNUMBERGENERATOR_PAD_STRING'),
+			],
 			[
 				'settingName' => 'start', 'type' => 'int', 'default' => 1,
 				'title' => Loc::getMessage('TITLE_BITRIX_MAIN_NUMERATOR_GENERATOR_SEQUENTNUMBERGENERATOR_START'),
@@ -131,6 +143,8 @@ class SequentNumberGenerator extends NumberGenerator implements Sequenceable, Us
 		return [
 			'start' => $this->start,
 			'step' => $this->step,
+			'length' => $this->length,
+			'padString' => $this->padString,
 			'periodicBy' => $this->periodicBy,
 			'timezone' => $this->timezone,
 			'isDirectNumeration' => (bool)$this->isDirectNumeration,
@@ -201,11 +215,9 @@ class SequentNumberGenerator extends NumberGenerator implements Sequenceable, Us
 				break;
 			}
 		}
-		$template = str_replace(static::getPatternFor(static::TEMPLATE_WORD_NUMBER), $this->currentNumber, $template);
 
-		return $template;
+		return $this->replaceNumberInPattern($template);
 	}
-
 
 	protected function saveNumeratorSequenceSettings($numeratorId, $numberHash, $fields, $whereNextNumber = null)
 	{
@@ -224,7 +236,17 @@ class SequentNumberGenerator extends NumberGenerator implements Sequenceable, Us
 		$nextNumberSettings = $this->getSettings($this->numeratorId, false);
 		$this->lastInvocationTime = isset($nextNumberSettings['LAST_INVOCATION_TIME']) ? $nextNumberSettings['LAST_INVOCATION_TIME'] : $this->nowTime;
 		$this->calculateNextAndCurrentNumber(isset($nextNumberSettings['NEXT_NUMBER']) ? $nextNumberSettings['NEXT_NUMBER'] : $this->start);
-		return str_replace(static::getPatternFor(static::TEMPLATE_WORD_NUMBER), $this->currentNumber, $template);
+		return $this->replaceNumberInPattern($template);
+	}
+
+	private function replaceNumberInPattern($template)
+	{
+		$resultNumber = $this->currentNumber;
+		if ($this->length > 0)
+		{
+			$resultNumber = str_pad($resultNumber, $this->length, $this->padString, STR_PAD_LEFT);
+		}
+		return str_replace(static::getPatternFor(static::TEMPLATE_WORD_NUMBER), $resultNumber, $template);
 	}
 
 	/** @inheritdoc */

@@ -16,7 +16,7 @@ class Export extends Main\Engine\Controller
 	const EXPORT_PATH = '/export/';
 
 	/** How many day keep files in the cloud. */
-	const EXPIRE_DAYS = 5;
+	const EXPIRE_DAYS = 24;
 
 	const ACTION_EXPORT = 'export';
 	const ACTION_UPLOAD = 'upload';
@@ -834,7 +834,7 @@ class Export extends Main\Engine\Controller
 
 		if ($action == self::ACTION_VOID)
 		{
-			$message = htmlspecialcharsbx(Loc::getMessage('MAN_EXPORT_VOID'));
+			$message = htmlspecialcharsbx(Loc::getMessage('MAIN_EXPORT_VOID'));
 		}
 		elseif ($action == self::ACTION_PURGE)
 		{

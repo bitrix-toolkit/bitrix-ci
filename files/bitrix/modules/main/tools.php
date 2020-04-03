@@ -713,8 +713,8 @@ function convertTimeToMilitary ($strTime, $fromFormat = 'H:MI T', $toFormat = 'H
 
 /**
  * @param string|array $format
- * @param int|bool|\Bitrix\Main\Type\DateTime $timestamp
- * @param int|bool|\Bitrix\Main\Type\DateTime $now
+ * @param int|bool|\Bitrix\Main\Type\Date $timestamp
+ * @param int|bool|\Bitrix\Main\Type\Date $now
  *
  * @return string
  */
@@ -726,7 +726,7 @@ function FormatDate($format = "", $timestamp = false, $now = false)
 	{
 		$timestamp = time();
 	}
-	else if ($timestamp instanceof \Bitrix\Main\Type\DateTime)
+	else if ($timestamp instanceof \Bitrix\Main\Type\Date)
 	{
 		$timestamp = $timestamp->getTimestamp();
 	}
@@ -739,7 +739,7 @@ function FormatDate($format = "", $timestamp = false, $now = false)
 	{
 		$now = time();
 	}
-	else if ($now instanceof \Bitrix\Main\Type\DateTime)
+	else if ($now instanceof \Bitrix\Main\Type\Date)
 	{
 		$now = $now->getTimestamp();
 	}
@@ -3162,16 +3162,18 @@ function __IncludeLang($path, $bReturnArray=false, $bFileChecked=false)
 			$encodingCache[$language] = array($convertEncoding, $targetEncoding, $sourceEncoding);
 		}
 
-		$path = \Bitrix\Main\Localization\Translation::convertLangPath($path, LANGUAGE_ID);
-
 		$MESS = array();
 		if ($bFileChecked)
 		{
 			include($path);
 		}
-		elseif (file_exists($path))
+		else
 		{
-			include($path);
+			$path = \Bitrix\Main\Localization\Translation::convertLangPath($path, LANGUAGE_ID);
+			if (file_exists($path))
+			{
+				include($path);
+			}
 		}
 
 		if (!empty($MESS))
@@ -3625,6 +3627,34 @@ function AddMessage2Log($sText, $sModule = "", $traceDepth = 6, $bShowArgs = fal
 	}
 }
 
+function AddEventToStatFile($module, $action, $tag, $label)
+{
+	static $search = array("\t", "\n", "\r");
+	static $replace = " ";
+	if (defined('ANALYTICS_FILENAME') && is_writable(ANALYTICS_FILENAME))
+	{
+		$content =
+			date('Y-m-d H:i:s')
+			."\t".str_replace($search, $replace, $_SERVER["HTTP_HOST"])
+			."\t".str_replace($search, $replace, $module)
+			."\t".str_replace($search, $replace, $action)
+			."\t".str_replace($search, $replace, $tag)
+			."\t".str_replace($search, $replace, $label)
+			."\n";
+		$fp = @fopen(ANALYTICS_FILENAME, "ab");
+		if ($fp)
+		{
+			if (flock($fp, LOCK_EX))
+			{
+				@fwrite($fp, $content);
+				@fflush($fp);
+				@flock($fp, LOCK_UN);
+				@fclose($fp);
+			}
+		}
+	}
+}
+
 /*********************************************************************
 	Quoting reverse (to be removed with 5.4.0)
 *********************************************************************/
@@ -3964,9 +3994,12 @@ function GetCountryArray($lang=LANGUAGE_ID)
 {
 	$arMsg = IncludeModuleLangFile(__FILE__, $lang, true);
 	$arr = array();
-	foreach($arMsg as $id=>$country)
-		if(strpos($id, "COUNTRY_") === 0)
-			$arr[intval(substr($id, 8))] = $country;
+	if (is_array($arMsg))
+	{
+		foreach($arMsg as $id=>$country)
+			if(strpos($id, "COUNTRY_") === 0)
+				$arr[intval(substr($id, 8))] = $country;
+	}
 	asort($arr);
 	$arCountry = array("reference_id"=>array_keys($arr), "reference"=>array_values($arr));
 	return $arCountry;
@@ -4526,9 +4559,20 @@ class CJSCore
 			}
 		}
 
+		//An old path format required a language id.
 		if (isset($arPaths['lang']))
 		{
-			$arPaths['lang'] = str_replace("/lang/".LANGUAGE_ID."/", "/", $arPaths['lang']);
+			if (is_array($arPaths['lang']))
+			{
+				foreach ($arPaths['lang'] as $key => $lang)
+				{
+					$arPaths['lang'][$key] = str_replace('/lang/'.LANGUAGE_ID.'/', '/', $lang);
+				}
+			}
+			else
+			{
+				$arPaths['lang'] = str_replace('/lang/'.LANGUAGE_ID.'/', '/', $arPaths['lang']);
+			}
 		}
 
 		self::$arRegisteredExt[$name] = $arPaths;
@@ -5063,7 +5107,12 @@ JS;
 			$res = '';
 			foreach ($js as $val)
 			{
-				$res .= '<script type="text/javascript" src="'.CUtil::GetAdditionalFileURL($val).'"></script>'."\r\n";
+				$fullPath = Asset::getInstance()->getFullAssetPath($val);
+
+				if ($fullPath)
+				{
+					$res .= '<script type="text/javascript" src="'.$fullPath.'"></script>'."\r\n";
+				}
 			}
 			return $res;
 		}
@@ -5083,13 +5132,20 @@ JS;
 		global $APPLICATION;
 		$jsMsg = '';
 
-		if (is_string($lang))
+		if (!is_array($lang))
 		{
-			$messLang = \Bitrix\Main\Localization\Loc::loadLanguageFile($_SERVER['DOCUMENT_ROOT'].$lang);
+			$lang = [$lang];
+		}
 
-			if (!empty($messLang))
+		foreach ($lang as $path)
+		{
+			if (is_string($path))
 			{
-				$jsMsg = '(window.BX||top.BX).message('.CUtil::PhpToJSObject($messLang, false).');';
+				$messLang = \Bitrix\Main\Localization\Loc::loadLanguageFile($_SERVER['DOCUMENT_ROOT'].$path);
+				if (!empty($messLang))
+				{
+					$jsMsg .= '(window.BX||top.BX).message('.CUtil::PhpToJSObject($messLang, false).');';
+				}
 			}
 		}
 
@@ -5133,9 +5189,18 @@ JS;
 			return '';
 
 		if ($bReturn)
-			return '<link href="'.CUtil::GetAdditionalFileURL($css).'" type="text/css" rel="stylesheet" />'."\r\n";
-		else
-			$APPLICATION->SetAdditionalCSS($css);
+		{
+			$fullPath = Asset::getInstance()->getFullAssetPath($css);
+
+			if ($fullPath)
+			{
+				return '<link href="'.$fullPath.'" type="text/css" rel="stylesheet" />'."\r\n";
+			}
+
+			return '';
+		}
+
+		$APPLICATION->SetAdditionalCSS($css);
 
 		return '';
 	}

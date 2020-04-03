@@ -20,45 +20,22 @@ class ArchiveEntry
 	protected $path;
 
 	/**
-	 * File id.
-	 * @var int
-	 */
-	protected $fileId;
-
-	/**
 	 * File size in entry.
 	 * @var int
 	 */
 	protected $size;
 
 	/**
-	 * Marker for path of files in archive.
+	 * Crc32 for file
 	 * @var string
 	 */
-	protected $pathMarker = '/upload/#fileName#';
+	protected $crc32;
 
 	/**
 	 * Entry constructor.
-	 * @param array $params Some params.
 	 */
-	protected function __construct(array $params = [])
-	{
-		$this->fileId = 0;
-
-		if (isset($params['pathMarker']))
-		{
-			$this->pathMarker = $params['pathMarker'];
-		}
-	}
-
-	/**
-	 * Gets id of current file.
-	 * @return int
-	 */
-	public function getId()
-	{
-		return $this->fileId;
-	}
+	protected function __construct()
+	{}
 
 	/**
 	 * Gets name of current file.
@@ -67,6 +44,18 @@ class ArchiveEntry
 	public function getName()
 	{
 		return $this->name;
+	}
+
+	/**
+	 * @param string $name
+	 *
+	 * @return ArchiveEntry
+	 */
+	public function setName($name)
+	{
+		$this->name = $name;
+
+		return $this;
 	}
 
 	/**
@@ -88,21 +77,20 @@ class ArchiveEntry
 	}
 
 	/**
-	 * Set path marker.
-	 * @param string $marker Marker.
-	 * @return void
+	 * @return string
 	 */
-	public function setPathMarker($marker)
+	public function getCrc32()
 	{
-		$this->pathMarker = $marker;
+		return $this->crc32;
 	}
 
 	/**
 	 * Creates Entry from file path.
 	 * @param string $filePath File id from b_file.
+	 * @param string|null $name
 	 * @return static
 	 */
-	public static function createFromFilePath($filePath)
+	public static function createFromFilePath($filePath, $name = null)
 	{
 		$fileArray = \CFile::MakeFileArray($filePath);
 
@@ -116,7 +104,7 @@ class ArchiveEntry
 					$fileArray['tmp_name'],
 					strlen(self::getDocRoot())
 				),
-			]);
+			], $name);
 		}
 
 		return null;
@@ -156,24 +144,26 @@ class ArchiveEntry
 	/**
 	 * Creates Entry from file array.
 	 * @param array $fileArray File id from b_file.
+	 * @param string|null $name
 	 * @return static
 	 */
-	protected static function createFromFile(array $fileArray)
+	protected static function createFromFile(array $fileArray, $name = null)
 	{
 		$zipEntry = new static;
-		$zipEntry->name = $fileArray['ORIGINAL_NAME'];
-		$zipEntry->fileId = (int)$fileArray['ID'];
+		$zipEntry->setName($name?: $fileArray['ORIGINAL_NAME']);
 		$zipEntry->size = (int)$fileArray['FILE_SIZE'];
+
+		if (empty($fileArray['SRC']))
+		{
+			$fileArray['SRC'] = \CFile::getFileSrc($fileArray);
+		}
 
 		$fromClouds = false;
 		$filename = $fileArray['SRC'];
-
 		if (isset($fileArray['HANDLER_ID']) && !empty($fileArray['HANDLER_ID']))
 		{
 			$fromClouds = true;
 		}
-
-		unset($fileArray);
 
 		if ($fromClouds)
 		{
@@ -184,7 +174,6 @@ class ArchiveEntry
 				'/upload/bx_cloud_upload/'
 			);
 			$zipEntry->path = $cloudUploadPath . $filename;
-			unset($cloudUploadPath);
 		}
 		else
 		{
@@ -192,7 +181,6 @@ class ArchiveEntry
 				Encoding::convertEncoding($filename, LANG_CHARSET, 'UTF-8')
 			);
 		}
-		unset($filename);
 
 		return $zipEntry;
 	}
@@ -229,7 +217,7 @@ class ArchiveEntry
 	 * @param string $uri Uri.
 	 * @return string
 	 */
-	protected function encodeUrn($uri)
+	protected static function encodeUrn($uri)
 	{
 		$result = '';
 		$parts = preg_split(
@@ -247,7 +235,6 @@ class ArchiveEntry
 				? $part
 				: rawurlencode($part);
 		}
-		unset($parts, $i, $part);
 
 		return $result;
 	}
@@ -258,16 +245,13 @@ class ArchiveEntry
 	 */
 	public function __toString()
 	{
+		$crc32 = $this->getCrc32()?: '-';
 		$name = Encoding::convertEncoding(
-			$this->name,
+			$this->getName(),
 			LANG_CHARSET,
 			'UTF-8'
 		);
-		$pathMarker = str_replace(
-			['#fileId#', '#fileName#'],
-			[$this->fileId, $name],
-			$this->pathMarker
-		);
-		return "- {$this->size} {$this->path} {$pathMarker}";
+
+		return "{$crc32} {$this->getSize()} {$this->getPath()} {$name}";
 	}
 }

@@ -130,6 +130,7 @@ $MESS["IBLOCK_XML2_PRICES"] = "Prices";
 $MESS["IBLOCK_XML2_PRICE_DUP_ERROR"] = "There are prices with duplicate names. Data exchange will have to abort.";
 $MESS["IBLOCK_XML2_PRICE_FOR_ONE"] = "PriceForOne";
 $MESS["IBLOCK_XML2_PRICE_SB_ADD_ERROR"] = "The Small Business edition does not permit more than one price type. Please consider upgrading your license.";
+$MESS["IBLOCK_XML2_PRICE_SB_ADD_ERROR_B24"] = "Your current Bitrix24 plan cannot use more than one price type. Please configure 1C export or upgrade to another plan.";
 $MESS["IBLOCK_XML2_PRICE_TYPE"] = "PriceType";
 $MESS["IBLOCK_XML2_PRICE_TYPES"] = "PriceTypes";
 $MESS["IBLOCK_XML2_PRICE_TYPE_ID"] = "PriceTypeId";

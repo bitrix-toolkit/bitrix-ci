@@ -11,6 +11,7 @@ use Bitrix\Main\Config\Option;
 use Bitrix\Main\DB\SqlExpression;
 use Bitrix\Main\Entity;
 use Bitrix\Main\Localization\Loc;
+use Bitrix\Main\ORM\Fields\Relations\OneToMany;
 use Bitrix\Main\ORM\Fields\Relations\Reference;
 use Bitrix\Main\ORM\Query\Join;
 use Bitrix\Main\Search\MapBuilder;
@@ -254,7 +255,9 @@ class UserTable extends Entity\DataManager
 				'PHONE_AUTH',
 				UserPhoneAuthTable::class,
 				Join::on('this.ID', 'ref.USER_ID')
-			))
+			)),
+			(new OneToMany('GROUPS', UserGroupTable::class, 'USER'))
+				->configureJoinType(Entity\Query\Join::TYPE_INNER),
 		);
 	}
 
@@ -369,7 +372,7 @@ class UserTable extends Entity\DataManager
 
 	public static function getExternalUserTypes()
 	{
-		static $types = array("bot", "email", "controller", "replica", "imconnector", "sale", "saleanonymous");
+		static $types = array("bot", "email", "controller", "replica", "imconnector", "sale", "saleanonymous", "shop");
 		return $types;
 	}
 
@@ -631,7 +634,13 @@ class UserTable extends Entity\DataManager
 				}
 				elseif($fieldsList[$fieldCode] instanceof \Bitrix\Main\ORM\Fields\StringField)
 				{
-					$result = $result->addText($userFields[$fieldCode]);
+					$value = $userFields[$fieldCode];
+					if (in_array($fieldCode, ['NAME', 'LAST_NAME']))
+					{
+						$value = str_replace(['(', ')'], '', $value);
+						$value = str_replace('-', ' ', $value);
+					}
+					$result = $result->addText($value);
 				}
 				elseif ($fieldsList[$fieldCode] instanceof \Bitrix\Main\ORM\Fields\UserTypeField)
 				{

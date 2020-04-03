@@ -139,9 +139,15 @@ class EventMessageCompiler
 		$eventSiteFields = $this->eventSiteFields;
 		if($isHtml)
 		{
-			foreach ($eventSiteFields as $fieldKey => $fieldValue)
+			foreach ($this->eventSiteFields as $fieldKey => $fieldValue)
+			{
+				$eventSiteFields["HTML_".$fieldKey] = nl2br(htmlspecialcharsbx($fieldValue, ENT_COMPAT, false));
+
 				if (strpos($fieldValue, "<") === false)
+				{
 					$eventSiteFields[$fieldKey] = nl2br($fieldValue);
+				}
+			}
 		}
 		$eventSiteFields['MAIL_EVENTS_UNSUBSCRIBE_LINK'] = Tracking::getLinkUnsub(
 			'main',

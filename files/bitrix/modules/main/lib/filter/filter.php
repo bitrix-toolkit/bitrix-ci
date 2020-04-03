@@ -85,15 +85,26 @@ class Filter
 
 	/**
 	 * Get Fields converted to plain object (array).
+	 *
+	 * @param array $fieldMask
 	 * @return array
 	 */
-	public function getFieldArrays()
+	public function getFieldArrays(array $fieldMask = [])
 	{
 		$results = [];
+		$allFields = true;
+		if (!empty($fieldMask))
+		{
+			$fieldMask = array_fill_keys($fieldMask, true);
+			$allFields = false;
+		}
 		$fields = $this->getFields();
 		foreach($fields as $field)
 		{
-			$results[] = $field->toArray();
+			if ($allFields || isset($fieldMask[$field->getId()]))
+			{
+				$results[] = $field->toArray();
+			}
 		}
 		return $results;
 	}

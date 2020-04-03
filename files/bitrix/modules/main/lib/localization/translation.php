@@ -459,6 +459,7 @@ class Translation
 				break;
 
 			// bitrix/js/[moduleName]/[smth] -> [moduleName]/install/js/[moduleName]/[smth]
+			// bitrix/js/[moduleName]/[smth] -> [moduleName]/install/public/js/[moduleName]/[smth]
 			case 'js':
 				$libraryNamespace = $langPathParts[2];
 
@@ -469,6 +470,15 @@ class Translation
 						$langFile = str_replace(
 							Main\Application::getDocumentRoot().'/bitrix/'.$testEntry.'/'.$libraryNamespace.'/',
 							$modulePath.''.$moduleName.'/install/'.$testEntry.'/'.$libraryNamespace.'/',
+							$langFile
+						);
+						break;
+					}
+					if (isset(self::$map[$moduleName]["public/{$testEntry}"], self::$map[$moduleName]["public/{$testEntry}"][$libraryNamespace]))
+					{
+						$langFile = str_replace(
+							Main\Application::getDocumentRoot().'/bitrix/'.$testEntry.'/'.$libraryNamespace.'/',
+							$modulePath.''.$moduleName.'/install/public/'.$testEntry.'/'.$libraryNamespace.'/',
 							$langFile
 						);
 						break;
@@ -523,6 +533,7 @@ class Translation
 				'wizards',
 				'gadgets',
 				'js',
+				'public/js',
 				'blocks',
 				'payment',
 				'mobileapp',
@@ -540,7 +551,7 @@ class Translation
 						foreach ($testForExistence as $testEntry)
 						{
 							$testPath = $bxRoot. '/'. $moduleName. '/install/'. $testEntry;
-							if ($testEntry === 'templates' || $testEntry === 'mobileapp' || $testEntry === 'js')
+							if ($testEntry === 'templates' || $testEntry === 'mobileapp' || $testEntry === 'js' || $testEntry === 'public/js')
 							{
 								$testPath .= '/';
 							}
@@ -574,5 +585,39 @@ class Translation
 		}
 
 		return self::$map;
+	}
+
+	/**
+	 * @param $language
+	 * @param $langFile
+	 * @return array
+	 */
+	public static function getEncodings($language, $langFile)
+	{
+		static $encodingCache = array();
+
+		if(isset($encodingCache[$language]))
+		{
+			list($convertEncoding, $targetEncoding, $sourceEncoding) = $encodingCache[$language];
+		}
+		else
+		{
+			$convertEncoding = self::needConvertEncoding($language);
+			$targetEncoding = $sourceEncoding = '';
+			if($convertEncoding)
+			{
+				$targetEncoding = self::getCurrentEncoding();
+				$sourceEncoding = self::getSourceEncoding($language);
+			}
+
+			$encodingCache[$language] = array($convertEncoding, $targetEncoding, $sourceEncoding);
+		}
+
+		if($convertEncoding)
+		{
+			$convertEncoding = self::checkPathRestrictionConvertEncoding($langFile);
+		}
+
+		return array($convertEncoding, $targetEncoding, $sourceEncoding);
 	}
 }

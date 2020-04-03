@@ -80,4 +80,20 @@ class DatetimeField extends DateField
 			);
 		}
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getGetterTypeHint()
+	{
+		return '\\'.DateTime::class;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSetterTypeHint()
+	{
+		return '\\'.DateTime::class;
+	}
 }

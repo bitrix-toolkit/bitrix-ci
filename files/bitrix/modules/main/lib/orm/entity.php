@@ -806,6 +806,19 @@ class Entity
 		return $this->getCode().'_ENTITY';
 	}
 
+	public function getTitle()
+	{
+		$dataClass = $this->getDataClass();
+		$title = $dataClass::getTitle();
+
+		if ($title === null)
+		{
+			$title = Main\Localization\Loc::getMessage($this->getLangCode());
+		}
+
+		return $title;
+	}
+
 	/**
 	 * @deprecated Use Bitrix\StringHelper::camel2snake instead
 	 *
@@ -815,7 +828,7 @@ class Entity
 	 */
 	public static function camel2snake($str)
 	{
-		return strtolower(preg_replace('/(.)([A-Z])/', '$1_$2', $str));
+		return StringHelper::camel2snake($str);
 	}
 
 	/**
@@ -827,8 +840,7 @@ class Entity
 	 */
 	public static function snake2camel($str)
 	{
-		$str = str_replace('_', ' ', strtolower($str));
-		return str_replace(' ', '', ucwords($str));
+		return StringHelper::snake2camel($str);
 	}
 
 	public static function normalizeName($entityName)
@@ -938,7 +950,7 @@ class Entity
 		// generate class content
 		$eval = 'class '.$entity_name.'Table extends '.DataManager::class.' {'.PHP_EOL;
 		$eval .= 'public static function getMap() {'.PHP_EOL;
-		$eval .= 'return '.var_export(array('TMP_ID' => array('data_type' => 'integer', 'primary' => true)), true).';'.PHP_EOL;
+		$eval .= 'return '.var_export(['TMP_ID' => ['data_type' => 'integer', 'primary' => true, 'auto_generated' => true]], true).';'.PHP_EOL;
 		$eval .= '}';
 		$eval .= 'public static function getTableName() {'.PHP_EOL;
 		$eval .= 'return '.var_export($query_string, true).';'.PHP_EOL;
@@ -960,7 +972,7 @@ class Entity
 	/**
 	 * @param string               $entityName
 	 * @param null|array[]|Field[] $fields
-	 * @param array                $parameters [namespace, table_name, uf_id]
+	 * @param array                $parameters [namespace, table_name, uf_id, parent, parent_map, default_scope]
 	 *
 	 * @return Entity
 	 *
@@ -985,6 +997,7 @@ class Entity
 			));
 		}
 
+		/** @var DataManager $fullEntityName */
 		$fullEntityName = $entityName;
 
 		// namespace configuration
@@ -1005,8 +1018,10 @@ class Entity
 			$fullEntityName = '\\'.$namespace.'\\'.$fullEntityName;
 		}
 
+		$parentClass = !empty($parameters['parent']) ? $parameters['parent'] : DataManager::class;
+
 		// build entity code
-		$classCode = $classCode."class {$entityName} extends \\".DataManager::class." {";
+		$classCode = $classCode."class {$entityName} extends \\".$parentClass." {";
 		$classCodeEnd = '}'.$classCodeEnd;
 
 		if (!empty($parameters['table_name']))
@@ -1019,10 +1034,25 @@ class Entity
 			$classCode .= 'public static function getUfId(){return '.var_export($parameters['uf_id'], true).';}';
 		}
 
+		if (!empty($parameters['default_scope']))
+		{
+			$classCode .= 'public static function setDefaultScope($query){'.$parameters['default_scope'].'}';
+		}
+
+		if (isset($parameters['parent_map']) && $parameters['parent_map'] == false)
+		{
+			$classCode .= 'public static function getMap(){return [];}';
+		}
+
+		if(isset($parameters['object_parent']) && is_a($parameters['object_parent'], EntityObject::class, true))
+		{
+			$classCode .= 'public static function getObjectParentClass(){return '.var_export($parameters['object_parent'], true).';}';
+		}
+
 		// create entity
 		eval($classCode.$classCodeEnd);
 
-		$entity = self::getInstance($fullEntityName);
+		$entity = $fullEntityName::getEntity();
 
 		// add fields
 		if (!empty($fields))
@@ -1099,7 +1129,7 @@ class Entity
 			return $dataClass::getObjectClass();
 		}
 
-		$baseObjectClass = '\\'.EntityObject::class;
+		$baseObjectClass = '\\'.$dataClass::getObjectParentClass();
 		$objectClassName = static::getDefaultObjectClassName($classParts['name']);
 
 		$eval = "";
@@ -1137,7 +1167,7 @@ class Entity
 			return $dataClass::getCollectionClass();
 		}
 
-		$baseCollectionClass = '\\'.Collection::class;
+		$baseCollectionClass = '\\'.$dataClass::getCollectionParentClass();
 		$collectionClassName = static::getDefaultCollectionClassName($classParts['name']);
 
 		$eval = "";

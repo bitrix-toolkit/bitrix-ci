@@ -10,8 +10,8 @@ return array (
   array (
     'value' => 
     array (
-      'config_options' => 3600,
-      'site_domain' => 3600,
+      'config_options' => 3600.0,
+      'site_domain' => 3600.0,
     ),
     'readonly' => false,
   ),
@@ -49,7 +49,7 @@ return array (
         'database' => getenv('MYSQL_DATABASE', true) ?: getenv('MYSQL_DATABASE'),
         'login' => getenv('MYSQL_USER', true) ?: getenv('MYSQL_USER'),
         'password' => getenv('MYSQL_PASSWORD', true) ?: getenv('MYSQL_PASSWORD'),
-        'options' => 2,
+        'options' => 2.0,
       ),
     ),
     'readonly' => true,
@@ -58,7 +58,7 @@ return array (
   array (
     'value' => 
     array (
-      'crypto_key' => '61d5a201bf247bd7919e0f4f23605082',
+      'crypto_key' => '557f62eaa19653c4b8dd6bead5744327',
     ),
     'readonly' => true,
   ),

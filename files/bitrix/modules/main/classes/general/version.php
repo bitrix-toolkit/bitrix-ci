@@ -1,3 +1,3 @@
 <?
-define("SM_VERSION","19.0.325");
-define("SM_VERSION_DATE","2019-09-30 09:00:00"); // YYYY-MM-DD HH:MI:SS
+define("SM_VERSION","20.0.650");
+define("SM_VERSION_DATE","2020-02-25 19:00:00"); // YYYY-MM-DD HH:MI:SS

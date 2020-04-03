@@ -75,6 +75,8 @@ class CIBlockPropertyUserID
 		if (strLen(trim($strHTMLControlName["FORM_NAME"])) <= 0)
 			$strHTMLControlName["FORM_NAME"] = "form_element";
 
+		$selfFolderUrl = (defined("SELF_FOLDER_URL") ? SELF_FOLDER_URL : "/bitrix/admin/");
+
 		ob_start();
 		?><select id="SELECT<?=htmlspecialcharsbx($strHTMLControlName["VALUE"])?>" name="SELECT<?=htmlspecialcharsbx($strHTMLControlName["VALUE"])?>" onchange="if(this.value == 'none')
 						{
@@ -94,7 +96,19 @@ class CIBlockPropertyUserID
 					<option value="CU"<?if($select=="CU")echo " selected"?>><?=GetMessage("IBLOCK_PROP_USERID_CURR")?></option>
 					<option value="SU"<?if($select=="SU")echo " selected"?>><?=GetMessage("IBLOCK_PROP_USERID_OTHR")?></option>
 				</select>&nbsp;
-				<?echo FindUserIDNew(htmlspecialcharsbx($strHTMLControlName["VALUE"]), $value["VALUE"], $res, htmlspecialcharsEx($strHTMLControlName["FORM_NAME"]), $select);
+				<?echo FindUserIDNew(
+					htmlspecialcharsbx($strHTMLControlName["VALUE"]),
+					$value["VALUE"],
+					$res,
+					htmlspecialcharsEx($strHTMLControlName["FORM_NAME"]),
+					$select,
+					"3",
+					"",
+					"...",
+					"typeinput",
+					"tablebodybutton",
+			$selfFolderUrl."user_search.php"
+	);
 			$return = ob_get_contents();
 			ob_end_clean();
 		return  $return;
@@ -200,6 +214,8 @@ function FindUserIDNew($tag_name, $tag_value, $user_name="", $form_name = "form1
 
 	if($APPLICATION->GetGroupRight("main") >= "R")
 	{
+		$selfFolderUrl = (defined("SELF_FOLDER_URL") ? SELF_FOLDER_URL : "/bitrix/admin/");
+
 		$strReturn = "
 <input type=\"text\" name=\"".$tag_name."\" id=\"".$tag_name."\" value=\"".($select=="none"?"":$tag_value)."\" size=\"".$tag_size."\" maxlength=\"".$tag_maxlength."\" class=\"".$tag_class."\">
 <IFRAME style=\"width:0px; height:0px; border: 0px\" src=\"javascript:void(0)\" name=\"hiddenframe".$tag_name."\" id=\"hiddenframe".$tag_name."\"></IFRAME>
@@ -233,7 +249,7 @@ function Ch".$tag_name_x."()
 
 				if (tv".$tag_name_x."!=".intVal($USER->GetID()).")
 				{
-					document.getElementById(\"hiddenframe".$tag_name_escaped."\").src='/bitrix/admin/get_user.php?ID=' + tv".$tag_name_x."+'&strName=".$tag_name_escaped."&lang=".LANG.(defined("ADMIN_SECTION") && ADMIN_SECTION===true?"&admin_section=Y":"")."';
+					document.getElementById(\"hiddenframe".$tag_name_escaped."\").src='".$selfFolderUrl."get_user.php?ID=' + tv".$tag_name_x."+'&strName=".$tag_name_escaped."&lang=".LANG.(defined("ADMIN_SECTION") && ADMIN_SECTION===true?"&admin_section=Y":"")."';
 					document.getElementById('SELECT".$tag_name_escaped."').value = 'SU';
 				}
 				else
@@ -245,7 +261,6 @@ function Ch".$tag_name_x."()
 			else
 			{
 				DV_".$tag_name_x.".innerHTML = '';
-				document.getElementById('SELECT".$tag_name_escaped."').value = 'SU';
 			}
 		}
 		else if (

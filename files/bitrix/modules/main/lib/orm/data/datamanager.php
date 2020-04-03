@@ -50,9 +50,6 @@ abstract class DataManager
 	/** @var Collection[] Cache of class names */
 	protected static $collectionClass;
 
-	/** @var Entity */
-	protected static $entityClass = Entity::class;
-
 	/** @var array Restricted words for object class name */
 	protected static $reservedWords = [
 		// keywords
@@ -77,17 +74,11 @@ abstract class DataManager
 	 */
 	public static function getEntity()
 	{
-		// TODO PHP7 ONLY
-		//$class = static::$entityClass::normalizeEntityClass(get_called_class());
-		$entityClass = static::$entityClass;
-		$class = $entityClass::normalizeEntityClass(get_called_class());
+		$class = static::getEntityClass()::normalizeEntityClass(get_called_class());
 
 		if (!isset(static::$entity[$class]))
 		{
-			// TODO PHP7 ONLY
-			//static::$entity[$class] = static::$entityClass::getInstance($class);
-			$entityClass = static::$entityClass;
-			static::$entity[$class] = $entityClass::getInstance($class);
+			static::$entity[$class] = static::getEntityClass()::getInstance($class);
 		}
 
 		return static::$entity[$class];
@@ -95,10 +86,7 @@ abstract class DataManager
 
 	public static function unsetEntity($class)
 	{
-		// TODO PHP7 ONLY
-		//$class = static::$entityClass::normalizeEntityClass($class);
-		$entityClass = static::$entityClass;
-		$class = $entityClass::normalizeEntityClass($class);
+		$class = static::getEntityClass()::normalizeEntityClass($class);
 
 		if (isset(static::$entity[$class]))
 		{
@@ -124,6 +112,14 @@ abstract class DataManager
 	public static function getConnectionName()
 	{
 		return 'default';
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getTitle()
+	{
+		return null;
 	}
 
 	/**
@@ -154,19 +150,13 @@ abstract class DataManager
 
 	protected static function getObjectClassByDataClass($dataClass)
 	{
-		// TODO PHP7 ONLY
-		//$objectClass = static::$entityClass::normalizeName($dataClass);
-		$entityClass = static::$entityClass;
-		$objectClass = $entityClass::normalizeName($dataClass);
+		$objectClass = static::getEntityClass()::normalizeName($dataClass);
 
 		// make class name more unique
 		$namespace = substr($objectClass, 0, strrpos($objectClass, '\\')+1);
 		$className = substr($objectClass, strrpos($objectClass, '\\') + 1);
 
-		// TODO PHP7 ONLY
-		//$className = static::$entityClass::getDefaultObjectClassName($className);
-		$entityClass = static::$entityClass;
-		$className = $entityClass::getDefaultObjectClassName($className);
+		$className = static::getEntityClass()::getDefaultObjectClassName($className);
 
 		return $namespace.$className;
 	}
@@ -199,21 +189,47 @@ abstract class DataManager
 
 	protected static function getCollectionClassByDataClass($dataClass)
 	{
-		// TODO PHP7 ONLY
-		//$objectClass = static::$entityClass::normalizeName($dataClass);
-		$entityClass = static::$entityClass;
-		$objectClass = $entityClass::normalizeName($dataClass);
+		$objectClass = static::getEntityClass()::normalizeName($dataClass);
 
 		// make class name more unique
 		$namespace = substr($objectClass, 0, strrpos($objectClass, '\\')+1);
 		$className = substr($objectClass, strrpos($objectClass, '\\') + 1);
 
-		// TODO PHP7 ONLY
-		//$className = static::$entityClass::getDefaultCollectionClassName($className);
-		$entityClass = static::$entityClass;
-		$className = $entityClass::getDefaultCollectionClassName($className);
+		$className = static::getEntityClass()::getDefaultCollectionClassName($className);
 
 		return $namespace.$className;
+	}
+
+	/**
+	 * @return EntityObject|string
+	 */
+	public static function getObjectParentClass()
+	{
+		return EntityObject::class;
+	}
+
+	/**
+	 * @return Collection|string
+	 */
+	public static function getCollectionParentClass()
+	{
+		return Collection::class;
+	}
+
+	/**
+	 * @return Query|string
+	 */
+	public static function getQueryClass()
+	{
+		return Query::class;
+	}
+
+	/**
+	 * @return Entity|string
+	 */
+	public static function getEntityClass()
+	{
+		return Entity::class;
 	}
 
 	/**
@@ -529,7 +545,8 @@ abstract class DataManager
 	 */
 	public static function query()
 	{
-		return new Query(static::getEntity());
+		$queryClass = static::getQueryClass();
+		return new $queryClass(static::getEntity());
 	}
 
 	/**
@@ -986,7 +1003,7 @@ abstract class DataManager
 			trigger_error(
 				'Multi-insert doesn\'t work with events as far as we can not get last inserted IDs that we need for the events. '.
 				'Insert query was forced to multiple separate queries.',
-				E_USER_WARNING
+				E_USER_NOTICE
 			);
 		}
 
@@ -1235,7 +1252,7 @@ abstract class DataManager
 			// check if there is still some data
 			if (!count($fields + $ufdata))
 			{
-				$result->addError(new EntityError("There is no data to update."));
+				return $result;
 			}
 
 			// return if any error

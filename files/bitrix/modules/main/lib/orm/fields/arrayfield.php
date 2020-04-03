@@ -193,4 +193,20 @@ class ArrayField extends ScalarField
 	{
 		return $this->getConnection()->getSqlHelper()->convertToDbString($value);
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getGetterTypeHint()
+	{
+		return 'array';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSetterTypeHint()
+	{
+		return 'array';
+	}
 }

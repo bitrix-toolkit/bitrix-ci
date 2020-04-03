@@ -53,6 +53,8 @@ class UserIndexSelectorTable extends Main\Entity\DataManager
 
 	public static function merge(array $data)
 	{
+		global $DB;
+
 		$result = new Entity\AddResult();
 
 		$helper = Application::getConnection()->getSqlHelper();
@@ -63,6 +65,13 @@ class UserIndexSelectorTable extends Main\Entity\DataManager
 		foreach ($mergeFields as $field)
 		{
 			unset($updateData[$field]);
+		}
+
+		if (isset($updateData['SEARCH_SELECTOR_CONTENT']))
+		{
+			$value = $DB->forSql($updateData['SEARCH_SELECTOR_CONTENT']);
+			$encryptedValue = sha1($updateData['SEARCH_SELECTOR_CONTENT']);
+			$updateData['SEARCH_SELECTOR_CONTENT'] = new \Bitrix\Main\DB\SqlExpression("IF(SHA1(SEARCH_SELECTOR_CONTENT) = '{$encryptedValue}', SEARCH_SELECTOR_CONTENT, '{$value}')");
 		}
 
 		$merge = $helper->prepareMerge(

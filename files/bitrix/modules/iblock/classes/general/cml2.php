@@ -1,5 +1,6 @@
 <?php
 use Bitrix\Main,
+	Bitrix\Main\ModuleManager,
 	Bitrix\Iblock,
 	Bitrix\Catalog;
 
@@ -56,6 +57,8 @@ class CIBlockCMLImport
 	protected $activeStores = array();
 
 	protected $iblockCacheMode = self::IBLOCK_CACHE_NORMAL;
+
+	private $bitrix24mode = null;
 
 	function InitEx(&$next_step, $params)
 	{
@@ -150,6 +153,7 @@ class CIBlockCMLImport
 				$this->isCatalogIblock = true;
 			unset($catalogData, $catalogsIterator);
 		}
+		$this->bitrix24mode = ModuleManager::isModuleInstalled('bitrix24');
 		$this->arProperties = array();
 		$this->PROPERTY_MAP = array();
 		if($this->next_step["IBLOCK_ID"] > 0)
@@ -1415,9 +1419,20 @@ class CIBlockCMLImport
 				}
 
 				if(!isset($prices_limit) || $prices_limit > 0)
+				{
 					CCatalogGroup::Add($arPrice);
+				}
 				elseif (isset($prices_limit))
-					return GetMessage("IBLOCK_XML2_PRICE_SB_ADD_ERROR");
+				{
+					if ($this->bitrix24mode)
+					{
+						return GetMessage("IBLOCK_XML2_PRICE_SB_ADD_ERROR_B24");
+					}
+					else
+					{
+						return GetMessage("IBLOCK_XML2_PRICE_SB_ADD_ERROR");
+					}
+				}
 			}
 			//We can update XML_ID of the price
 			elseif (strlen($arPrices[$found_id]["XML_ID"]) <= 0 && strlen($PRICE_ID) >= 0)
@@ -3770,7 +3785,7 @@ class CIBlockCMLImport
 			);
 
 			if(isset($arElement["QUANTITY"]))
-				$arProduct["QUANTITY"] = $arElement["QUANTITY"];
+				$arProduct["QUANTITY"] = (float)$arElement["QUANTITY"];
 			elseif(isset($arElement["STORE_AMOUNT"]) && !empty($arElement["STORE_AMOUNT"]))
 				$arProduct["QUANTITY"] = $this->countTotalQuantity($arElement["STORE_AMOUNT"]);
 
@@ -3786,7 +3801,7 @@ class CIBlockCMLImport
 
 			if(isset($arElement["BASE_WEIGHT"]))
 			{
-				$arProduct["WEIGHT"] = $arElement["BASE_WEIGHT"];
+				$arProduct["WEIGHT"] = (float)$arElement["BASE_WEIGHT"];
 			}
 			elseif ($CML_LINK_ELEMENT > 0)
 			{
@@ -3883,7 +3898,31 @@ class CIBlockCMLImport
 				$arProduct["VAT_INCLUDED"] = $TAX_IN_SUM;
 			}
 
-			if (CCatalogProduct::Add($arProduct))
+			$productCache = Catalog\Model\Product::getCacheItem($arProduct['ID'], true);
+			if (!empty($productCache))
+			{
+				$productResult = Catalog\Model\Product::update(
+					$arProduct['ID'],
+					array(
+						'fields' => $arProduct,
+						'external_fields' => array(
+							'IBLOCK_ID' => $this->next_step["IBLOCK_ID"]
+						)
+					)
+				);
+			}
+			else
+			{
+				$productResult = Catalog\Model\Product::add(
+					array(
+						'fields' => $arProduct,
+						'external_fields' => array(
+							'IBLOCK_ID' => $this->next_step["IBLOCK_ID"]
+						)
+					)
+				);
+			}
+			if ($productResult->isSuccess())
 			{
 				//TODO: replace this code after upload measure ratio from 1C
 				$iterator = \Bitrix\Catalog\MeasureRatioTable::getList(array(
@@ -4120,7 +4159,7 @@ class CIBlockCMLImport
 			if(isset($arElement["PRICES"]) && $this->bCatalog)
 			{
 				if(isset($arElement["QUANTITY"]))
-					$arProduct["QUANTITY"] = $arElement["QUANTITY"];
+					$arProduct["QUANTITY"] = (float)$arElement["QUANTITY"];
 				elseif(isset($arElement["STORE_AMOUNT"]) && !empty($arElement["STORE_AMOUNT"]))
 					$arProduct["QUANTITY"] = $this->countTotalQuantity($arElement["STORE_AMOUNT"]);
 
@@ -4249,7 +4288,31 @@ class CIBlockCMLImport
 
 				$arProduct["VAT_INCLUDED"] = $TAX_IN_SUM;
 
-				if (CCatalogProduct::Add($arProduct))
+				$productCache = Catalog\Model\Product::getCacheItem($arProduct['ID'], true);
+				if (!empty($productCache))
+				{
+					$productResult = Catalog\Model\Product::update(
+						$arProduct['ID'],
+						array(
+							'fields' => $arProduct,
+							'external_fields' => array(
+								'IBLOCK_ID' => $IBLOCK_ID
+							)
+						)
+					);
+				}
+				else
+				{
+					$productResult = Catalog\Model\Product::add(
+						array(
+							'fields' => $arProduct,
+							'external_fields' => array(
+								'IBLOCK_ID' => $IBLOCK_ID
+							)
+						)
+					);
+				}
+				if ($productResult->isSuccess())
 				{
 					//TODO: replace this code after upload measure ratio from 1C
 					$iterator = \Bitrix\Catalog\MeasureRatioTable::getList(array(
@@ -4302,7 +4365,15 @@ class CIBlockCMLImport
 					if (!empty($internalFields))
 					{
 						$internalFields['QUANTITY'] -= $quantityReserved;
-						$internalResult = Catalog\Model\Product::update($arElement['ID'], ['fields' => $internalFields]);
+						$internalResult = Catalog\Model\Product::update(
+							$arElement['ID'],
+							array(
+								'fields' => $internalFields,
+								'external_fields' => array(
+									'IBLOCK_ID' => $IBLOCK_ID
+								)
+							)
+						);
 						if (!$internalResult->isSuccess())
 						{
 
@@ -4434,16 +4505,28 @@ class CIBlockCMLImport
 				$arPrice["QUANTITY_TO"] = $price[$this->mess["IBLOCK_XML2_QUANTITY_TO"]];
 				$arPrice["PRICE"] = $arPrice["^PRICE"];
 				unset($arPrice["^PRICE"]);
+				if ($arPrice["QUANTITY_FROM"] === ''
+					|| $arPrice["QUANTITY_FROM"] === false
+					|| $arPrice["QUANTITY_FROM"] === '0'
+					|| $arPrice["QUANTITY_FROM"] === 0
+				)
+					$arPrice["QUANTITY_FROM"] = null;
+				if ($arPrice["QUANTITY_TO"] === ''
+					|| $arPrice["QUANTITY_TO"] === false
+					|| $arPrice["QUANTITY_TO"] === '0'
+					|| $arPrice["QUANTITY_TO"] === 0
+				)
+					$arPrice["QUANTITY_TO"] = null;
 
 				$id = $arPrice["CATALOG_GROUP_ID"].":".$arPrice["QUANTITY_FROM"].":".$arPrice["QUANTITY_TO"];
 				if(isset($arDBPrices[$id]))
 				{
-					CPrice::Update($arDBPrices[$id], $arPrice);
+					$priceResult = Catalog\Model\Price::update($arDBPrices[$id], $arPrice);
 					unset($arToDelete[$id]);
 				}
 				else
 				{
-					CPrice::Add($arPrice);
+					$priceResult = Catalog\Model\Price::add($arPrice);
 				}
 			}
 			else
@@ -4457,23 +4540,37 @@ class CIBlockCMLImport
 					else
 						$arPrice["PRICE"] = $arPrice["^PRICE"];
 					unset($arPrice["^PRICE"]);
+					if ($arPrice["QUANTITY_FROM"] === ''
+						|| $arPrice["QUANTITY_FROM"] === false
+						|| $arPrice["QUANTITY_FROM"] === '0'
+						|| $arPrice["QUANTITY_FROM"] === 0
+					)
+						$arPrice["QUANTITY_FROM"] = null;
+					if ($arPrice["QUANTITY_TO"] === ''
+						|| $arPrice["QUANTITY_TO"] === false
+						|| $arPrice["QUANTITY_TO"] === '0'
+						|| $arPrice["QUANTITY_TO"] === 0
+					)
+						$arPrice["QUANTITY_TO"] = null;
 
 					$id = $arPrice["CATALOG_GROUP_ID"].":".$arPrice["QUANTITY_FROM"].":".$arPrice["QUANTITY_TO"];
 					if(isset($arDBPrices[$id]))
 					{
-						CPrice::Update($arDBPrices[$id], $arPrice);
+						$priceResult = Catalog\Model\Price::update($arDBPrices[$id], $arPrice);
 						unset($arToDelete[$id]);
 					}
 					else
 					{
-						CPrice::Add($arPrice);
+						$priceResult = Catalog\Model\Price::add($arPrice);
 					}
 				}
 			}
 		}
 
 		foreach($arToDelete as $id)
-			CPrice::Delete($id);
+		{
+			$priceResult = Catalog\Model\Price::delete($id);
+		}
 	}
 
 	function ImportSection($xml_tree_id, $IBLOCK_ID, $parent_section_id)

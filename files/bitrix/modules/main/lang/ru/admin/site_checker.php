@@ -313,10 +313,12 @@ $MESS["SC_HELP_CHECK_MYSQL_TIME"] = "Сравнивается системное
 
 Вместо <i>Etc/GMT-3</i> укажите свой часовой пояс из списка: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones";
 $MESS["SC_HELP_CHECK_MYSQL_MODE"] = "Параметр <i>sql_mode</i> задаёт режим работы MySQL. Может принимать значения, несовместимые с 1С-Битрикс. Чтобы установить режим работы по умолчанию, добавьте в <i>/bitrix/php_interface/after_connect_d7.php</i>:
-<code>\$connection = Bitrix\\Main\\Application::getConnection(); 
-\$connection-&gt;queryExecute(&quot;SET sql_mode=''&quot;);</code>
+<code>\$connection = Bitrix\\Main\\Application::getConnection();
+\$connection-&gt;queryExecute(&quot;SET sql_mode=''&quot;);
+\$connection-&gt;queryExecute(&quot;SET innodb_strict_mode=0&quot;);</code>
 В файл <i>/bitrix/php_interface/after_connect.php</i>
-<code>\$DB->Query(&quot;SET sql_mode=''&quot;);</code>
+<code>\$DB->Query(&quot;SET sql_mode=''&quot;);
+\$DB->Query(&quot;SET innodb_strict_mode=0&quot;);</code>
 ";
 $MESS["SC_HELP_CHECK_MYSQL_TABLE_CHARSET"] = "Кодировка всех таблиц (и полей) должна совпадать с кодировкой базы данных. Если какие-то таблицы имеют неправильную кодировку, необходимо исправить их вручную через SQL запросы.
 

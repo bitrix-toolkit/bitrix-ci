@@ -185,24 +185,37 @@ class Option
 			$con = Main\Application::getConnection();
 			$sqlHelper = $con->getSqlHelper();
 
+			self::$options[$moduleId] = ["-" => []];
+
 			$query = "
-				SELECT NULL AS SITE_ID, NAME, VALUE 
+				SELECT NAME, VALUE 
 				FROM b_option 
 				WHERE MODULE_ID = '{$sqlHelper->forSql($moduleId)}' 
-				UNION
-				SELECT SITE_ID, NAME, VALUE 
-				FROM b_option_site 
-				WHERE MODULE_ID = '{$sqlHelper->forSql($moduleId)}' 
 			";
-
-			self::$options[$moduleId] = ["-" => []];
 
 			$res = $con->query($query);
 			while ($ar = $res->fetch())
 			{
-				$s = ($ar["SITE_ID"] == ""? "-" : $ar["SITE_ID"]);
-				self::$options[$moduleId][$s][$ar["NAME"]] = $ar["VALUE"];
+				self::$options[$moduleId]["-"][$ar["NAME"]] = $ar["VALUE"];
 			}
+
+			try
+			{
+				//b_option_site possibly doesn't exist
+
+				$query = "
+					SELECT SITE_ID, NAME, VALUE 
+					FROM b_option_site 
+					WHERE MODULE_ID = '{$sqlHelper->forSql($moduleId)}' 
+				";
+
+				$res = $con->query($query);
+				while ($ar = $res->fetch())
+				{
+					self::$options[$moduleId][$ar["SITE_ID"]][$ar["NAME"]] = $ar["VALUE"];
+				}
+			}
+			catch(Main\DB\SqlQueryException $e){}
 
 			if($cacheTtl !== false)
 			{
@@ -210,7 +223,7 @@ class Option
 			}
 		}
 
-		/*patchvalidationoptions4*/
+		
 	}
 
 	/**

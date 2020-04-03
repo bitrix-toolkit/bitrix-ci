@@ -26,6 +26,7 @@ class Mail
 	protected $settingAttachImages;
 	protected $settingServerName;
 	protected $settingMailEncodeBase64;
+	protected $settingMailEncodeQuotedPrintable;
 
 	protected $eol;
 	protected $attachment;
@@ -196,6 +197,11 @@ class Mail
 	 */
 	public function canSend()
 	{
+		if (empty($this->to))
+		{
+			return false;
+		}
+
 		$pseudoHeaders = ['To' => $this->to];
 		$this->filterHeaderEmails($pseudoHeaders);
 
@@ -237,6 +243,10 @@ class Mail
 		if(Config\Option::get("main", "mail_encode_base64", "N") == "Y")
 		{
 			$this->settingMailEncodeBase64 = true;
+		}
+		else if (Config\Option::get('main', 'mail_encode_quoted_printable', 'N') == 'Y')
+		{
+			$this->settingMailEncodeQuotedPrintable = true;
 		}
 
 		if(!isset($this->settingServerName) || strlen($this->settingServerName) <= 0)
@@ -304,7 +314,17 @@ class Mail
 		}
 
 		$cteName = 'Content-Transfer-Encoding';
-		$cteValue = $this->settingMailEncodeBase64 ? 'base64' : $this->contentTransferEncoding;
+		$cteValue = $this->contentTransferEncoding;
+
+		if ($this->settingMailEncodeBase64)
+		{
+			$cteValue = 'base64';
+		}
+		else if ($this->settingMailEncodeQuotedPrintable)
+		{
+			$cteValue = 'quoted-printable';
+		}
+
 		$this->multipart->addHeader($cteName, $cteValue);
 		$plainPart->addHeader($cteName, $cteValue);
 		if ($htmlPart)
@@ -315,7 +335,7 @@ class Mail
 
 		if ($htmlPart)
 		{
-			if ($this->hasImageAttachment())
+			if ($this->hasImageAttachment(true))
 			{
 				$this->multipartRelated = (new Multipart())->setContentType(Multipart::RELATED)->setEol($this->eol);
 				$this->multipartRelated->addPart($htmlPart);
@@ -363,9 +383,10 @@ class Mail
 	/**
 	 * Return true if mail has image attachment.
 	 *
+	 * @param bool $checkRelated Check image as related.
 	 * @return bool
 	 */
-	public function hasImageAttachment()
+	public function hasImageAttachment($checkRelated = false)
 	{
 		if (!$this->hasAttachment())
 		{
@@ -380,7 +401,7 @@ class Mail
 
 		foreach($files as $attachment)
 		{
-			if ($this->isAttachmentImage($attachment))
+			if ($this->isAttachmentImage($attachment, $checkRelated))
 			{
 				return true;
 			}
@@ -440,7 +461,7 @@ class Mail
 						['%name%', '%limit%'],
 						[
 							$attachment["NAME"],
-							(int) $this->settingMaxFileSize / 1000000
+							round($this->settingMaxFileSize / 1024 / 1024, 1),
 						],
 						'This is not the original file. The size of the original file `%name%` exceeded the limit of %limit% MB.'
 					);
@@ -454,7 +475,7 @@ class Mail
 					->addHeader('Content-ID', "<{$attachment['ID']}>")
 					->setBody($fileContent);
 
-				if ($this->multipartRelated && $this->isAttachmentImage($attachment))
+				if ($this->multipartRelated && $this->isAttachmentImage($attachment, true))
 				{
 					$this->multipartRelated->addPart($part);
 				}
@@ -466,9 +487,14 @@ class Mail
 		}
 	}
 
-	private function isAttachmentImage(&$attachment)
+	private function isAttachmentImage(&$attachment, $checkRelated = false)
 	{
 		if (empty($attachment['CONTENT_TYPE']))
+		{
+			return false;
+		}
+
+		if ($checkRelated && empty($attachment['RELATED']))
 		{
 			return false;
 		}
@@ -483,8 +509,8 @@ class Mail
 
 	private function isFileLimitExceeded($fileSize, &$summarySize)
 	{
-		$magicMultiplier = 1.3; // magic for length after base64
-		$summarySize += $fileSize * $magicMultiplier;
+		// magic for length after base64
+		$summarySize += 4 * ceil($fileSize / 3);
 
 		return $this->settingMaxFileSize > 0
 			&& $summarySize > 0
@@ -841,10 +867,11 @@ class Mail
 			return $matches[0];
 		}
 
-		foreach($this->attachment as $attach)
+		foreach($this->attachment as $attachIndex => $attach)
 		{
 			if($filePath == $attach['PATH'])
 			{
+				$this->attachment[$attachIndex]['RELATED'] = true;
 				return $matches[1].$matches[2]."cid:".$attach['ID'].$matches[4].$matches[5];
 			}
 		}
@@ -877,6 +904,7 @@ class Mail
 		$uid = uniqid(md5($src));
 
 		$this->filesReplacedFromBody[$src] = array(
+			"RELATED" => true,
 			"SRC" => $src,
 			"PATH" => $filePath,
 			"CONTENT_TYPE" => $contentType,
@@ -911,10 +939,11 @@ class Mail
 			{
 				$io = \CBXVirtualIo::GetInstance();
 				$filePath = $io->GetPhysicalName(Application::getDocumentRoot().$srcTrimmed);
-				foreach($this->attachment as $attach)
+				foreach($this->attachment as $attachIndex => $attach)
 				{
 					if($filePath == $attach['PATH'])
 					{
+						$this->attachment[$attachIndex]['RELATED'] = true;
 						$src = "cid:".$attach['ID'];
 						$srcModified = true;
 						break;
@@ -1015,9 +1044,9 @@ class Mail
 	{
 		if($this->settingServerName != '')
 		{
-			$pcre_pattern = "/(<a\\s[^>]*?(?<=\\s)href\\s*=\\s*)([\"'])(\\/.*?|http:\\/\\/.*?|https:\\/\\/.*?)(\\2)(\\s.+?>|\\s*>)/is";
+			$pattern = "/(<a\\s[^>]*?(?<=\\s)href\\s*=\\s*)([\"'])(\\/.*?|http:\\/\\/.*?|https:\\/\\/.*?)(\\2)(\\s.+?>|\\s*>)/is";
 			$text = preg_replace_callback(
-				$pcre_pattern,
+				$pattern,
 				array($this, 'trackClick'),
 				$text
 			);
@@ -1080,7 +1109,7 @@ class Mail
 	 */
 	protected function imageTypeToMimeType($type)
 	{
-		$aTypes = array(
+		$types = array(
 			1 => "image/gif",
 			2 => "image/jpeg",
 			3 => "image/png",
@@ -1098,8 +1127,8 @@ class Mail
 			15 => "image/vnd.wap.wbmp",
 			16 => "image/xbm",
 		);
-		if(!empty($aTypes[$type]))
-			return $aTypes[$type];
+		if(!empty($types[$type]))
+			return $types[$type];
 		else
 			return "application/octet-stream";
 	}

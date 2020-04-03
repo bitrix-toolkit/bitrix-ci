@@ -463,7 +463,7 @@ abstract class CAllUser extends CDBResult
 
 		if ($user_id)
 		{
-			$hash = md5(uniqid(rand(), true));
+			$hash = Main\Security\Random::getString(32);
 			$arFields = array(
 				'USER_ID' => $user_id,
 				'URL' => $DB->ForSqlLike(trim($url), 500),
@@ -2872,28 +2872,34 @@ abstract class CAllUser extends CDBResult
 		$inserted = array();
 		if(is_array($arGroups))
 		{
+			$values = [];
 			foreach($arGroups as $group)
 			{
 				if(!is_array($group))
 				{
 					$group = array("GROUP_ID" => $group);
 				}
+				//we must preserve fields order for the insertion sql
+				$groupFields = [
+					"GROUP_ID" => $group["GROUP_ID"],
+					"DATE_ACTIVE_FROM" => (isset($group["DATE_ACTIVE_FROM"])? $group["DATE_ACTIVE_FROM"] : ''),
+					"DATE_ACTIVE_TO" => (isset($group["DATE_ACTIVE_TO"])? $group["DATE_ACTIVE_TO"] : ''),
+				];
 
-				$group_id = intval($group["GROUP_ID"]);
+				$group_id = intval($groupFields["GROUP_ID"]);
 				if($group_id > 0 && $group_id <> 2 && !isset($inserted[$group_id]))
 				{
-					$arInsert = $DB->PrepareInsert("b_user_group", $group);
-					$strSql = "
-						INSERT IGNORE INTO b_user_group (
-							USER_ID, ".$arInsert[0]."
-						) VALUES (
-							".$USER_ID.",
-							".$arInsert[1]."
-						)
-					";
-					$DB->Query($strSql, false, "FILE: ".__FILE__."<br> LINE: ".__LINE__);
-					$inserted[$group_id] = $group;
+					$arInsert = $DB->PrepareInsert("b_user_group", $groupFields);
+					$values[] = "(".$USER_ID.",	".$arInsert[1].")";
+					$inserted[$group_id] = $groupFields;
 				}
+			}
+			if(!empty($values))
+			{
+				$strSql = "
+					INSERT IGNORE INTO b_user_group (USER_ID, GROUP_ID, DATE_ACTIVE_FROM, DATE_ACTIVE_TO) 
+					VALUES ".implode(", ", $values);
+				$DB->Query($strSql, false, "FILE: ".__FILE__."<br> LINE: ".__LINE__);
 			}
 		}
 		self::clearUserGroupCache($USER_ID);
@@ -3577,8 +3583,6 @@ abstract class CAllUser extends CDBResult
 
 		if($userId == $USER->GetId())
 		{
-			$_SESSION['SESS_AUTH']['PREV_LAST_ACTIVITY'] = $_SESSION['SESS_AUTH']['SET_LAST_ACTIVITY'];
-
 			if ($cache)
 			{
 				if (
@@ -3589,6 +3593,8 @@ abstract class CAllUser extends CDBResult
 					return false;
 				}
 			}
+
+			$_SESSION['SESS_AUTH']['PREV_LAST_ACTIVITY'] = $_SESSION['SESS_AUTH']['SET_LAST_ACTIVITY'];
 			$_SESSION['SESS_AUTH']['SET_LAST_ACTIVITY'] = time();
 		}
 

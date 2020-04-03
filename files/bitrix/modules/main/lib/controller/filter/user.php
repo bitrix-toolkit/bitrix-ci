@@ -1,7 +1,7 @@
 <?
 namespace Bitrix\Main\Controller\Filter;
 
-class User extends \Bitrix\Main\Controller\Filter\Base
+class User extends Base
 {
 	public function getListAction($filterId, $componentName, $signedParameters)
 	{
@@ -9,7 +9,7 @@ class User extends \Bitrix\Main\Controller\Filter\Base
 		$unsignedParameters = \Bitrix\Main\Component\ParameterSigner::unsignParameters($componentName, $signedParameters);
 
 		return $this->getList(\Bitrix\Main\UserTable::getUfId(), [
-			'ID' => strlen($filterId) > 0 ? $filterId : 'INTRANET_USER_LIST',
+			'ID' => $filterId != '' ? $filterId : 'INTRANET_USER_LIST',
 			'WHITE_LIST' => (isset($unsignedParameters['USER_PROPERTY_LIST']) ? $unsignedParameters['USER_PROPERTY_LIST'] : [])
 		]);
 	}
@@ -22,7 +22,7 @@ class User extends \Bitrix\Main\Controller\Filter\Base
 		$id = trim($id);
 
 		return $this->getField(\Bitrix\Main\UserTable::getUfId(), [
-			'ID' => strlen($filterId) > 0 ? $filterId : 'INTRANET_USER_LIST',
+			'ID' => $filterId != '' ? $filterId : 'INTRANET_USER_LIST',
 			'WHITE_LIST' => (isset($unsignedParameters['USER_PROPERTY_LIST']) ? $unsignedParameters['USER_PROPERTY_LIST'] : [])
 		], $id);
 	}

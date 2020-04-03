@@ -78,6 +78,8 @@ class UserIndexTable extends Main\Entity\DataManager
 
 	public static function merge(array $data)
 	{
+		global $DB;
+
 		$result = new Entity\AddResult();
 
 		$helper = Application::getConnection()->getSqlHelper();
@@ -88,6 +90,27 @@ class UserIndexTable extends Main\Entity\DataManager
 		foreach ($mergeFields as $field)
 		{
 			unset($updateData[$field]);
+		}
+
+		if (isset($updateData['SEARCH_USER_CONTENT']))
+		{
+			$value = $DB->forSql($updateData['SEARCH_USER_CONTENT']);
+			$encryptedValue = sha1($updateData['SEARCH_USER_CONTENT']);
+			$updateData['SEARCH_USER_CONTENT'] = new \Bitrix\Main\DB\SqlExpression("IF(SHA1(SEARCH_USER_CONTENT) = '{$encryptedValue}', SEARCH_USER_CONTENT, '{$value}')");
+		}
+
+		if (isset($updateData['SEARCH_DEPARTMENT_CONTENT']))
+		{
+			$value = $DB->forSql($updateData['SEARCH_DEPARTMENT_CONTENT']);
+			$encryptedValue = sha1($updateData['SEARCH_DEPARTMENT_CONTENT']);
+			$updateData['SEARCH_DEPARTMENT_CONTENT'] = new \Bitrix\Main\DB\SqlExpression("IF(SHA1(SEARCH_DEPARTMENT_CONTENT) = '{$encryptedValue}', SEARCH_DEPARTMENT_CONTENT, '{$value}')");
+		}
+
+		if (isset($updateData['SEARCH_ADMIN_CONTENT']))
+		{
+			$value = $DB->forSql($updateData['SEARCH_ADMIN_CONTENT']);
+			$encryptedValue = sha1($updateData['SEARCH_ADMIN_CONTENT']);
+			$updateData['SEARCH_ADMIN_CONTENT'] = new \Bitrix\Main\DB\SqlExpression("IF(SHA1(SEARCH_ADMIN_CONTENT) = '{$encryptedValue}', SEARCH_ADMIN_CONTENT, '{$value}')");
 		}
 
 		$merge = $helper->prepareMerge(

@@ -342,7 +342,13 @@ $MESS["SC_HELP_CHECK_MYSQL_DB_CHARSET"] = "This test check if the database chars
 Such errors, if any occur can be fixed automatically if a current user has database write permission (ALTER DATABASE).
 ";
 $MESS["SC_HELP_CHECK_MYSQL_MODE"] = "The parameter <i>sql_mode</i> specifies the MySQL operation mode. Note that it may accept values incompatible with Bitrix solutions. Add the following code to <i>/bitrix/php_interface/after_connect_d7.php</I> to set the default mode:
-<code>\$connection = Bitrix\\Main\\Application::getConnection(); \$connection->queryExecute(&quot;SET sql_mode=''&quot;);</code>";
+<code>\$connection = Bitrix\\Main\\Application::getConnection();
+\$connection-&gt;queryExecute(&quot;SET sql_mode=''&quot;);
+\$connection-&gt;queryExecute(&quot;SET innodb_strict_mode=0&quot;);</code>
+And this code to <i>/bitrix/php_interface/after_connect.php</i>:
+<code>\$DB->Query(&quot;SET sql_mode=''&quot;);
+\$DB->Query(&quot;SET innodb_strict_mode=0&quot;);</code>
+";
 $MESS["SC_HELP_CHECK_MYSQL_TABLE_CHARSET"] = "The charset of all the tables and fields must match the database charset. If the charset of any of the tables is defferent, you have to fix it manually using the SQL commands.
 
 The table collation should match the database collations as well. If the charsets are configured correctly, mismatching collation will be fixed automatically.

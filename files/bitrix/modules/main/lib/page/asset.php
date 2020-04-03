@@ -690,7 +690,7 @@ class Asset
 			'#(\s*@import\s*)([\'"])([^\'"]+)(\2)#si',
 			function ($matches) use ($path)
 			{
-				return $matches[1].Asset::replaceUrlCSS($matches[3], $matches[2], addslashes($path)).")";
+				return $matches[1].Asset::replaceUrlCSS($matches[3], $matches[2], addslashes($path));
 			},
 			$content
 		);
@@ -1203,6 +1203,31 @@ class Asset
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Gets asset path.
+	 * if allowed use minified assets
+	 * @param $sourcePath
+	 * @return string|null
+	 * @throws Main\ArgumentNullException
+	 * @throws Main\ArgumentOutOfRangeException
+	 */
+	public function getFullAssetPath($sourcePath)
+	{
+		$result = $this->getAssetPaths($sourcePath);
+
+		if (is_array($result))
+		{
+			return $result["FULL_PATH"];
+		}
+
+		if (\CMain::IsExternalLink($sourcePath))
+		{
+			return $sourcePath;
+		}
+
+		return null;
 	}
 
 	/**

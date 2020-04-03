@@ -33,12 +33,17 @@ class UserDataProvider extends EntityDataProvider
 
 	public static function getFiredAvailability()
 	{
+		global $USER;
+
 		static $result = null;
 
 		if ($result === null)
 		{
 			$result = (
-				Option::get("bitrix24", "show_fired_employees", "Y") == "Y"
+				(
+					Option::get("bitrix24", "show_fired_employees", "Y") == "Y"
+					|| $USER->canDoOperation('edit_all_users')
+				)
 				&& !self::extranetSite()
 			);
 		}
@@ -71,9 +76,58 @@ class UserDataProvider extends EntityDataProvider
 		{
 			$result = (
 				$USER->canDoOperation('edit_all_users')
-				&& ModuleManager::isModuleInstalled('extranet')
-				&& strlen(Option::get("extranet", "extranet_site")) > 0
-				&& !self::extranetSite()
+				&& (
+					!ModuleManager::isModuleInstalled('extranet')
+					|| strlen(Option::get("extranet", "extranet_site")) <= 0 // master hasn't been run
+					|| !self::extranetSite()
+				)
+			);
+		}
+
+		return $result;
+	}
+
+	public static function getIntegratorAvailability()
+	{
+		global $USER;
+
+		static $result = null;
+
+		if ($result === null)
+		{
+			$result = (
+				$USER->canDoOperation('edit_all_users')
+				&& ModuleManager::isModuleInstalled('bitrix24')
+				&& (
+					!ModuleManager::isModuleInstalled('extranet')
+					|| (
+						strlen(Option::get("extranet", "extranet_site")) > 0
+						&& !self::extranetSite()
+					)
+				)
+			);
+		}
+
+		return $result;
+	}
+
+	public static function getAdminAvailability()
+	{
+		global $USER;
+
+		static $result = null;
+
+		if ($result === null)
+		{
+			$result = (
+				$USER->canDoOperation('edit_all_users')
+				&& (
+					!ModuleManager::isModuleInstalled('extranet')
+					|| (
+						strlen(Option::get("extranet", "extranet_site")) > 0
+						&& !self::extranetSite()
+					)
+				)
 			);
 		}
 
@@ -117,6 +171,15 @@ class UserDataProvider extends EntityDataProvider
 				'items' => [
 					'F' => Loc::getMessage('MAIN_USER_FILTER_GENDER_F'),
 					'M' => Loc::getMessage('MAIN_USER_FILTER_GENDER_M')
+				]
+			];
+		}
+		elseif (in_array($fieldID, [ 'INTEGRATOR', 'ADMIN' ]))
+		{
+			$result = [
+				'params' => ['multiple' => 'N'],
+				'items' => [
+					'Y' => Loc::getMessage('MAIN_USER_FILTER_Y'),
 				]
 			];
 		}
@@ -184,7 +247,7 @@ class UserDataProvider extends EntityDataProvider
 				'whiteList' => 'SECOND_NAME'
 			],
 			'FIRED' => [
-				'conditionMethod' => 'self::getFiredAvailability',
+//				'conditionMethod' => 'self::getFiredAvailability',
 				'options' => [ 'type' => 'checkbox' ]
 			],
 			'EXTRANET' => [
@@ -194,6 +257,14 @@ class UserDataProvider extends EntityDataProvider
 			'INVITED' => [
 				'conditionMethod' => 'self::getInvitedAvailability',
 				'options' => [ 'type' => 'checkbox' ]
+			],
+			'INTEGRATOR' => [
+				'conditionMethod' => 'self::getIntegratorAvailability',
+				'options' => [ 'type' => 'list', 'partial' => true ]
+			],
+			'ADMIN' => [
+				'conditionMethod' => 'self::getAdminAvailability',
+				'options' => [ 'type' => 'list', 'partial' => true ]
 			],
 			'IS_ONLINE' => [
 				'options' => [ 'type' => 'checkbox' ]
@@ -218,6 +289,10 @@ class UserDataProvider extends EntityDataProvider
 			],
 			'DATE_REGISTER' => [
 				'whiteList' => 'DATE_REGISTER',
+				'options' => [ 'type' => 'date' ]
+			],
+			'LAST_ACTIVITY_DATE' => [
+				'whiteList' => 'LAST_ACTIVITY_DATE',
 				'options' => [ 'type' => 'date' ]
 			],
 			'BIRTHDAY' => [
@@ -277,6 +352,9 @@ class UserDataProvider extends EntityDataProvider
 			],
 			'COMPANY' => [
 				'whiteList' => 'WORK_COMPANY'
+			],
+			'WORK_DEPARTMENT' => [
+				'whiteList' => 'WORK_DEPARTMENT'
 			],
 		];
 

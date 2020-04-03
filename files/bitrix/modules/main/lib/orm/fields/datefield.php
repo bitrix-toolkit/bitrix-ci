@@ -12,6 +12,7 @@ use Bitrix\Main;
 use Bitrix\Main\ArgumentException;
 use Bitrix\Main\ArgumentTypeException;
 use Bitrix\Main\Type;
+use Bitrix\Main\Type\Date;
 
 /**
  * Entity field class for date data type
@@ -20,6 +21,8 @@ use Bitrix\Main\Type;
  */
 class DateField extends ScalarField
 {
+	protected $format = null;
+
 	/**
 	 * DateField constructor.
 	 *
@@ -33,6 +36,13 @@ class DateField extends ScalarField
 		parent::__construct($name, $parameters);
 
 		$this->addFetchDataModifier(array($this, 'assureValueObject'));
+	}
+
+	public function configureFormat($format)
+	{
+		$this->format = $format;
+
+		return $this;
 	}
 
 	/**
@@ -82,7 +92,7 @@ class DateField extends ScalarField
 	{
 		if (!empty($value) && !($value instanceof Type\Date))
 		{
-			return new Type\Date($value);
+			return new Type\Date($value, $this->format);
 		}
 
 		return $value;
@@ -119,5 +129,21 @@ class DateField extends ScalarField
 				"Type error in `{$this->name}` of `{$this->entity->getFullName()}`: ".$e->getMessage()
 			);
 		}
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getGetterTypeHint()
+	{
+		return '\\'.Date::class;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSetterTypeHint()
+	{
+		return '\\'.Date::class;
 	}
 }

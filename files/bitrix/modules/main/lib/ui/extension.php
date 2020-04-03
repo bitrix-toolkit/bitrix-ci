@@ -131,13 +131,15 @@ class Extension
 			{
 				if (isset($config["lang"]))
 				{
+					$config["lang"] = static::normalizeAssetPath($config["lang"], $extensionPath);
+
 					if (is_array($config["lang"]))
 					{
 						$config["lang"][] = $extensionPath."/config.php";
 					}
 					else
 					{
-						$config["lang"] = array($config["lang"], $extensionPath."/config.php");
+						$config["lang"] = [$config["lang"], $extensionPath."/config.php"];
 					}
 				}
 				else

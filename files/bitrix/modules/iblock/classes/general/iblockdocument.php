@@ -2505,6 +2505,11 @@ class CIBlockDocument
 		if (count($arFieldsPropertyValues) > 0)
 			$arFields["PROPERTY_VALUES"] = $arFieldsPropertyValues;
 
+		if (isset($arFields['SORT']))
+		{
+			$arFields['SORT'] = (int) $arFields['SORT'];
+		}
+
 		$iblockElement = new CIBlockElement();
 		$id = $iblockElement->Add($arFields, false, true, true);
 		if (!$id || $id <= 0)
@@ -3018,9 +3023,12 @@ class CIBlockDocument
 			$arFilter["GROUPS_ID"] = $group;
 		}
 
-		$dbUsersList = CUser::GetList(($b = "ID"), ($o = "ASC"), $arFilter);
+		$dbUsersList = CUser::GetList(($b = "ID"), ($o = "ASC"), $arFilter, ['FIELDS' => ['ID']]);
 		while ($arUser = $dbUsersList->Fetch())
+		{
 			$arResult[] = $arUser["ID"];
+		}
+
 		return $arResult;
 	}
 

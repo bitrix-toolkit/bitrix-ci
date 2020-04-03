@@ -272,8 +272,8 @@ final class PreviewManager
 
 		return [
 			'alt' => [
-				'contentType' => $getContentType->bindTo($this),
-				'sourceUri' => $getSourceUri->bindTo($this),
+				'contentType' => $getContentType->bindTo($this, $this),
+				'sourceUri' => $getSourceUri->bindTo($this, $this),
 			],
 		];
 	}

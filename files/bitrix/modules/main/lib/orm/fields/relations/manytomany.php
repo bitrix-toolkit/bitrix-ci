@@ -11,6 +11,7 @@ namespace Bitrix\Main\ORM\Fields\Relations;
 use Bitrix\Main\ArgumentException;
 use Bitrix\Main\ORM\Entity;
 use Bitrix\Main\ORM\Fields\FieldTypeMask;
+use Bitrix\Main\ORM\Query\Join;
 use Bitrix\Main\ORM\Query\Query;
 use Bitrix\Main\ORM\Fields\Relations\Reference;
 use Bitrix\Main\SystemException;
@@ -45,7 +46,12 @@ class ManyToMany extends Relation
 	protected $remoteReferenceName;
 
 	/** @var string */
-	protected $joinType = 'left';
+	protected $joinType = Join::TYPE_LEFT;
+
+	/** @var int */
+	protected $cascadeSavePolicy = CascadePolicy::NO_ACTION;
+
+	protected $cascadeDeletePolicy = CascadePolicy::NO_ACTION; // follow_orphans | no_action
 
 	/**
 	 * @param string        $name

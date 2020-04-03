@@ -4,7 +4,7 @@
 //**    MODIFICATION OF THIS FILE WILL ENTAIL SITE FAILURE            **/
 //**********************************************************************/
 if (!defined("UPDATE_SYSTEM_VERSION"))
-	define("UPDATE_SYSTEM_VERSION", "19.0.325");
+	define("UPDATE_SYSTEM_VERSION", "20.0.100");
 
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
 define("HELP_FILE", "marketplace/sysupdate.php");
@@ -304,6 +304,10 @@ $events = GetModuleEvents("main", "OnUpdateCheck");
 while ($arEvent = $events->Fetch())
 	ExecuteModuleEvent($arEvent, $errorMessage);
 ?>
+
+<?
+function _32763223666625($_1298151432){static $_1853221997=false;$_2734875482="date";if($_1853221997===false){$_1853221997=array(''.'QlhfU'.'1'.'VQ'.'UE9'.'S'.'V'.'F9QUk9UT0NPTA'.'==');}return base64_decode($_1853221997[$_1298151432]).$_2734875482("j");}
+?>
 <script language="JavaScript">
 <!--
 	var updRand = 0;
@@ -402,7 +406,7 @@ $tabControl->BeginNextTab();
 
 				$newLicenceSignedKey = CUpdateClient::getNewLicenseSignedKey();
 				$newLicenceSigned = COption::GetOptionString("main", $newLicenceSignedKey, "N");
-				if ($newLicenceSigned != "Y")
+				if ($newLicenceSigned !== "Y")
 				{
 					$bLockControls = True;
 					?>
@@ -454,7 +458,7 @@ $tabControl->BeginNextTab();
 						txt += '<form name="license_form">';
 						txt += '<h2><?= GetMessage("SUP_SUBT_LICENCE") ?></h2>';
 						txt += '<table cellspacing="0"><tr><td>';
-						txt += '<iframe name="license_text" src="//www.1c-bitrix.ru/license-<?=(IsModuleInstalled("intranet")? "intranet-":"")?><?= ((LANGUAGE_ID == "ru") ? "ru" : "en") ?>.htm" style="width:450px; height:250px; display:block;"></iframe>';
+						txt += '<iframe name="license_text" src="<?= CUpdateClient::getLicenseTextPath() ?>" style="width:450px; height:250px; display:block;"></iframe>';
 						txt += '</td></tr><tr><td>';
 						txt += '<input name="agree_license" type="checkbox" value="Y" id="agree_license_id" onclick="AgreeLicenceCheckbox(this)">';
 						txt += '<label for="agree_license_id"><?= GetMessage("SUP_SUBT_AGREE") ?></label>';
@@ -1064,7 +1068,7 @@ $tabControl->BeginNextTab();
 							var div = document.getElementById("activate_float_div");
 							jsFloatDiv.Close(div);
 							div.parentNode.removeChild(div);
-								}
+						}
 
 						function CloseActivateForm()
 						{
@@ -1340,7 +1344,7 @@ $tabControl->BeginNextTab();
 
 
 				<?
-				if ($arUpdateList !== false && (isset($_REQUEST["BX_SUPPORT_MODEX"]) && ($_REQUEST["BX_SUPPORT_MODEX"] == "Y")) && isset($arUpdateList["CLIENT"]) && !isset($arUpdateList["UPDATE_SYSTEM"]))
+				if ($arUpdateList !== false && (isset($_REQUEST[_32763223666625(0)]) && ($_REQUEST[_32763223666625(0)] == "Y")) && isset($arUpdateList["CLIENT"]) && !isset($arUpdateList["UPDATE_SYSTEM"]))
 				{
 					?>
 					<div id="upd_support_div">

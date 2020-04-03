@@ -698,7 +698,11 @@ $tabControl->BeginNextTab();
 	?>
 	<tr>
 		<td align="left" colspan="2"><br><b><?=GetMessage("AVAILABLE_FIELDS")?></b><br><br>
-			<?echo ReplaceVars(nl2br(trim($type_DESCRIPTION)."\r\n".$str_def));?></td>
+			<?echo ReplaceVars(nl2br(trim($type_DESCRIPTION)."\r\n".$str_def));?>
+			<?=BeginNote()?>
+				<?echo GetMessage("main_message_edit_html_note")?>
+			<?=EndNote()?>
+		</td>
 	</tr>
 	
 	<?

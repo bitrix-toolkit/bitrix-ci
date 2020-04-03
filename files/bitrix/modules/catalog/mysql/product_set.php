@@ -43,7 +43,8 @@ class CCatalogProductSet extends CCatalogProductSetAll
 					self::calculateSetParams($arSet['ITEM_ID'], $setParams);
 					break;
 				case self::TYPE_GROUP:
-					CCatalogProduct::Update($arSet['ITEM_ID'], array('BUNDLE' => Catalog\ProductTable::STATUS_YES));
+					$result = Catalog\Model\Product::update($arSet['ITEM_ID'], ['BUNDLE' => Catalog\ProductTable::STATUS_YES]);
+					unset($result);
 					break;
 			}
 
@@ -125,7 +126,9 @@ class CCatalogProductSet extends CCatalogProductSetAll
 						self::calculateSetParams($arSet['ITEM_ID'], $setParams);
 						break;
 					case self::TYPE_GROUP:
-						CCatalogProduct::Update($arSet['ITEM_ID'], array('BUNDLE' => Catalog\ProductTable::STATUS_YES));
+						$result = Catalog\Model\Product::update($arSet['ITEM_ID'], ['BUNDLE' => Catalog\ProductTable::STATUS_YES]);
+						unset($result);
+						break;
 				}
 			}
 
@@ -162,11 +165,15 @@ class CCatalogProductSet extends CCatalogProductSetAll
 			switch ($arItem['TYPE'])
 			{
 				case self::TYPE_SET:
-					CCatalogProduct::SetProductType($arItem['ITEM_ID'], CCatalogProduct::TYPE_PRODUCT);
+					$result = Catalog\Model\Product::update($arItem['ITEM_ID'], ['TYPE' => Catalog\ProductTable::TYPE_PRODUCT]);
+					unset($result);
 					break;
 				case self::TYPE_GROUP:
 					if (!static::isProductHaveSet($arItem['ITEM_ID'], self::TYPE_GROUP))
-						CCatalogProduct::Update($arItem['ITEM_ID'], array('BUNDLE' => Catalog\ProductTable::STATUS_NO));
+					{
+						$result = Catalog\Model\Product::update($arItem['ITEM_ID'], ['BUNDLE' => Catalog\ProductTable::STATUS_NO]);
+						unset($result);
+					}
 					break;
 			}
 
@@ -271,6 +278,11 @@ class CCatalogProductSet extends CCatalogProductSetAll
 		return $dbRes;
 	}
 
+	/**
+	 * @param int $intProductID
+	 * @param int $intSetType
+	 * @return bool
+	 */
 	public static function isProductInSet($intProductID, $intSetType = 0)
 	{
 		global $DB;
@@ -292,6 +304,11 @@ class CCatalogProductSet extends CCatalogProductSetAll
 
 	}
 
+	/**
+	 * @param int|array $arProductID
+	 * @param int $intSetType
+	 * @return bool
+	 */
 	public static function isProductHaveSet($arProductID, $intSetType = 0)
 	{
 		global $DB;
@@ -315,6 +332,11 @@ class CCatalogProductSet extends CCatalogProductSetAll
 		return false;
 	}
 
+	/**
+	 * @param int $intProductID
+	 * @param int $intSetType
+	 * @return array|false
+	 */
 	public static function getAllSetsByProduct($intProductID, $intSetType)
 	{
 		global $DB;
@@ -385,6 +407,10 @@ class CCatalogProductSet extends CCatalogProductSetAll
 		return (!empty($arResult) ? $arResult : false);
 	}
 
+	/**
+	 * @param int $intID
+	 * @return array|false
+	 */
 	public static function getSetByID($intID)
 	{
 		global $DB;
@@ -438,11 +464,15 @@ class CCatalogProductSet extends CCatalogProductSetAll
 		return (!empty($arResult) ? $arResult : false);
 	}
 
+	/**
+	 * @param int $product
+	 * @return void
+	 */
 	public static function recalculateSetsByProduct($product)
 	{
 		global $DB;
 
-		if (self::$recalculateSet < 0)
+		if (!static::isEnabledRecalculateSet())
 			return;
 
 		$setsList = array();
@@ -569,7 +599,7 @@ class CCatalogProductSet extends CCatalogProductSetAll
 		$weight = 0;
 
 		$allItems = true;
-		$tracedItems = array_filter($items, 'CCatalogProductSet::isTracedItem');
+		$tracedItems = array_filter($items, [__CLASS__, 'isTracedItem']);
 		if (empty($tracedItems))
 		{
 			$tracedItems = $items;
@@ -605,11 +635,14 @@ class CCatalogProductSet extends CCatalogProductSetAll
 			'QUANTITY_TRACE' => $quantityTrace,
 			'CAN_BUY_ZERO' => $canBuyZero,
 			'MEASURE' => $measure['ID'],
-			'TYPE' => CCatalogProduct::TYPE_SET
+			'TYPE' => Catalog\ProductTable::TYPE_SET
 		);
-		$fields['AVAILABLE'] = (CCatalogProduct::isAvailable($fields) ? 'Y' : 'N');
+		$fields['AVAILABLE'] = (CCatalogProduct::isAvailable($fields)
+			? Catalog\ProductTable::STATUS_YES
+			: Catalog\ProductTable::STATUS_NO
+		);
 
-		if($productData = Catalog\ProductTable::getRowById($productID))
+		if ($productData = Catalog\ProductTable::getRowById($productID))
 		{
 			$fields['SUBSCRIBE'] = $productData['SUBSCRIBE'];
 			if(Catalog\SubscribeTable::checkPermissionSubscribe($productData['SUBSCRIBE']))
@@ -618,7 +651,7 @@ class CCatalogProductSet extends CCatalogProductSetAll
 
 		foreach(GetModuleEvents('catalog', 'OnBeforeProductSetAvailableUpdate', true) as $arEvent)
 			ExecuteModuleEventEx($arEvent, array($productID, &$fields));
-
+		//TODO: change to Catalog\Product\Model after blocked call recurrence
 		$update = $DB->PrepareUpdate('b_catalog_product', $fields);
 
 		$query = "update b_catalog_product set ".$update." where ID = ".$productID;

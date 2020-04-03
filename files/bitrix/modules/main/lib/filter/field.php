@@ -32,8 +32,8 @@ class Field
 		$this->type = isset($params['type']) ? $params['type'] : '';
 		$this->isDefault = isset($params['default']) ? $params['default'] : false;
 
-		$this->data = isset($params['data']) ? $params['data'] : null;
 		$this->isPartial = isset($params['partial']) ? $params['partial'] : false;
+		$this->data = isset($params['data']) ? $params['data'] : null;
 	}
 
 	/**

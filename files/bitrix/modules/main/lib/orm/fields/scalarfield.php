@@ -15,7 +15,7 @@ use Bitrix\Main\ORM\Fields\FieldTypeMask;
  * @package bitrix
  * @subpackage main
  */
-abstract class ScalarField extends Field implements IStorable
+abstract class ScalarField extends Field implements IStorable, ITypeHintable
 {
 	protected $is_primary;
 
@@ -183,5 +183,21 @@ abstract class ScalarField extends Field implements IStorable
 		}
 
 		return (strval($value) === '');
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getGetterTypeHint()
+	{
+		return '\\string';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSetterTypeHint()
+	{
+		return '\\string';
 	}
 }

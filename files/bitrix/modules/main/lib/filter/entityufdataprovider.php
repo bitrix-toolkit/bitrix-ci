@@ -391,7 +391,7 @@ class EntityUFDataProvider extends DataProvider
 		return new Field($this, $fieldID, $params);
 	}
 
-	protected function getUfReserved()
+	public function getUfReserved()
 	{
 		return $this->ufReserved;
 	}

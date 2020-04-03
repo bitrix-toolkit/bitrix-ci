@@ -294,23 +294,18 @@ class Cache
 		$this->uniqueString = $uniqueString;
 		$this->vars = false;
 
-		if ($TTL <= 0)
+		if ($TTL <= 0 || $this->forceRewriting || static::shouldClearCache())
 		{
 			return false;
 		}
 
-		if ($this->forceRewriting)
+		$data = ['CONTENT' => '', 'VARS' => ''];
+		if (!$this->cacheEngine->read($data, $this->baseDir, $this->initDir, $this->filename, $this->TTL))
 		{
 			return false;
 		}
 
-		if (static::shouldClearCache())
-		{
-			return false;
-		}
-
-		$allVars = array("CONTENT" => "", "VARS" => "");
-		if (!$this->cacheEngine->read($allVars, $this->baseDir, $this->initDir, $this->filename, $this->TTL))
+		if (!is_array($data) || empty($data) || !isset($data['CONTENT']) || !isset($data['VARS']))
 		{
 			return false;
 		}
@@ -337,8 +332,8 @@ class Cache
 			Diag\CacheTracker::add($read, $path, $this->baseDir, $this->initDir, $this->filename, "R");
 		}
 
-		$this->content = $allVars["CONTENT"];
-		$this->vars = $allVars["VARS"];
+		$this->content = $data['CONTENT'];
+		$this->vars = $data['VARS'];
 
 		return true;
 	}
