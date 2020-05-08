@@ -47,9 +47,10 @@ putenv('MYSQL_PASSWORD=password');
 
 ```php
 /**
+ * @param array $stack
  * @return array
  */
-public function testCanSaveNewObject(array $stack)
+public function testCanGetBitrixElement(array $stack)
 {
     $id = $stack['id'];
     
