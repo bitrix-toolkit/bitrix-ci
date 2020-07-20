@@ -52,15 +52,13 @@ putenv('MYSQL_PASSWORD=password');
  */
 public function testCanGetBitrixElement(array $stack)
 {
-    $id = $stack['id'];
-    
-    $element = CIBlockElement::GetList(null, ['ID' => $id])->GetNextElement();
+    $element = CIBlockElement::GetList(null, ['ID' => $stack['id']])->GetNextElement();
     $this->assertInstanceOf(_CIBElement::class, $element);
     
     $fields = $element->GetFields();
-    $this->assertEquals($id, $fields['ID']);
+    $this->assertEquals($stack['id'], $fields['ID']);
     
-    return ['id' => $id];
+    return $stack;
 }
 ```
 
