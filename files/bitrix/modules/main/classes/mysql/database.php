@@ -6,6 +6,8 @@
  * @copyright 2001-2014 Bitrix
  */
 
+use Bitrix\Main\DB\SqlExpression;
+
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/classes/general/database.php");
 
 /********************************************************************
@@ -289,18 +291,18 @@ abstract class CDatabaseMysql extends CAllDatabase
 
 		$format = str_replace($search, $replace, $format);
 
-		if (strpos($format, '%H') === false)
+		if (mb_strpos($format, '%H') === false)
 		{
 			$format = str_replace("H", "%h", $format);
 		}
 
-		if (strpos($format, '%M') === false)
+		if (mb_strpos($format, '%M') === false)
 		{
 			$format = str_replace("M", "%b", $format);
 		}
 
 		$lowerAmPm = false;
-		if(strpos($format, 'T') !== false)
+		if(mb_strpos($format, 'T') !== false)
 		{
 			//lowercase am/pm
 			$lowerAmPm = true;
@@ -450,13 +452,13 @@ abstract class CDatabaseMysql extends CAllDatabase
 					{
 						case "datetime":
 						case "timestamp":
-							if(strlen($value)<=0)
+							if($value == '')
 								$strInsert2 .= ", NULL ";
 							else
 								$strInsert2 .= ", ".CDatabase::CharToDateFunction($value, "FULL", $lang);
 							break;
 						case "date":
-							if(strlen($value)<=0)
+							if($value == '')
 								$strInsert2 .= ", NULL ";
 							else
 								$strInsert2 .= ", ".CDatabase::CharToDateFunction($value, "SHORT", $lang);
@@ -486,8 +488,8 @@ abstract class CDatabaseMysql extends CAllDatabase
 
 		if($strInsert1!="")
 		{
-			$strInsert1 = substr($strInsert1, 2);
-			$strInsert2 = substr($strInsert2, 2);
+			$strInsert1 = mb_substr($strInsert1, 2);
+			$strInsert2 = mb_substr($strInsert2, 2);
 		}
 		return array($strInsert1, $strInsert2);
 	}
@@ -515,6 +517,10 @@ abstract class CDatabaseMysql extends CAllDatabase
 				{
 					$strUpdate .= ", $strTableAlias`".$strColumnName."` = NULL";
 				}
+				elseif ($value instanceof SqlExpression)
+				{
+					$strUpdate .= ", $strTableAlias`".$strColumnName."` = ".$value->compile();
+				}
 				else
 				{
 					switch ($type)
@@ -531,13 +537,13 @@ abstract class CDatabaseMysql extends CAllDatabase
 							break;
 						case "datetime":
 						case "timestamp":
-							if(strlen($value)<=0)
+							if($value == '')
 								$value = "NULL";
 							else
 								$value = CDatabase::CharToDateFunction($value, "FULL", $lang);
 							break;
 						case "date":
-							if(strlen($value)<=0)
+							if($value == '')
 								$value = "NULL";
 							else
 								$value = CDatabase::CharToDateFunction($value, "SHORT", $lang);
@@ -555,7 +561,7 @@ abstract class CDatabaseMysql extends CAllDatabase
 		}
 
 		if($strUpdate!="")
-			$strUpdate = substr($strUpdate, 2);
+			$strUpdate = mb_substr($strUpdate, 2);
 
 		return $strUpdate;
 	}
@@ -570,13 +576,13 @@ abstract class CDatabaseMysql extends CAllDatabase
 		foreach ($arFields as $field => $value)
 		{
 			$str1 .= ($str1 <> ""? ", ":"")."`".$field."`";
-			if (strlen($value) <= 0)
+			if ($value == '')
 				$str2 .= ($str2 <> ""? ", ":"")."''";
 			else
 				$str2 .= ($str2 <> ""? ", ":"").$value;
 		}
 
-		if (strlen($EXIST_ID)>0)
+		if ($EXIST_ID <> '')
 		{
 			$strSql = "INSERT INTO ".$table."(ID,".$str1.") VALUES ('".$this->ForSql($EXIST_ID)."',".$str2.")";
 		}
@@ -593,7 +599,7 @@ abstract class CDatabaseMysql extends CAllDatabase
 		if ($res === false)
 			return false;
 
-		if (strlen($EXIST_ID) > 0)
+		if ($EXIST_ID <> '')
 			return $EXIST_ID;
 		else
 			return $this->LastID();
@@ -607,7 +613,7 @@ abstract class CDatabaseMysql extends CAllDatabase
 			$ar = array();
 			foreach($arFields as $field => $value)
 			{
-				if (strlen($value)<=0)
+				if ($value == '')
 					$ar[] = "`".$field."` = ''";
 				else
 					$ar[] = "`".$field."` = ".$value."";
@@ -717,7 +723,7 @@ abstract class CDatabaseMysql extends CAllDatabase
 		$str = "";
 		$ar = func_get_args();
 		if (is_array($ar)) $str .= implode(" , ", $ar);
-		if (strlen($str)>0) $str = "concat(".$str.")";
+		if ($str <> '') $str = "concat(".$str.")";
 		return $str;
 	}
 
@@ -741,7 +747,7 @@ abstract class CDatabaseMysql extends CAllDatabase
 		$tableName = preg_replace("/[^A-Za-z0-9%_]+/i", "", $tableName);
 		$tableName = Trim($tableName);
 
-		if (strlen($tableName) <= 0)
+		if ($tableName == '')
 			return False;
 
 		$dbResult = $this->Query("SHOW TABLES LIKE '".$this->ForSql($tableName)."'", false, '', array("fixed_connection"=>true));
@@ -776,7 +782,7 @@ abstract class CDatabaseMysql extends CAllDatabase
 			}
 			else
 			{
-				if(substr($strKeyColumns, 0, strlen($strColumns)) === $strColumns)
+				if(mb_substr($strKeyColumns, 0, mb_strlen($strColumns)) === $strColumns)
 					return $Key_name;
 			}
 		}

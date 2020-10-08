@@ -6,6 +6,7 @@
  * @copyright 2001-2014 Bitrix
  */
 
+use Bitrix\Main;
 use Bitrix\Main\Page\Asset;
 use Bitrix\Main\Page\AssetLocation;
 use Bitrix\Main\UI\Extension;
@@ -297,7 +298,7 @@ function ".$sFromName."_SetDate()
 ";
 		global $$sname;
 		$value = $$sname;
-		if (strlen($value)>0 && $value!="NOT_REF")
+		if ($value <> '' && $value!="NOT_REF")
 			$ds = "disabled";
 
 		?><script type="text/javascript">
@@ -412,10 +413,10 @@ function CheckDateTime($datetime, $format=false)
 	$s1 = preg_replace("~([^:\\\\/\\s.,0-9-]+|[^:\\\\/\\s.,a-z-]+)[\n\r\t ]*~i".BX_UTF_PCRE_MODIFIER, "P", $datetime);
 	$s2 = preg_replace("/(DD|MMMM|MM|MI|M|YYYY|HH|H|GG|G|SS|TT|T)[\n\r\t ]*/i".BX_UTF_PCRE_MODIFIER, "P", $format);
 
-	if(strlen($s1) <= strlen($s2))
-		return $s1 == substr($s2, 0, strlen($s1));
+	if(mb_strlen($s1) <= mb_strlen($s2))
+		return $s1 == mb_substr($s2, 0, mb_strlen($s1));
 	else
-		return $s2 == substr($s1, 0, strlen($s2));
+		return $s2 == mb_substr($s1, 0, mb_strlen($s2));
 }
 
 /**
@@ -544,7 +545,7 @@ function ParseDateTime($datetime, $format=false)
 			{
 				if (is_numeric($dt_args[0][$i]))
 				{
-					$arrResult[$v] = sprintf("%0".strlen($v)."d", intval($dt_args[0][$i]));
+					$arrResult[$v] = sprintf("%0".mb_strlen($v)."d", intval($dt_args[0][$i]));
 				}
 				elseif(($dt_args[0][$i] == "am" || $dt_args[0][$i] == "pm") && array_search("T", $fm_args[0]) !== false)
 				{
@@ -572,9 +573,9 @@ function AddToTimeStamp($arrAdd, $stmp=false)
 {
 	if ($stmp === false)
 		$stmp = time();
-	if (is_array($arrAdd) && count($arrAdd)>0)
+	if (is_array($arrAdd))
 	{
-		while(list($key, $value) = each($arrAdd))
+		foreach($arrAdd as $key => $value)
 		{
 			$value = intval($value);
 			if (is_int($value))
@@ -661,17 +662,17 @@ function IsAmPmMode($returnConst = false)
 {
 	if($returnConst)
 	{
-		if(strpos(FORMAT_DATETIME, 'TT') !== false)
+		if(mb_strpos(FORMAT_DATETIME, 'TT') !== false)
 		{
 			return AM_PM_UPPER;
 		}
-		if(strpos(FORMAT_DATETIME, 'T') !== false)
+		if(mb_strpos(FORMAT_DATETIME, 'T') !== false)
 		{
 			return AM_PM_LOWER;
 		}
 		return AM_PM_NONE;
 	}
-	return strpos(FORMAT_DATETIME, 'T') !== false;
+	return mb_strpos(FORMAT_DATETIME, 'T') !== false;
 }
 
 function convertTimeToMilitary ($strTime, $fromFormat = 'H:MI T', $toFormat = 'HH:MI')
@@ -931,10 +932,10 @@ function FormatDate($format = "", $timestamp = false, $now = false)
 	}
 
 	$bCutZeroTime = false;
-	if (substr($format, 0, 1) == '^')
+	if (mb_substr($format, 0, 1) == '^')
 	{
 		$bCutZeroTime = true;
-		$format = substr($format, 1);
+		$format = mb_substr($format, 1);
 	}
 
 	$arFormatParts = preg_split("/(?<!\\\\)(
@@ -1234,10 +1235,14 @@ function FormatDate($format = "", $timestamp = false, $now = false)
 			$formats[""] = "";
 			$time = FormatDate($formats, $timestamp, $now);
 
-			if(strlen($time))
+			if($time <> '')
+			{
 				$result .= GetMessage("FD_DAY_AT_TIME", array("#DAY#" => $day, "#TIME#" => $time));
+			}
 			else
+			{
 				$result .= $day;
+			}
 			break;
 		case "Q":
 			$days_ago = intval(($now - $timestamp) / 60 / 60 / 24);
@@ -1352,10 +1357,10 @@ function FormatDateEx($strDate, $format=false, $new_format=false)
 			intval($arParsedDate["YY"])
 		);
 
-		$new_format_l = strlen($new_format);
+		$new_format_l = mb_strlen($new_format);
 		for ($i = 0; $i < $new_format_l; $i++)
 		{
-			$simbol = substr($new_format, $i ,1);
+			$simbol = mb_substr($new_format, $i, 1);
 			switch ($simbol)
 			{
 				case "F":
@@ -1374,7 +1379,7 @@ function FormatDateEx($strDate, $format=false, $new_format=false)
 					$match=GetMessage("DOW_".date("w", $ux_time));
 					break;
 				case "j":
-					$match = date(substr($new_format, $i ,1), $ux_time);
+					$match = date(mb_substr($new_format, $i, 1), $ux_time);
 					$dayPattern = GetMessage("DOM_PATTERN");
 					if ($dayPattern)
 					{
@@ -1382,7 +1387,7 @@ function FormatDateEx($strDate, $format=false, $new_format=false)
 					}
 					break;
 				default:
-					$match = date(substr($new_format, $i ,1), $ux_time);
+					$match = date(mb_substr($new_format, $i, 1), $ux_time);
 					break;
 			}
 			$strResult .= $match;
@@ -1392,10 +1397,10 @@ function FormatDateEx($strDate, $format=false, $new_format=false)
 	{
 		if($arParsedDate["MM"]<1 || $arParsedDate["MM"]>12)
 			$arParsedDate["MM"] = 1;
-		$new_format_l = strlen($new_format);
+		$new_format_l = mb_strlen($new_format);
 		for ($i = 0; $i < $new_format_l; $i++)
 		{
-			$simbol = substr($new_format, $i ,1);
+			$simbol = mb_substr($new_format, $i, 1);
 			switch ($simbol)
 			{
 				case "F":
@@ -1437,7 +1442,7 @@ function FormatDateEx($strDate, $format=false, $new_format=false)
 					$match = str_pad($arParsedDate["YY"], 4, "0", STR_PAD_LEFT);
 					break;
 				case "y":
-					$match = substr($arParsedDate["YY"], 2);
+					$match = mb_substr($arParsedDate["YY"], 2);
 					break;
 				case "H":
 					$match = str_pad($arParsedDate["HH"], 2, "0", STR_PAD_LEFT);
@@ -1461,11 +1466,11 @@ function FormatDateEx($strDate, $format=false, $new_format=false)
 					else
 						$match .= " AM";
 
-					if (substr($new_format, $i, 1) == "a")
-						$match = strToLower($match);
+					if (mb_substr($new_format, $i, 1) == "a")
+						$match = mb_strtolower($match);
 					break;
 				default:
-					$match = substr($new_format, $i ,1);
+					$match = mb_substr($new_format, $i, 1);
 					break;
 			}
 			$strResult .= $match;
@@ -1540,7 +1545,7 @@ function ParseDate($strDate, $format="dmy")
 {
 	$day = $month = $year = 0;
 	$args = preg_split('#[/.-]#', $strDate);
-	$bound = min(strlen($format), count($args));
+	$bound = min(mb_strlen($format), count($args));
 	for($i=0; $i<$bound; $i++)
 	{
 		if($format[$i] == 'm') $month = intval($args[$i]);
@@ -1623,14 +1628,14 @@ function DelDuplicateSort(&$arSort)
 		{
 			$arSort1 = explode(" ", trim($val));
 			$order = array_pop($arSort1);
-			$order_ = strtoupper(trim($order));
+			$order_ = mb_strtoupper(trim($order));
 			if (!($order_=="DESC" || $order_=="ASC"))
 			{
 				$arSort1[] = $order;
 				$order_ = "";
 			}
 			$by = implode(" ", $arSort1);
-			if(strlen($by)>0 && !array_key_exists($by, $arSort2))
+			if($by <> '' && !array_key_exists($by, $arSort2))
 				$arSort2[$by] = $order_;
 		}
 		$arSort = array();
@@ -1642,9 +1647,9 @@ function DelDuplicateSort(&$arSort)
 function array_convert_name_2_value($arr)
 {
 	$arr_res = array();
-	if (is_array($arr) && count($arr)>0)
+	if (is_array($arr))
 	{
-		while (list($key, $value)=each($arr))
+		foreach($arr as $key => $value)
 		{
 			global $$value;
 			$arr_res[$key] = $$value;
@@ -1671,19 +1676,18 @@ function TrimArr(&$arr, $trim_value=false)
 		return false;
 
 	$found = false;
-	while (list($key,$value)=each($arr))
+	foreach($arr as $key => $value)
 	{
 		if ($trim_value)
 		{
 			$arr[$key] = trim($value);
 		}
-		if (strlen(trim($value))<=0)
+		if (trim($value) == '')
 		{
 			unset($arr[$key]);
 			$found = true;
 		}
 	}
-	reset($arr);
 	return ($found) ? true : false;
 }
 
@@ -1708,25 +1712,25 @@ function randString($pass_len=10, $pass_chars=false)
 	$string = "";
 	if(is_array($pass_chars))
 	{
-		while(strlen($string) < $pass_len)
+		while(mb_strlen($string) < $pass_len)
 		{
 			if(function_exists('shuffle'))
 				shuffle($pass_chars);
 			foreach($pass_chars as $chars)
 			{
-				$n = strlen($chars) - 1;
+				$n = mb_strlen($chars) - 1;
 				$string .= $chars[mt_rand(0, $n)];
 			}
 		}
-		if(strlen($string) > count($pass_chars))
-			$string = substr($string, 0, $pass_len);
+		if(mb_strlen($string) > count($pass_chars))
+			$string = mb_substr($string, 0, $pass_len);
 	}
 	else
 	{
 		if($pass_chars !== false)
 		{
 			$chars = $pass_chars;
-			$n = strlen($pass_chars) - 1;
+			$n = mb_strlen($pass_chars) - 1;
 		}
 		else
 		{
@@ -1746,8 +1750,8 @@ function GetRandomCode($len=8)
 
 function TruncateText($strText, $intLen)
 {
-	if(strlen($strText) > $intLen)
-		return rtrim(substr($strText, 0, $intLen), ".")."...";
+	if(mb_strlen($strText) > $intLen)
+		return rtrim(mb_substr($strText, 0, $intLen), ".")."...";
 	else
 		return $strText;
 }
@@ -1755,7 +1759,7 @@ function TruncateText($strText, $intLen)
 function InsertSpaces($sText, $iMaxChar=80, $symbol=" ", $bHTML=false)
 {
 	$iMaxChar = intval($iMaxChar);
-	if ($iMaxChar > 0 && strlen($sText) > $iMaxChar)
+	if ($iMaxChar > 0 && mb_strlen($sText) > $iMaxChar)
 	{
 		if ($bHTML)
 		{
@@ -1773,7 +1777,7 @@ function InsertSpaces($sText, $iMaxChar=80, $symbol=" ", $bHTML=false)
 
 function TrimExAll($str,$symbol)
 {
-	while (substr($str,0,1)==$symbol or substr($str,strlen($str)-1,1)==$symbol)
+	while (mb_substr($str, 0, 1) == $symbol or mb_substr($str, mb_strlen($str) - 1, 1) == $symbol)
 		$str = TrimEx($str,$symbol);
 
 	return $str;
@@ -1784,16 +1788,16 @@ function TrimEx($str,$symbol,$side="both")
 	$str = trim($str);
 	if ($side=="both")
 	{
-		if (substr($str,0,1) == $symbol) $str = substr($str,1,strlen($str));
-		if (substr($str,strlen($str)-1,1) == $symbol) $str = substr($str,0,strlen($str)-1);
+		if (mb_substr($str, 0, 1) == $symbol) $str = mb_substr($str, 1, mb_strlen($str));
+		if (mb_substr($str, mb_strlen($str) - 1, 1) == $symbol) $str = mb_substr($str, 0, mb_strlen($str) - 1);
 	}
 	elseif ($side=="left")
 	{
-		if (substr($str,0,1) == $symbol) $str = substr($str,1,strlen($str));
+		if (mb_substr($str, 0, 1) == $symbol) $str = mb_substr($str, 1, mb_strlen($str));
 	}
 	elseif ($side=="right")
 	{
-		if (substr($str,strlen($str)-1,1) == $symbol) $str = substr($str,0,strlen($str)-1);
+		if (mb_substr($str, mb_strlen($str) - 1, 1) == $symbol) $str = mb_substr($str, 0, mb_strlen($str) - 1);
 	}
 	return $str;
 }
@@ -1814,7 +1818,7 @@ function ToUpper($str, $lang = false)
 	{
 		if(defined("BX_UTF"))
 		{
-			return strtoupper($str);
+			return mb_strtoupper($str);
 		}
 		else
 		{
@@ -1826,7 +1830,7 @@ function ToUpper($str, $lang = false)
 				$lower[$lang] = $arMsg["ABC_LOWER"];
 				$upper[$lang] = $arMsg["ABC_UPPER"];
 			}
-			return strtoupper(strtr($str, $lower[$lang], $upper[$lang]));
+			return mb_strtoupper(strtr($str, $lower[$lang], $upper[$lang]));
 		}
 	}
 	else
@@ -1844,7 +1848,7 @@ function ToLower($str, $lang = false)
 	{
 		if(defined("BX_UTF"))
 		{
-			return strtolower($str);
+			return mb_strtolower($str);
 		}
 		else
 		{
@@ -1856,7 +1860,7 @@ function ToLower($str, $lang = false)
 				$lower[$lang] = $arMsg["ABC_LOWER"];
 				$upper[$lang] = $arMsg["ABC_UPPER"];
 			}
-			return strtolower(strtr($str, $upper[$lang], $lower[$lang]));
+			return mb_strtolower(strtr($str, $upper[$lang], $lower[$lang]));
 		}
 	}
 	else
@@ -1887,7 +1891,7 @@ class CConvertorsPregReplaceHelper
 		$text = preg_replace("#^(.*?)$#", "   \\1", $text);
 
 		$s1 = "--------------- ".$this->codeMessage." -------------------";
-		$s2 = str_repeat("-", strlen($s1));
+		$s2 = str_repeat("-", mb_strlen($s1));
 		$text = "\n\n>".$s1."\n".$text."\n>".$s2."\n\n";
 
 		return $text;
@@ -2070,7 +2074,7 @@ function convert_code_tag_for_email($text="", $arMsg=array())
 function PrepareTxtForEmail($text, $lang=false, $convert_url_tag=true, $convert_image_tag=true)
 {
 	$text = Trim($text);
-	if(strlen($text)<=0)
+	if($text == '')
 		return "";
 
 	if($lang===false)
@@ -2094,7 +2098,7 @@ function PrepareTxtForEmail($text, $lang=false, $convert_url_tag=true, $convert_
 
 	$s = "-------------- ".$arMsg["MAIN_QUOTE_S"]." -----------------";
 	$text = preg_replace("#\\[quote(.*?)\\]#is", "\n>".$s."\n", $text);
-	$text = preg_replace("#\\[/quote(.*?)\\]#is", "\n>".str_repeat("-", strlen($s))."\n", $text);
+	$text = preg_replace("#\\[/quote(.*?)\\]#is", "\n>".str_repeat("-", mb_strlen($s))."\n", $text);
 
 	if($convert_url_tag)
 	{
@@ -2211,10 +2215,10 @@ function convert_quote_tag($text="", $quote_table_class, $quote_head_class, $quo
 function extract_url($s)
 {
 	$s2 = '';
-	while(strpos(",}])>.", substr($s, -1, 1))!==false)
+	while(mb_strpos(",}])>.", mb_substr($s, -1, 1)) !== false)
 	{
-		$s2 = substr($s, -1, 1);
-		$s = substr($s, 0, strlen($s)-1);
+		$s2 = mb_substr($s, -1, 1);
+		$s = mb_substr($s, 0, mb_strlen($s) - 1);
 	}
 	$res = chr(1).$s."/".chr(1).$s2;
 	return $res;
@@ -2224,9 +2228,9 @@ function convert_to_href($url, $link_class="", $event1="", $event2="", $event3="
 {
 	$url = stripslashes($url);
 	$goto = $url;
-	if (strlen($event1)>0 || strlen($event2)>0)
+	if ($event1 <> '' || $event2 <> '')
 	{
-		$script = strlen($script)>0 ? $script : "/bitrix/redirect.php";
+		$script = $script <> '' ? $script : "/bitrix/redirect.php";
 		$goto = $script.
 			"?event1=".urlencode($event1).
 			"&event2=".urlencode($event2).
@@ -2329,8 +2333,10 @@ function TxtToHTML(
 		$helper->setLinkClass($link_class);
 		$helper->setLinkTarget($link_target);
 		$helper->setEvents($arUrlEvent["EVENT1"], $arUrlEvent["EVENT2"], $arUrlEvent["EVENT3"]);
-		if (strlen($script))
+		if($script <> '')
+		{
 			$helper->setScript($script);
+		}
 		$str = preg_replace_callback("#\x01([^\n\x01]+?)/\x01#is", array($helper, "convertToHref"), $str);
 		$str = preg_replace_callback("#\x03([^\n\x03]+?)\x03#is", array($helper, "convertToMailTo"), $str);
 	}
@@ -2475,7 +2481,7 @@ function HTMLToTxt($str, $strSiteUrl="", $aDelete=array(), $maxlen=70)
 
 function FormatText($strText, $strTextType="text")
 {
-	if(strtolower($strTextType)=="html")
+	if(mb_strtolower($strTextType) == "html")
 		return $strText;
 
 	return TxtToHtml($strText);
@@ -2506,10 +2512,10 @@ function CheckDirPath($path, $bPermission = true)
 	$path = str_replace(array("\\", "//"), "/", $path);
 
 	//remove file name
-	if(substr($path, -1) != "/")
+	if(mb_substr($path, -1) != "/")
 	{
-		$p = strrpos($path, "/");
-		$path = substr($path, 0, $p);
+		$p = mb_strrpos($path, "/");
+		$path = mb_substr($path, 0, $p);
 	}
 
 	$path = rtrim($path, "/");
@@ -2530,7 +2536,7 @@ function CheckDirPath($path, $bPermission = true)
 
 function CopyDirFiles($path_from, $path_to, $ReWrite = True, $Recursive = False, $bDeleteAfterCopy = False, $strExclude = "")
 {
-	if (strpos($path_to."/", $path_from."/")===0 || realpath($path_to) === realpath($path_from))
+	if (mb_strpos($path_to."/", $path_from."/") === 0 || realpath($path_to) === realpath($path_from))
 		return false;
 
 	if (is_dir($path_from))
@@ -2540,7 +2546,7 @@ function CopyDirFiles($path_from, $path_to, $ReWrite = True, $Recursive = False,
 	elseif(is_file($path_from))
 	{
 		$p = bxstrrpos($path_to, "/");
-		$path_to_dir = substr($path_to, 0, $p);
+		$path_to_dir = mb_substr($path_to, 0, $p);
 		CheckDirPath($path_to_dir."/");
 
 		if (file_exists($path_to) && !$ReWrite)
@@ -2567,7 +2573,7 @@ function CopyDirFiles($path_from, $path_to, $ReWrite = True, $Recursive = False,
 			if ($file == "." || $file == "..")
 				continue;
 
-			if (strlen($strExclude)>0 && substr($file, 0, strlen($strExclude))==$strExclude)
+			if ($strExclude <> '' && mb_substr($file, 0, mb_strlen($strExclude)) == $strExclude)
 				continue;
 
 			if (is_dir($path_from."/".$file) && $Recursive)
@@ -2601,7 +2607,7 @@ function CopyDirFiles($path_from, $path_to, $ReWrite = True, $Recursive = False,
 
 function DeleteDirFilesEx($path)
 {
-	if(strlen($path) == 0 || $path == '/')
+	if($path == '' || $path == '/')
 		return false;
 
 	$full_path = $_SERVER["DOCUMENT_ROOT"]."/".$path;
@@ -2672,7 +2678,7 @@ function GetScriptFileExt()
 
 	$script_files = COption::GetOptionString("fileman", "~script_files", "php,php3,php4,php5,php6,phtml,pl,asp,aspx,cgi,dll,exe,ico,shtm,shtml,fcg,fcgi,fpl,asmx,pht,py,psp,var");
 	$arScriptFiles = array();
-	foreach(explode(",", strtolower($script_files)) as $ext)
+	foreach(explode(",", mb_strtolower($script_files)) as $ext)
 		if(($e = trim($ext)) != "")
 			$arScriptFiles[] = $e;
 
@@ -2693,10 +2699,10 @@ function RemoveScriptExtension($check_name)
 	$arParts = explode(".", $name);
 	foreach($arParts as $i => $part)
 	{
-		if($i > 0 && in_array(strtolower(TrimUnsafe($part)), $arExt))
+		if($i > 0 && in_array(mb_strtolower(TrimUnsafe($part)), $arExt))
 			unset($arParts[$i]);
 	}
-	$path = substr(TrimUnsafe($check_name), 0, - strlen($name));
+	$path = mb_substr(TrimUnsafe($check_name), 0, -mb_strlen($name));
 	return $path.implode(".", $arParts);
 }
 
@@ -2708,7 +2714,7 @@ function HasScriptExtension($check_name)
 	$arParts = explode(".", $check_name);
 	foreach($arParts as $i => $part)
 	{
-		if($i > 0 && in_array(strtolower(TrimUnsafe($part)), $arExt))
+		if($i > 0 && in_array(mb_strtolower(TrimUnsafe($part)), $arExt))
 			return true;
 	}
 	return false;
@@ -2721,7 +2727,7 @@ function GetFileExtension($path)
 	{
 		$pos = bxstrrpos($path, '.');
 		if($pos !== false)
-			return substr($path, $pos+1);
+			return mb_substr($path, $pos + 1);
 	}
 	return '';
 }
@@ -2733,7 +2739,7 @@ function GetFileNameWithoutExtension($path)
 	{
 		$pos = bxstrrpos($path, '.');
 		if($pos !== false)
-			$path = substr($path, 0, $pos);
+			$path = mb_substr($path, 0, $pos);
 		return trim($path, '.');
 	}
 	return '';
@@ -2747,7 +2753,7 @@ function GetFileName($path)
 
 	$p = bxstrrpos($path, "/");
 	if($p !== false)
-		return substr($path, $p+1);
+		return mb_substr($path, $p + 1);
 
 	return $path;
 }
@@ -2758,15 +2764,15 @@ function IsFileUnsafe($name)
 	if($arFiles === false)
 	{
 		$fileList = COption::GetOptionString("main", "~unsafe_files", ".htaccess,.htpasswd,web.config,global.asax");
-		$arFiles = explode(",", strtolower($fileList));
+		$arFiles = explode(",", mb_strtolower($fileList));
 	}
 	$name = GetFileName($name);
-	return in_array(strtolower(TrimUnsafe($name)), $arFiles);
+	return in_array(mb_strtolower(TrimUnsafe($name)), $arFiles);
 }
 
 function GetFileType($path)
 {
-	$extension = GetFileExtension(strtolower($path));
+	$extension = GetFileExtension(mb_strtolower($path));
 	switch ($extension)
 	{
 		case "jpg": case "jpeg": case "gif": case "bmp": case "png":
@@ -2847,9 +2853,9 @@ function GetPagePath($page=false, $get_index_page=null)
 	static $terminate = array("?", "#");
 	foreach($terminate as $term)
 	{
-		if(($found = strpos($sPath, $term)) !== false)
+		if(($found = mb_strpos($sPath, $term)) !== false)
 		{
-			$sPath = substr($sPath, 0, $found);
+			$sPath = mb_substr($sPath, 0, $found);
 		}
 	}
 
@@ -2861,7 +2867,7 @@ function GetPagePath($page=false, $get_index_page=null)
 	//Decoding UTF uri
 	$sPath = CUtil::ConvertToLangCharset($sPath);
 
-	if(substr($sPath, -1, 1) == "/" && $get_index_page)
+	if(mb_substr($sPath, -1, 1) == "/" && $get_index_page)
 	{
 		$sPath .= GetDirectoryIndex($sPath);
 	}
@@ -2878,16 +2884,16 @@ function GetPagePath($page=false, $get_index_page=null)
 function GetRequestUri()
 {
 	$uriPath = "/".ltrim($_SERVER["REQUEST_URI"], "/");
-	if (($index = strpos($uriPath, "?")) !== false)
+	if (($index = mb_strpos($uriPath, "?")) !== false)
 	{
-		$uriPath = substr($uriPath, 0, $index);
+		$uriPath = mb_substr($uriPath, 0, $index);
 	}
 
 	if (defined("BX_DISABLE_INDEX_PAGE") && BX_DISABLE_INDEX_PAGE === true)
 	{
-		if (substr($uriPath, -10) === "/index.php")
+		if (mb_substr($uriPath, -10) === "/index.php")
 		{
-			$uriPath = substr($uriPath, 0, -9);
+			$uriPath = mb_substr($uriPath, 0, -9);
 		}
 	}
 
@@ -2911,12 +2917,12 @@ function GetFileFromURL($page, $get_index_page=null)
 			$get_index_page = true;
 	}
 
-	$found = strpos($page, "?");
-	$sPath = ($found !== false? substr($page, 0, $found) : $page);
+	$found = mb_strpos($page, "?");
+	$sPath = ($found !== false? mb_substr($page, 0, $found) : $page);
 
 	$sPath = urldecode($sPath);
 
-	if(substr($sPath, -1, 1) == "/" && $get_index_page)
+	if(mb_substr($sPath, -1, 1) == "/" && $get_index_page)
 		$sPath .= GetDirectoryIndex($sPath);
 
 	return $sPath;
@@ -2924,13 +2930,17 @@ function GetFileFromURL($page, $get_index_page=null)
 
 function GetDirPath($sPath)
 {
-	if(strlen($sPath))
+	if($sPath <> '')
 	{
-		$p = strrpos($sPath, "/");
+		$p = mb_strrpos($sPath, "/");
 		if($p === false)
+		{
 			return '/';
+		}
 		else
-			return substr($sPath, 0, $p+1);
+		{
+			return mb_substr($sPath, 0, $p + 1);
+		}
 	}
 	else
 	{
@@ -2950,9 +2960,9 @@ function bx_basename($path, $ext="")
 
 	if($ext)
 	{
-		$ext_len = strlen($ext);
-		if(strlen($path) > $ext_len && substr($path, -$ext_len) == $ext)
-			$path = substr($path, 0, -$ext_len);
+		$ext_len = mb_strlen($ext);
+		if(mb_strlen($path) > $ext_len && mb_substr($path, -$ext_len) == $ext)
+			$path = mb_substr($path, 0, -$ext_len);
 	}
 
 	return $path;
@@ -2963,13 +2973,13 @@ function bxstrrpos($haystack, $needle)
 	if(defined("BX_UTF"))
 	{
 		//mb_strrpos does not work on invalid UTF-8 strings
-		$ln = strlen($needle);
-		for($i = strlen($haystack)-$ln; $i >= 0; $i--)
-			if(substr($haystack, $i, $ln) == $needle)
+		$ln = mb_strlen($needle);
+		for($i = mb_strlen($haystack) - $ln; $i >= 0; $i--)
+			if(mb_substr($haystack, $i, $ln) == $needle)
 				return $i;
 		return false;
 	}
-	return strrpos($haystack, $needle);
+	return mb_strrpos($haystack, $needle);
 }
 
 function Rel2Abs($curdir, $relpath)
@@ -2977,25 +2987,27 @@ function Rel2Abs($curdir, $relpath)
 	if($relpath == "")
 		return false;
 
-	if(substr($relpath, 0, 1) == "/" || preg_match("#^[a-z]:/#i", $relpath))
+	if(mb_substr($relpath, 0, 1) == "/" || preg_match("#^[a-z]:/#i", $relpath))
 	{
 		$res = $relpath;
 	}
 	else
 	{
-		if(substr($curdir, 0, 1) != "/" && !preg_match("#^[a-z]:/#i", $curdir))
+		if(mb_substr($curdir, 0, 1) != "/" && !preg_match("#^[a-z]:/#i", $curdir))
 			$curdir = "/".$curdir;
-		if(substr($curdir, -1) != "/")
+		if(mb_substr($curdir, -1) != "/")
 			$curdir .= "/";
 		$res = $curdir.$relpath;
 	}
 
-	if(($p = strpos($res, "\0")) !== false)
-		$res = substr($res, 0, $p);
+	if(($p = mb_strpos($res, "\0")) !== false)
+	{
+		throw new Main\IO\InvalidPathException($res);
+	}
 
 	$res = _normalizePath($res);
 
-	if(substr($res, 0, 1) !== "/" && !preg_match("#^[a-z]:/#i", $res))
+	if(mb_substr($res, 0, 1) !== "/" && !preg_match("#^[a-z]:/#i", $res))
 		$res = "/".$res;
 
 	$res = rtrim($res, ".\\+ ");
@@ -3003,6 +3015,9 @@ function Rel2Abs($curdir, $relpath)
 	return $res;
 }
 
+/**
+ * @deprecated Use \Bitrix\Main\IO\Path::normalize()
+ */
 function _normalizePath($strPath)
 {
 	$strResult = '';
@@ -3038,10 +3053,10 @@ function _normalizePath($strPath)
 
 function removeDocRoot($path)
 {
-	$len = strlen($_SERVER["DOCUMENT_ROOT"]);
+	$len = mb_strlen($_SERVER["DOCUMENT_ROOT"]);
 
-	if (substr($path, 0, $len) == $_SERVER["DOCUMENT_ROOT"])
-		return "/".ltrim(substr($path, $len), "/");
+	if (mb_substr($path, 0, $len) == $_SERVER["DOCUMENT_ROOT"])
+		return "/".ltrim(mb_substr($path, $len), "/");
 	else
 		return $path;
 }
@@ -3111,16 +3126,16 @@ function GetLangFileName($before, $after, $lang=false)
 	if(file_exists($before."en".$after))
 		return $before."en".$after;
 
-	if(strpos($before, "/bitrix/modules/")===false)
+	if(mb_strpos($before, "/bitrix/modules/") === false)
 		return $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/lang/en/tools.php";
 
 	$old_path = Rtrim($before, "/");
-	$old_path = substr($old_path, strlen($_SERVER["DOCUMENT_ROOT"]));
-	$path = substr($old_path, 16);
-	$module = substr($path, 0, strpos($path, "/"));
-	$path = substr($path, strpos($path, "/"));
-	if(substr($path, -5)=="/lang")
-		$path = substr($path, 0, -5);
+	$old_path = mb_substr($old_path, mb_strlen($_SERVER["DOCUMENT_ROOT"]));
+	$path = mb_substr($old_path, 16);
+	$module = mb_substr($path, 0, mb_strpos($path, "/"));
+	$path = mb_substr($path, mb_strpos($path, "/"));
+	if(mb_substr($path, -5) == "/lang")
+		$path = mb_substr($path, 0, -5);
 	IncludeModuleLangFile($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/".$module.$path.$after, $lang);
 	return $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/".$module."/lang/".$lang.$path.$after;
 }
@@ -3265,37 +3280,37 @@ function IncludeTemplateLangFile($filepath, $lang=false)
 	);
 	foreach($dirs as $dir)
 	{
-		if(strpos($filepath, $dir)!==false)
+		if(mb_strpos($filepath, $dir) !== false)
 		{
 			$templ_path = $dir;
-			$templ_pos = strlen($filepath) - strpos(strrev($filepath), strrev($templ_path));
-			$rel_path = substr($filepath, $templ_pos);
-			$p = strpos($rel_path, "/");
+			$templ_pos = mb_strlen($filepath) - mb_strpos(strrev($filepath), strrev($templ_path));
+			$rel_path = mb_substr($filepath, $templ_pos);
+			$p = mb_strpos($rel_path, "/");
 			if(!$p)
 				return null;
-			$template_name = substr($rel_path, 0, $p);
-			$file_name = substr($rel_path, $p+1);
-			$p = strpos($file_name, "/");
+			$template_name = mb_substr($rel_path, 0, $p);
+			$file_name = mb_substr($rel_path, $p + 1);
+			$p = mb_strpos($file_name, "/");
 			if($p>0)
-				$module_name = substr($file_name, 0, $p);
+				$module_name = mb_substr($file_name, 0, $p);
 			break;
 		}
 	}
 	if($templ_path == "")
 	{
-		if(strpos($filepath, $module_path) !== false)
+		if(mb_strpos($filepath, $module_path) !== false)
 		{
-			$templ_pos = strlen($filepath) - strpos(strrev($filepath), strrev($module_path));
-			$rel_path = substr($filepath, $templ_pos);
-			$p = strpos($rel_path, "/");
+			$templ_pos = mb_strlen($filepath) - mb_strpos(strrev($filepath), strrev($module_path));
+			$rel_path = mb_substr($filepath, $templ_pos);
+			$p = mb_strpos($rel_path, "/");
 			if(!$p)
 				return null;
-			$module_name = substr($rel_path, 0, $p);
+			$module_name = mb_substr($rel_path, 0, $p);
 			if(defined("SITE_TEMPLATE_ID"))
 				$template_name = SITE_TEMPLATE_ID;
 			else
 				$template_name = ".default";
-			$file_name = substr($rel_path, $p + strlen("/install/templates/"));
+			$file_name = mb_substr($rel_path, $p + mb_strlen("/install/templates/"));
 		}
 		else
 		{
@@ -3313,7 +3328,7 @@ function IncludeTemplateLangFile($filepath, $lang=false)
 
 	$subst_lang = LangSubst($lang);
 
-	if((substr($file_name, -16) == ".description.php") && $module_name!="")
+	if((mb_substr($file_name, -16) == ".description.php") && $module_name!="")
 	{
 		if ($subst_lang <> $lang)
 		{
@@ -3416,24 +3431,24 @@ function IncludeModuleLangFile($filepath, $lang=false, $bReturnArray=false)
 
 	$filepath = rtrim(preg_replace("'[\\\\/]+'", "/", $filepath), "/ ");
 	$module_path = "/modules/";
-	if(strpos($filepath, $module_path) !== false)
+	if(mb_strpos($filepath, $module_path) !== false)
 	{
-		$pos = strlen($filepath) - strpos(strrev($filepath), strrev($module_path));
-		$rel_path = substr($filepath, $pos);
-		$p = strpos($rel_path, "/");
+		$pos = mb_strlen($filepath) - mb_strpos(strrev($filepath), strrev($module_path));
+		$rel_path = mb_substr($filepath, $pos);
+		$p = mb_strpos($rel_path, "/");
 		if(!$p)
 			return false;
 
-		$module_name = substr($rel_path, 0, $p);
-		$rel_path = substr($rel_path, $p+1);
+		$module_name = mb_substr($rel_path, 0, $p);
+		$rel_path = mb_substr($rel_path, $p + 1);
 		$BX_DOC_ROOT = rtrim(preg_replace("'[\\\\/]+'", "/", $_SERVER["DOCUMENT_ROOT"]), "/ ");
 		$module_path = $BX_DOC_ROOT.getLocalPath($module_path.$module_name);
 	}
-	elseif(strpos($filepath, "/.last_version/") !== false)
+	elseif(mb_strpos($filepath, "/.last_version/") !== false)
 	{
-		$pos = strlen($filepath) - strpos(strrev($filepath), strrev("/.last_version/"));
-		$rel_path = substr($filepath, $pos);
-		$module_path = substr($filepath, 0, $pos-1);
+		$pos = mb_strlen($filepath) - mb_strpos(strrev($filepath), strrev("/.last_version/"));
+		$rel_path = mb_substr($filepath, $pos);
+		$module_path = mb_substr($filepath, 0, $pos - 1);
 	}
 	else
 	{
@@ -3508,7 +3523,7 @@ function mydump($thing, $maxdepth=-1, $depth=0)
 	}
 	elseif($type == 'string')
 	{
-		$n = strlen($thing);
+		$n = mb_strlen($thing);
 		$res.="$pfx string($n) =>\n";
 		$res.="$pfx\"".$thing."\"\n";
 	}
@@ -3566,13 +3581,13 @@ function SendError($error)
 
 function AddMessage2Log($sText, $sModule = "", $traceDepth = 6, $bShowArgs = false)
 {
-	if (defined("LOG_FILENAME") && strlen(LOG_FILENAME)>0)
+	if (defined("LOG_FILENAME") && LOG_FILENAME <> '')
 	{
 		if(!is_string($sText))
 		{
 			$sText = var_export($sText, true);
 		}
-		if (strlen($sText)>0)
+		if ($sText <> '')
 		{
 			ignore_user_abort(true);
 			if ($fp = @fopen(LOG_FILENAME, "ab"))
@@ -3587,7 +3602,7 @@ function AddMessage2Log($sText, $sModule = "", $traceDepth = 6, $bShowArgs = fal
 					$iterationsCount = min(count($arBacktrace), $traceDepth);
 					for ($i = $firstFrame; $i < $iterationsCount; $i++)
 					{
-						if (strlen($strFunctionStack)>0)
+						if ($strFunctionStack <> '')
 							$strFunctionStack .= " < ";
 
 						if (isset($arBacktrace[$i]["class"]))
@@ -3611,7 +3626,7 @@ function AddMessage2Log($sText, $sModule = "", $traceDepth = 6, $bShowArgs = fal
 						}
 					}
 
-					if (strlen($strFunctionStack)>0)
+					if ($strFunctionStack <> '')
 					{
 						@fwrite($fp, "    ".$strFunctionStack."\n".$strFilesStack);
 					}
@@ -3627,7 +3642,7 @@ function AddMessage2Log($sText, $sModule = "", $traceDepth = 6, $bShowArgs = fal
 	}
 }
 
-function AddEventToStatFile($module, $action, $tag, $label)
+function AddEventToStatFile($module, $action, $tag, $label, $action_type = '')
 {
 	static $search = array("\t", "\n", "\r");
 	static $replace = " ";
@@ -3640,6 +3655,7 @@ function AddEventToStatFile($module, $action, $tag, $label)
 			."\t".str_replace($search, $replace, $action)
 			."\t".str_replace($search, $replace, $tag)
 			."\t".str_replace($search, $replace, $label)
+			."\t".str_replace($search, $replace, $action_type)
 			."\n";
 		$fp = @fopen(ANALYTICS_FILENAME, "ab");
 		if ($fp)
@@ -3822,12 +3838,12 @@ function LocalRedirect($url, $skip_security_check=false, $status="302 Found")
 	/** @global CDatabase $DB */
 	global $DB;
 
-	if(defined("DEMO") && DEMO=="Y" && (!defined("SITEEXPIREDATE") || !defined("OLDSITEEXPIREDATE") || strlen(SITEEXPIREDATE) <= 0 || SITEEXPIREDATE != OLDSITEEXPIREDATE))
+	if(defined("DEMO") && DEMO=="Y" && (!defined("SITEEXPIREDATE") || !defined("OLDSITEEXPIREDATE") || SITEEXPIREDATE == '' || SITEEXPIREDATE != OLDSITEEXPIREDATE))
 		die(GetMessage("TOOLS_TRIAL_EXP"));
 
 	$bExternal = preg_match("'^(http://|https://|ftp://)'i", $url);
 
-	if(!$bExternal && strpos($url, "/") !== 0)
+	if(!$bExternal && mb_strpos($url, "/") !== 0)
 	{
 		$url = $APPLICATION->GetCurDir().$url;
 	}
@@ -3856,7 +3872,7 @@ function LocalRedirect($url, $skip_security_check=false, $status="302 Found")
 		$APPLICATION->StoreCookies();
 
 		$host = $_SERVER['HTTP_HOST'];
-		if($_SERVER['SERVER_PORT'] <> 80 && $_SERVER['SERVER_PORT'] <> 443 && $_SERVER['SERVER_PORT'] > 0 && strpos($_SERVER['HTTP_HOST'], ":") === false)
+		if($_SERVER['SERVER_PORT'] <> 80 && $_SERVER['SERVER_PORT'] <> 443 && $_SERVER['SERVER_PORT'] > 0 && mb_strpos($_SERVER['HTTP_HOST'], ":") === false)
 		{
 			$host .= ":".$_SERVER['SERVER_PORT'];
 		}
@@ -3969,7 +3985,7 @@ function IsIE()
 {
 	global $HTTP_USER_AGENT;
 	if(
-		strpos($HTTP_USER_AGENT, "Opera") == false
+		mb_strpos($HTTP_USER_AGENT, "Opera") == false
 		&& preg_match('#(MSIE|Internet Explorer) ([0-9]+)\\.([0-9]+)#', $HTTP_USER_AGENT, $version)
 	)
 	{
@@ -3997,8 +4013,8 @@ function GetCountryArray($lang=LANGUAGE_ID)
 	if (is_array($arMsg))
 	{
 		foreach($arMsg as $id=>$country)
-			if(strpos($id, "COUNTRY_") === 0)
-				$arr[intval(substr($id, 8))] = $country;
+			if(mb_strpos($id, "COUNTRY_") === 0)
+				$arr[intval(mb_substr($id, 8))] = $country;
 	}
 	asort($arr);
 	$arCountry = array("reference_id"=>array_keys($arr), "reference"=>array_values($arr));
@@ -4029,7 +4045,7 @@ function GetCountries($lang=LANGUAGE_ID)
 function GetCountryIdByCode($code)
 {
 	include($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/countries.php");
-	$code = strtoupper($code);
+	$code = mb_strtoupper($code);
 	if(isset($arCounries[$code]))
 		return $arCounries[$code];
 	return false;
@@ -4053,7 +4069,7 @@ function minimumPHPVersion($vercheck)
 {
 	$minver = explode(".", $vercheck);
 	$curver = explode(".", phpversion());
-	if ((IntVal($curver[0]) < IntVal($minver[0])) || ((IntVal($curver[0]) == IntVal($minver[0])) && (IntVal($curver[1]) < IntVal($minver[1]))) || ((IntVal($curver[0]) == IntVal($minver[0])) && (IntVal($curver[1]) == IntVal($minver[1])) && (IntVal($curver[2]) < IntVal($minver[2]))))
+	if ((intval($curver[0]) < intval($minver[0])) || ((intval($curver[0]) == intval($minver[0])) && (intval($curver[1]) < intval($minver[1]))) || ((intval($curver[0]) == intval($minver[0])) && (intval($curver[1]) == intval($minver[1])) && (intval($curver[2]) < intval($minver[2]))))
 		return false;
 	else
 		return true;
@@ -4123,7 +4139,7 @@ function QueryGetData($SITE, $PORT, $PATH, $QUERY_STR, &$errno, &$errstr, $sMeth
 			$sMethod,
 			$SITE,
 			$PORT,
-			$PATH . ($sMethod == 'GET' ? ((strpos($PATH, '?') === false ? '?' : '&') . $QUERY_STR) : ''),
+			$PATH . ($sMethod == 'GET' ? ((mb_strpos($PATH, '?') === false ? '?' : '&') . $QUERY_STR) : ''),
 			$sMethod == 'POST' ? $QUERY_STR : false,
 			$sProto,
 			$sContentType
@@ -4246,8 +4262,8 @@ function Help($module="", $anchor="", $help_file="")
 {
 	/** @global CMain $APPLICATION */
 	global $APPLICATION, $IS_HELP;
-	if (strlen($help_file)<=0) $help_file = basename($APPLICATION->GetCurPage());
-	if (strlen($anchor)>0) $anchor = "#".$anchor;
+	if ($help_file == '') $help_file = basename($APPLICATION->GetCurPage());
+	if ($anchor <> '') $anchor = "#".$anchor;
 
 	if($IS_HELP!==true)
 	{
@@ -4280,12 +4296,12 @@ function init_get_params($url)
 function InitURLParam($url=false)
 {
 	if ($url===false) $url = $_SERVER["REQUEST_URI"];
-	$start = strpos($url, "?");
+	$start = mb_strpos($url, "?");
 	if ($start!==false)
 	{
-		$end = strpos($url, "#");
-		$length = ($end>0) ? $end-$start-1 : strlen($url);
-		$params = substr($url, $start+1, $length);
+		$end = mb_strpos($url, "#");
+		$length = ($end > 0)? $end - $start - 1 : mb_strlen($url);
+		$params = mb_substr($url, $start + 1, $length);
 		parse_str($params, $_GET);
 		parse_str($params, $arr);
 		$_REQUEST += $arr;
@@ -4396,13 +4412,13 @@ function check_email($email, $bStrict=false)
 	if(!$bStrict)
 	{
 		$email = trim($email);
-		if(preg_match("#.*?[<\\[\\(](.*?)[>\\]\\)].*#i", $email, $arr) && strlen($arr[1])>0)
+		if(preg_match("#.*?[<\\[\\(](.*?)[>\\]\\)].*#i", $email, $arr) && $arr[1] <> '')
 			$email = $arr[1];
 	}
 
 	//http://tools.ietf.org/html/rfc2821#section-4.5.3.1
 	//4.5.3.1. Size limits and minimums
-	if(strlen($email) > 320)
+	if(mb_strlen($email) > 320)
 	{
 		return false;
 	}
@@ -4432,7 +4448,7 @@ function initvar($varname, $value='')
 
 function ClearVars($prefix="str_")
 {
-	$n = strlen($prefix);
+	$n = mb_strlen($prefix);
 	foreach($GLOBALS as $key=>$val)
 		if(strncmp($key, $prefix, $n) == 0)
 			unset($GLOBALS[$key]);
@@ -4450,8 +4466,8 @@ function roundDB($value, $len=18, $dec=4)
 		$value = "0".$value;
 	$value = roundEx(DoubleVal($value), $len);
 	$value = sprintf("%01.".$dec."f", $value);
-	if($len>0 && strlen($value)>$len-$dec)
-		$value = trim(substr($value, 0, $len-$dec), ".");
+	if($len>0 && mb_strlen($value) > $len - $dec)
+		$value = trim(mb_substr($value, 0, $len - $dec), ".");
 	return $value;
 }
 
@@ -4481,10 +4497,11 @@ function bitrix_sess_sign()
 
 function check_bitrix_sessid($varname='sessid')
 {
-	return
-		$_REQUEST[$varname] === bitrix_sessid() ||
-		\Bitrix\Main\Context::getCurrent()->getRequest()->getHeader('X-Bitrix-Csrf-Token') === bitrix_sessid()
-	;
+	$request = Main\Context::getCurrent()->getRequest();
+	return (
+		$request[$varname] === bitrix_sessid() ||
+		$request->getHeader('X-Bitrix-Csrf-Token') === bitrix_sessid()
+	);
 }
 
 function bitrix_sessid_get($varname='sessid')
@@ -4508,7 +4525,7 @@ function bitrix_sessid_post($varname='sessid', $returnInvocations=false)
 
 function print_url($strUrl, $strText, $sParams="")
 {
-	return (strlen($strUrl) <= 0? $strText : "<a href=\"".$strUrl."\" ".$sParams.">".$strText."</a>");
+	return ($strUrl == ''? $strText : "<a href=\"".$strUrl."\" ".$sParams.">".$strText."</a>");
 }
 
 function IncludeAJAX()
@@ -4586,7 +4603,7 @@ class CJSCore
 			self::$bInited = true;
 		}
 
-		if (!is_array($arExt) && strlen($arExt) > 0)
+		if (!is_array($arExt) && $arExt <> '')
 			$arExt = array($arExt);
 
 		$bReturn = ($bReturn === true); // prevent syntax mistake
@@ -4619,7 +4636,7 @@ class CJSCore
 		if ($bNeedCore && !self::isCoreLoaded())
 		{
 			$config = self::getCoreConfig();
-			
+
 			self::markExtensionLoaded('core');
 			self::markExtensionLoaded('main.core');
 
@@ -4644,12 +4661,14 @@ class CJSCore
             }
 
 			$coreLang = self::_loadLang($config['lang'], true);
+			$coreSettings = self::loadSettings('main.core', $config['settings'], true);
             $coreJs = self::_loadJS($config['js'], true);
 			$coreCss = self::_loadCSS($config['css'], true);
 
 			if ($bReturn)
 			{
 			    $ret .= $coreLang;
+			    $ret .= $coreSettings;
 				$ret .= $relativities;
 			    $ret .= $coreJs;
 			    $ret .= $coreCss;
@@ -4658,6 +4677,7 @@ class CJSCore
 
 			$asset = Asset::getInstance();
 			$asset->addString($coreLang, true, AssetLocation::AFTER_CSS);
+			$asset->addString($coreSettings, true, AssetLocation::AFTER_CSS);
             $asset->addString($relativities, true, AssetLocation::AFTER_CSS);
             $asset->addString($coreJs, true, AssetLocation::AFTER_CSS);
             $asset->addString($includes, true, AssetLocation::AFTER_CSS);
@@ -4705,7 +4725,7 @@ class CJSCore
 
         return '';
     }
-	
+
 	/**
 	 * @param $code - name of extension
 	 */
@@ -4725,7 +4745,7 @@ class CJSCore
 			|| self::isExtensionLoaded("main.core")
         );
 	}
-	
+
 	/**
 	 * Returns true if JS extension was loaded.
 	 * @param string $code Code of JS extension.
@@ -4954,7 +4974,7 @@ JS;
 
 		if (preg_match("/^((?P<MODULE_ID>[\w\.]+):)?(?P<EXT_NAME>[\w\.\-]+)$/", $ext, $matches))
 		{
-			if (strlen($matches['MODULE_ID']) > 0 && $matches['MODULE_ID'] !== 'main')
+			if ($matches['MODULE_ID'] <> '' && $matches['MODULE_ID'] !== 'main')
 			{
 				\Bitrix\Main\Loader::includeModule($matches['MODULE_ID']);
 			}
@@ -5054,6 +5074,19 @@ JS;
 				$bReturn,
 				!empty(self::$arRegisteredExt[$ext]['lang_additional'])? self::$arRegisteredExt[$ext]['lang_additional']: false
 			);
+		}
+
+		if (isset(self::$arRegisteredExt[$ext]['settings']))
+		{
+			$ret .= self::loadSettings($ext, self::$arRegisteredExt[$ext]['settings'], $bReturn);
+		}
+
+		if (isset(self::$arRegisteredExt[$ext]['post_rel']) && is_array(self::$arRegisteredExt[$ext]['post_rel']))
+		{
+			foreach (self::$arRegisteredExt[$ext]['post_rel'] as $rel_ext)
+			{
+				$ret .= self::_loadExt($rel_ext, $bReturn);
+			}
 		}
 
 		return $ret;
@@ -5201,6 +5234,33 @@ JS;
 		}
 
 		$APPLICATION->SetAdditionalCSS($css);
+
+		return '';
+	}
+
+	/**
+	 * @param string $extension Extension name
+	 * @param array $settings Extension settings
+	 * @param bool $bReturn
+	 * @return string
+	 * @throws Main\ArgumentException
+	 */
+	private static function loadSettings($extension, $settings, $bReturn = false)
+	{
+		if (is_array($settings) && count($settings) > 0)
+		{
+			$encodedSettings = Main\Web\Json::encode($settings);
+			$result = '<script type="extension/settings" data-extension="'.$extension.'">';
+			$result .= $encodedSettings;
+			$result .= '</script>';
+
+			if ($bReturn)
+			{
+				return $result;
+			}
+
+			Asset::getInstance()->addString($result, true, AssetLocation::AFTER_CSS);
+		}
 
 		return '';
 	}
@@ -5353,7 +5413,7 @@ class CUtil
 			$first = true;
 			foreach($arData as $key => $value)
 			{
-				if ($bSkipTilda && substr($key, 0, 1) == '~')
+				if ($bSkipTilda && mb_substr($key, 0, 1) == '~')
 					continue;
 
 				if($first)
@@ -5460,7 +5520,7 @@ class CUtil
 			$data = preg_replace('/[\s]*([{}\[\]\"])[\s]*/', '\1', $data);
 			$data = trim($data);
 
-			if (substr($data, 0, 1) == '{') // object
+			if (mb_substr($data, 0, 1) == '{') // object
 			{
 				$arResult = array();
 
@@ -5471,9 +5531,9 @@ class CUtil
 				$prev_symbol = "";
 
 				$string_delimiter = '';
-				for ($i = 1, $len = strlen($data); $i < $len; $i++)
+				for ($i = 1, $len = mb_strlen($data); $i < $len; $i++)
 				{
-					$cur_symbol = substr($data, $i, 1);
+					$cur_symbol = mb_substr($data, $i, 1);
 					if ($cur_symbol == '"' || $cur_symbol == "'")
 					{
 						if (
@@ -5516,7 +5576,7 @@ class CUtil
 				if ($end_pos == 0)
 					return false;
 
-				$token = substr($data, 1, $end_pos-1);
+				$token = mb_substr($data, 1, $end_pos - 1);
 
 				$arTokens = array();
 				if (count($arCommaPos) > 0)
@@ -5524,10 +5584,10 @@ class CUtil
 					$prev_index = 0;
 					foreach ($arCommaPos as $pos)
 					{
-						$arTokens[] = substr($token, $prev_index, $pos - $prev_index - 1);
+						$arTokens[] = mb_substr($token, $prev_index, $pos - $prev_index - 1);
 						$prev_index = $pos;
 					}
-					$arTokens[] = substr($token, $prev_index);
+					$arTokens[] = mb_substr($token, $prev_index);
 				}
 				else
 				{
@@ -5538,13 +5598,13 @@ class CUtil
 				{
 					$arTokenData = explode(":", $token, 2);
 
-					$q = substr($arTokenData[0], 0, 1);
+					$q = mb_substr($arTokenData[0], 0, 1);
 					if ($q == '"' || $q == '"')
-						$arTokenData[0] = substr($arTokenData[0], 1, -1);
+						$arTokenData[0] = mb_substr($arTokenData[0], 1, -1);
 					$arResult[CUtil::JsObjectToPhp($arTokenData[0], true)] = CUtil::JsObjectToPhp($arTokenData[1], true);
 				}
 			}
-			elseif (substr($data, 0, 1) == '[') // array
+			elseif (mb_substr($data, 0, 1) == '[') // array
 			{
 				$arResult = array();
 
@@ -5555,9 +5615,9 @@ class CUtil
 				$prev_symbol = "";
 				$string_delimiter = "";
 
-				for ($i = 1, $len = strlen($data); $i < $len; $i++)
+				for ($i = 1, $len = mb_strlen($data); $i < $len; $i++)
 				{
-					$cur_symbol = substr($data, $i, 1);
+					$cur_symbol = mb_substr($data, $i, 1);
 					if ($cur_symbol == '"' || $cur_symbol == "'")
 					{
 						if (
@@ -5599,17 +5659,17 @@ class CUtil
 				if ($end_pos == 0)
 					return false;
 
-				$token = substr($data, 1, $end_pos-1);
+				$token = mb_substr($data, 1, $end_pos - 1);
 
 				if (count($arCommaPos) > 0)
 				{
 					$prev_index = 0;
 					foreach ($arCommaPos as $pos)
 					{
-						$arResult[] = CUtil::JsObjectToPhp(substr($token, $prev_index, $pos - $prev_index - 1), true);
+						$arResult[] = CUtil::JsObjectToPhp(mb_substr($token, $prev_index, $pos - $prev_index - 1), true);
 						$prev_index = $pos;
 					}
-					$r = CUtil::JsObjectToPhp(substr($token, $prev_index), true);
+					$r = CUtil::JsObjectToPhp(mb_substr($token, $prev_index), true);
 					if (isset($r))
 						$arResult[] = $r;
 				}
@@ -5626,12 +5686,12 @@ class CUtil
 			}
 			else // scalar
 			{
-				$q = substr($data, 0, 1);
+				$q = mb_substr($data, 0, 1);
 				if ($q == '"' || $q == "'")
-					$data = substr($data, 1, -1);
+					$data = mb_substr($data, 1, -1);
 
 				//\u0412\u0430\u0434\u0438\u043c
-				if(strpos($data, '\u') !== false)
+				if(mb_strpos($data, '\u') !== false)
 					$data = preg_replace_callback("/\\\u([0-9A-F]{2})([0-9A-F]{2})/i", array('CUtil', 'DecodeUtf16'), $data);
 
 				$arResult = $data;
@@ -5818,15 +5878,15 @@ class CUtil
 			if(!array_key_exists($key, $params))
 				$params[$key] = $value;
 
-		$len = strlen($str);
+		$len = mb_strlen($str);
 		$str_new = '';
 		$last_chr_new = '';
 
 		for($i = 0; $i < $len; $i++)
 		{
-			$chr = substr($str, $i, 1);
+			$chr = mb_substr($str, $i, 1);
 
-			if(preg_match("/[a-zA-Z0-9]/".BX_UTF_PCRE_MODIFIER, $chr) || strpos($params["safe_chars"], $chr)!==false)
+			if(preg_match("/[a-zA-Z0-9]/".BX_UTF_PCRE_MODIFIER, $chr) || mb_strpos($params["safe_chars"], $chr) !== false)
 			{
 				$chr_new = $chr;
 			}
@@ -5860,46 +5920,60 @@ class CUtil
 				}
 			}
 
-			if(strlen($chr_new))
+			if($chr_new <> '')
 			{
 				if($params["change_case"] == "L" || $params["change_case"] == "l")
+				{
 					$chr_new = ToLower($chr_new);
+				}
 				elseif($params["change_case"] == "U" || $params["change_case"] == "u")
+				{
 					$chr_new = ToUpper($chr_new);
+				}
 
 				$str_new .= $chr_new;
 				$last_chr_new = $chr_new;
 			}
 
-			if (strlen($str_new) >= $params["max_len"])
+			if (mb_strlen($str_new) >= $params["max_len"])
 				break;
 		}
 
 		return $str_new;
 	}
 
+	/**
+	 * @deprecated Use \Bitrix\Main\Text\BinaryString::getLength()
+	 * @param $buf
+	 * @return int
+	 */
 	public static function BinStrlen($buf)
 	{
-		return (function_exists('mb_strlen')? mb_strlen($buf, 'latin1') : strlen($buf));
+		return Main\Text\BinaryString::getLength($buf);
 	}
 
-	public static function BinSubstr($buf, $start)
+	/**
+	 * @deprecated Use \Bitrix\Main\Text\BinaryString::getSubstring()
+	 * @param $buf
+	 * @param $start
+	 * @param array $args
+	 * @return string
+	 */
+	public static function BinSubstr($buf, $start, ...$args)
 	{
-		$length = (func_num_args() > 2? func_get_arg(2) : self::BinStrlen($buf));
-		return (function_exists('mb_substr')? mb_substr($buf, $start, $length, 'latin1') : substr($buf, $start, $length));
+		return Main\Text\BinaryString::getSubstring($buf, $start, ...$args);
 	}
 
+	/**
+	 * @deprecated Use \Bitrix\Main\Text\BinaryString::getPosition()
+	 * @param $haystack
+	 * @param $needle
+	 * @param int $offset
+	 * @return false|int
+	 */
 	public static function BinStrpos($haystack, $needle, $offset = 0)
 	{
-		if (defined("BX_UTF"))
-		{
-			if (function_exists('mb_orig_strpos'))
-			{
-				return mb_orig_strpos($haystack, $needle, $offset);
-			}
-			return mb_strpos($haystack, $needle, $offset, 'latin1');
-		}
-		return strpos($haystack, $needle, $offset);
+		return Main\Text\BinaryString::getPosition($haystack, $needle, $offset);
 	}
 
 	/**
@@ -5910,9 +5984,9 @@ class CUtil
 	*/
 	public static function Unformat($str)
 	{
-		$str = strtolower($str);
+		$str = mb_strtolower($str);
 		$res = intval($str);
-		$suffix = substr($str, -1);
+		$suffix = mb_substr($str, -1);
 		if($suffix == "k")
 			$res *= 1024;
 		elseif($suffix == "m")
@@ -5920,7 +5994,7 @@ class CUtil
 		elseif($suffix == "g")
 			$res *= 1048576*1024;
 		elseif($suffix == "b")
-			$res = self::Unformat(substr($str,0,-1));
+			$res = self::Unformat(mb_substr($str, 0, -1));
 		return $res;
 	}
 
@@ -5939,6 +6013,34 @@ class CUtil
 		$pcreBacktrackLimit = self::Unformat(ini_get("pcre.backtrack_limit"));
 		if($pcreBacktrackLimit < $val)
 			@ini_set("pcre.backtrack_limit", $val);
+	}
+
+	public static function getSitesByWizard($wizard)
+	{
+		static $list = [];
+
+		if (is_null($list[$wizard]))
+		{
+			$list[$wizard] = array();
+
+			if ('portal' == $wizard && Main\ModuleManager::isModuleInstalled('bitrix24'))
+			{
+				$list[$wizard] = Main\SiteTable::getByPrimary('s1')->fetchAll();
+			}
+			else if ($wizard <> '')
+			{
+				$res = Main\SiteTable::getList(['order' => ['DEF' => 'DESC', 'SORT' => 'ASC']]);
+				foreach ($res as $item)
+				{
+					if (Main\Config\Option::get('main', '~wizard_id', '', $item['LID']) === $wizard)
+					{
+						$list[$wizard][] = $item;
+					}
+				}
+			}
+		}
+
+		return $list[$wizard];
 	}
 }
 
@@ -6076,9 +6178,9 @@ class CHTTP
 			}
 		}
 
-		if($prefix == '' && substr($str, 0, 1) == '&')
+		if($prefix == '' && mb_substr($str, 0, 1) == '&')
 		{
-			$str = substr($str, 1);
+			$str = mb_substr($str, 1);
 		}
 
 		return $str;
@@ -6106,7 +6208,7 @@ class CHTTP
 			if(
 				$this->follow_redirect
 				&& isset($this->headers['Location'])
-				&& strlen($this->headers['Location']) > 0
+				&& $this->headers['Location'] <> ''
 			)
 			{
 				$url = $this->headers['Location'];
@@ -6262,7 +6364,7 @@ class CHTTP
 		$arUrl['proto'] = '';
 		if (array_key_exists('scheme', $arUrl))
 		{
-			$arUrl['scheme'] = strtolower($arUrl['scheme']);
+			$arUrl['scheme'] = mb_strtolower($arUrl['scheme']);
 		}
 		else
 		{
@@ -6287,7 +6389,7 @@ class CHTTP
 		}
 
 		$arUrl['path_query'] = array_key_exists('path', $arUrl) ? $arUrl['path'] : '/';
-		if (array_key_exists('query', $arUrl) && strlen($arUrl['query']) > 0)
+		if (array_key_exists('query', $arUrl) && $arUrl['query'] <> '')
 		{
 			$arUrl['path_query'] .= '?' . $arUrl['query'];
 		}
@@ -6307,14 +6409,14 @@ class CHTTP
 					$this->status = intval($arFind[1]);
 				}
 			}
-			elseif(strpos($header, ':') !== false)
+			elseif(mb_strpos($header, ':') !== false)
 			{
 				$arHeader = explode(':', $header, 2);
 				if ($arHeader[0] == 'Set-Cookie')
 				{
-					if (($pos = strpos($arHeader[1], ';')) !== false && $pos > 0)
+					if (($pos = mb_strpos($arHeader[1], ';')) !== false && $pos > 0)
 					{
-						$cookie = trim(substr($arHeader[1], 0, $pos));
+						$cookie = trim(mb_substr($arHeader[1], 0, $pos));
 					}
 					else
 					{
@@ -6413,7 +6515,7 @@ class CHTTP
 
 	public static function SetStatus($status)
 	{
-		$bCgi = (stristr(php_sapi_name(), "cgi") !== false);
+		$bCgi = (mb_stristr(php_sapi_name(), "cgi") !== false);
 		if($bCgi && (!defined("BX_HTTP_STATUS") || BX_HTTP_STATUS == false))
 			header("Status: ".$status);
 		else
@@ -6476,9 +6578,9 @@ class CHTTP
 						$res = base64_decode($res);
 						$res = CUtil::ConvertToLangCharset($res);
 						list($user, $pass) = explode(':', $res, 2);
-						if(strpos($user, $_SERVER['HTTP_HOST']."\\") === 0)
+						if(mb_strpos($user, $_SERVER['HTTP_HOST']."\\") === 0)
 							$user = str_replace($_SERVER['HTTP_HOST']."\\", "", $user);
-						elseif(strpos($user, $_SERVER['SERVER_NAME']."\\") === 0)
+						elseif(mb_strpos($user, $_SERVER['SERVER_NAME']."\\") === 0)
 							$user = str_replace($_SERVER['SERVER_NAME']."\\", "", $user);
 
 						return array("basic"=>array(
@@ -6526,7 +6628,7 @@ class CHTTP
 			$params = array();
 			foreach($add_params as $name => $value)
 			{
-				if($options["skip_empty"] && !strlen($value))
+				if($options["skip_empty"] && !mb_strlen($value))
 					continue;
 				if($options["encode"])
 					$params[] = urlencode($name).'='.urlencode($value);
@@ -6536,20 +6638,20 @@ class CHTTP
 
 			if(count($params))
 			{
-				$p1 = strpos($url, "?");
+				$p1 = mb_strpos($url, "?");
 				if($p1 === false)
 					$ch = "?";
 				else
 					$ch = "&";
 
-				$p2 = strpos($url, "#");
+				$p2 = mb_strpos($url, "#");
 				if($p2===false)
 				{
 					$url = $url.$ch.implode("&", $params);
 				}
 				else
 				{
-					$url = substr($url, 0, $p2).$ch.implode("&", $params).substr($url, $p2);
+					$url = mb_substr($url, 0, $p2).$ch.implode("&", $params).mb_substr($url, $p2);
 				}
 			}
 		}
@@ -6559,7 +6661,7 @@ class CHTTP
 	public static function urlDeleteParams($url, $delete_params, $options = array())
 	{
 		$url_parts = explode("?", $url, 2);
-		if(count($url_parts) == 2 && strlen($url_parts[1]) > 0)
+		if(count($url_parts) == 2 && $url_parts[1] <> '')
 		{
 			if($options["delete_system_params"])
 				$delete_params = array_merge($delete_params, \Bitrix\Main\HttpRequest::getSystemParameters());
@@ -6638,8 +6740,8 @@ class CHTTP
 	// search for /../ and ulrencoded /../
 	public static function isPathTraversalUri($uri)
 	{
-		if (($pos = strpos($uri, "?")) !== false)
-			$uri = substr($uri, 0, $pos);
+		if (($pos = mb_strpos($uri, "?")) !== false)
+			$uri = mb_substr($uri, 0, $pos);
 
 		$uri = trim($uri);
 		return preg_match("#(?:/|2f|^|\\\\|5c)(?:(?:%0*(25)*2e)|\\.){2,}(?:/|%0*(25)*2f|\\\\|%0*(25)*5c|$)#i", $uri) ? true : false;
@@ -6662,7 +6764,7 @@ function GetMenuTypes($site=false, $default_value=false)
 		foreach($armt_ as $key => $title)
 		{
 			$key = trim($key);
-			if (strlen($key) == 0)
+			if ($key == '')
 				continue;
 			$armt[$key] = trim($title);
 		}
@@ -6672,13 +6774,13 @@ function GetMenuTypes($site=false, $default_value=false)
 	$armt_ = explode(",", $mt);
 	for ($i = 0, $c = count($armt_); $i < $c; $i++)
 	{
-		$pos = strpos($armt_[$i], '=');
+		$pos = mb_strpos($armt_[$i], '=');
 		if ($pos === false)
 			continue;
-		$key = trim(substr($armt_[$i], 0, $pos));
-		if (strlen($key) == 0)
+		$key = trim(mb_substr($armt_[$i], 0, $pos));
+		if ($key == '')
 			continue;
-		$armt[$key] = trim(substr($armt_[$i], $pos + 1));
+		$armt[$key] = trim(mb_substr($armt_[$i], $pos + 1));
 	}
 	return $armt;
 }
@@ -6705,23 +6807,23 @@ function ParseFileContent($filesrc, $params = array())
 	$php_st = "<"."?";
 	$php_ed = "?".">";
 
-	if($params["use_php_parser"] && substr($filesrc, 0, 2) == $php_st)
+	if($params["use_php_parser"] && mb_substr($filesrc, 0, 2) == $php_st)
 	{
 		$phpChunks = PHPParser::getPhpChunks($filesrc);
 		if (!empty($phpChunks))
 		{
 			$prolog = $phpChunks[0];
-			$filesrc = substr($filesrc, strlen($prolog));
+			$filesrc = mb_substr($filesrc, mb_strlen($prolog));
 		}
 	}
-	elseif(substr($filesrc, 0, 2)==$php_st)
+	elseif(mb_substr($filesrc, 0, 2) == $php_st)
 	{
-		$fl = strlen($filesrc);
+		$fl = mb_strlen($filesrc);
 		$p = 2;
 		while($p < $fl)
 		{
-			$ch2 = substr($filesrc, $p, 2);
-			$ch1 = substr($ch2, 0, 1);
+			$ch2 = mb_substr($filesrc, $p, 2);
+			$ch1 = mb_substr($ch2, 0, 1);
 
 			if($ch2==$php_ed && !$php_doubleq && !$php_singleq && !$php_star_comment)
 			{
@@ -6757,7 +6859,7 @@ function ParseFileContent($filesrc, $params = array())
 				{
 					$php_doubleq=true;
 				}
-				elseif($php_doubleq && $ch1=='"' && substr($filesrc, $p-1, 1)!='\\')
+				elseif($php_doubleq && $ch1=='"' && mb_substr($filesrc, $p - 1, 1) != '\\')
 				{
 					$php_doubleq=false;
 				}
@@ -6767,7 +6869,7 @@ function ParseFileContent($filesrc, $params = array())
 					{
 						$php_singleq=true;
 					}
-					elseif($php_singleq && $ch1=="'" && substr($filesrc, $p-1, 1)!='\\')
+					elseif($php_singleq && $ch1=="'" && mb_substr($filesrc, $p - 1, 1) != '\\')
 					{
 						$php_singleq=false;
 					}
@@ -6777,8 +6879,8 @@ function ParseFileContent($filesrc, $params = array())
 			$p++;
 		}
 
-		$prolog = substr($filesrc, 0, $p);
-		$filesrc = substr($filesrc, $p);
+		$prolog = mb_substr($filesrc, 0, $p);
+		$filesrc = mb_substr($filesrc, $p);
 	}
 	elseif(preg_match("'(.*?<title>.*?</title>)(.*)$'is", $filesrc, $reg))
 	{
@@ -6789,32 +6891,32 @@ function ParseFileContent($filesrc, $params = array())
 	$title = PHPParser::getPageTitle($filesrc, $prolog);
 
 	$arPageProps = array();
-	if(strlen($prolog))
+	if($prolog <> '')
 	{
-		if (preg_match_all("'\\\$APPLICATION->SetPageProperty\\(([\"\\'])(.*?)(?<!\\\\)[\"\\'] *, *([\"\\'])(.*?)(?<!\\\\)[\"\\']\\);'i", $prolog, $out))
+		if(preg_match_all("'\\\$APPLICATION->SetPageProperty\\(([\"\\'])(.*?)(?<!\\\\)[\"\\'] *, *([\"\\'])(.*?)(?<!\\\\)[\"\\']\\);'i", $prolog, $out))
 		{
-			foreach ($out[2] as $i => $m1)
+			foreach($out[2] as $i => $m1)
 			{
 				$arPageProps[UnEscapePHPString($m1, $out[1][$i])] = UnEscapePHPString($out[4][$i], $out[3][$i]);
 			}
 		}
 	}
 
-	if(substr($filesrc, -2) == "?".">")
+	if(mb_substr($filesrc, -2) == "?".">")
 	{
 		if (isset($phpChunks) && count($phpChunks) > 1)
 		{
 			$epilog = $phpChunks[count($phpChunks)-1];
-			$filesrc = substr($filesrc, 0, -strlen($epilog));
+			$filesrc = mb_substr($filesrc, 0, -mb_strlen($epilog));
 		}
 		else
 		{
-			$p = strlen($filesrc) - 2;
+			$p = mb_strlen($filesrc) - 2;
 			$php_start = "<"."?";
-			while(($p > 0) && (substr($filesrc, $p, 2) != $php_start))
+			while(($p > 0) && (mb_substr($filesrc, $p, 2) != $php_start))
 				$p--;
-			$epilog = substr($filesrc, $p);
-			$filesrc = substr($filesrc, 0, $p);
+			$epilog = mb_substr($filesrc, $p);
+			$filesrc = mb_substr($filesrc, 0, $p);
 		}
 	}
 
@@ -6871,7 +6973,7 @@ function CheckSerializedData($str, $max_depth = 200)
 	{
 		$str1 = preg_replace('/[^{}]+/'.BX_UTF_PCRE_MODIFIER, '', $str);
 		$cnt = 0;
-		for ($i=0,$len=strlen($str1);$i<$len;$i++)
+		for ($i=0, $len = mb_strlen($str1);$i<$len;$i++)
 		{
 			// we've just cleared all possible utf-symbols, so we can use [] syntax
 			if ($str1[$i]=='}')
@@ -6895,37 +6997,37 @@ function CheckSerializedData($str, $max_depth = 200)
 function NormalizePhone($number, $minLength = 10)
 {
 	$minLength = intval($minLength);
-	if ($minLength <= 0 || strlen($number) < $minLength)
+	if ($minLength <= 0 || mb_strlen($number) < $minLength)
 	{
 		return false;
 	}
 
-	if (strlen($number) >= 10 && substr($number, 0, 2) == '+8')
+	if (mb_strlen($number) >= 10 && mb_substr($number, 0, 2) == '+8')
 	{
-		$number = '00'.substr($number, 1);
+		$number = '00'.mb_substr($number, 1);
 	}
 
 	$number = preg_replace("/[^0-9\#\*,;]/i", "", $number);
-	if (strlen($number) >= 10)
+	if (mb_strlen($number) >= 10)
 	{
-		if (substr($number, 0, 2) == '80' || substr($number, 0, 2) == '81' || substr($number, 0, 2) == '82')
+		if (mb_substr($number, 0, 2) == '80' || mb_substr($number, 0, 2) == '81' || mb_substr($number, 0, 2) == '82')
 		{
 		}
-		else if (substr($number, 0, 2) == '00')
+		else if (mb_substr($number, 0, 2) == '00')
 		{
-			$number = substr($number, 2);
+			$number = mb_substr($number, 2);
 		}
-		else if (substr($number, 0, 3) == '011')
+		else if (mb_substr($number, 0, 3) == '011')
 		{
-			$number = substr($number, 3);
+			$number = mb_substr($number, 3);
 		}
-		else if (substr($number, 0, 1) == '8')
+		else if (mb_substr($number, 0, 1) == '8')
 		{
-			$number = '7'.substr($number, 1);
+			$number = '7'.mb_substr($number, 1);
 		}
-		else if (substr($number, 0, 1) == '0')
+		else if (mb_substr($number, 0, 1) == '0')
 		{
-			$number = substr($number, 1);
+			$number = mb_substr($number, 1);
 		}
 	}
 
@@ -7091,7 +7193,7 @@ class CSpacer
 function ini_get_bool($param)
 {
 	$val = ini_get($param);
-	return ($val == '1' || strtolower($val) == 'on');
+	return ($val == '1' || mb_strtolower($val) == 'on');
 }
 
 /**

@@ -61,7 +61,7 @@ if(
 	{
 		require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/classes/general/cache_files_cleaner.php");
 
-		if(isset($_POST["path"]) && is_string($_POST["path"]) && strlen($_POST["path"]))
+		if(isset($_POST["path"]) && is_string($_POST["path"]) && mb_strlen($_POST["path"]))
 		{
 			$path = $_POST["path"];
 		}
@@ -177,7 +177,7 @@ if(
 
 	if(is_string($file))
 	{
-		$currentPath = substr($file, strlen($_SERVER["DOCUMENT_ROOT"]));
+		$currentPath = mb_substr($file, mb_strlen($_SERVER["DOCUMENT_ROOT"]));
 		_CFileTree::ExtractFileFromPath($currentPath);
 		CAdminMessage::ShowMessage(array(
 			"MESSAGE"=>GetMessage("main_cache_in_progress"),
@@ -195,7 +195,7 @@ if(
 		?>
 		<script>
 			CloseWaitWindow();
-			DoNext(<?echo CUtil::PhpToJSObject(substr($file, strlen($_SERVER["DOCUMENT_ROOT"])))?>);
+			DoNext(<?echo CUtil::PhpToJSObject(mb_substr($file, mb_strlen($_SERVER["DOCUMENT_ROOT"])))?>);
 		</script>
 		<?
 	}
@@ -305,9 +305,9 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_aft
 ?>
 
 <?
-if(strlen($errorMessage)>0)
+if($errorMessage <> '')
 	echo CAdminMessage::ShowMessage(Array("DETAILS"=>$errorMessage, "TYPE"=>"ERROR", "MESSAGE"=>GetMessage("SAE_ERROR"), "HTML"=>true));
-if(strlen($okMessage)>0)
+if($okMessage <> '')
 	echo CAdminMessage::ShowNote($okMessage);
 ?>
 

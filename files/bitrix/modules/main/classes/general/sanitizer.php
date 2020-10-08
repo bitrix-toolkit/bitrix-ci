@@ -143,7 +143,7 @@
 
 			foreach($arTags as $tagName => $arAttrs)
 			{
-				$tagName = strtolower($tagName);
+				$tagName = mb_strtolower($tagName);
 				$arAttrs = array_change_key_case($arAttrs, CASE_LOWER);
 				$this->arHtmlTags[$tagName] = $arAttrs;
 				$counter++;
@@ -176,7 +176,7 @@
 
 			foreach ($this->arHtmlTags as $tagName => $arAttrs)
 				foreach ($arTagNames as $delTagName)
-					if(strtolower($delTagName) != $tagName)
+					if(mb_strtolower($delTagName) != $tagName)
 						$arTmp[$tagName] = $arAttrs;
 					else
 						$counter++;
@@ -414,7 +414,7 @@
 				return false;
 			}
 
-			$attr = strtolower($arAttr[1]);
+			$attr = mb_strtolower($arAttr[1]);
 			$attrValue = $this->Decode($arAttr[3]);
 
 			switch ($attr)
@@ -574,7 +574,7 @@
 
 			foreach($arData as $i => $chunk)
 			{
-				$isTag = $i % 2 || (substr($chunk, 0, 1) == '<' && substr($chunk, -1) == '>');
+				$isTag = $i % 2 || (mb_substr($chunk, 0, 1) == '<' && mb_substr($chunk, -1) == '>');
 
 				if ($isTag)
 				{
@@ -631,7 +631,7 @@
 					//find tag type (open/close), tag name, attributies
 					preg_match('#^<\s*(/)?\s*([a-z0-9]+)(.*?)>$#si'.BX_UTF_PCRE_MODIFIER, $seg[$i]['value'], $matches);
 					$seg[$i]['tagType'] = ( $matches[1] ? 'close' : 'open' );
-					$seg[$i]['tagName'] = strtolower($matches[2]);
+					$seg[$i]['tagName'] = mb_strtolower($matches[2]);
 
 					if(($seg[$i]['tagName']=='code') && ($seg[$i]['tagType']=='close'))
 						$isCode = false;
@@ -744,7 +744,7 @@
 							foreach($arTagAttrs as $arTagAttr)
 							{
 								$currTag = $seg[$i]['tagName'];
-								$attrOne = strtolower($arTagAttr[1]);
+								$attrOne = mb_strtolower($arTagAttr[1]);
 								$attrAllowed = in_array(
 									$attrOne,
 									$this->arHtmlTags[$seg[$i]['tagName']]

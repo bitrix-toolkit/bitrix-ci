@@ -18,10 +18,10 @@ class CDatabase extends CDatabaseMysql
 	{
 		$dbHost = $this->DBHost;
 		$dbPort = null;
-		if (($pos = strpos($dbHost, ":")) !== false)
+		if (($pos = mb_strpos($dbHost, ":")) !== false)
 		{
-			$dbPort = intval(substr($dbHost, $pos + 1));
-			$dbHost = substr($dbHost, 0, $pos);
+			$dbPort = intval(mb_substr($dbHost, $pos + 1));
+			$dbHost = mb_substr($dbHost, 0, $pos);
 		}
 
 		$persistentPrefix = (DBPersistent && !$this->bNodeConnection? "p:" : "");
@@ -66,7 +66,7 @@ class CDatabase extends CDatabaseMysql
 	function ForSql($strValue, $iMaxLength = 0)
 	{
 		if ($iMaxLength > 0)
-			$strValue = substr($strValue, 0, $iMaxLength);
+			$strValue = mb_substr($strValue, 0, $iMaxLength);
 
 		if (!isset($this) || !is_object($this) || !$this->db_Conn)
 		{
@@ -84,7 +84,7 @@ class CDatabase extends CDatabaseMysql
 	function ForSqlLike($strValue, $iMaxLength = 0)
 	{
 		if ($iMaxLength > 0)
-			$strValue = substr($strValue, 0, $iMaxLength);
+			$strValue = mb_substr($strValue, 0, $iMaxLength);
 
 		if(!isset($this) || !is_object($this) || !$this->db_Conn)
 		{

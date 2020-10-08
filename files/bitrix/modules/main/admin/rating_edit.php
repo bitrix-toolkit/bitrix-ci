@@ -66,7 +66,7 @@ if($_SERVER['REQUEST_METHOD']=="POST" && ($_POST['save']<>"" || $_POST['apply']<
 $bTypeChange = isset($_POST["action"]) && $_POST["action"] == 'type_changed' ? true : false;
 $str_NAME = isset($_REQUEST["NAME"]) ? htmlspecialcharsbx($_REQUEST["NAME"]) : GetMessage("RATING_DEF_NAME");
 $str_ENTITY_ID = isset($_REQUEST["ENTITY_ID"]) ? htmlspecialcharsbx($_REQUEST["ENTITY_ID"]) : 'USER';
-$str_CALCULATION_METHOD = isset($_REQUEST["CALCULATION_METHOD"]) ? IntVal($_REQUEST["CALCULATION_METHOD"]) : '1';
+$str_CALCULATION_METHOD = isset($_REQUEST["CALCULATION_METHOD"]) ? intval($_REQUEST["CALCULATION_METHOD"]) : '1';
 $str_ACTIVE = isset($_REQUEST["ACTIVE"]) && $_REQUEST["ACTIVE"] == 'Y' ? 'Y' : 'N';
 $str_POSITION = isset($_REQUEST["POSITION"]) && $_REQUEST["POSITION"] == 'Y' ? 'Y' : 'N';
 $str_AUTHORITY = isset($_REQUEST["AUTHORITY"]) && $_REQUEST["AUTHORITY"] == 'Y' ? 'Y' : 'N';

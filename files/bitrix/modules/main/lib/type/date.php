@@ -125,7 +125,7 @@ class Date
 
 	private function tryToCreateIntervalByDesignators($interval)
 	{
-		if (!is_string($interval) || strpos($interval, ' ') !== false)
+		if (!is_string($interval) || mb_strpos($interval, ' ') !== false)
 		{
 			return null;
 		}
@@ -133,14 +133,14 @@ class Date
 		$i = null;
 		try
 		{
-			$intervalTmp = strtoupper($interval);
+			$intervalTmp = mb_strtoupper($interval);
 			$isNegative = false;
-			$firstChar = substr($intervalTmp, 0, 1);
+			$firstChar = mb_substr($intervalTmp, 0, 1);
 			if ($firstChar === "-")
 			{
 				$isNegative = true;
-				$intervalTmp = substr($intervalTmp, 1);
-				$firstChar = substr($intervalTmp, 0, 1);
+				$intervalTmp = mb_substr($intervalTmp, 1);
+				$firstChar = mb_substr($intervalTmp, 0, 1);
 			}
 
 			if ($firstChar !== "P")

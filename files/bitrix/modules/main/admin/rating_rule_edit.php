@@ -306,7 +306,7 @@ $conditionCount = count($arCurrentCondition['FIELDS']);
 						?>
 						<tr valign="top">
 							<td class="field-name" style="vertical-align:middle"><label><?=$arCurrentCondition['FIELDS'][$i]['NAME']?>:</label></td>
-							<td width="25%" style="vertical-align:middle"><input type="text" name="CONDITION_CONFIG[<?=$arCurrentCondition['ID']?>][<?=$arCurrentCondition['FIELDS'][$i]['ID']?>]" size="<?=IntVal($arCurrentCondition['FIELDS'][$i]['SIZE'])?>" value="<?=$strFieldValue?>"> <?=isset($arCurrentCondition['FIELDS'][$i]['NAME_DESC'])? $arCurrentCondition['FIELDS'][$i]['NAME_DESC']: ''?></td>
+							<td width="25%" style="vertical-align:middle"><input type="text" name="CONDITION_CONFIG[<?=$arCurrentCondition['ID']?>][<?=$arCurrentCondition['FIELDS'][$i]['ID']?>]" size="<?=intval($arCurrentCondition['FIELDS'][$i]['SIZE'])?>" value="<?=$strFieldValue?>"> <?=isset($arCurrentCondition['FIELDS'][$i]['NAME_DESC'])? $arCurrentCondition['FIELDS'][$i]['NAME_DESC']: ''?></td>
 						</tr>
 						<?
 					}

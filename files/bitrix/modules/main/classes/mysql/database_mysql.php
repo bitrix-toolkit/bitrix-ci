@@ -66,7 +66,7 @@ class CDatabase extends CDatabaseMysql
 	function ForSql($strValue, $iMaxLength = 0)
 	{
 		if ($iMaxLength > 0)
-			$strValue = substr($strValue, 0, $iMaxLength);
+			$strValue = mb_substr($strValue, 0, $iMaxLength);
 
 		if (!isset($this) || !is_object($this) || !$this->db_Conn)
 		{
@@ -84,7 +84,7 @@ class CDatabase extends CDatabaseMysql
 	function ForSqlLike($strValue, $iMaxLength = 0)
 	{
 		if ($iMaxLength > 0)
-			$strValue = substr($strValue, 0, $iMaxLength);
+			$strValue = mb_substr($strValue, 0, $iMaxLength);
 
 		if(!isset($this) || !is_object($this) || !$this->db_Conn)
 		{

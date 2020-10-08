@@ -25,12 +25,13 @@ class Helper
 	 *
 	 * @param string $phrase
 	 * @param string $wildcard '*' or '' actually
+	 * @param int    $minTokenSize
 	 *
 	 * @return string
 	 */
-	public static function matchAgainstWildcard($phrase, $wildcard = '*')
+	public static function matchAgainstWildcard($phrase, $wildcard = '*', $minTokenSize = null)
 	{
-		$ftMinTokenSize = static::getMinTokenSize();
+		$ftMinTokenSize = $minTokenSize ?: static::getMinTokenSize();
 
 		$orValues = array();
 
@@ -43,7 +44,7 @@ class Helper
 				$andValues,
 				function($val) use ($ftMinTokenSize)
 				{
-					return (strlen($val) >= $ftMinTokenSize);
+					return (mb_strlen($val) >= $ftMinTokenSize);
 				}
 			);
 
@@ -85,7 +86,7 @@ class Helper
 		static $encoding = null;
 		if($encoding === null)
 		{
-			$encoding = strtolower(\Bitrix\Main\Context::getCurrent()->getCulture()->getCharset());
+			$encoding = mb_strtolower(\Bitrix\Main\Context::getCurrent()->getCulture()->getCharset());
 		}
 
 		if($encoding <> "utf-8")

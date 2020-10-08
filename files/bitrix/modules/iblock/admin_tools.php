@@ -18,7 +18,7 @@ function _ShowStringPropertyField($name, $property_fields, $values, $bInitDef = 
 	if ($MULTIPLE_CNT <= 0 || $MULTIPLE_CNT > 30)
 		$MULTIPLE_CNT = 5;
 
-	$bInitDef = $bInitDef && (strlen($property_fields["DEFAULT_VALUE"]) > 0);
+	$bInitDef = $bInitDef && ($property_fields["DEFAULT_VALUE"] <> '');
 
 	$cnt = ($property_fields["MULTIPLE"] == "Y"? $MULTIPLE_CNT + ($bInitDef? 1: 0) : 1);
 
@@ -97,7 +97,7 @@ function _ShowStringPropertyField($name, $property_fields, $values, $bInitDef = 
 	if ($property_fields["MULTIPLE"] == "Y")
 	{
 		echo '<tr><td><input type="button" value="'.GetMessage("IBLOCK_AT_PROP_ADD").'" onClick="BX.IBlock.Tools.addNewRow(\'tb'.md5($name).'\')"></td></tr>';
-		echo "<script type=\"text/javascript\">BX.addCustomEvent('onAutoSaveRestore', function(ob, data) {for (var i in data){if (i.substring(0,".(strlen($name)+1).")=='".CUtil::JSEscape($name)."['){BX.IBlock.Tools.addNewRow('tb".md5($name)."')}}})</script>";
+		echo "<script type=\"text/javascript\">BX.addCustomEvent('onAutoSaveRestore', function(ob, data) {for (var i in data){if (i.substring(0,".(mb_strlen($name) + 1).")=='".CUtil::JSEscape($name)."['){BX.IBlock.Tools.addNewRow('tb".md5($name)."')}}})</script>";
 	}
 
 	echo "</table>";
@@ -524,8 +524,8 @@ function _ShowUserPropertyField($name, $property_fields, $values, $bInitDef = fa
 					$html .= '&nbsp;';
 				$html .= '</td></tr>';
 
-				if(substr($key, -1, 1)=='n' && $max_val < intval(substr($key, 1)))
-					$max_val = intval(substr($key, 1));
+				if(mb_substr($key, -1, 1) == 'n' && $max_val < intval(mb_substr($key, 1)))
+					$max_val = intval(mb_substr($key, 1));
 				if($property_fields["MULTIPLE"] != "Y")
 				{
 					$bVarsFromForm = true;
@@ -540,7 +540,7 @@ function _ShowUserPropertyField($name, $property_fields, $values, $bInitDef = fa
 		|| ($bVarsFromForm && !$bMultiple && count($values) == 0) //Was not displayed
 	)
 	{
-		$bDefaultValue = is_array($property_fields["DEFAULT_VALUE"]) || strlen($property_fields["DEFAULT_VALUE"]);
+		$bDefaultValue = is_array($property_fields["DEFAULT_VALUE"]) || mb_strlen($property_fields["DEFAULT_VALUE"]);
 
 		if($property_fields["MULTIPLE"]=="Y")
 		{
@@ -1028,55 +1028,66 @@ class CEditorPopupControl
 	protected $width;
 	protected $height;
 	protected $initHtml = false;
+	/** @var bool  */
+	protected $filemanIncluded = null;
 
-	function __construct($width = 420, $height = 200)
+	public function __construct(int $width = 420, int $height = 200)
 	{
-		$this->width = intval($width);
-		$this->height = intval($height);
+		$this->width = $width;
+		$this->height = $height;
+		$this->filemanIncluded = Loader::includeModule('fileman');
 	}
 
-	function getControlHtml($name, $value, $maxLength = 255)
+	public function getEditorHtml(): string
 	{
 		$result = '';
-		if (!Loader::includeModule('fileman'))
-			return $result;
-
-		if (!$this->initHtml)
+		if (!$this->filemanIncluded || $this->initHtml)
 		{
-			$this->initHtml = true;
+			return $result;
+		}
+		$this->initHtml = true;
+		Main\Page\Asset::getInstance()->addJs('/bitrix/js/iblock/iblock_edit.js');
 
-			Main\Page\Asset::getInstance()->addJs('/bitrix/js/iblock/iblock_edit.js');
-
-			$result .= '<div id="popup_editor_start" style="display: none">';
-			ob_start();
-			$LHE = new CLightHTMLEditor;
-			$LHE->Show(array(
-				'height' => $height - 40,
-				'width' => '100%',
-				'content' => '',
-				'bResizable' => true,
-				'bUseFileDialogs' => false,
-				'bFloatingToolbar' => false,
-				'bArisingToolbar' => true,
-				'bAutoResize' => true,
-				'bSaveOnBlur' => true,
-				'bInitByJS' => true,
-				'jsObjName' => 'popup_editor',
-				'toolbarConfig' => array(
-					'Bold', 'Italic', 'Underline', 'Strike',
-					'CreateLink', 'DeleteLink',
-					'Source', 'BackColor', 'ForeColor',
-				),
-				'id' => 'popup_editor_id',
-			));
-			$result .= ob_get_contents();
-			ob_end_clean();
-			$result .= '</div>';
-			$result .= '<script>
+		$result .= '<div id="popup_editor_start" style="display: none">';
+		ob_start();
+		$LHE = new CLightHTMLEditor;
+		$LHE->Show(array(
+			'height' => $this->height - 40,
+			'width' => '100%',
+			'content' => '',
+			'bResizable' => true,
+			'bUseFileDialogs' => false,
+			'bFloatingToolbar' => false,
+			'bArisingToolbar' => true,
+			'bAutoResize' => true,
+			'bSaveOnBlur' => true,
+			'bInitByJS' => true,
+			'jsObjName' => 'popup_editor',
+			'toolbarConfig' => array(
+				'Bold', 'Italic', 'Underline', 'Strike',
+				'CreateLink', 'DeleteLink',
+				'Source', 'BackColor', 'ForeColor',
+			),
+			'id' => 'popup_editor_id',
+		));
+		$result .= ob_get_contents();
+		ob_end_clean();
+		$result .= '</div>';
+		$result .= '<script>
 				var popup_editor_dialog;
 				var popup_editor_manager = new JCPopupEditor('.$this->width.', '.$this->height.');
 			</script>';
-		}
+		return $result;
+	}
+
+	public function getControlHtml(string $name, string $value, $maxLength = 255): string
+	{
+		$result = '';
+		if (!$this->filemanIncluded)
+			return $result;
+
+		if (!$this->initHtml)
+			$result = $this->getEditorHtml();
 
 		$value = trim($value);
 		if ($value)

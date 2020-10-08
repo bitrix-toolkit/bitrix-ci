@@ -410,7 +410,7 @@ if(
 						LocalRedirect($strRedirect_admin);
 					elseif($_POST["apply"] <> '')
 						LocalRedirect($strRedirect."&ID=".$ID."&".$tabControl->ActiveTabParam());
-					elseif(strlen($_POST["save_and_add"])>0)
+					elseif($_POST["save_and_add"] <> '')
 						LocalRedirect($strRedirect."&ID=0&".$tabControl->ActiveTabParam());
 				}
 				elseif($new=="Y")

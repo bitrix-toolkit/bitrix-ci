@@ -40,6 +40,8 @@ class Mail
 	protected $trackClickLink;
 	protected $trackClickUrlParams;
 	protected $bitrixDirectory;
+	protected $trackReadAvailable;
+	protected $trackClickAvailable;
 
 	protected $contentTransferEncoding = '8bit';
 	protected $to;
@@ -69,7 +71,7 @@ class Mail
 	 */
 	public function __construct(array $mailParams)
 	{
-		if(array_key_exists('LINK_PROTOCOL', $mailParams) && strlen($mailParams['LINK_PROTOCOL']) > 0)
+		if(array_key_exists('LINK_PROTOCOL', $mailParams) && $mailParams['LINK_PROTOCOL'] <> '')
 		{
 			$this->trackLinkProtocol = $mailParams['LINK_PROTOCOL'];
 		}
@@ -95,7 +97,7 @@ class Mail
 			}
 		}
 
-		if(array_key_exists('LINK_DOMAIN', $mailParams) && strlen($mailParams['LINK_DOMAIN']) > 0)
+		if(array_key_exists('LINK_DOMAIN', $mailParams) && $mailParams['LINK_DOMAIN'] <> '')
 		{
 			$this->settingServerName = $mailParams['LINK_DOMAIN'];
 		}
@@ -112,6 +114,16 @@ class Mail
 		}
 
 		$this->initSettings();
+
+		if (!$this->trackReadAvailable)
+		{
+			$this->trackReadLink = null;
+		}
+
+		if (!$this->trackClickAvailable)
+		{
+			$this->trackClickLink = null;
+		}
 
 		if (isset($mailParams['GENERATE_TEXT_VERSION']))
 		{
@@ -249,7 +261,7 @@ class Mail
 			$this->settingMailEncodeQuotedPrintable = true;
 		}
 
-		if(!isset($this->settingServerName) || strlen($this->settingServerName) <= 0)
+		if(!isset($this->settingServerName) || $this->settingServerName == '')
 		{
 			$this->settingServerName = Config\Option::get("main", "server_name", "");
 		}
@@ -266,6 +278,9 @@ class Mail
 		$this->settingMailAdditionalParameters = Config\Option::get("main", "mail_additional_parameters", "");
 
 		$this->bitrixDirectory = Application::getInstance()->getPersonalRoot();
+
+		$this->trackReadAvailable = Config\Option::get('main', 'track_outgoing_emails_read', 'Y') == 'Y';
+		$this->trackClickAvailable = Config\Option::get('main', 'track_outgoing_emails_click', 'Y') == 'Y';
 	}
 
 	/**
@@ -499,7 +514,7 @@ class Mail
 			return false;
 		}
 
-		if (strpos($attachment['CONTENT_TYPE'], 'image/') === 0)
+		if (mb_strpos($attachment['CONTENT_TYPE'], 'image/') === 0)
 		{
 			return true;
 		}
@@ -772,12 +787,12 @@ class Mail
 		$res = "";
 		$maxl = 40;
 		$eol = static::getMailEol();
-		$len = strlen($text);
+		$len = mb_strlen($text);
 		for($i=0; $i<$len; $i=$i+$maxl)
 		{
 			if($i>0)
 				$res .= $eol."\t";
-			$res .= "=?".$charset."?B?".base64_encode(substr($text, $i, $maxl))."?=";
+			$res .= "=?".$charset."?B?".base64_encode(mb_substr($text, $i, $maxl))."?=";
 		}
 		return $res;
 	}
@@ -803,17 +818,17 @@ class Mail
 	 */
 	public static function encodeHeaderFrom($text, $charset)
 	{
-		$i = strlen($text);
+		$i = mb_strlen($text);
 		while($i > 0)
 		{
-			if(ord(substr($text, $i-1, 1))>>7)
+			if(ord(mb_substr($text, $i - 1, 1))>>7)
 				break;
 			$i--;
 		}
 		if($i==0)
 			return $text;
 		else
-			return "=?".$charset."?B?".base64_encode(substr($text, 0, $i))."?=".substr($text, $i);
+			return "=?".$charset."?B?".base64_encode(mb_substr($text, 0, $i))."?=".mb_substr($text, $i);
 	}
 
 	/**
@@ -827,9 +842,9 @@ class Mail
 		if($eol !== false)
 			return $eol;
 
-		if(strtoupper(substr(PHP_OS,0,3)) == 'WIN')
+		if(mb_strtoupper(mb_substr(PHP_OS, 0, 3)) == 'WIN')
 			$eol="\r\n";
-		elseif(strtoupper(substr(PHP_OS,0,3)) <> 'MAC')
+		elseif(mb_strtoupper(mb_substr(PHP_OS, 0, 3)) <> 'MAC')
 			$eol="\n"; 	 //unix
 		else
 			$eol="\r";
@@ -928,11 +943,11 @@ class Mail
 		}
 
 		$srcTrimmed = trim($src);
-		if(substr($srcTrimmed,0, 2) == "//")
+		if(mb_substr($srcTrimmed, 0, 2) == "//")
 		{
 			$src = $this->trackLinkProtocol . ":" . $srcTrimmed;
 		}
-		else if(substr($srcTrimmed,0, 1) == "/")
+		else if(mb_substr($srcTrimmed, 0, 1) == "/")
 		{
 			$srcModified = false;
 			if(count($this->attachment)>0)
@@ -958,7 +973,7 @@ class Mail
 		}
 
 		$add = '';
-		if (stripos($matches[0], '<img') === 0 && !preg_match("/<img[^>]*?\\s+alt\\s*=[^>]+>/is", $matches[0]))
+		if (mb_stripos($matches[0], '<img') === 0 && !preg_match("/<img[^>]*?\\s+alt\\s*=[^>]+>/is", $matches[0]))
 		{
 			$add = ' alt="" ';
 		}
@@ -1023,7 +1038,7 @@ class Mail
 		}
 
 		$url = $this->trackReadLink;
-		if (substr($url, 0, 4) !== 'http')
+		if (mb_substr($url, 0, 4) !== 'http')
 		{
 			$url = $this->trackLinkProtocol . "://" . $this->settingServerName . $url;
 		}
@@ -1070,12 +1085,12 @@ class Mail
 			return $matches[0];
 		}
 
-		if(substr($href, 0, 2) == '//')
+		if(mb_substr($href, 0, 2) == '//')
 		{
 			$href = $this->trackLinkProtocol . ':' . $href;
 		}
 
-		if(substr($href, 0, 1) == '/')
+		if(mb_substr($href, 0, 1) == '/')
 		{
 			$href = $this->trackLinkProtocol . '://' . $this->settingServerName . $href;
 		}
@@ -1089,7 +1104,7 @@ class Mail
 					$hrefAddParam .= '&'.htmlspecialcharsbx($k).'='.htmlspecialcharsbx($v);
 
 				$parsedHref = explode("#", $href);
-				$parsedHref[0] .= (strpos($parsedHref[0], '?') === false ? '?' : '&') . substr($hrefAddParam, 1);
+				$parsedHref[0] .= (mb_strpos($parsedHref[0], '?') === false? '?' : '&').mb_substr($hrefAddParam, 1);
 				$href = implode("#", $parsedHref);
 			}
 
@@ -1204,13 +1219,13 @@ class Mail
 		}
 
 		$list = [];
-		$allEmails = [strtolower($this->to)];
+		$allEmails = [mb_strtolower($this->to)];
 
 		// get all emails for query Blacklist, prepare emails as Address instances
 		foreach ($headers as $name => $value)
 		{
 			// exclude non target headers
-			if (!in_array(strtolower($name), static::$emailHeaders))
+			if (!in_array(mb_strtolower($name), static::$emailHeaders))
 			{
 				continue;
 			}
@@ -1259,7 +1274,7 @@ class Mail
 		foreach ($headers as $name => $value)
 		{
 			// exclude non target headers
-			if (!in_array(strtolower($name), static::$emailHeaders))
+			if (!in_array(mb_strtolower($name), static::$emailHeaders))
 			{
 				continue;
 			}

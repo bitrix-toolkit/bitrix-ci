@@ -11,6 +11,7 @@ namespace Bitrix\Iblock\ORM;
 use Bitrix\Iblock\ORM\Fields\PropertyOneToMany;
 use Bitrix\Iblock\ORM\Fields\PropertyReference;
 use Bitrix\Iblock\PropertyTable;
+use Bitrix\Iblock\SectionTable;
 use Bitrix\Main\ORM\Objectify\Collection;
 use Bitrix\Main\ORM\Objectify\EntityObject;
 use Bitrix\Main\ORM\Objectify\State;
@@ -22,6 +23,46 @@ use Bitrix\Main\Text\StringHelper;
  */
 abstract class CommonElement extends EO_CommonElement
 {
+	/**
+	 * Handles relation with general section
+	 *
+	 * @param $iblockSectionId
+	 *
+	 * @throws \Bitrix\Main\ArgumentException
+	 * @throws \Bitrix\Main\SystemException
+	 */
+	public function setIblockSectionId($iblockSectionId)
+	{
+		$newIblockSectionId = (int) $iblockSectionId;
+		$actualIblockSectionId = 0;
+
+		if ($this->state !== State::RAW)
+		{
+			$this->fill('IBLOCK_SECTION_ID');
+			$actualIblockSectionId = $this->remindActual('IBLOCK_SECTION_ID');
+		}
+
+		if ($newIblockSectionId !== $actualIblockSectionId)
+		{
+			// remove old
+			if ($actualIblockSectionId > 0)
+			{
+				$oldSection = SectionTable::wakeUpObject($actualIblockSectionId);
+				$this->removeFrom('SECTIONS', $oldSection);
+			}
+
+			// add new
+			if ($newIblockSectionId > 0)
+			{
+				$newSection = SectionTable::wakeUpObject($newIblockSectionId);
+				$this->addTo('SECTIONS', $newSection);
+			}
+
+			// rewrite value
+			parent::sysSetValue('IBLOCK_SECTION_ID', $newIblockSectionId);
+		}
+	}
+
 	/**
 	 * Accepts PropertyValue and scalar, converts it to property reference
 	 *
@@ -203,8 +244,18 @@ abstract class CommonElement extends EO_CommonElement
 		/** @var EntityObject $valueObject */
 		$valueObject = $valueEntity->createObject();
 
-		// set base fields
-		$valueObject->set('IBLOCK_ELEMENT_ID', $this->getId());
+		// if we don't have primary right now, repeat setter later
+		if ($this->state == State::RAW)
+		{
+			$this->sysAddOnPrimarySetListener(function (EntityObject $localObject) use ($valueObject) {
+				$valueObject->set('IBLOCK_ELEMENT_ID', $localObject->get('ID'));
+			});
+		}
+		else
+		{
+			// set base fields
+			$valueObject->set('IBLOCK_ELEMENT_ID', $this->get('ID'));
+		}
 
 		if ($valueEntity->hasField('IBLOCK_PROPERTY_ID'))
 		{

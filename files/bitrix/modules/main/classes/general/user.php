@@ -8,6 +8,7 @@
 
 use Bitrix\Main;
 use Bitrix\Main\Authentication\ApplicationPasswordTable;
+use Bitrix\Main\Localization\Loc;
 
 IncludeModuleLangFile(__FILE__);
 
@@ -156,7 +157,7 @@ abstract class CAllUser extends CDBResult
 	public function RequiredHTTPAuthBasic($Realm = "Bitrix")
 	{
 		header("WWW-Authenticate: Basic realm=\"{$Realm}\"");
-		if(stristr(php_sapi_name(), "cgi") !== false)
+		if(mb_stristr(php_sapi_name(), "cgi") !== false)
 			header("Status: 401 Unauthorized");
 		else
 			header($_SERVER["SERVER_PROTOCOL"]." 401 Unauthorized");
@@ -170,7 +171,7 @@ abstract class CAllUser extends CDBResult
 
 		if(COption::GetOptionString("main", "store_password", "Y") == "Y")
 		{
-			$bLogout = isset($_REQUEST["logout"]) && (strtolower($_REQUEST["logout"]) == "yes");
+			$bLogout = isset($_REQUEST["logout"]) && (mb_strtolower($_REQUEST["logout"]) == "yes");
 
 			$cookie_prefix = COption::GetOptionString('main', 'cookie_name', 'BITRIX_SM');
 			$cookie_login = strval($_COOKIE[$cookie_prefix.'_UIDL']);
@@ -647,7 +648,7 @@ abstract class CAllUser extends CDBResult
 
 					if($bSave)
 					{
-						$period = time()+60*60*24*30*60;
+						$period = time()+60*60*24*30*12;
 						$spread = Main\Web\Cookie::SPREAD_SITES | Main\Web\Cookie::SPREAD_DOMAIN;
 					}
 					else
@@ -935,7 +936,7 @@ abstract class CAllUser extends CDBResult
 			if($applicationId === null && $arParams["LOGIN"] <> '')
 			{
 				//the cookie is for authentication forms mostly, does not make sense for applications
-				$cookie = new Bitrix\Main\Web\Cookie("LOGIN", $arParams["LOGIN"], time()+60*60*24*30*60);
+				$cookie = new Bitrix\Main\Web\Cookie("LOGIN", $arParams["LOGIN"], time()+60*60*24*30*12);
 				Main\Context::getCurrent()->getResponse()->addCookie($cookie);
 			}
 		}
@@ -986,10 +987,10 @@ abstract class CAllUser extends CDBResult
 
 		if(($arUser = $result->Fetch()))
 		{
-			if(strlen($arUser["PASSWORD"]) > 32)
+			if(mb_strlen($arUser["PASSWORD"]) > 32)
 			{
-				$salt = substr($arUser["PASSWORD"], 0, strlen($arUser["PASSWORD"]) - 32);
-				$db_password = substr($arUser["PASSWORD"], -32);
+				$salt = mb_substr($arUser["PASSWORD"], 0, mb_strlen($arUser["PASSWORD"]) - 32);
+				$db_password = mb_substr($arUser["PASSWORD"], -32);
 			}
 			else
 			{
@@ -1003,14 +1004,14 @@ abstract class CAllUser extends CDBResult
 				$user_password = md5($salt.$arParams["PASSWORD"]);
 				if($arParams["OTP"] <> '')
 				{
-					$user_password_no_otp = md5($salt.substr($arParams["PASSWORD"], 0, -6));
+					$user_password_no_otp = md5($salt.mb_substr($arParams["PASSWORD"], 0, -6));
 				}
 			}
 			else
 			{
-				if(strlen($arParams["PASSWORD"]) > 32)
+				if(mb_strlen($arParams["PASSWORD"]) > 32)
 				{
-					$user_password = substr($arParams["PASSWORD"], -32);
+					$user_password = mb_substr($arParams["PASSWORD"], -32);
 				}
 				else
 				{
@@ -1067,6 +1068,11 @@ abstract class CAllUser extends CDBResult
 					$unblockDate->add("T{$policyBlockTime}M"); //minutes
 
 					CAgent::AddAgent("CUser::UnblockAgent({$arUser["ID"]});", "main", "Y", 0, "", "Y", $unblockDate->toString());
+
+					if(COption::GetOptionString("main", "event_log_block_user", "N") === "Y")
+					{
+						CEventLog::Log("SECURITY", "USER_BLOCKED", "main", $arUser["ID"], "Attempts: {$policyBlockAttempts}, Period: {$policyBlockTime}");
+					}
 				}
 			}
 
@@ -1266,7 +1272,7 @@ abstract class CAllUser extends CDBResult
 		$phoneAuth = ($arParams["PHONE_NUMBER"] <> '' && COption::GetOptionString("main", "new_user_phone_auth", "N") == "Y");
 
 		$strAuthError = "";
-		if(strlen($arParams["LOGIN"]) < 3 && !$phoneAuth)
+		if(mb_strlen($arParams["LOGIN"]) < 3 && !$phoneAuth)
 		{
 			$strAuthError .= GetMessage('MIN_LOGIN')."<br>";
 		}
@@ -1333,7 +1339,7 @@ abstract class CAllUser extends CDBResult
 
 		if(!$phoneAuth)
 		{
-			$salt = substr($res["CHECKWORD"], 0, 8);
+			$salt = mb_substr($res["CHECKWORD"], 0, 8);
 			if($res["CHECKWORD"] == '' || $res["CHECKWORD"] != $salt.md5($salt.$arParams["CHECKWORD"]))
 			{
 				return array("MESSAGE"=>preg_replace("/#LOGIN#/i", htmlspecialcharsbx($arParams["LOGIN"]), GetMessage("CHECKWORD_INCORRECT"))."<br>", "TYPE"=>"ERROR", "FIELD"=>"CHECKWORD");
@@ -1399,7 +1405,7 @@ abstract class CAllUser extends CDBResult
 		$password_min_length = intval($arPolicy["PASSWORD_LENGTH"]);
 		if($password_min_length <= 0)
 			$password_min_length = 6;
-		if(strlen($password) < $password_min_length)
+		if(mb_strlen($password) < $password_min_length)
 			$errors[] = GetMessage("MAIN_FUNCTION_REGISTER_PASSWORD_LENGTH", array("#LENGTH#" => $arPolicy["PASSWORD_LENGTH"]));
 
 		if(($arPolicy["PASSWORD_UPPERCASE"] === "Y") && !preg_match("/[A-Z]/", $password))
@@ -1420,7 +1426,7 @@ abstract class CAllUser extends CDBResult
 	/**
 	 * Sends a profile information to email
 	 */
-	public static function SendUserInfo($ID, $SITE_ID, $MSG, $bImmediate=false, $eventName="USER_INFO")
+	public static function SendUserInfo($ID, $SITE_ID, $MSG, $bImmediate=false, $eventName="USER_INFO", $checkword = null)
 	{
 		global $DB;
 
@@ -1437,24 +1443,28 @@ abstract class CAllUser extends CDBResult
 			}
 		}
 
-		// change CHECKWORD
 		$ID = intval($ID);
-		$salt = randString(8);
-		$checkword = md5(CMain::GetServerUniqID().uniqid());
-		$strSql = "UPDATE b_user SET ".
-			"	CHECKWORD = '".$salt.md5($salt.$checkword)."', ".
-			"	CHECKWORD_TIME = ".$DB->CurrentTimeFunction().", ".
-			"	LID = '".$DB->ForSql($SITE_ID, 2)."', ".
-			"   TIMESTAMP_X = TIMESTAMP_X ".
-			"WHERE ID = '".$ID."'".
-			(
-				// $arParams["EXTERNAL_AUTH_ID"] can be changed in the OnBeforeSendUserInfo event
-				$arParams["EXTERNAL_AUTH_ID"] <> ''?
-					"	AND EXTERNAL_AUTH_ID='".$DB->ForSQL($arParams["EXTERNAL_AUTH_ID"])."' " :
-					"	AND (EXTERNAL_AUTH_ID IS NULL OR EXTERNAL_AUTH_ID='') "
-			);
 
-		$DB->Query($strSql, false, "FILE: ".__FILE__."<br> LINE: ".__LINE__);
+		if($checkword === null)
+		{
+			// change CHECKWORD
+			$salt = randString(8);
+			$checkword = md5(CMain::GetServerUniqID().uniqid());
+			$strSql = "UPDATE b_user SET ".
+				"	CHECKWORD = '".$salt.md5($salt.$checkword)."', ".
+				"	CHECKWORD_TIME = ".$DB->CurrentTimeFunction().", ".
+				"	LID = '".$DB->ForSql($SITE_ID, 2)."', ".
+				"   TIMESTAMP_X = TIMESTAMP_X ".
+				"WHERE ID = '".$ID."'".
+				(
+					// $arParams["EXTERNAL_AUTH_ID"] can be changed in the OnBeforeSendUserInfo event
+					$arParams["EXTERNAL_AUTH_ID"] <> ''?
+						"	AND EXTERNAL_AUTH_ID='".$DB->ForSQL($arParams["EXTERNAL_AUTH_ID"])."' " :
+						"	AND (EXTERNAL_AUTH_ID IS NULL OR EXTERNAL_AUTH_ID='') "
+				);
+
+			$DB->Query($strSql, false, "FILE: ".__FILE__."<br> LINE: ".__LINE__);
+		}
 
 		$res = $DB->Query(
 			"SELECT u.* ".
@@ -1499,7 +1509,7 @@ abstract class CAllUser extends CDBResult
 		}
 	}
 
-	public static function SendPassword($LOGIN, $EMAIL, $SITE_ID = false, $captcha_word = "", $captcha_sid = 0, $phoneNumber = "")
+	public static function SendPassword($LOGIN, $EMAIL, $SITE_ID = false, $captcha_word = "", $captcha_sid = 0, $phoneNumber = "", $shortCode = false)
 	{
 		/** @global CMain $APPLICATION */
 		global $DB, $APPLICATION;
@@ -1509,6 +1519,7 @@ abstract class CAllUser extends CDBResult
 			"EMAIL" => $EMAIL,
 			"SITE_ID" => $SITE_ID,
 			"PHONE_NUMBER" => $phoneNumber,
+			"SHORT_CODE" => $shortCode,
 		);
 
 		$result_message = array("MESSAGE"=>GetMessage('ACCOUNT_INFO_SENT')."<br>", "TYPE"=>"OK");
@@ -1526,7 +1537,7 @@ abstract class CAllUser extends CDBResult
 			}
 		}
 
-		if($bOk && COption::GetOptionString("main", "captcha_restoring_password", "N") == "Y")
+		if($bOk && $arParams["SHORT_CODE"] == false && COption::GetOptionString("main", "captcha_restoring_password", "N") == "Y")
 		{
 			if (!($APPLICATION->CaptchaCheckCode($captcha_word, $captcha_sid)))
 			{
@@ -1537,64 +1548,33 @@ abstract class CAllUser extends CDBResult
 
 		if($bOk)
 		{
-			$f = false;
+			$found = false;
 			if($arParams["PHONE_NUMBER"] <> '')
 			{
 				//user registered by phone number
-				$number = Main\UserPhoneAuthTable::normalizePhoneNumber($arParams["PHONE_NUMBER"]);
 
-				$select = [
-					"USER_ID" => "USER_ID",
-					"LANGUAGE_ID" => "USER.LANGUAGE_ID",
-				];
-				if($arParams["SITE_ID"] === false)
+				$siteId = ($arParams["SITE_ID"] === false? null : $arParams["SITE_ID"]);
+
+				$result = static::SendPhoneCode($arParams["PHONE_NUMBER"], "SMS_USER_RESTORE_PASSWORD", $siteId);
+
+				if($result->isSuccess())
 				{
-					$select["LID"] = "USER.LID";
-				}
-
-				$row = Main\UserPhoneAuthTable::getList([
-					"select" => $select,
-					"filter" => ["=PHONE_NUMBER" => $number],
-				])->fetch();
-
-				if($row)
-				{
-					$f = true;
-
-					if($arParams["SITE_ID"] === false)
-					{
-						$arParams["SITE_ID"] = CSite::GetDefSite($row["LID"]);
-					}
-
-					list($code, $number) = CUser::GeneratePhoneCode($row["USER_ID"]);
-
-					$sms = new Main\Sms\Event(
-						"SMS_USER_RESTORE_PASSWORD",
-						[
-							"USER_PHONE" => $number,
-							"CODE" => $code,
-						]
-					);
-					$sms->setSite($arParams["SITE_ID"]);
-					if($row["LANGUAGE_ID"] <> '')
-					{
-						//user preferred language
-						$sms->setLanguage($row["LANGUAGE_ID"]);
-					}
-					$smsResult = $sms->send(true);
-
-					if($smsResult->isSuccess())
-					{
-						$result_message = array("MESSAGE"=>GetMessage("main_user_pass_request_sent")."<br>", "TYPE"=>"OK", "TEMPLATE" => "SMS_USER_RESTORE_PASSWORD");
-					}
-					else
-					{
-						$result_message = array("MESSAGE"=>implode("<br>", $smsResult->getErrorMessages()), "TYPE"=>"ERROR");
-					}
+					$found = true;
+					$result_message = array("MESSAGE"=>GetMessage("main_user_pass_request_sent")."<br>", "TYPE"=>"OK", "TEMPLATE" => "SMS_USER_RESTORE_PASSWORD");
 
 					if(COption::GetOptionString("main", "event_log_password_request", "N") === "Y")
 					{
-						CEventLog::Log("SECURITY", "USER_INFO", "main", $row["USER_ID"]);
+						$data = $result->getData();
+						CEventLog::Log("SECURITY", "USER_INFO", "main", $data["USER_ID"]);
+					}
+				}
+				else
+				{
+					if($result->getErrorCollection()->getErrorByCode("ERR_NOT_FOUND") === null)
+					{
+						//user found but there is another error
+						$found = true;
+						$result_message = array("MESSAGE"=>implode("<br>", $result->getErrorMessages()), "TYPE"=>"ERROR");
 					}
 				}
 			}
@@ -1648,11 +1628,30 @@ abstract class CAllUser extends CDBResult
 
 					if($arUser["ACTIVE"] == "Y")
 					{
-						CUser::SendUserInfo($arUser["ID"], $arParams["SITE_ID"], GetMessage("INFO_REQ"), true, 'USER_PASS_REQUEST');
-						$f = true;
+						$found = true;
+
+						if($arParams["SHORT_CODE"] == true)
+						{
+							$result = static::SendEmailCode($arUser["ID"], $arParams["SITE_ID"]);
+
+							if($result->isSuccess())
+							{
+								$result_message = array("MESSAGE"=>GetMessage("main_send_password_email_code")."<br>", "TYPE"=>"OK", "USER_ID" => $arUser["ID"], "RESULT" => $result);
+							}
+							else
+							{
+								$result_message = array("MESSAGE"=>implode("<br>", $result->getErrorMessages()), "TYPE"=>"ERROR", "RESULT" => $result);
+							}
+						}
+						else
+						{
+							static::SendUserInfo($arUser["ID"], $arParams["SITE_ID"], GetMessage("INFO_REQ"), true, 'USER_PASS_REQUEST');
+						}
 					}
 					elseif($confirmation)
 					{
+						$found = true;
+
 						//unconfirmed registration - resend confirmation email
 						$arFields = array(
 							"USER_ID" => $arUser["ID"],
@@ -1669,7 +1668,6 @@ abstract class CAllUser extends CDBResult
 						$event->SendImmediate("NEW_USER_CONFIRM", $arParams["SITE_ID"], $arFields, "Y", "", array(), $arUser["LANGUAGE_ID"]);
 
 						$result_message = array("MESSAGE"=>GetMessage("MAIN_SEND_PASS_CONFIRM")."<br>", "TYPE"=>"OK");
-						$f = true;
 					}
 
 					if(COption::GetOptionString("main", "event_log_password_request", "N") === "Y")
@@ -1678,7 +1676,7 @@ abstract class CAllUser extends CDBResult
 					}
 				}
 			}
-			if(!$f)
+			if(!$found)
 			{
 				return array("MESSAGE"=>GetMessage('DATA_NOT_FOUND1')."<br>", "TYPE"=>"ERROR");
 			}
@@ -2200,7 +2198,7 @@ abstract class CAllUser extends CDBResult
 				and ((UG.DATE_ACTIVE_FROM IS NULL) OR (UG.DATE_ACTIVE_FROM <= ".$DB->CurrentTimeFunction()."))
 				and ((UG.DATE_ACTIVE_TO IS NULL) OR (UG.DATE_ACTIVE_TO >= ".$DB->CurrentTimeFunction()."))
 				and G.ACTIVE = 'Y'
-			UNION SELECT 2, 'everyone', NULL, NULL ".(strtoupper($DB->type) == "ORACLE"? " FROM dual " : "");
+			UNION SELECT 2, 'everyone', NULL, NULL ".($DB->type == "ORACLE"? " FROM dual " : "");
 
 		$res = $DB->Query($strSql, false, "FILE: ".__FILE__."<br> LINE: ".__LINE__);
 
@@ -2220,7 +2218,7 @@ abstract class CAllUser extends CDBResult
 				b_user_group UG
 			WHERE
 				UG.USER_ID = ".intval($ID)."
-			UNION SELECT 2, NULL, NULL ".(strtoupper($DB->type) == "ORACLE"? " FROM dual " : "");
+			UNION SELECT 2, NULL, NULL ".($DB->type == "ORACLE"? " FROM dual " : "");
 
 		$res = $DB->Query($strSql, false, "FILE: ".__FILE__."<br> LINE: ".__LINE__);
 
@@ -2408,7 +2406,7 @@ abstract class CAllUser extends CDBResult
 			$resultError .= GetMessage("LOGIN_WHITESPACE")."<br>";
 		}
 
-		if(is_set($arFields, "LOGIN") && strlen($arFields["LOGIN"]) < 3)
+		if(is_set($arFields, "LOGIN") && mb_strlen($arFields["LOGIN"]) < 3)
 		{
 			$resultError .= GetMessage("MIN_LOGIN")."<br>";
 		}
@@ -2452,7 +2450,7 @@ abstract class CAllUser extends CDBResult
 
 		if(is_set($arFields, "EMAIL"))
 		{
-			if(($emailRequired && strlen($arFields["EMAIL"]) < 3) || ($arFields["EMAIL"] <> '' && !check_email($arFields["EMAIL"], true)))
+			if(($emailRequired && mb_strlen($arFields["EMAIL"]) < 3) || ($arFields["EMAIL"] <> '' && !check_email($arFields["EMAIL"], true)))
 			{
 				$resultError .= GetMessage("WRONG_EMAIL")."<br>";
 			}
@@ -2623,7 +2621,7 @@ abstract class CAllUser extends CDBResult
 
 				if($arUser)
 				{
-					$oldSalt = substr($arUser["PASSWORD"], 0, 8);
+					$oldSalt = mb_substr($arUser["PASSWORD"], 0, 8);
 					$newPassword = $oldSalt.md5($oldSalt.$original_pass);
 
 					if($newPassword <> $arUser["PASSWORD"])
@@ -3003,7 +3001,7 @@ abstract class CAllUser extends CDBResult
 		global $DB;
 		$r = $DB->Query("SELECT COUNT('x') as C FROM b_user");
 		$r = $r->Fetch();
-		return Intval($r["C"]);
+		return intval($r["C"]);
 	}
 
 	public static function Delete($ID)
@@ -3049,6 +3047,8 @@ abstract class CAllUser extends CDBResult
 		while ($zr = $z->Fetch())
 			CFile::Delete($zr["ID"]);
 
+		CAccess::OnUserDelete($ID);
+
 		if(!$DB->Query("DELETE FROM b_user_group WHERE USER_ID=".$ID))
 			return false;
 
@@ -3059,6 +3059,8 @@ abstract class CAllUser extends CDBResult
 			return false;
 
 		Main\UserPhoneAuthTable::delete($ID);
+
+		Main\Authentication\ShortCode::deleteByUser($ID);
 
 		$USER_FIELD_MANAGER->Delete("USER", $ID);
 
@@ -3397,9 +3399,9 @@ abstract class CAllUser extends CDBResult
 		}
 
 		$arAlowedOperations = array('fm_delete_file','fm_rename_folder','fm_view_permission');
-		if(substr($arPath[1], -10)=="/.htaccess" && !$USER->CanDoOperation('edit_php') && !in_array($op_name,$arAlowedOperations))
+		if(mb_substr($arPath[1], -10) == "/.htaccess" && !$USER->CanDoOperation('edit_php') && !in_array($op_name,$arAlowedOperations))
 			return false;
-		if(substr($arPath[1], -12)=="/.access.php")
+		if(mb_substr($arPath[1], -12) == "/.access.php")
 			return false;
 
 		return in_array($op_name, $arFileOperations);
@@ -3519,6 +3521,8 @@ abstract class CAllUser extends CDBResult
 		$blockDays = COption::GetOptionInt("main", "inactive_users_block_days", 0);
 		if($blockDays > 0)
 		{
+			$log = (COption::GetOptionString("main", "event_log_block_user", "N") === "Y");
+
 			$userObj = new CUser();
 
 			$date = new Main\Type\Date();
@@ -3537,6 +3541,11 @@ abstract class CAllUser extends CDBResult
 				if($user["ID"] <> 1)
 				{
 					$userObj->Update($user["ID"], ["ACTIVE" => "N"], false);
+
+					if($log)
+					{
+						CEventLog::Log("SECURITY", "USER_BLOCKED", "main", $user["ID"], "Inactive days: {$blockDays}");
+					}
 				}
 			}
 		}
@@ -3611,7 +3620,7 @@ abstract class CAllUser extends CDBResult
 			return false;
 
 		$strSqlPrefix = "UPDATE b_user SET ".
-			"TIMESTAMP_X = ".(strtoupper($DB->type) == "ORACLE"? "NULL":"TIMESTAMP_X").", ".
+			"TIMESTAMP_X = ".($DB->type == "ORACLE"? "NULL":"TIMESTAMP_X").", ".
 			"LAST_ACTIVITY_DATE = ".$DB->CurrentTimeFunction()." WHERE ID IN (";
 		$strSqlPostfix = ")";
 		$maxValuesLen = 2048;
@@ -3621,16 +3630,16 @@ abstract class CAllUser extends CDBResult
 		foreach($arUsers as $userId)
 		{
 			$strSqlValues .= ",$userId";
-			if(strlen($strSqlValues) > $maxValuesLen)
+			if(mb_strlen($strSqlValues) > $maxValuesLen)
 			{
-				$DB->Query($strSqlPrefix.substr($strSqlValues, 1).$strSqlPostfix, false, "", array("ignore_dml"=>true));
+				$DB->Query($strSqlPrefix.mb_substr($strSqlValues, 1).$strSqlPostfix, false, "", array("ignore_dml"=>true));
 				$strSqlValues = "";
 			}
 		}
 
-		if(strlen($strSqlValues) > 0)
+		if($strSqlValues <> '')
 		{
-			$DB->Query($strSqlPrefix.substr($strSqlValues, 1).$strSqlPostfix, false, "", array("ignore_dml"=>true));
+			$DB->Query($strSqlPrefix.mb_substr($strSqlValues, 1).$strSqlPostfix, false, "", array("ignore_dml"=>true));
 		}
 
 		$event = new \Bitrix\Main\Event("main", "OnUserSetLastActivityDate", array($arUsers, $ip));
@@ -3695,7 +3704,7 @@ abstract class CAllUser extends CDBResult
 
 		$result['IS_ONLINE'] = $now - $lastseen <= self::GetSecondsForLimitOnline();
 		$result['STATUS'] = $result['IS_ONLINE']? self::STATUS_ONLINE: self::STATUS_OFFLINE;
-		$result['STATUS_TEXT'] = GetMessage('USER_STATUS_'.strtoupper($result['STATUS']));
+		$result['STATUS_TEXT'] = GetMessage('USER_STATUS_'.mb_strtoupper($result['STATUS']));
 
 		if ($lastseen && $now - $lastseen > 300)
 		{
@@ -3713,7 +3722,7 @@ abstract class CAllUser extends CDBResult
 					{
 						if (!empty($customStatus['STATUS']) && !empty($customStatus['STATUS_TEXT']))
 						{
-							$result['STATUS'] = strtolower($customStatus['STATUS']);
+							$result['STATUS'] = mb_strtolower($customStatus['STATUS']);
 							$result['STATUS_TEXT'] = $customStatus['STATUS_TEXT'];
 						}
 						if (isset($customStatus['LAST_SEEN']) && intval($customStatus['LAST_SEEN']) > 0)
@@ -3736,7 +3745,7 @@ abstract class CAllUser extends CDBResult
 					{
 						if (!empty($customStatus['STATUS']) && !empty($customStatus['STATUS_TEXT']))
 						{
-							$result['STATUS'] = strtolower($customStatus['STATUS']);
+							$result['STATUS'] = mb_strtolower($customStatus['STATUS']);
 							$result['STATUS_TEXT'] = $customStatus['STATUS_TEXT'];
 						}
 						if (isset($customStatus['LAST_SEEN']) && intval($customStatus['LAST_SEEN']) > 0)
@@ -3846,14 +3855,14 @@ abstract class CAllUser extends CDBResult
 		foreach ($arName as $s)
 		{
 			$s = Trim($s);
-			if (StrLen($s) > 0)
+			if ($s <> '')
 				$arNameReady[] = $s;
 		}
 
 		if (Count($arNameReady) <= 0)
 			return false;
 
-		$strSqlWhereEMail = ((StrLen($email) > 0) ? " AND upper(U.EMAIL) = upper('".$DB->ForSql($email)."') " : "");
+		$strSqlWhereEMail = (($email <> '') ? " AND upper(U.EMAIL) = upper('".$DB->ForSql($email)."') " : "");
 
 		if ($bLoginMode)
 		{
@@ -4073,9 +4082,9 @@ abstract class CAllUser extends CDBResult
 		else
 			$ID = '';
 
-		$NAME_SHORT = ($arUser['NAME'] <> ''? substr($arUser['NAME'], 0, 1).'.' : '');
-		$LAST_NAME_SHORT = ($arUser['LAST_NAME'] <> ''? substr($arUser['LAST_NAME'], 0, 1).'.' : '');
-		$SECOND_NAME_SHORT = ($arUser['SECOND_NAME'] <> ''? substr($arUser['SECOND_NAME'], 0, 1).'.' : '');
+		$NAME_SHORT = ($arUser['NAME'] <> ''? mb_substr($arUser['NAME'], 0, 1).'.' : '');
+		$LAST_NAME_SHORT = ($arUser['LAST_NAME'] <> ''? mb_substr($arUser['LAST_NAME'], 0, 1).'.' : '');
+		$SECOND_NAME_SHORT = ($arUser['SECOND_NAME'] <> ''? mb_substr($arUser['SECOND_NAME'], 0, 1).'.' : '');
 
 		$res = str_replace(
 			array('#TITLE#', '#NAME#', '#LAST_NAME#', '#SECOND_NAME#', '#NAME_SHORT#', '#LAST_NAME_SHORT#', '#SECOND_NAME_SHORT#', '#EMAIL#', '#ID#'),
@@ -4083,18 +4092,18 @@ abstract class CAllUser extends CDBResult
 			$NAME_TEMPLATE
 		);
 
-		while(strpos($res, "  ") !== false)
+		while(mb_strpos($res, "  ") !== false)
 		{
 			$res = str_replace("  ", " ", $res);
 		}
 		$res = trim($res);
 
 		$res_check = "";
-		if (strpos($NAME_TEMPLATE, '#NAME#') !== false || strpos($NAME_TEMPLATE, '#NAME_SHORT#') !== false)
+		if (mb_strpos($NAME_TEMPLATE, '#NAME#') !== false || mb_strpos($NAME_TEMPLATE, '#NAME_SHORT#') !== false)
 			$res_check .= $arUser['NAME'];
-		if (strpos($NAME_TEMPLATE, '#LAST_NAME#') !== false || strpos($NAME_TEMPLATE, '#LAST_NAME_SHORT#') !== false)
+		if (mb_strpos($NAME_TEMPLATE, '#LAST_NAME#') !== false || mb_strpos($NAME_TEMPLATE, '#LAST_NAME_SHORT#') !== false)
 			$res_check .= $arUser['LAST_NAME'];
-		if (strpos($NAME_TEMPLATE, '#SECOND_NAME#') !== false || strpos($NAME_TEMPLATE, '#SECOND_NAME_SHORT#') !== false)
+		if (mb_strpos($NAME_TEMPLATE, '#SECOND_NAME#') !== false || mb_strpos($NAME_TEMPLATE, '#SECOND_NAME_SHORT#') !== false)
 			$res_check .= $arUser['SECOND_NAME'];
 
 		if (trim($res_check) == '')
@@ -4104,7 +4113,7 @@ abstract class CAllUser extends CDBResult
 			else
 				$res = GetMessage('FORMATNAME_NONAME');
 
-			if (strpos($NAME_TEMPLATE, '[#ID#]') !== false)
+			if (mb_strpos($NAME_TEMPLATE, '[#ID#]') !== false)
 				$res .= " [".$ID."]";
 		}
 
@@ -4144,20 +4153,7 @@ abstract class CAllUser extends CDBResult
 
 		$user_id = $this->GetID();
 
-		//calculate a session lifetime
-		$policy = $this->GetSecurityPolicy();
-		$phpSessTimeout = ini_get("session.gc_maxlifetime");
-		if($policy["SESSION_TIMEOUT"] > 0)
-		{
-			$interval = min($policy["SESSION_TIMEOUT"]*60, $phpSessTimeout);
-		}
-		else
-		{
-			$interval = $phpSessTimeout;
-		}
 		$now = new Main\Type\DateTime();
-		$date = new Main\Type\DateTime();
-		$date->add("-T".$interval."S");
 
 		$actions = Main\UserAuthActionTable::getList(array(
 			"filter" => array("=USER_ID" => $user_id),
@@ -4165,19 +4161,8 @@ abstract class CAllUser extends CDBResult
 			"cache" => array("ttl" => 3600),
 		));
 
-		$deleted = false;
 		while($action = $actions->fetch())
 		{
-			if($deleted == false)
-			{
-				//clear expired records for the user
-				Main\UserAuthActionTable::deleteByFilter(array(
-					"=USER_ID" => $user_id,
-					"<ACTION_DATE" => $date,
-				));
-				$deleted = true;
-			}
-
 			if(isset($_SESSION["AUTH_ACTIONS_PERFORMED"][$action["ID"]]))
 			{
 				//already processed the action in this session
@@ -4193,7 +4178,7 @@ abstract class CAllUser extends CDBResult
 			/** @var Main\Type\DateTime() $actionDate */
 			$actionDate = $action["ACTION_DATE"];
 
-			if($actionDate >= $date && $actionDate <= $now)
+			if($actionDate <= $now)
 			{
 				//remember that we already did the action
 				$_SESSION["AUTH_ACTIONS_PERFORMED"][$action["ID"]] = true;
@@ -4245,11 +4230,9 @@ abstract class CAllUser extends CDBResult
 		$row = Main\UserPhoneAuthTable::getRowById($userId);
 		if($row && $row["OTP_SECRET"] <> '')
 		{
-			$secret = base64_decode($row["OTP_SECRET"]);
-
 			$totp = new Main\Security\Mfa\TotpAlgorithm();
 			$totp->setInterval(self::PHONE_CODE_OTP_INTERVAL);
-			$totp->setSecret($secret);
+			$totp->setSecret($row["OTP_SECRET"]);
 
 			$timecode = $totp->timecode(time());
 			$code = $totp->generateOTP($timecode);
@@ -4286,11 +4269,9 @@ abstract class CAllUser extends CDBResult
 				return false;
 			}
 
-			$secret = base64_decode($row["OTP_SECRET"]);
-
 			$totp = new Main\Security\Mfa\TotpAlgorithm();
 			$totp->setInterval(self::PHONE_CODE_OTP_INTERVAL);
-			$totp->setSecret($secret);
+			$totp->setSecret($row["OTP_SECRET"]);
 
 			try
 			{
@@ -4327,6 +4308,115 @@ abstract class CAllUser extends CDBResult
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * @param string $phoneNumber
+	 * @param string $smsTemplate
+	 * @param string|null $siteId
+	 * @return Main\Result
+	 */
+	public static function SendPhoneCode($phoneNumber, $smsTemplate, $siteId = null)
+	{
+		$result = new Main\Result();
+
+		$phoneNumber = Main\UserPhoneAuthTable::normalizePhoneNumber($phoneNumber);
+
+		$select = ["USER_ID", "DATE_SENT", "USER.LANGUAGE_ID"];
+
+		if($siteId === null)
+		{
+			$context = Main\Context::getCurrent();
+			$siteId = $context->getSite();
+
+			if($siteId === null)
+			{
+				$select[] = "USER.LID";
+			}
+		}
+
+		$userPhone = Main\UserPhoneAuthTable::getList([
+			"select" => $select,
+			"filter" =>	[
+				"=PHONE_NUMBER" => $phoneNumber
+			]
+		])->fetchObject();
+
+		if(!$userPhone)
+		{
+			$result->addError(new Main\Error(Loc::getMessage("main_register_no_user"), "ERR_NOT_FOUND"));
+			return $result;
+		}
+
+		//alowed only once in a minute
+		if($userPhone->getDateSent())
+		{
+			$currentDateTime = new Main\Type\DateTime();
+			if(($currentDateTime->getTimestamp() - $userPhone->getDateSent()->getTimestamp()) < static::PHONE_CODE_RESEND_INTERVAL)
+			{
+				$result->addError(new Main\Error(Loc::getMessage("main_register_timeout"), "ERR_TIMEOUT"));
+				return $result;
+			}
+		}
+
+		list($code, $phoneNumber) = static::GeneratePhoneCode($userPhone->getUserId());
+
+		if($siteId === null)
+		{
+			$siteId = CSite::GetDefSite($userPhone->getUser()->getLid());
+		}
+		$language = $userPhone->getUser()->getLanguageId();
+
+		$sms = new Main\Sms\Event(
+			$smsTemplate,
+			[
+				"USER_PHONE" => $phoneNumber,
+				"CODE" => $code,
+			]
+		);
+
+		$sms->setSite($siteId);
+		if($language <> '')
+		{
+			//user preferred language
+			$sms->setLanguage($language);
+		}
+
+		$result = $sms->send(true);
+
+		$result->setData(["USER_ID" => $userPhone->getUserId()]);
+
+		return $result;
+	}
+
+	protected static function SendEmailCode($userId, $siteId)
+	{
+		$result = new Main\Result();
+
+		$context = new Main\Authentication\Context();
+		$context->setUserId($userId);
+
+		$shortCode = new Main\Authentication\ShortCode($context);
+
+		//alowed only once in a minute
+		$check = $shortCode->checkDateSent();
+
+		if($check->isSuccess())
+		{
+			$code = $shortCode->generate();
+
+			static::SendUserInfo($userId, $siteId, "", true, 'USER_CODE_REQUEST', $code);
+
+			$shortCode->saveDateSent();
+		}
+		else
+		{
+			$result->addError(new Main\Error(Loc::getMessage("main_register_timeout"), "ERR_TIMEOUT"));
+		}
+
+		$result->setData($check->getData());
+
+		return $result;
 	}
 }
 
@@ -4954,10 +5044,10 @@ class CAllGroup
 		if(strval(intval($code)) == $code && $code > 0)
 			return $code;
 
-		if(strtolower($code) == 'administrators')
+		if(mb_strtolower($code) == 'administrators')
 			return 1;
 
-		if(strtolower($code) == 'everyone')
+		if(mb_strtolower($code) == 'everyone')
 			return 2;
 
 		global $DB;
@@ -5007,9 +5097,9 @@ class CAllTask
 
 		if (isset($arFields['LETTER']))
 		{
-			if (preg_match("/[^A-Z]/i", $arFields['LETTER']) || strlen($arFields['LETTER']) > 1)
+			if (preg_match("/[^A-Z]/i", $arFields['LETTER']) || mb_strlen($arFields['LETTER']) > 1)
 				$arMsg[] = array("id"=>"LETTER", "text"=> GetMessage('MAIN_TASK_WRONG_LETTER'));
-			$arFields['LETTER'] = strtoupper($arFields['LETTER']);
+			$arFields['LETTER'] = mb_strtoupper($arFields['LETTER']);
 		}
 		else
 		{
@@ -5168,8 +5258,8 @@ class CAllTask
 		{
 			foreach($arFilter as $n => $val)
 			{
-				$n = strtoupper($n);
-				if(strlen($val) <= 0 || strval($val) == "NOT_REF")
+				$n = mb_strtoupper($n);
+				if($val == '' || strval($val) == "NOT_REF")
 					continue;
 
 				if(isset($arFields[$n]))
@@ -5181,8 +5271,8 @@ class CAllTask
 
 		$strOrderBy = '';
 		foreach($arOrder as $by=>$order)
-			if(isset($arFields[strtoupper($by)]))
-				$strOrderBy .= $arFields[strtoupper($by)]["FIELD_NAME"].' '.(strtolower($order)=='desc'?'desc'.(strtoupper($DB->type)=="ORACLE"?" NULLS LAST":""):'asc'.(strtoupper($DB->type)=="ORACLE"?" NULLS FIRST":"")).',';
+			if(isset($arFields[mb_strtoupper($by)]))
+				$strOrderBy .= $arFields[mb_strtoupper($by)]["FIELD_NAME"].' '.(mb_strtolower($order) == 'desc'?'desc'.($DB->type == "ORACLE"?" NULLS LAST":""):'asc'.($DB->type == "ORACLE"?" NULLS FIRST":"")).',';
 
 		if($strOrderBy <> '')
 			$strOrderBy = "ORDER BY ".rtrim($strOrderBy, ",");
@@ -5424,7 +5514,7 @@ class CAllTask
 	{
 		$descriptions = static::GetDescriptions($module);
 
-		$nameUpper = strtoupper($name);
+		$nameUpper = mb_strtoupper($name);
 
 		if(isset($descriptions[$nameUpper]["title"]))
 		{
@@ -5438,7 +5528,7 @@ class CAllTask
 	{
 		$descriptions = static::GetDescriptions($module);
 
-		$nameUpper = strtoupper($name);
+		$nameUpper = mb_strtoupper($name);
 
 		if(isset($descriptions[$nameUpper]["description"]))
 		{
@@ -5466,7 +5556,7 @@ class CAllTask
 		if (!isset($TASK_LETTER_CACHE))
 			$TASK_LETTER_CACHE = array();
 
-		$k = strtoupper($letter.'_'.$module.'_'.$binding);
+		$k = mb_strtoupper($letter.'_'.$module.'_'.$binding);
 		if (isset($TASK_LETTER_CACHE[$k]))
 			return $TASK_LETTER_CACHE[$k];
 
@@ -5515,7 +5605,7 @@ class CAllOperation
 		{
 			foreach($arFilter as $n => $val)
 			{
-				$n = strtoupper($n);
+				$n = mb_strtoupper($n);
 				if($val == '' || strval($val)=="NOT_REF")
 					continue;
 				if ($n == 'ID' || $n == 'MODULE_ID' || $n == 'BINDING')
@@ -5527,8 +5617,8 @@ class CAllOperation
 
 		$strOrderBy = '';
 		foreach($arOrder as $by=>$order)
-			if(isset($arFields[strtoupper($by)]))
-				$strOrderBy .= $arFields[strtoupper($by)]["FIELD_NAME"].' '.(strtolower($order)=='desc'?'desc'.(strtoupper($DB->type)=="ORACLE"?" NULLS LAST":""):'asc'.(strtoupper($DB->type)=="ORACLE"?" NULLS FIRST":"")).',';
+			if(isset($arFields[mb_strtoupper($by)]))
+				$strOrderBy .= $arFields[mb_strtoupper($by)]["FIELD_NAME"].' '.(mb_strtolower($order) == 'desc'?'desc'.($DB->type == "ORACLE"?" NULLS LAST":""):'asc'.($DB->type == "ORACLE"?" NULLS FIRST":"")).',';
 
 		if($strOrderBy <> '')
 			$strOrderBy = "ORDER BY ".rtrim($strOrderBy, ",");
@@ -5604,7 +5694,7 @@ class CAllOperation
 	{
 		$descriptions = static::GetDescriptions($module);
 
-		$nameUpper = strtoupper($name);
+		$nameUpper = mb_strtoupper($name);
 
 		if(isset($descriptions[$nameUpper]["title"]))
 		{
@@ -5618,7 +5708,7 @@ class CAllOperation
 	{
 		$descriptions = static::GetDescriptions($module);
 
-		$nameUpper = strtoupper($name);
+		$nameUpper = mb_strtoupper($name);
 
 		if(isset($descriptions[$nameUpper]["description"]))
 		{

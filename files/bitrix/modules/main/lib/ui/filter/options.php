@@ -542,7 +542,7 @@ class Options
 		if (self::isSetFromRequest($request))
 		{
 			$settings = self::fetchSettingsFromQuery($fields, $this->getRequest());
-			$clear = strtoupper($request->get("clear_filter")) == "Y";
+			$clear = mb_strtoupper($request->get("clear_filter")) == "Y";
 
 			if ($settings !== null || $clear)
 			{
@@ -599,7 +599,7 @@ class Options
 	 */
 	public static function isDateField($key = "")
 	{
-		return is_string($key) && substr($key, -8) === "_datesel";
+		return is_string($key) && mb_substr($key, -8) === "_datesel";
 	}
 
 
@@ -666,7 +666,7 @@ class Options
 
 	public static function isNumberField($key = "")
 	{
-		return is_string($key) && substr($key, -7) === "_numsel";
+		return is_string($key) && mb_substr($key, -7) === "_numsel";
 	}
 
 
@@ -686,7 +686,7 @@ class Options
 				}
 			}
 
-			if (($field !== "" && strpos($key, -6) !== "_label") || $isStrictField)
+			if (($field !== "" && mb_strpos($key, -6) !== "_label") || $isStrictField)
 			{
 				if (self::isDateField($key))
 				{
@@ -700,7 +700,7 @@ class Options
 					$resultFields = array_merge($resultFields, $number);
 				}
 
-				elseif (substr($key, -5) !== "_from" && substr($key, -3) !== "_to")
+				elseif (mb_substr($key, -5) !== "_from" && mb_substr($key, -3) !== "_to")
 				{
 					$resultFields[$key] = $field;
 				}
@@ -1051,16 +1051,16 @@ class Options
 				$params = is_array($params) ? $params : [];
 
 				$isApplyFilter = (
-					(strtoupper($request->get("apply_filter")) == "Y") ||
-					(strtoupper($params["apply_filter"]) == "Y")
+					(mb_strtoupper($request->get("apply_filter")) == "Y") ||
+					(mb_strtoupper($params["apply_filter"]) == "Y")
 				);
 				$isClearFilter = (
-					(strtoupper($request->get("clear_filter")) == "Y") ||
-					(strtoupper($params["clear_filter"]) == "Y")
+					(mb_strtoupper($request->get("clear_filter")) == "Y") ||
+					(mb_strtoupper($params["clear_filter"]) == "Y")
 				);
 				$isWithPreset = (
-					(strtoupper($request->get("with_preset")) == "Y") ||
-					(strtoupper($params["with_preset"]) == "Y")
+					(mb_strtoupper($request->get("with_preset")) == "Y") ||
+					(mb_strtoupper($params["with_preset"]) == "Y")
 				);
 				$currentPresetId = $this->getCurrentFilterId();
 

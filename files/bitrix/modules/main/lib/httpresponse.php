@@ -17,8 +17,6 @@ class HttpResponse extends Response
 	/** @var \Bitrix\Main\Type\DateTime */
 	protected $lastModified;
 
-	protected $backgroundJobs = [];
-
 	public function __construct()
 	{
 		parent::__construct();
@@ -36,17 +34,43 @@ class HttpResponse extends Response
 		return $this;
 	}
 
+	/**
+	 * Flushes the content to the output buffer. All following output will be ignored.
+	 * @param string $text
+	 */
 	public function flush($text = '')
 	{
-		if (empty($this->backgroundJobs))
+		//clear all buffers - the response is responsible alone for its content
+		while (@ob_end_clean());
+
+		if (function_exists("fastcgi_finish_request"))
 		{
+			//php-fpm
 			$this->writeHeaders();
 			$this->writeBody($text);
+
+			fastcgi_finish_request();
 		}
 		else
 		{
-			$this->closeConnection($text);
-			$this->runBackgroundJobs();
+			//apache handler
+			ob_start();
+
+			$this->writeBody($text);
+
+			$size = ob_get_length();
+
+			$this
+				->addHeader('Connection', 'close')
+				->addHeader('Content-Encoding', 'none')
+				->addHeader('Content-Length', $size)
+			;
+
+			$this->writeHeaders();
+
+			ob_end_flush();
+			@ob_flush();
+			flush();
 		}
 	}
 
@@ -229,7 +253,7 @@ class HttpResponse extends Response
 	{
 		$httpStatus = Config\Configuration::getValue("http_status");
 
-		$cgiMode = (stristr(php_sapi_name(), "cgi") !== false);
+		$cgiMode = (mb_stristr(php_sapi_name(), "cgi") !== false);
 		if ($cgiMode && (($httpStatus == null) || ($httpStatus == false)))
 		{
 			$this->addHeader("Status", $status);
@@ -258,11 +282,11 @@ class HttpResponse extends Response
 			return $cgiStatus;
 		}
 
-		$prefixStatus = strtolower(Context::getCurrent()->getServer()->get("SERVER_PROTOCOL") . ' ');
-		$prefixStatusLength = strlen($prefixStatus);
+		$prefixStatus = mb_strtolower(Context::getCurrent()->getServer()->get("SERVER_PROTOCOL").' ');
+		$prefixStatusLength = mb_strlen($prefixStatus);
 		foreach ($this->getHeaders() as $name => $value)
 		{
-			if (substr(strtolower($name), 0, $prefixStatusLength) === $prefixStatus)
+			if (mb_substr(mb_strtolower($name), 0, $prefixStatusLength) === $prefixStatus)
 			{
 				return $name;
 			}
@@ -285,62 +309,5 @@ class HttpResponse extends Response
 		}
 
 		return $this;
-	}
-
-	public function addBackgroundJob(callable $job, array $args = [])
-	{
-		$this->backgroundJobs[] = [$job, $args];
-
-		return $this;
-	}
-
-	protected function runBackgroundJobs()
-	{
-		$lastException = null;
-
-		foreach ($this->backgroundJobs as $job)
-		{
-			try
-			{
-				call_user_func_array($job[0], $job[1]);
-			}
-			catch (\Exception $exception)
-			{
-				$lastException = $exception;
-			}
-		}
-
-		if ($lastException !== null)
-		{
-			throw $lastException;
-		}
-	}
-
-	private function closeConnection($content = "")
-	{
-		while (@ob_end_clean());
-
-		ob_start();
-
-		echo $content;
-
-		$size = ob_get_length();
-
-		$this
-			->addHeader('Connection', 'close')
-			->addHeader('Content-Encoding', 'none')
-			->addHeader('Content-Length', $size)
-		;
-
-		$this->writeHeaders();
-
-		ob_end_flush();
-		@ob_flush();
-		flush();
-
-		if (function_exists("fastcgi_finish_request"))
-		{
-			fastcgi_finish_request();
-		}
 	}
 }

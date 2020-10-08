@@ -426,7 +426,7 @@ class Dispatcher
 						'SORT' => $enumItem['SORT'],
 					);
 
-					if(strlen($enumItem['XML_ID']) > 0)
+					if($enumItem['XML_ID'] <> '')
 					{
 						$itemDescription['XML_ID'] = $enumItem['XML_ID'];
 					}
@@ -836,6 +836,7 @@ class Dispatcher
 	protected function getResultFieldInfo(array $userField)
 	{
 		$fieldInfo = array(
+			'ID' => $userField['ID'],
 			'USER_TYPE_ID' => $userField['USER_TYPE_ID'],
 			'ENTITY_ID' => $userField['ENTITY_ID'],
 			'ENTITY_VALUE_ID' => $userField['ENTITY_VALUE_ID'],

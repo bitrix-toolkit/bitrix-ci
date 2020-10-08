@@ -29,11 +29,6 @@ abstract class Stepper
 	const CONTINUE_EXECUTION = true;
 	const FINISH_EXECUTION = false;
 
-	protected $queueName = "Queue";
-	protected $checkerName = "Checker_";
-	protected $baseName = "Base_";
-	protected $errorName = "Error_";
-
 	/**
 	 * Returns HTML to show updates.
 	 * @param array|string $ids
@@ -112,7 +107,7 @@ abstract class Stepper
 			$id = ++self::$countId;
 			\CJSCore::Init(array('update_stepper'));
 			$title = empty($title) ? self::getTitle() : $title;
-			$progress = $count > 0 ? intval( $steps * 100 / $count) : 0;
+			$progress = $count > 0 ? intval($steps * 100 / $count) : 0;
 			$result .= <<<HTML
 <div class="main-stepper main-stepper-show" id="{$id}-container" data-bx-steps-count="{$count}">
 	<div class="main-stepper-info" id="{$id}-title">{$title}</div>
@@ -181,14 +176,14 @@ HTML;
 
 				$langDir = $fileName = "";
 				$filePath = $file->GetPathWithName();
-				while(($slashPos = strrpos($filePath, "/")) !== false)
+				while(($slashPos = mb_strrpos($filePath, "/")) !== false)
 				{
-					$filePath = substr($filePath, 0, $slashPos);
+					$filePath = mb_substr($filePath, 0, $slashPos);
 					$langPath = $filePath."/lang";
 					if(is_dir($langPath))
 					{
 						$langDir = $langPath;
-						$fileName = substr($file->GetPathWithName(), $slashPos);
+						$fileName = mb_substr($file->GetPathWithName(), $slashPos);
 						break;
 					}
 				}
@@ -239,7 +234,7 @@ HTML;
 	 * @param int $delay Delay for running agent
 	 * @return void
 	 */
-	public static function bind($delay = 180)
+	public static function bind($delay = 300)
 	{
 		/** @var Stepper $c */
 		$c = get_called_class();
@@ -253,7 +248,7 @@ HTML;
 	 * @param int $delay Delay for running agent
 	 * @return void
 	 */
-	public static function bindClass($className, $moduleId, $delay = 180)
+	public static function bindClass($className, $moduleId, $delay = 300)
 	{
 		if (class_exists("\CAgent"))
 		{
@@ -335,7 +330,6 @@ HTML;
 	{
 		global $APPLICATION;
 		$APPLICATION->RestartBuffer();
-		while(ob_end_clean());
 
 		header('Content-Type:application/json; charset=UTF-8');
 
@@ -349,70 +343,6 @@ HTML;
 		$application = HttpApplication::getInstance();
 		$exceptionHandler = $application->getExceptionHandler();
 		$exceptionHandler->writeToLog($exception);
-	}
-
-	protected function getQueue(): array
-	{
-		return $this->getOptionData($this->queueName);
-	}
-
-	protected function setQueue(array $queue): void
-	{
-		$queueId = (string) current($queue);
-		$this->checkerName = (strpos($this->checkerName, $queueId) === false ?
-			$this->checkerName.$queueId : $this->checkerName);
-		$this->baseName = (strpos($this->baseName, $queueId) === false ?
-			$this->baseName.$queueId : $this->baseName);
-		$this->errorName = (strpos($this->errorName, $queueId) === false ?
-			$this->errorName.$queueId : $this->errorName);
-	}
-
-	protected function getQueueOption()
-	{
-		return $this->getOptionData($this->baseName);
-	}
-
-	protected function saveQueueOption(array $data)
-	{
-		Option::set(static::$moduleId, $this->baseName, serialize($data));
-	}
-
-	protected function deleteQueueOption()
-	{
-		$queue = $this->getQueue();
-		$this->setQueue($queue);
-		$this->deleteCurrentQueue($queue);
-		Option::delete(static::$moduleId, ["name" => $this->checkerName]);
-		Option::delete(static::$moduleId, ["name" => $this->baseName]);
-	}
-
-	protected function deleteCurrentQueue(array $queue): void
-	{
-		$queueId = current($queue);
-		$currentPos = array_search($queueId, $queue);
-		if ($currentPos !== false)
-		{
-			unset($queue[$currentPos]);
-			Option::set(static::$moduleId, $this->queueName, serialize($queue));
-		}
-	}
-
-	protected function isQueueEmpty()
-	{
-		$queue = $this->getOptionData($this->queueName);
-		return empty($queue);
-	}
-
-	protected function getOptionData($optionName)
-	{
-		$option = Option::get(static::$moduleId, $optionName);
-		$option = ($option !== "" ? unserialize($option) : []);
-		return (is_array($option) ? $option : []);
-	}
-
-	protected function deleteOption($optionName)
-	{
-		Option::delete(static::$moduleId, ["name" => $optionName]);
 	}
 }
 ?>

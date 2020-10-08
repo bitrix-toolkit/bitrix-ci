@@ -227,8 +227,8 @@ class CImageUploader
 				size: '<?= CUtil::JSEscape($Params['watermarkConfig']['size'])?>',
 				opacity: '<?= CUtil::JSEscape($Params['watermarkConfig']['opacity'])?>',
 				file: '<?= CUtil::JSEscape($Params['watermarkConfig']['file'])?>',
-				fileWidth: '<?= intVal($Params['watermarkConfig']['fileWidth'])?>',
-				fileHeight: '<?= intVal($Params['watermarkConfig']['fileHeight'])?>',
+				fileWidth: '<?= intval($Params['watermarkConfig']['fileWidth'])?>',
+				fileHeight: '<?= intval($Params['watermarkConfig']['fileHeight'])?>',
 
 				values: {
 					use: '<?= CUtil::JSEscape($Params['watermarkConfig']['values']['use'])?>',
@@ -448,7 +448,7 @@ class CImageUploader
 
 	public static function GetMimeType($fileName)
 	{
-		$ext = strtolower(substr($fileName, strrpos($fileName, ".") + 1));
+		$ext = mb_strtolower(mb_substr($fileName, mb_strrpos($fileName, ".") + 1));
 
 		if ($ext == 'jpeg' || $ext == 'jpg')
 			return "image/jpg";
@@ -608,9 +608,9 @@ class CImageUploader
 
 	private function GetSize($v)
 	{
-		$l = substr($v, -1);
-		$ret = substr($v, 0, -1);
-		switch(strtoupper($l))
+		$l = mb_substr($v, -1);
+		$ret = mb_substr($v, 0, -1);
+		switch(mb_strtoupper($l))
 		{
 			case 'P':
 				$ret *= 1024;
@@ -622,7 +622,7 @@ class CImageUploader
 				$ret *= 1024;
 			case 'K':
 				$ret *= 1024;
-			break;
+				break;
 		}
 		return $ret;
 	}
@@ -632,8 +632,8 @@ class CImageUploader
 		if (!defined('BX_UTF'))
 			$url = \Bitrix\Main\Text\Encoding::convertEncoding($url, SITE_CHARSET, "UTF-8");
 
-		$ind = strpos($url, "?");
-		$url = str_replace("%2F", "/", rawurlencode(substr($url, 0, $ind))).substr($url, $ind);
+		$ind = mb_strpos($url, "?");
+		$url = str_replace("%2F", "/", rawurlencode(mb_substr($url, 0, $ind))).mb_substr($url, $ind);
 		return $url;
 	}
 }

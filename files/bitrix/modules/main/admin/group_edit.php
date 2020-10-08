@@ -204,7 +204,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && ($_REQUEST["save"] <> '' || $_REQUEST
 
 	$strError .= $group->LAST_ERROR;
 
-	if (strlen($strError)<=0)
+	if ($strError == '')
 	{
 		if (intval($ID) != 1 || (COption::GetOptionString("main", "controller_member", "N") == "Y" && COption::GetOptionString("main", "~controller_limited_admin", "N") == "Y"))
 		{
@@ -238,13 +238,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && ($_REQUEST["save"] <> '' || $_REQUEST
 				{
 					foreach ($rt as $i => $right)
 					{
-						if (strlen($right) > 0 && $right != "NOT_REF")
+						if ($right <> '' && $right != "NOT_REF")
 						{
-							$APPLICATION->SetGroupRight($MID, $ID, $right, (array_key_exists($i, $st) && strlen($st[$i]) > 0 && $st[$i] != "NOT_REF" ? $st[$i] : false));
+							$APPLICATION->SetGroupRight($MID, $ID, $right, (array_key_exists($i, $st) && $st[$i] <> '' && $st[$i] != "NOT_REF" ? $st[$i] : false));
 						}
 					}
 				}
-				elseif(!is_array($rt) && strlen($rt) > 0 && $rt != "NOT_REF")
+				elseif(!is_array($rt) && $rt <> '' && $rt != "NOT_REF")
 					$APPLICATION->SetGroupRight($MID, $ID, $rt, false);
 			}
 
@@ -310,7 +310,7 @@ else
 	$str_C_SORT = 100;
 }
 
-if (strlen($strError)>0)
+if ($strError <> '')
 {
 	$DB->InitTableVarsForEdit("b_group", "", "str_");
 
@@ -389,13 +389,13 @@ $context->Show();
 <?=bitrix_sessid_post()?>
 <input type="hidden" name="lang" value="<?echo LANG?>">
 <input type="hidden" name="ID" value="<?echo $ID?>">
-<?if(strlen($COPY_ID)>0):?><input type="hidden" name="COPY_ID" value="<?echo htmlspecialcharsbx($COPY_ID)?>"><?endif?>
+<?if($COPY_ID <> ''):?><input type="hidden" name="COPY_ID" value="<?echo htmlspecialcharsbx($COPY_ID)?>"><?endif?>
 <?
 $tabControl->Begin();
 
 $tabControl->BeginNextTab();
 ?>
-	<?if(strlen($str_TIMESTAMP_X)>0):?>
+	<?if($str_TIMESTAMP_X <> ''):?>
 	<tr>
 		<td><?echo GetMessage('LAST_UPDATE')?></td>
 		<td><?echo $str_TIMESTAMP_X?></td>
@@ -686,7 +686,7 @@ $tabControl->BeginNextTab();
 	{
 		$curVal = $arGroupPolicy[$key];
 		$curValParent = !array_key_exists($key, $arGroupPolicy);
-		if (strlen($strError) > 0)
+		if ($strError <> '')
 		{
 			$curVal = ${"gp_".$key};
 			$curValParent = ((${"gp_".$key."_parent"} == "Y") ? True : False);
@@ -695,7 +695,7 @@ $tabControl->BeginNextTab();
 		<tr valign="top">
 			<td><label for="gp_<?echo $key?>"><?
 			$gpTitle = GetMessage("GP_".$key);
-			if (strlen($gpTitle) <= 0)
+			if ($gpTitle == '')
 				$gpTitle = $key;
 
 			echo $gpTitle;
@@ -946,7 +946,7 @@ $tabControl->BeginNextTab();
 							$site_selected = $site_id_tmp;
 						}
 
-						if (strlen($v) > 0)
+						if ($v <> '')
 						{
 							?><tr>
 								<td style="padding: 3px;">

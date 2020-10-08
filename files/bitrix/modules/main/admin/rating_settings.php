@@ -530,7 +530,7 @@ endif;
 $editTab->Buttons();
 ?>
 	<input type="submit" accesskey="x" name="save" value="<?=GetMessage("RATING_SETTINGS_BUTTON_SAVE")?>" class="adm-btn-save">
-	<input type="button" name="cancel" value="<?=GetMessage("RATING_SETTINGS_BUTTON_RESET")?>" title="<?=GetMessage("RATING_SETTINGS_BUTTON_RESET_TITLE")?>" onclick="window.location='<?=(strpos($_REQUEST["addurl"], '/') === 0? htmlspecialcharsbx(CUtil::addslashes($_REQUEST["addurl"])):"rating_settings.php?lang=".LANG)?>'">
+	<input type="button" name="cancel" value="<?=GetMessage("RATING_SETTINGS_BUTTON_RESET")?>" title="<?=GetMessage("RATING_SETTINGS_BUTTON_RESET_TITLE")?>" onclick="window.location='<?=(mb_strpos($_REQUEST["addurl"], '/') === 0? htmlspecialcharsbx(CUtil::addslashes($_REQUEST["addurl"])):"rating_settings.php?lang=".LANG)?>'">
 <?
 $editTab->End();
 ?>

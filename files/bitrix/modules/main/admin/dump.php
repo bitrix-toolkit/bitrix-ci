@@ -43,6 +43,14 @@ elseif (!CModule::IncludeModule('clouds'))
 	$strBXError = GetMessage('ERR_NO_CLOUDS');
 }
 
+
+if($bBitrixCloud)
+{
+	$backup = CBitrixCloudBackup::getInstance();
+	$arFiles = $backup->listFiles();
+	$backup->saveToOptions();
+}
+
 if (function_exists('mb_internal_encoding'))
 	mb_internal_encoding('ISO-8859-1');
 
@@ -237,7 +245,7 @@ elseif($_REQUEST['process'] == "Y")
 			else
 				$prefix = str_replace('/', '', COption::GetOptionString("main", "server_name", ""));
 
-			$arc_name = CBackup::GetArcName(preg_match('#^[a-z0-9\.\-]+$#i', $prefix) ? substr($prefix, 0, 20).'_' : '');
+			$arc_name = CBackup::GetArcName(preg_match('#^[a-z0-9\.\-]+$#i', $prefix) ? mb_substr($prefix, 0, 20).'_' : '');
 			$NS['dump_name'] = $arc_name.".sql";
 			$NS['arc_name'] = $arc_name.($NS['dump_encrypt_key'] ? ".enc" : ".tar").($bUseCompression ? ".gz" : '');
 		}
@@ -598,7 +606,7 @@ elseif($_REQUEST['process'] == "Y")
 					RaiseErrorAndDie(GetMessage("MAIN_DUMP_NO_CLOUDS_MODULE"));
 
 				$file_size = filesize($NS["arc_name"]);
-				$file_name = $NS['BUCKET_ID'] == -1 ? basename($NS['arc_name']) : substr($NS['arc_name'],strlen(DOCUMENT_ROOT));
+				$file_name = $NS['BUCKET_ID'] == -1? basename($NS['arc_name']) : mb_substr($NS['arc_name'], mb_strlen(DOCUMENT_ROOT));
 				$obUpload = new CCloudStorageUpload($file_name);
 
 				if (!$NS['upload_start_time'])
@@ -1271,9 +1279,8 @@ function getTableSize()
 		<td class="adm-detail-valign-top" width="40%"><?=GetMessage('DUMP_MAIN_BITRIX_CLOUD_DESC')?><span class="required"><sup>1</sup></span>:</td>
 		<td width="60%">
 		<?
-			$backup = CBitrixCloudBackup::getInstance();
-			$arFiles = $backup->listFiles();
-			$backup->saveToOptions();
+		if(is_object($backup))
+		{
 			CAdminMessage::ShowMessage(array(
 				"TYPE" => "PROGRESS",
 				"DETAILS" => GetMessage("BCL_BACKUP_USAGE", array(
@@ -1284,6 +1291,7 @@ function getTableSize()
 				"PROGRESS_TOTAL" => $quota,
 				"PROGRESS_VALUE" => $usage,
 			));
+		}
 		?>
 		</td>
 	</tr>
@@ -1330,7 +1338,8 @@ function getTableSize()
 				foreach($arSitePath as $path => $val)
 				{
 					$path = rtrim(str_replace('\\','/',$path),'/');
-					list($k,$v) = each($val);
+					$k = key($val);
+					$v = current($val);
 					echo '<div><input type=checkbox id="dump_site_id'.$i.'" value="'.htmlspecialcharsbx($k).'" '.(in_array($k, $dump_site_id) ? ' checked' : '').'> <label for="dump_site_id'.$i.'">'.htmlspecialcharsbx($v).'</label></div>';
 					$i++;
 				}

@@ -211,7 +211,7 @@ if($lAdmin->EditAction())
 
 		foreach($arFields as $key => $field)
 		{
-			if(!isset($editableFields[$key]) && strpos($key, "UF_") !== 0)
+			if(!isset($editableFields[$key]) && mb_strpos($key, "UF_") !== 0)
 			{
 				unset($arFields[$key]);
 			}
@@ -372,7 +372,7 @@ while ($userData = $result->fetch())
 	$row->addViewField("ID", "<a href='".$userEditUrl."' title='".GetMessage("MAIN_EDIT_TITLE")."'>".$userId."</a>");
 	$own_edit = ($USER->canDoOperation('edit_own_profile') && ($USER->getParam("USER_ID") == $userId));
 	$edit = ($USER->canDoOperation('edit_subordinate_users') || $USER->canDoOperation('edit_all_users'));
-	$can_edit = (IntVal($userId) > 1 && ($own_edit || $edit));
+	$can_edit = (intval($userId) > 1 && ($own_edit || $edit));
 	if ($userId == 1 || $own_edit || !$can_edit)
 		$row->addCheckField("ACTIVE", false);
 	else
@@ -623,12 +623,12 @@ function getUserQuery(CAdminUiList $lAdmin, $arFilter, $filterFields, $excelMode
 		$listSelectFields = array_diff($listSelectFields, $listRatingColumn);
 
 	$userQuery->setSelect($listSelectFields);
-	$sortBy = strtoupper($by);
+	$sortBy = mb_strtoupper($by);
 	if(!UserTable::getEntity()->hasField($sortBy))
 	{
 		$sortBy = "ID";
 	}
-	$sortOrder = strtoupper($order);
+	$sortOrder = mb_strtoupper($order);
 	if($sortOrder <> "DESC" && $sortOrder <> "ASC")
 	{
 		$sortOrder = "DESC";
@@ -678,7 +678,7 @@ function getUserQuery(CAdminUiList $lAdmin, $arFilter, $filterFields, $excelMode
 		$filterQueryObject = new CFilterQuery("and", "yes", "N", array(), "N", "Y", "N");
 		$nameWords = $filterQueryObject->CutKav($nameWords);
 		$nameWords = $filterQueryObject->ParseQ($nameWords);
-		if (strlen($nameWords) > 0 && $nameWords !== "( )")
+		if ($nameWords <> '' && $nameWords !== "( )")
 			$parsedNameWords = preg_split('/[&&(||)]/',  $nameWords, -1, PREG_SPLIT_NO_EMPTY);
 
 		$filterOr = Query::filter()->logic("or");
@@ -795,7 +795,7 @@ function getUserQuery(CAdminUiList $lAdmin, $arFilter, $filterFields, $excelMode
 		$filterQueryObject = new CFilterQuery("and", "yes", "N", array(), "N", "Y", "N");
 		$keyWords = $filterQueryObject->CutKav($keyWords);
 		$keyWords = $filterQueryObject->ParseQ($keyWords);
-		if (strlen($keyWords) > 0 && $keyWords !== "( )")
+		if ($keyWords <> '' && $keyWords !== "( )")
 			$parsedKeyWords = preg_split('/[&&(||)]/',  $keyWords, -1, PREG_SPLIT_NO_EMPTY);
 		$filterOr = Query::filter()->logic("or");
 		foreach ($listFields as $fieldId)

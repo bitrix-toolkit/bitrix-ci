@@ -59,7 +59,7 @@ class CUser extends CAllUser
 				&& is_array($arFields["PERSONAL_PHOTO"])
 				&& (
 					!array_key_exists("MODULE_ID", $arFields["PERSONAL_PHOTO"])
-					|| strlen($arFields["PERSONAL_PHOTO"]["MODULE_ID"]) <= 0
+					|| $arFields["PERSONAL_PHOTO"]["MODULE_ID"] == ''
 				)
 			)
 				$arFields["PERSONAL_PHOTO"]["MODULE_ID"] = "main";
@@ -71,7 +71,7 @@ class CUser extends CAllUser
 				&& is_array($arFields["WORK_LOGO"])
 				&& (
 					!array_key_exists("MODULE_ID", $arFields["WORK_LOGO"])
-					|| strlen($arFields["WORK_LOGO"]["MODULE_ID"]) <= 0
+					|| $arFields["WORK_LOGO"]["MODULE_ID"] == ''
 				)
 			)
 				$arFields["WORK_LOGO"]["MODULE_ID"] = "main";
@@ -97,6 +97,8 @@ class CUser extends CAllUser
 			$ID = $DB->LastID();
 
 			$USER_FIELD_MANAGER->Update("USER", $ID, $arFields);
+
+			CAccess::RecalculateForUser($ID, CUserAuthProvider::ID);
 
 			if(is_set($arFields, "GROUP_ID"))
 				CUser::SetUserGroup($ID, $arFields["GROUP_ID"], true);
@@ -216,7 +218,7 @@ class CUser extends CAllUser
 		{
 			foreach ($arParams['FIELDS'] as $field)
 			{
-				$field = strtoupper($field);
+				$field = mb_strtoupper($field);
 				if ($field == 'TIMESTAMP_X' || $field == 'DATE_REGISTER' || $field == 'LAST_LOGIN')
 					$arSelectFields[$field] = $DB->DateToCharFunction("U.".$field)." ".$field.", U.".$field." ".$field."_DATE";
 				elseif ($field == 'PERSONAL_BIRTHDAY')
@@ -246,7 +248,7 @@ class CUser extends CAllUser
 		{
 			foreach ($arFilter as $key => $val)
 			{
-				$key = strtoupper($key);
+				$key = mb_strtoupper($key);
 				if(is_array($val))
 				{
 					if(count($val) <= 0)
@@ -266,7 +268,7 @@ class CUser extends CAllUser
 					&& $key != "IS_REAL_USER"
 				)
 				{
-					if(strlen($val) <= 0 || $val === "NOT_REF")
+					if((string)$val == '' || $val === "NOT_REF")
 						continue;
 				}
 				$match_value_set = array_key_exists($key."_EXACT_MATCH", $arFilter);
@@ -340,12 +342,12 @@ class CUser extends CAllUser
 						$strTmp = "";
 						foreach($val as $authId)
 						{
-							if (strlen($authId) > 0)
+							if ($authId <> '')
 							{
-								$strTmp .= (strlen($strTmp) > 0 ? "," : "")."'".$DB->ForSQL($authId, 255)."'";
+								$strTmp .= ($strTmp <> '' ? "," : "")."'".$DB->ForSQL($authId, 255)."'";
 							}
 						}
-						if (strlen($strTmp) > 0)
+						if ($strTmp <> '')
 						{
 							$arSqlSearch[] = "U.EXTERNAL_AUTH_ID NOT IN (".$strTmp.") OR U.EXTERNAL_AUTH_ID IS NULL";
 						}
@@ -480,8 +482,8 @@ class CUser extends CAllUser
 		$arSqlOrder = array();
 		foreach ($arOrder as $field => $dir)
 		{
-			$field = strtoupper($field);
-			if(strtolower($dir) <> "asc")
+			$field = mb_strtoupper($field);
+			if(mb_strtolower($dir) <> "asc")
 			{
 				$dir = "desc";
 				if ($bSingleBy)
@@ -508,7 +510,7 @@ class CUser extends CAllUser
 			}
 			elseif($s = $obUserFieldsSql->GetOrder($field))
 			{
-				$arSqlOrder[$field] = strtoupper($s)." ".$dir;
+				$arSqlOrder[$field] = mb_strtoupper($s)." ".$dir;
 			}
 			elseif(preg_match('/^RATING_(\d+)$/i', $field, $matches))
 			{
@@ -523,7 +525,7 @@ class CUser extends CAllUser
 					$field = "TIMESTAMP_X";
 					$arSqlOrder[$field] = "U.".$field." ".$dir;
 					if ($bSingleBy)
-						$by = strtolower($field);
+						$by = mb_strtolower($field);
 				}
 			}
 			elseif ($field == 'FULL_NAME')
@@ -775,10 +777,10 @@ class CGroup extends CAllGroup
 				}
 				else
 				{
-					if (strlen($val)<=0 || "$val"=="NOT_REF")
+					if ((string)$val == '' || $val == "NOT_REF")
 						continue;
 				}
-				$key = strtoupper($key);
+				$key = mb_strtoupper($key);
 				$match_value_set = array_key_exists($key."_EXACT_MATCH", $arFilter);
 				switch($key)
 				{
@@ -836,17 +838,17 @@ class CGroup extends CAllGroup
 		}
 
 
-		if(strtolower($by) == "id")				$strSqlOrder = " ORDER BY G.ID ";
-		elseif(strtolower($by) == "active")		$strSqlOrder = " ORDER BY G.ACTIVE ";
-		elseif(strtolower($by) == "timestamp_x")	$strSqlOrder = " ORDER BY G.TIMESTAMP_X ";
-		elseif(strtolower($by) == "c_sort")		$strSqlOrder = " ORDER BY G.C_SORT ";
-		elseif(strtolower($by) == "sort")			$strSqlOrder = " ORDER BY G.C_SORT, G.NAME, G.ID ";
-		elseif(strtolower($by) == "name")			$strSqlOrder = " ORDER BY G.NAME ";
-		elseif(strtolower($by) == "string_id")		$strSqlOrder = " ORDER BY G.STRING_ID ";
-		elseif(strtolower($by) == "description")		$strSqlOrder = " ORDER BY G.DESCRIPTION ";
-		elseif(strtolower($by) == "anonymous")		$strSqlOrder = " ORDER BY G.ANONYMOUS ";
-		elseif(strtolower($by) == "dropdown")		$strSqlOrder = " ORDER BY C_SORT, NAME ";
-		elseif(strtolower($by) == "users")
+		if(mb_strtolower($by) == "id")				$strSqlOrder = " ORDER BY G.ID ";
+		elseif(mb_strtolower($by) == "active")		$strSqlOrder = " ORDER BY G.ACTIVE ";
+		elseif(mb_strtolower($by) == "timestamp_x")	$strSqlOrder = " ORDER BY G.TIMESTAMP_X ";
+		elseif(mb_strtolower($by) == "c_sort")		$strSqlOrder = " ORDER BY G.C_SORT ";
+		elseif(mb_strtolower($by) == "sort")			$strSqlOrder = " ORDER BY G.C_SORT, G.NAME, G.ID ";
+		elseif(mb_strtolower($by) == "name")			$strSqlOrder = " ORDER BY G.NAME ";
+		elseif(mb_strtolower($by) == "string_id")		$strSqlOrder = " ORDER BY G.STRING_ID ";
+		elseif(mb_strtolower($by) == "description")		$strSqlOrder = " ORDER BY G.DESCRIPTION ";
+		elseif(mb_strtolower($by) == "anonymous")		$strSqlOrder = " ORDER BY G.ANONYMOUS ";
+		elseif(mb_strtolower($by) == "dropdown")		$strSqlOrder = " ORDER BY C_SORT, NAME ";
+		elseif(mb_strtolower($by) == "users")
 		{
 			$strSqlOrder = " ORDER BY USERS ";
 			$SHOW_USERS_AMOUNT="Y";
@@ -857,7 +859,7 @@ class CGroup extends CAllGroup
 			$by = "c_sort";
 		}
 
-		if(strtolower($order)=="desc")
+		if(mb_strtolower($order) == "desc")
 		{
 			$strSqlOrder .= " desc ";
 			$order = "desc";
@@ -895,7 +897,7 @@ class CGroup extends CAllGroup
 			".$strSqlOrder;
 
 		$res = $DB->Query($strSql, false, $err_mess.__LINE__);
-		$res->is_filtered = (IsFiltered($strSqlSearch) || strlen($strSqlSearch_h)>0);
+		$res->is_filtered = (IsFiltered($strSqlSearch) || $strSqlSearch_h <> '');
 		return $res;
 	}
 
@@ -903,52 +905,52 @@ class CGroup extends CAllGroup
 	public static function GetFilterOperation($key)
 	{
 		$strNegative = "N";
-		if (substr($key, 0, 1)=="!")
+		if (mb_substr($key, 0, 1) == "!")
 		{
-			$key = substr($key, 1);
+			$key = mb_substr($key, 1);
 			$strNegative = "Y";
 		}
 
 		$strOrNull = "N";
-		if (substr($key, 0, 1)=="+")
+		if (mb_substr($key, 0, 1) == "+")
 		{
-			$key = substr($key, 1);
+			$key = mb_substr($key, 1);
 			$strOrNull = "Y";
 		}
 
-		if (substr($key, 0, 2)==">=")
+		if (mb_substr($key, 0, 2) == ">=")
 		{
-			$key = substr($key, 2);
+			$key = mb_substr($key, 2);
 			$strOperation = ">=";
 		}
-		elseif (substr($key, 0, 1)==">")
+		elseif (mb_substr($key, 0, 1) == ">")
 		{
-			$key = substr($key, 1);
+			$key = mb_substr($key, 1);
 			$strOperation = ">";
 		}
-		elseif (substr($key, 0, 2)=="<=")
+		elseif (mb_substr($key, 0, 2) == "<=")
 		{
-			$key = substr($key, 2);
+			$key = mb_substr($key, 2);
 			$strOperation = "<=";
 		}
-		elseif (substr($key, 0, 1)=="<")
+		elseif (mb_substr($key, 0, 1) == "<")
 		{
-			$key = substr($key, 1);
+			$key = mb_substr($key, 1);
 			$strOperation = "<";
 		}
-		elseif (substr($key, 0, 1)=="@")
+		elseif (mb_substr($key, 0, 1) == "@")
 		{
-			$key = substr($key, 1);
+			$key = mb_substr($key, 1);
 			$strOperation = "IN";
 		}
-		elseif (substr($key, 0, 1)=="~")
+		elseif (mb_substr($key, 0, 1) == "~")
 		{
-			$key = substr($key, 1);
+			$key = mb_substr($key, 1);
 			$strOperation = "LIKE";
 		}
-		elseif (substr($key, 0, 1)=="%")
+		elseif (mb_substr($key, 0, 1) == "%")
 		{
-			$key = substr($key, 1);
+			$key = mb_substr($key, 1);
 			$strOperation = "QUERY";
 		}
 		else
@@ -978,19 +980,19 @@ class CGroup extends CAllGroup
 			$arSelectFields = $arGroupBy;
 			foreach ($arGroupBy as $key => $val)
 			{
-				$val = strtoupper($val);
-				$key = strtoupper($key);
+				$val = mb_strtoupper($val);
+				$key = mb_strtoupper($key);
 				if (array_key_exists($val, $arFields) && !in_array($key, $arGroupByFunct))
 				{
-					if (strlen($strSqlGroupBy) > 0)
+					if ($strSqlGroupBy <> '')
 						$strSqlGroupBy .= ", ";
 					$strSqlGroupBy .= $arFields[$val]["FIELD"];
 
 					if (isset($arFields[$val]["FROM"])
-						&& strlen($arFields[$val]["FROM"]) > 0
+						&& $arFields[$val]["FROM"] <> ''
 						&& !in_array($arFields[$val]["FROM"], $arAlreadyJoined))
 					{
-						if (strlen($strSqlFrom) > 0)
+						if ($strSqlFrom <> '')
 							$strSqlFrom .= " ";
 						$strSqlFrom .= $arFields[$val]["FROM"];
 						$arAlreadyJoined[] = $arFields[$val]["FROM"];
@@ -1009,7 +1011,7 @@ class CGroup extends CAllGroup
 		}
 		else
 		{
-			if (isset($arSelectFields) && !is_array($arSelectFields) && is_string($arSelectFields) && strlen($arSelectFields)>0 && array_key_exists($arSelectFields, $arFields))
+			if (isset($arSelectFields) && !is_array($arSelectFields) && is_string($arSelectFields) && $arSelectFields <> '' && array_key_exists($arSelectFields, $arFields))
 				$arSelectFields = array($arSelectFields);
 
 			if (!isset($arSelectFields)
@@ -1025,7 +1027,7 @@ class CGroup extends CAllGroup
 						continue;
 					}
 
-					if (strlen($strSqlSelect) > 0)
+					if ($strSqlSelect <> '')
 						$strSqlSelect .= ", ";
 
 					if ($arField["TYPE"] == "datetime")
@@ -1036,10 +1038,10 @@ class CGroup extends CAllGroup
 						$strSqlSelect .= $arField["FIELD"]." as ".$FIELD_ID;
 
 					if (isset($arField["FROM"])
-						&& strlen($arField["FROM"]) > 0
+						&& $arField["FROM"] <> ''
 						&& !in_array($arField["FROM"], $arAlreadyJoined))
 					{
-						if (strlen($strSqlFrom) > 0)
+						if ($strSqlFrom <> '')
 							$strSqlFrom .= " ";
 						$strSqlFrom .= $arField["FROM"];
 						$arAlreadyJoined[] = $arField["FROM"];
@@ -1050,11 +1052,11 @@ class CGroup extends CAllGroup
 			{
 				foreach ($arSelectFields as $key => $val)
 				{
-					$val = strtoupper($val);
-					$key = strtoupper($key);
+					$val = mb_strtoupper($val);
+					$key = mb_strtoupper($key);
 					if (array_key_exists($val, $arFields))
 					{
-						if (strlen($strSqlSelect) > 0)
+						if ($strSqlSelect <> '')
 							$strSqlSelect .= ", ";
 
 						if (in_array($key, $arGroupByFunct))
@@ -1072,10 +1074,10 @@ class CGroup extends CAllGroup
 						}
 
 						if (isset($arFields[$val]["FROM"])
-							&& strlen($arFields[$val]["FROM"]) > 0
+							&& $arFields[$val]["FROM"] <> ''
 							&& !in_array($arFields[$val]["FROM"], $arAlreadyJoined))
 						{
-							if (strlen($strSqlFrom) > 0)
+							if ($strSqlFrom <> '')
 								$strSqlFrom .= " ";
 							$strSqlFrom .= $arFields[$val]["FROM"];
 							$arAlreadyJoined[] = $arFields[$val]["FROM"];
@@ -1084,9 +1086,9 @@ class CGroup extends CAllGroup
 				}
 			}
 
-			if (strlen($strSqlGroupBy) > 0)
+			if ($strSqlGroupBy <> '')
 			{
-				if (strlen($strSqlSelect) > 0)
+				if ($strSqlSelect <> '')
 					$strSqlSelect .= ", ";
 				$strSqlSelect .= "COUNT(%%_DISTINCT_%% ".$arFields[$arFieldsKeys[0]]["FIELD"].") as CNT";
 			}
@@ -1150,7 +1152,7 @@ class CGroup extends CAllGroup
 								}
 								else
 								{
-									if (strlen($val) <= 0)
+									if ($val == '')
 										$arSqlSearch_tmp[] = ($strNegative=="Y"?"NOT":"")."(".$arFields[$key]["FIELD"]." IS NULL OR LENGTH(".$arFields[$key]["FIELD"].")<=0)";
 									else
 										$arSqlSearch_tmp[] = ($strNegative=="Y"?" ".$arFields[$key]["FIELD"]." IS NULL OR NOT ":"")."(".$arFields[$key]["FIELD"]." ".$strOperation." '".$DB->ForSql($val)."' )";
@@ -1158,14 +1160,14 @@ class CGroup extends CAllGroup
 							}
 							elseif ($arFields[$key]["TYPE"] == "datetime")
 							{
-								if (strlen($val) <= 0)
+								if ($val == '')
 									$arSqlSearch_tmp[] = ($strNegative=="Y"?"NOT":"")."(".$arFields[$key]["FIELD"]." IS NULL)";
 								else
 									$arSqlSearch_tmp[] = ($strNegative=="Y"?" ".$arFields[$key]["FIELD"]." IS NULL OR NOT ":"")."(".$arFields[$key]["FIELD"]." ".$strOperation." ".$DB->CharToDateFunction($DB->ForSql($val), "FULL").")";
 							}
 							elseif ($arFields[$key]["TYPE"] == "date")
 							{
-								if (strlen($val) <= 0)
+								if ($val == '')
 									$arSqlSearch_tmp[] = ($strNegative=="Y"?"NOT":"")."(".$arFields[$key]["FIELD"]." IS NULL)";
 								else
 									$arSqlSearch_tmp[] = ($strNegative=="Y"?" ".$arFields[$key]["FIELD"]." IS NULL OR NOT ":"")."(".$arFields[$key]["FIELD"]." ".$strOperation." ".$DB->CharToDateFunction($DB->ForSql($val), "SHORT").")";
@@ -1174,10 +1176,10 @@ class CGroup extends CAllGroup
 					}
 
 					if (isset($arFields[$key]["FROM"])
-						&& strlen($arFields[$key]["FROM"]) > 0
+						&& $arFields[$key]["FROM"] <> ''
 						&& !in_array($arFields[$key]["FROM"], $arAlreadyJoined))
 					{
-						if (strlen($strSqlFrom) > 0)
+						if ($strSqlFrom <> '')
 							$strSqlFrom .= " ";
 						$strSqlFrom .= $arFields[$key]["FROM"];
 						$arAlreadyJoined[] = $arFields[$key]["FROM"];
@@ -1215,8 +1217,8 @@ class CGroup extends CAllGroup
 		$arSqlOrder = Array();
 		foreach ($arOrder as $by => $order)
 		{
-			$by = strtoupper($by);
-			$order = strtoupper($order);
+			$by = mb_strtoupper($by);
+			$order = mb_strtoupper($order);
 			if ($order != "ASC")
 				$order = "DESC";
 
@@ -1225,10 +1227,10 @@ class CGroup extends CAllGroup
 				$arSqlOrder[] = " ".$arFields[$by]["FIELD"]." ".$order." ";
 
 				if (isset($arFields[$by]["FROM"])
-					&& strlen($arFields[$by]["FROM"]) > 0
+					&& $arFields[$by]["FROM"] <> ''
 					&& !in_array($arFields[$by]["FROM"], $arAlreadyJoined))
 				{
-					if (strlen($strSqlFrom) > 0)
+					if ($strSqlFrom <> '')
 						$strSqlFrom .= " ";
 					$strSqlFrom .= $arFields[$by]["FROM"];
 					$arAlreadyJoined[] = $arFields[$by]["FROM"];
@@ -1282,9 +1284,9 @@ class CGroup extends CAllGroup
 				"SELECT ".$arSqls["SELECT"]." ".
 				"FROM b_group G ".
 				"	".$arSqls["FROM"]." ";
-			if (strlen($arSqls["WHERE"]) > 0)
+			if ($arSqls["WHERE"] <> '')
 				$strSql .= "WHERE ".$arSqls["WHERE"]." ";
-			if (strlen($arSqls["GROUPBY"]) > 0)
+			if ($arSqls["GROUPBY"] <> '')
 				$strSql .= "GROUP BY ".$arSqls["GROUPBY"]." ";
 
 			$dbRes = $DB->Query($strSql);
@@ -1298,11 +1300,11 @@ class CGroup extends CAllGroup
 			"SELECT ".$arSqls["SELECT"]." ".
 			"FROM b_group G ".
 			"	".$arSqls["FROM"]." ";
-		if (strlen($arSqls["WHERE"]) > 0)
+		if ($arSqls["WHERE"] <> '')
 			$strSql .= "WHERE ".$arSqls["WHERE"]." ";
-		if (strlen($arSqls["GROUPBY"]) > 0)
+		if ($arSqls["GROUPBY"] <> '')
 			$strSql .= "GROUP BY ".$arSqls["GROUPBY"]." ";
-		if (strlen($arSqls["ORDERBY"]) > 0)
+		if ($arSqls["ORDERBY"] <> '')
 			$strSql .= "ORDER BY ".$arSqls["ORDERBY"]." ";
 
 		if (is_array($arNavStartParams) && intval($arNavStartParams["nTopCount"])<=0)
@@ -1311,14 +1313,14 @@ class CGroup extends CAllGroup
 				"SELECT COUNT('x') as CNT ".
 				"FROM b_group G ".
 				"	".$arSqls["FROM"]." ";
-			if (strlen($arSqls["WHERE"]) > 0)
+			if ($arSqls["WHERE"] <> '')
 				$strSql_tmp .= "WHERE ".$arSqls["WHERE"]." ";
-			if (strlen($arSqls["GROUPBY"]) > 0)
+			if ($arSqls["GROUPBY"] <> '')
 				$strSql_tmp .= "GROUP BY ".$arSqls["GROUPBY"]." ";
 
 			$dbRes = $DB->Query($strSql_tmp);
 			$cnt = 0;
-			if (strlen($arSqls["GROUPBY"]) <= 0)
+			if ($arSqls["GROUPBY"] == '')
 			{
 				if ($arRes = $dbRes->Fetch())
 					$cnt = $arRes["CNT"];

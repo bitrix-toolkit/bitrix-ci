@@ -116,7 +116,7 @@ class ApplicationPasswordTable extends Data\DataManager
 	 */
 	public static function findPassword($userId, $password, $passwordOriginal = true)
 	{
-		$encodedPassword = substr($password, 32);
+		$encodedPassword = mb_substr($password, 32);
 		$noSpacePassword = str_replace(' ', '', $password);
 
 		$appPasswords = static::getList(array(
@@ -125,11 +125,11 @@ class ApplicationPasswordTable extends Data\DataManager
 		));
 		while(($appPassword = $appPasswords->fetch()))
 		{
-			$dbPassword = substr($appPassword["PASSWORD"], 32);
+			$dbPassword = mb_substr($appPassword["PASSWORD"], 32);
 
 			if($passwordOriginal)
 			{
-				$appSalt = substr($appPassword["PASSWORD"], 0, 32);
+				$appSalt = mb_substr($appPassword["PASSWORD"], 0, 32);
 				$userPassword =  md5($appSalt.$noSpacePassword);
 			}
 			else

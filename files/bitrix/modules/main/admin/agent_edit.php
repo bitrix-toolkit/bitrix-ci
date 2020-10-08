@@ -33,7 +33,7 @@ $aTabs = array(array("DIV"=>"tab1", "TAB"=>GetMessage("MAIN_AGENT_TAB"), "ICON"=
 $editTab = new CAdminTabControl("editTab", $aTabs);
 
 $APPLICATION->ResetException();
-if($REQUEST_METHOD=="POST" && (strlen($save)>0 || strlen($apply)>0) && $isAdmin && check_bitrix_sessid())
+if($REQUEST_METHOD=="POST" && ($save <> '' || $apply <> '') && $isAdmin && check_bitrix_sessid())
 {
 	$arFields = Array(
 		"NAME" => $NAME,
@@ -49,6 +49,9 @@ if($REQUEST_METHOD=="POST" && (strlen($save)>0 || strlen($apply)>0) && $isAdmin 
 	if(intval($USER_ID) > 0)
 		$arFields["USER_ID"] = $USER_ID;
 
+	if($arFields["ACTIVE"] == "Y")
+		$arFields["RETRY_COUNT"] = 0;
+
 	if($ID>0)
 		$res = CAgent::Update($ID, $arFields);
 	else
@@ -59,9 +62,9 @@ if($REQUEST_METHOD=="POST" && (strlen($save)>0 || strlen($apply)>0) && $isAdmin 
 
 	if($res)
 	{
-		if(strlen($save) > 0)
+		if($save <> '')
 			LocalRedirect("/bitrix/admin/agent_list.php");
-		elseif(strlen($apply) > 0)
+		elseif($apply <> '')
 			LocalRedirect("/bitrix/admin/agent_edit.php?&ID=".$ID."&".$editTab->ActiveTabParam());
 	}
 }

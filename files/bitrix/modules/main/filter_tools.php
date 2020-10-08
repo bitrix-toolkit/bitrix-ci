@@ -13,9 +13,9 @@ function CheckFilterDates($date1, $date2, &$date1_wrong, &$date2_wrong, &$date2_
 	$date1_wrong = "N";
 	$date2_wrong = "N";
 	$date2_less_date1 = "N";
-	if (strlen($date1)>0 && !CheckDateTime($date1)) $date1_wrong = "Y";
-	if (strlen($date2)>0 && !CheckDateTime($date2)) $date2_wrong = "Y";
-	if ($date1_wrong!="Y" && $date2_wrong!="Y" && strlen($date1)>0 && strlen($date2)>0 && $DB->CompareDates($date2,$date1)<0) $date2_less_date1="Y";
+	if ($date1 <> '' && !CheckDateTime($date1)) $date1_wrong = "Y";
+	if ($date2 <> '' && !CheckDateTime($date2)) $date2_wrong = "Y";
+	if ($date1_wrong!="Y" && $date2_wrong!="Y" && $date1 <> '' && $date2 <> '' && $DB->CompareDates($date2,$date1)<0) $date2_less_date1="Y";
 }
 
 function InitFilterEx($arName, $varName, $action="set", $session=true, $FilterLogic="FILTER_logic")
@@ -53,7 +53,7 @@ function InitFilterEx($arName, $varName, $action="set", $session=true, $FilterLo
 			if(isset($$bdays) || isset($FILTER[$bdays]))
 			{
 				$FILTER[$bdays] = $$bdays;
-				if (strlen($$bdays)>0 && $$bdays!="NOT_REF")
+				if ($$bdays <> '' && $$bdays!="NOT_REF")
 					$$name = GetTime(time()-86400*intval($FILTER[$bdays]));
 			}
 
@@ -67,7 +67,7 @@ function InitFilterEx($arName, $varName, $action="set", $session=true, $FilterLo
 			if(isset($$direction) || isset($FILTER[$direction]))
 				$$direction = $FILTER[$direction];
 
-			if (isset($FILTER[$bdays]) && strlen($FILTER[$bdays])>0 && $FILTER[$bdays]!="NOT_REF")
+			if (isset($FILTER[$bdays]) && $FILTER[$bdays] <> '' && $FILTER[$bdays]!="NOT_REF")
 			{
 				$$bdays = $FILTER[$bdays];
 				$$name = GetTime(time()-86400*intval($FILTER[$bdays]));
@@ -146,9 +146,9 @@ function GetFilterHiddens($var = "filter_", $button = array("filter" => "Y", "se
 		$arKeys = @array_merge(array_keys($_GET), array_keys($_POST));
 		if (is_array($arKeys) && count($arKeys)>0)
 		{
-			$len = strlen($var);
+			$len = mb_strlen($var);
 			foreach (array_unique($arKeys) as $key)
-				if (substr($key, 0, $len) == $var)
+				if (mb_substr($key, 0, $len) == $var)
 					$arrVars[] = $key;
 		}
 	}
@@ -164,16 +164,12 @@ function GetFilterHiddens($var = "filter_", $button = array("filter" => "Y", "se
 			$value = $$var_name;
 			if (is_array($value))
 			{
-				if (count($value)>0)
+				foreach($value as $v)
 				{
-					reset($value);
-					foreach($value as $v)
-					{
-						$res .= '<input type="hidden" name="'.htmlspecialcharsbx($var_name).'[]" value="'.htmlspecialcharsbx($v).'">';
-					}
+					$res .= '<input type="hidden" name="'.htmlspecialcharsbx($var_name).'[]" value="'.htmlspecialcharsbx($v).'">';
 				}
 			}
-			elseif (strlen($value)>0 && $value!="NOT_REF")
+			elseif ($value <> '' && $value!="NOT_REF")
 			{
 				$res .= '<input type="hidden" name="'.htmlspecialcharsbx($var_name).'" value="'.htmlspecialcharsbx($value).'">';
 			}
@@ -182,12 +178,15 @@ function GetFilterHiddens($var = "filter_", $button = array("filter" => "Y", "se
 
 	if(is_array($button))
 	{
-		reset($button); // php bug
-		while(list($key, $value) = each($button))
-			$res.='<input type="hidden" name="'.htmlspecialcharsbx($key).'" value="'.htmlspecialcharsbx($value).'">';
+		foreach($button as $key => $val)
+		{
+			$res.='<input type="hidden" name="'.htmlspecialcharsbx($key).'" value="'.htmlspecialcharsbx($val).'">';
+		}
 	}
 	else
+	{
 		$res .= $button;
+	}
 
 	return $res;
 }
@@ -204,9 +203,9 @@ function GetFilterParams($var="filter_", $bDoHtmlEncode=true, $button = array("f
 		$arKeys = @array_merge(array_keys($_GET), array_keys($_POST));
 		if(is_array($arKeys) && count($arKeys)>0)
 		{
-			$len = strlen($var);
+			$len = mb_strlen($var);
 			foreach (array_unique($arKeys) as $key)
-				if (substr($key, 0, $len) == $var)
+				if (mb_substr($key, 0, $len) == $var)
 					$arrVars[] = $key;
 		}
 	}
@@ -223,14 +222,10 @@ function GetFilterParams($var="filter_", $bDoHtmlEncode=true, $button = array("f
 			$value = $$var_name;
 			if(is_array($value))
 			{
-				if(count($value)>0)
-				{
-					reset($value);
-					foreach($value as $v)
-						$res .= "&".urlencode($var_name)."[]=".urlencode($v);
-				}
+				foreach($value as $v)
+					$res .= "&".urlencode($var_name)."[]=".urlencode($v);
 			}
-			elseif(strlen($value)>0 && $value!="NOT_REF")
+			elseif($value <> '' && $value!="NOT_REF")
 			{
 				$res .= "&".urlencode($var_name)."=".urlencode($value);
 			}
@@ -239,12 +234,15 @@ function GetFilterParams($var="filter_", $bDoHtmlEncode=true, $button = array("f
 
 	if(is_array($button))
 	{
-		reset($button); // php bug
-		while(list($key, $value) = each($button))
-			$res .= "&".$key."=".urlencode($value);
+		foreach($button as $key => $val)
+		{
+			$res .= "&".$key."=".urlencode($val);
+		}
 	}
 	else
+	{
 		$res .= $button;
+	}
 
 
 	$tmp_phpbug = ($bDoHtmlEncode) ? htmlspecialcharsbx($res) : $res;
@@ -270,7 +268,7 @@ function GetFilterStr($arr, $button="set_filter")
 				}
 			}
 		}
-		elseif (strlen($value)>0 && $value!="NOT_REF")
+		elseif ($value <> '' && $value!="NOT_REF")
 		{
 			$str .= "&".urlencode($var)."=".urlencode($value);
 		}
@@ -291,13 +289,19 @@ function GetUrlFromArray($arr)
 	if(!is_array($arr))
 		return "";
 	$str = "";
-	while (list($key,$value) = each($arr))
+	foreach($arr as $key => $value)
 	{
-		if (is_array($value) && count($value)>0)
+		if (is_array($value))
 		{
-			foreach ($value as $a) $str .= "&".$key.urlencode("[]")."=".urlencode($a);
+			foreach ($value as $a)
+			{
+				$str .= "&".$key.urlencode("[]")."=".urlencode($a);
+			}
 		}
-		elseif(strlen($value)>0 && $value!="NOT_REF") $str .= "&".$key."=".urlencode($value);
+		elseif($value <> '' && $value!="NOT_REF")
+		{
+			$str .= "&".$key."=".urlencode($value);
+		}
 	}
 	return $str;
 }
@@ -316,7 +320,7 @@ function ShowAddFavorite($filterName=false, $btnName="set_filter", $module="stat
 
 function IsFiltered($strSqlSearch)
 {
-	return (strlen($strSqlSearch)>0 && $strSqlSearch!="(1=1)" && $strSqlSearch!="(1=2)");
+	return ($strSqlSearch <> '' && $strSqlSearch!="(1=1)" && $strSqlSearch!="(1=2)");
 }
 
 function ResetFilterLogic($FilterLogic="FILTER_logic")
@@ -364,7 +368,7 @@ function GetFilterQuery($field, $val, $procent="Y", $ex_sep=array(), $clob="N", 
 	$f = new CFilterQuery("and", "yes", $procent, $ex_sep, $clob, $div_fields, $clob_upper);
 	$query = $f->GetQueryString($field, $val);
 	$error = $f->error;
-	if (strlen(trim($error))>0)
+	if (trim($error) <> '')
 	{
 		$strError .= $error."<br>";
 		$query = "0";
@@ -391,10 +395,10 @@ function GetFilterSqlSearch($arSqlSearch=array(), $FilterLogic="FILTER_logic")
 	{
 		foreach ($arSqlSearch as $condition)
 		{
-			if (strlen($condition)>0 && $condition!="0")
+			if ($condition <> '' && $condition!="0")
 			{
 				$strSqlSearch .= "
-					".strtoupper($$FilterLogic)."
+					".mb_strtoupper($$FilterLogic)."
 					(
 						".$condition."
 					)
@@ -508,7 +512,7 @@ tmpImage.src = "'.BX_ROOT.'/images/admin/line_up.gif";
 		$fltval = $_COOKIE["flt_".$sID];
 
 	$s .= '
-<table border="0" cellspacing="0" cellpadding="0" width="'.($fltval[0]=="N"? intval(substr($fltval, 1)):'').'"><tr><td>
+<table border="0" cellspacing="0" cellpadding="0" width="'.($fltval[0]=="N"? intval(mb_substr($fltval, 1)):'').'"><tr><td>
 <table border="0" cellspacing="0" cellpadding="0" width="100%" id="flt_head_'.$sID.'">
 <tr>
 	<td class="tablefilterhead">
@@ -649,18 +653,18 @@ function InitSorting($Path=false, $sByVar="by", $sOrderVar="order")
 
 	$md5Path = md5($Path);
 
-	if (strlen($$sByVar)>0)
+	if ($$sByVar <> '')
 		$_SESSION["SESS_SORT_BY"][$md5Path] = $$sByVar;
 	else
 		$$sByVar = $_SESSION["SESS_SORT_BY"][$md5Path];
 
-	if(strlen($$sOrderVar)>0)
+	if($$sOrderVar <> '')
 		$_SESSION["SESS_SORT_ORDER"][$md5Path] = $$sOrderVar;
 	else
 		$$sOrderVar = $_SESSION["SESS_SORT_ORDER"][$md5Path];
 
-	strtolower($$sByVar);
-	strtolower($$sOrderVar);
+	mb_strtolower($$sByVar);
+	mb_strtolower($$sOrderVar);
 }
 
 function SortingEx($By, $Path = false, $sByVar="by", $sOrderVar="order", $Anchor="nav_start")
@@ -674,9 +678,9 @@ function SortingEx($By, $Path = false, $sByVar="by", $sOrderVar="order", $Anchor
 	$by=$$sByVar;
 	$order=$$sOrderVar;
 
-	if(strtoupper($By)==strtoupper($by))
+	if(mb_strtoupper($By) == mb_strtoupper($by))
 	{
-		if(strtoupper($order)=="DESC")
+		if(mb_strtoupper($order) == "DESC")
 			$sImgUp = "<img src=\"".BX_ROOT."/images/icons/down-$$$.gif\" width=\"15\" height=\"15\" border=\"0\" alt=\"".GetMessage("DESC_ORDER")."\">";
 		else
 			$sImgDown = "<img src=\"".BX_ROOT."/images/icons/up-$$$.gif\" width=\"15\" height=\"15\" border=\"0\" alt=\"".GetMessage("ASC_ORDER")."\">";
@@ -687,14 +691,14 @@ function SortingEx($By, $Path = false, $sByVar="by", $sOrderVar="order", $Anchor
 		$Path = $APPLICATION->GetCurUri();
 
 	//Если нет переменных, то надо добавлять параметры через ?
-	$found = strpos($Path, "?");
+	$found = mb_strpos($Path, "?");
 	if ($found === false) $strAdd2URL = "?";
 	else $strAdd2URL = "&";
 
 	$Path = preg_replace("/([?&])".$sByVar."=[^&]*[&]*/i", "\\1", $Path);
 	$Path = preg_replace("/([?&])".$sOrderVar."=[^&]*[&]*/i", "\\1", $Path);
 
-	$strTest = substr($Path,strlen($Path)-1);
+	$strTest = mb_substr($Path, mb_strlen($Path) - 1);
 	if($strTest=="&" OR $strTest == "?")
 		$strAdd2URL="";
 

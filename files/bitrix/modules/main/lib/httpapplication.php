@@ -8,10 +8,12 @@
 namespace Bitrix\Main;
 
 use Bitrix\Main\Config\Configuration;
-use Bitrix\Main\Engine\Binder;
+use Bitrix\Main\Engine\AutoWire;
 use Bitrix\Main\Engine\Controller;
+use Bitrix\Main\Engine\CurrentUser;
 use Bitrix\Main\Engine\Response\AjaxJson;
 use Bitrix\Main\Engine\Router;
+use Bitrix\Main\Engine\JsonPayload;
 use Bitrix\Main\UI\PageNavigation;
 
 /**
@@ -46,7 +48,7 @@ class HttpApplication extends Application
 			$params["cookie"]
 		);
 
-		$response = new HttpResponse($context);
+		$response = new HttpResponse();
 
 		$context->initialize($request, $response, $server, array('env' => $params["env"]));
 
@@ -63,7 +65,6 @@ class HttpApplication extends Application
 	 */
 	public function start()
 	{
-		//register_shutdown_function(array($this, "finish"));
 	}
 
 	/**
@@ -72,7 +73,6 @@ class HttpApplication extends Application
 	 */
 	public function finish()
 	{
-		//$this->managedCache->finalize();
 	}
 
 	private function getSourceParametersList()
@@ -97,12 +97,12 @@ class HttpApplication extends Application
 	 */
 	public function run()
 	{
+		$e = null;
+		$result = null;
+		$errorCollection = new ErrorCollection();
+
 		try
 		{
-			$e = null;
-			$result = null;
-			$errorCollection = new ErrorCollection();
-
 			$router = new Router($this->context->getRequest());
 
 			/** @var Controller $controller */
@@ -118,57 +118,94 @@ class HttpApplication extends Application
 			$result = $controller->run($actionName, $this->getSourceParametersList());
 			$errorCollection->add($controller->getErrors());
 		}
-		catch (\Exception $e)
+		catch (\Throwable $e)
 		{
-			$errorCollection[] = new Error($e->getMessage(), $e->getCode());
-		}
-		catch (\Error $e)
-		{
-			//todo add work with debug mode to show extend errors and exceptions
-			$errorCollection[] = new Error($e->getMessage(), $e->getCode());
+			$this->handleRunError($e, $errorCollection);
 		}
 		finally
 		{
-			$exceptionHandling = Configuration::getValue('exception_handling');
-			if ($e && !empty($exceptionHandling['debug']))
+			$controller = isset($controller) ? $controller : null;
+			$this->runFinally($controller, $result, $errorCollection);
+		}
+	}
+
+	public function runController($controller, $action)
+	{
+		$controllerClass = $controller;
+		$errorCollection = new ErrorCollection();
+
+		try
+		{
+			/** @var \Bitrix\Main\Engine\Controller $controllerObject */
+			$controllerObject = new $controllerClass;
+			$controllerObject->setScope(\Bitrix\Main\Engine\Controller::SCOPE_AJAX);
+			$controllerObject->setCurrentUser(CurrentUser::get());
+
+			$this->registerAutoWirings();
+
+			$result = $controllerObject->run($action, [[], []]);
+			$errorCollection->add($controllerObject->getErrors());
+		}
+		catch (\Throwable $e)
+		{
+			$this->handleRunError($e, $errorCollection);
+		}
+		finally
+		{
+			$this->runFinally($controllerObject, $result, $errorCollection);
+		}
+	}
+
+	/**
+	 * @param Controller        $controller
+	 * @param HttpResponse|null $result
+	 * @param ErrorCollection   $errorCollection
+	 */
+	private function runFinally($controller, $result, ErrorCollection $errorCollection)
+	{
+		$response = $this->buildResponse($result, $errorCollection);
+		$this->clonePreviousHeadersAndCookies($this->context->getResponse(), $response);
+
+		if (!empty($controller))
+		{
+			$controller->finalizeResponse($response);
+		}
+
+		$this->context->setResponse($response);
+
+		$response->send();
+
+		//todo exit code in Response?
+		$this->terminate(0);
+	}
+
+	/**
+	 * @param \Throwable $e
+	 * @param ErrorCollection $errorCollection
+	 *
+	 * @return array
+	 */
+	private function handleRunError($e, $errorCollection)
+	{
+		$exceptionHandler = $this->getExceptionHandler();
+		$exceptionHandler->writeToLog($e);
+
+		$errorCollection[] = new Error($e->getMessage(), $e->getCode());
+		$exceptionHandling = Configuration::getValue('exception_handling');
+		if (!empty($exceptionHandling['debug']))
+		{
+			$errorCollection[] = new Error(Diag\ExceptionHandlerFormatter::format($e));
+			if ($e->getPrevious())
 			{
-				$errorCollection[] = new Error(Diag\ExceptionHandlerFormatter::format($e));
-				if ($e->getPrevious())
-				{
-					$errorCollection[] = new Error(Diag\ExceptionHandlerFormatter::format($e->getPrevious()));
-				}
+				$errorCollection[] = new Error(Diag\ExceptionHandlerFormatter::format($e->getPrevious()));
 			}
-
-			if ($e instanceof \Exception || $e instanceof \Error)
-			{
-				$exceptionHandler = $this->getExceptionHandler();
-				$exceptionHandler->writeToLog($e);
-			}
-
-			$response = $this->buildResponse($result, $errorCollection);
-			$this->clonePreviousHeadersAndCookies($this->context->getResponse(), $response);
-			if (isset($controller))
-			{
-				$controller->finalizeResponse($response);
-			}
-
-			$this->context->setResponse($response);
-
-			global $APPLICATION;
-			$APPLICATION->restartBuffer();
-
-			$response->send();
-
-			//todo exit code in Response?
-			$this->terminate(0);
 		}
 	}
 
 	private function registerAutoWirings()
 	{
-		/** @see \Bitrix\Main\UI\PageNavigation */
-		Binder::registerParameter(
-			'\\Bitrix\\Main\\UI\\PageNavigation',
+		AutoWire\Binder::registerGlobalAutoWiredParameter(new AutoWire\Parameter(
+			PageNavigation::class,
 			function() {
 				$pageNavigation = new PageNavigation('nav');
 				$pageNavigation
@@ -178,7 +215,21 @@ class HttpApplication extends Application
 
 				return $pageNavigation;
 			}
-		);
+		));
+
+		AutoWire\Binder::registerGlobalAutoWiredParameter(new AutoWire\Parameter(
+			JsonPayload::class,
+			function() {
+				return new JsonPayload();
+			}
+		));
+
+		AutoWire\Binder::registerGlobalAutoWiredParameter(new AutoWire\Parameter(
+			CurrentUser::class,
+			function() {
+				return CurrentUser::get();
+			}
+		));
 	}
 
 	/**
@@ -247,7 +298,7 @@ class HttpApplication extends Application
 
 	private function shouldIgnoreHeaderToClone($headerName)
 	{
-		return in_array(strtolower($headerName), [
+		return in_array(mb_strtolower($headerName), [
 			'content-encoding',
 			'content-length',
 			'content-type',

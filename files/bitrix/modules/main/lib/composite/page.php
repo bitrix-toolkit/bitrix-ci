@@ -55,7 +55,7 @@ class Page
 
 	protected function init($cacheKey)
 	{
-		if (is_string($cacheKey) && strlen($cacheKey))
+		if (is_string($cacheKey) && mb_strlen($cacheKey))
 		{
 			$this->cacheKey = $cacheKey;
 			$this->storage = $this->getStaticHtmlStorage($this->cacheKey);

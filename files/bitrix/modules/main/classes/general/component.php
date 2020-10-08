@@ -431,6 +431,7 @@ class CBitrixComponent
 			}
 			else
 			{
+				//no need to try for several times
 				self::$__classes_map[$componentPath] = "";
 			}
 		}
@@ -613,7 +614,7 @@ class CBitrixComponent
 	 * @return mixed
 	 *
 	 */
-	final public function includeComponent($componentTemplate, $arParams, $parentComponent)
+	final public function includeComponent($componentTemplate, $arParams, $parentComponent, $returnResult = false)
 	{
 		if (!$this->__bInited)
 			return null;
@@ -645,7 +646,16 @@ class CBitrixComponent
 			$componentFrame = new \Bitrix\Main\Composite\Internals\AutomaticArea($component);
 			$componentFrame->start();
 
-			$result = $component->executeComponent();
+			if($returnResult)
+			{
+				$component->executeComponent();
+				$result = $component->arResult;
+			}
+			else
+			{
+				$result = $component->executeComponent();
+			}
+
 			$this->__arIncludeAreaIcons = $component->__arIncludeAreaIcons;
 			$frameMode = $component->getFrameMode();
 
@@ -660,7 +670,16 @@ class CBitrixComponent
 			$componentFrame = new \Bitrix\Main\Composite\Internals\AutomaticArea($this);
 			$componentFrame->start();
 
-			$result = $this->__IncludeComponent();
+			if($returnResult)
+			{
+				$this->__IncludeComponent();
+				$result = $this->arResult;
+			}
+			else
+			{
+				$result = $this->__IncludeComponent();
+			}
+
 			$frameMode = $this->getFrameMode();
 
 			$componentFrame->end();
@@ -895,14 +914,14 @@ class CBitrixComponent
 
 				if ($templateCachedData && is_array($templateCachedData))
 				{
-					if (array_key_exists("additionalCSS", $templateCachedData) && strlen($templateCachedData["additionalCSS"]) > 0)
+					if (array_key_exists("additionalCSS", $templateCachedData) && $templateCachedData["additionalCSS"] <> '')
 					{
 						$APPLICATION->SetAdditionalCSS($templateCachedData["additionalCSS"]);
 						if($this->__parent)
 							$this->__parent->addChildCSS($templateCachedData["additionalCSS"]);
 					}
 
-					if (array_key_exists("additionalJS", $templateCachedData) && strlen($templateCachedData["additionalJS"]) > 0)
+					if (array_key_exists("additionalJS", $templateCachedData) && $templateCachedData["additionalJS"] <> '')
 					{
 						$APPLICATION->AddHeadScript($templateCachedData["additionalJS"]);
 						if($this->__parent)
@@ -1391,9 +1410,9 @@ class CBitrixComponent
 		if (!$arParams['ICON'] && !$arParams['SRC'] && !$arParams['IMAGE'])
 			$arParams['ICON'] = 'bx-context-toolbar-delete-icon';
 
-		if (substr($deleteLink, 0, 11) != 'javascript:')
+		if (mb_substr($deleteLink, 0, 11) != 'javascript:')
 		{
-			if (false === strpos($deleteLink, 'return_url='))
+			if (false === mb_strpos($deleteLink, 'return_url='))
 				$deleteLink.= '&return_url='.urlencode($APPLICATION->getCurPageParam());
 
 			$deleteLink.= '&'.bitrix_sessid_get();

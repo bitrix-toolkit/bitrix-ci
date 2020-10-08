@@ -5,7 +5,7 @@ if(isset($_GET["k"]) && isset($_GET["s"]) && is_string($_GET["k"]) && is_string(
 {
 	$LICENSE_KEY = "";
 	@include($_SERVER["DOCUMENT_ROOT"]."/bitrix/license_key.php");
-	if($LICENSE_KEY == "" || strtoupper($LICENSE_KEY) == "DEMO")
+	if($LICENSE_KEY == "" || mb_strtoupper($LICENSE_KEY) == "DEMO")
 		$LICENSE_KEY = "DEMO";
 
 	$cookie = base64_decode($_GET["s"]);
@@ -17,17 +17,17 @@ if(isset($_GET["k"]) && isset($_GET["s"]) && is_string($_GET["k"]) && is_string(
 		{
 			foreach($arr as $str)
 			{
-				if(strlen($str)>0)
+				if($str <> '')
 				{
 					$host = $_SERVER["HTTP_HOST"];
-					if(($pos = strpos($host, ":")) !== false)
-						$host = substr($host, 0, $pos);
+					if(($pos = mb_strpos($host, ":")) !== false)
+						$host = mb_substr($host, 0, $pos);
 
 					$ar = explode(chr(1), $str);
 					setcookie($ar[0], $ar[1], $ar[2], $ar[3], $host, $ar[5], $ar[6]);
 
 					//logout
-					if(substr($ar[0], -5) == '_UIDH' && $ar[1] == '')
+					if(mb_substr($ar[0], -5) == '_UIDH' && $ar[1] == '')
 					{
 						session_start();
 						$_SESSION["SESS_AUTH"] = Array();

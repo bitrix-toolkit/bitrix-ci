@@ -73,7 +73,9 @@ class File
 	{
 		if (empty($file["id"]))
 			return md5($file["name"]);
-		return $file["id"];
+		if (preg_match("/^file([0-9]+)$/", $file["id"]))
+			return $file["id"];
+		return md5($file["id"]);
 	}
 
 	/**
@@ -179,13 +181,17 @@ class File
 					"error" => $file["error"]
 				);
 				$file["uploadStatus"] = "uploaded";
+				$data = $r->getData();
 				if (count($info["chunks"]) == $info["count"])
 				{
-					$data = $r->getData();
 					$data["name"] = $this->getName();
 					$data["code"] = $info["code"];
 					$data["uploadStatus"] = "uploaded";
-					$info = $data;
+					$info = $data + array_intersect_key($info, ["width" => "", "height" => ""]);
+				}
+				else
+				{
+					$info += array_intersect_key($data, ["width" => "", "height" => ""]);
 				}
 				$this->setFile($code, $info);
 				$storage->flushDescriptor();
@@ -464,7 +470,7 @@ class File
 	{
 		$file = false;
 		$copy = "";
-		if (strpos($hash, "_") > 0)
+		if (mb_strpos($hash, "_") > 0)
 		{
 			$copy = explode("_", $hash);
 			$hash = $copy[0]; $copy = $copy[1];
@@ -479,7 +485,7 @@ class File
 		if (is_array($file))
 		{
 			$docRoot = Application::getInstance()->getContext()->getServer()->getDocumentRoot();
-			if (strpos(\CTempFile::GetAbsoluteRoot(), $docRoot) === 0)
+			if (mb_strpos(\CTempFile::GetAbsoluteRoot(), $docRoot) === 0)
 				\CFile::ViewByUser($file, array("content_type" => $file["type"]));
 			else
 				self::view($file, array("content_type" => $file["type"]));
@@ -493,7 +499,7 @@ class File
 	private function getUrl($act = "view", $copy = "default", $uri = null)
 	{
 		$uri = is_null($uri) ? \Bitrix\Main\Context::getCurrent()->getRequest()->getRequestUri() : $uri;
-		return \CHTTP::URN2URI($uri.(strpos($uri, "?") === false ? "?" : "&").
+		return \CHTTP::URN2URI($uri.(mb_strpos($uri, "?") === false ? "?" : "&").
 			\CHTTP::PrepareData(
 				array(
 					Uploader::INFO_NAME => array(
@@ -607,7 +613,7 @@ class File
 			$result->addError(new Error(Loc::getMessage("BXU_FileIsNotUploaded"), "BXU347.2.8"));
 		}
 		else if (!isset($file['bucketId']) && (!file_exists($file['tmp_name']) || (
-				(substr($file["tmp_name"], 0, strlen($params["path"])) !== $params["path"]) &&
+				(mb_substr($file["tmp_name"], 0, mb_strlen($params["path"])) !== $params["path"]) &&
 				!is_uploaded_file($file['tmp_name'])
 			))
 		)
@@ -750,7 +756,7 @@ class File
 
 		$src = null;
 		$file = null;
-		if (strpos($fileData["tmp_name"], \CTempFile::GetAbsoluteRoot()) === 0)
+		if (mb_strpos($fileData["tmp_name"], \CTempFile::GetAbsoluteRoot()) === 0)
 		{
 			$file = new \Bitrix\Main\IO\File($fileData["tmp_name"]);
 			try
@@ -769,21 +775,20 @@ class File
 		}
 
 		$APPLICATION->RestartBuffer();
-		while(ob_end_clean());
 
 		$cur_pos = 0;
 		$filesize = $fileData["size"];
 		$size = $filesize-1;
 		$server = Application::getInstance()->getContext()->getServer();
-		$p = $server->get("HTTP_RANGE") && strpos($server->get("HTTP_RANGE"), "=");
+		$p = $server->get("HTTP_RANGE") && mb_strpos($server->get("HTTP_RANGE"), "=");
 		if(intval($p)>0)
 		{
-			$bytes = substr($server->get("HTTP_RANGE"), $p+1);
-			$p = strpos($bytes, "-");
+			$bytes = mb_substr($server->get("HTTP_RANGE"), $p + 1);
+			$p = mb_strpos($bytes, "-");
 			if($p !== false)
 			{
-				$cur_pos = floatval(substr($bytes, 0, $p));
-				$size = floatval(substr($bytes, $p+1));
+				$cur_pos = floatval(mb_substr($bytes, 0, $p));
+				$size = floatval(mb_substr($bytes, $p + 1));
 				if ($size <= 0)
 				{
 					$size = $filesize - 1;
@@ -877,7 +882,7 @@ class File
 			header("Pragma: public");
 
 			// Download from front-end
-			if($fastDownload && ($fromClouds || strpos($fileData["tmp_name"], Application::getInstance()->getContext()->getServer()->getDocumentRoot()) === 0))
+			if($fastDownload && ($fromClouds || mb_strpos($fileData["tmp_name"], Application::getInstance()->getContext()->getServer()->getDocumentRoot()) === 0))
 			{
 				if($fromClouds)
 				{

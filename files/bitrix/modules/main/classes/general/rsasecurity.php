@@ -139,15 +139,15 @@ top.BX.defer(top.rsasec_form_bind)('.CUtil::PhpToJSObject($arData).');
 		if($data == '')
 			return self::ERROR_EMPTY_DATA; //no encrypted data
 
-		if(strlen($data) >= self::MAX_ENCRIPTED_DATA)
+		if(mb_strlen($data) >= self::MAX_ENCRIPTED_DATA)
 			return self::ERROR_BIG_DATA; //too big encrypted data
 
 		$data = $this->provider->Decrypt($data);
 		if($data == '')
 			return self::ERROR_DECODE; //decoding error
 
-		$data1 = substr($data, 0, -47);
-		$sha1 = substr($data, -40);
+		$data1 = mb_substr($data, 0, -47);
+		$sha1 = mb_substr($data, -40);
 
 		if($sha1 <> sha1($data1))
 	  		return self::ERROR_INTEGRITY; //integrity check error
