@@ -1,4 +1,5 @@
-<?
+<?php
+
 class CIBlockRSS extends CAllIBlockRSS
 {
 	public static function GetCache($cacheKey)
@@ -21,7 +22,7 @@ class CIBlockRSS extends CAllIBlockRSS
 			"VALUES(".$IBLOCK_ID.", '".$DB->ForSql($NODE, 50)."', '".$DB->ForSql($NODE_VALUE, 255)."')");
 	}
 
-	function UpdateCache($cacheKey, $CACHE, $HOURS_CACHE, $bCACHED)
+	public static function UpdateCache($cacheKey, $CACHE, $HOURS_CACHE, $bCACHED)
 	{
 		global $DB;
 
@@ -47,11 +48,13 @@ class CIBlockRSS extends CAllIBlockRSS
 		$db_res = $DB->Query("DELETE from b_iblock_cache WHERE CACHE_DATE < NOW()");
 	}
 
-	function GetRSSText($arIBLOCK, $LIMIT_NUM = false, $LIMIT_DAY = false, $yandex = false)
+	public static function GetRSSText($arIBLOCK, $LIMIT_NUM = false, $LIMIT_DAY = false, $yandex = false)
 	{
 		global $DB;
 
 		$strRes = "";
+
+		$protocol = \Bitrix\Main\Context::getCurrent()->getRequest()->isHttps() ? 'https://' : 'http://';
 
 		$serverName = "";
 
@@ -60,9 +63,7 @@ class CIBlockRSS extends CAllIBlockRSS
 
 		if ($serverName == '' && !isset($arIBLOCK["SERVER_NAME"]))
 		{
-			$b="sort";
-			$o="asc";
-			$dbSite = CSite::GetList($b, $o, array("LID" => $arIBLOCK["LID"]));
+			$dbSite = CSite::GetList('', '', array("LID" => $arIBLOCK["LID"]));
 			if ($arSite = $dbSite->Fetch())
 				$serverName = $arSite["SERVER_NAME"];
 		}
@@ -77,7 +78,7 @@ class CIBlockRSS extends CAllIBlockRSS
 
 		$strRes .= "<channel>\n";
 		$strRes .= "<title>".htmlspecialcharsbx($arIBLOCK["NAME"])."</title>\n";
-		$strRes .= "<link>http://".htmlspecialcharsbx($serverName)."</link>\n";
+		$strRes .= "<link>".$protocol.htmlspecialcharsbx($serverName)."</link>\n";
 		$strRes .= "<description>".htmlspecialcharsbx($arIBLOCK["DESCRIPTION"])."</description>\n";
 		$strRes .= "<lastBuildDate>".date("r")."</lastBuildDate>\n";
 		$strRes .= "<ttl>".$arIBLOCK["RSS_TTL"]."</ttl>\n";
@@ -86,7 +87,7 @@ class CIBlockRSS extends CAllIBlockRSS
 		if ($db_img_arr)
 		{
 			if(mb_substr($db_img_arr["SRC"], 0, 1) == "/")
-				$strImage = "http://".$serverName.$db_img_arr["SRC"];
+				$strImage = $protocol.$serverName.$db_img_arr["SRC"];
 			else
 				$strImage = $db_img_arr["SRC"];
 
@@ -104,7 +105,7 @@ class CIBlockRSS extends CAllIBlockRSS
 					if ($squarePicture)
 					{
 						if(mb_substr($squarePicture["src"], 0, 1) == "/")
-							$squareImage = "http://".$serverName.$squarePicture["src"];
+							$squareImage = $protocol.$serverName.$squarePicture["src"];
 						else
 							$squareImage = $squarePicture["src"];
 						$strRes .= "<yandex:logo type=\"square\">".htmlspecialcharsbx($squareImage)."</yandex:logo>\n";
@@ -116,7 +117,7 @@ class CIBlockRSS extends CAllIBlockRSS
 				$strRes .= "<image>\n";
 				$strRes .= "<title>".htmlspecialcharsbx($arIBLOCK["NAME"])."</title>\n";
 				$strRes .= "<url>".htmlspecialcharsbx($strImage)."</url>\n";
-				$strRes .= "<link>http://".htmlspecialcharsbx($serverName)."</link>\n";
+				$strRes .= "<link>".$protocol.htmlspecialcharsbx($serverName)."</link>\n";
 				$strRes .= "<width>".$db_img_arr["WIDTH"]."</width>\n";
 				$strRes .= "<height>".$db_img_arr["HEIGHT"]."</height>\n";
 				$strRes .= "</image>\n";
@@ -182,7 +183,7 @@ class CIBlockRSS extends CAllIBlockRSS
 			}
 			else
 			{
-				$strRes .= "<link>http://".htmlspecialcharsbx($serverName).(($arLinkProp["VALUE"]) ? $arLinkProp["VALUE"] : $arItem["DETAIL_PAGE_URL"])."</link>\n";
+				$strRes .= "<link>".$protocol.htmlspecialcharsbx($serverName).(($arLinkProp["VALUE"]) ? $arLinkProp["VALUE"] : $arItem["DETAIL_PAGE_URL"])."</link>\n";
 			}
 			if ($arNodes["description"] <> '')
 			{
@@ -202,7 +203,7 @@ class CIBlockRSS extends CAllIBlockRSS
 				if ($db_img_arr)
 				{
 					if(mb_substr($db_img_arr["SRC"], 0, 1) == "/")
-						$strImage = "http://".$serverName.$db_img_arr["SRC"];
+						$strImage = $protocol.$serverName.$db_img_arr["SRC"];
 					else
 						$strImage = $db_img_arr["SRC"];
 
@@ -256,6 +257,8 @@ class CIBlockRSS extends CAllIBlockRSS
 	{
 		global $DB;
 
+		$protocol = \Bitrix\Main\Context::getCurrent()->getRequest()->isHttps() ? 'https://' : 'http://';
+
 		$strSql =
 			"SELECT DISTINCT B.*, C.CHARSET, S.SERVER_NAME, ".$DB->DateToCharFunction("B.TIMESTAMP_X")." as TIMESTAMP_X ".
 			"FROM b_iblock B LEFT JOIN b_iblock_group IBG ON IBG.IBLOCK_ID=B.ID ".
@@ -276,7 +279,10 @@ class CIBlockRSS extends CAllIBlockRSS
 		$strRes .= "<"."?xml version=\"1.0\" encoding=\"".$arIBlock["CHARSET"]."\"?".">\n";
 		$strRes .= "<rss version=\"2.0\"";
 //		$strRes .= "<rss version=\"2.0\" xmlns=\"http://backend.userland.com/rss2\"";
-		if ($yandex) $strRes .= " xmlns:yandex=\"http://news.yandex.ru\"";
+		if ($yandex)
+		{
+			$strRes .= ' xmlns:yandex="'.$protocol.'news.yandex.ru"';
+		}
 		$strRes .= ">\n";
 
 		$limit_num = false;

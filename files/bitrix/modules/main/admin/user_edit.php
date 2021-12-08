@@ -81,7 +81,7 @@ $editable = ($USER->IsAdmin() ||
 if($_REQUEST["action"] == "authorize" && check_bitrix_sessid() && $USER->CanDoOperation('edit_php'))
 {
 	$USER->Logout();
-	$USER->Authorize(intval($_REQUEST["ID"]));
+	$USER->Authorize(intval($_REQUEST["ID"]), false, false, null, false);
 	LocalRedirect("user_edit.php?lang=".LANGUAGE_ID."&ID=".intval($_REQUEST["ID"]));
 }
 
@@ -228,6 +228,7 @@ if(
 			"AUTO_TIME_ZONE" => ($_POST["AUTO_TIME_ZONE"] == "Y" || $_POST["AUTO_TIME_ZONE"] == "N"? $_POST["AUTO_TIME_ZONE"] : ""),
 			"XML_ID" => $_POST["XML_ID"],
 			"PHONE_NUMBER" => $_POST["PHONE_NUMBER"],
+			"PASSWORD_EXPIRED" => $_POST["PASSWORD_EXPIRED"],
 		);
 
 		if(isset($_POST["TIME_ZONE"]))
@@ -245,9 +246,15 @@ if(
 				$arFields['EXTERNAL_AUTH_ID'] = $_POST["EXTERNAL_AUTH_ID"];
 
 			if ($ID == 1 && $COPY_ID <= 0)
+			{
 				$arFields["ACTIVE"] = "Y";
+				$arFields["BLOCKED"] = "N";
+			}
 			else
+			{
 				$arFields["ACTIVE"] = $_POST["ACTIVE"];
+				$arFields["BLOCKED"] = $_POST["BLOCKED"];
+			}
 
 			if($showGroupTabs && isset($_REQUEST["GROUP_ID_NUMBER"]))
 			{
@@ -431,6 +438,7 @@ if(!$user->ExtractFields("str_"))
 {
 	$ID = 0;
 	$str_ACTIVE = "Y";
+	$str_BLOCKED = "N";
 	$str_LID = CSite::GetDefSite();
 }
 else
@@ -612,6 +620,21 @@ else:
 	$tabControl->HideField('ACTIVE');
 endif;
 
+$tabControl->BeginCustomField("BLOCKED", GetMessage("main_user_edit_blocked"));
+?>
+	<tr>
+		<td><?echo $tabControl->GetCustomLabelHTML()?></td>
+		<td>
+		<?if($canSelfEdit):?>
+			<input type="checkbox" name="BLOCKED" value="Y"<?if($str_BLOCKED == "Y") echo " checked"?>>
+		<?else:?>
+			<input type="checkbox" <?if($str_BLOCKED == "Y") echo " checked"?> disabled>
+			<input type="hidden" name="BLOCKED" value="<?=$str_BLOCKED;?>">
+		<?endif;?>
+	</tr>
+<?
+$tabControl->EndCustomField("BLOCKED", '<input type="hidden" name="BLOCKED" value="'.$str_BLOCKED.'">');
+
 $emailRequired = (COption::GetOptionString("main", "new_user_email_required", "Y") <> "N");
 $phoneRequired = (COption::GetOptionString("main", "new_user_phone_required", "N") == "Y");
 
@@ -661,6 +684,8 @@ document.getElementById('bx_auth_secure').style.display = 'inline-block';
 	</tr>
 <?
 $tabControl->EndCustomField("PASSWORD");
+
+$tabControl->AddCheckBoxField("PASSWORD_EXPIRED", GetMessage("main_user_edit_pass_expired"), false, "Y", ($str_PASSWORD_EXPIRED == "Y"));
 ?>
 <?if($USER->CanDoOperation('view_all_users')):?>
 <?
@@ -751,7 +776,7 @@ if($showGroupTabs):
 			</tr>
 			<?
 			$ind = -1;
-			$dbGroups = CGroup::GetList(($b = "c_sort"), ($o = "asc"), array("ANONYMOUS" => "N"));
+			$dbGroups = CGroup::GetList("c_sort", "asc", array("ANONYMOUS" => "N"));
 			while ($arGroups = $dbGroups->Fetch())
 			{
 				$arGroups["ID"] = intval($arGroups["ID"]);

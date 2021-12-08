@@ -1,4 +1,5 @@
-<?
+<?php
+
 /*
 ##############################################
 # Bitrix Site Manager                        #
@@ -8,13 +9,14 @@
 ##############################################
 */
 require($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/main/classes/general/quota.php");
+
 class CDiskQuota extends CAllDiskQuota
 {
-	function SetDBSize()
+	public static function SetDBSize()
 	{
 		global $DB;
 		$DBSize = 0;
-		if (($_SESSION["SESS_RECOUNT_DB"] == "Y") && (COption::GetOptionInt("main", "disk_space") > 0))
+		if ((\Bitrix\Main\Application::getInstance()->getSession()["SESS_RECOUNT_DB"] == "Y") && (COption::GetOptionInt("main", "disk_space") > 0))
 		{
 			$db_res = $DB->Query("SHOW TABLE STATUS FROM `".$DB->ForSql($DB->DBName)."`");
 			if ($db_res && ($res = $db_res->Fetch()))
@@ -28,7 +30,7 @@ class CDiskQuota extends CAllDiskQuota
 			COption::SetOptionString("main_size", "~db", $DBSize);
 			$params = array("status" => "d", "time" => time());
 			COption::SetOptionString("main_size", "~db_params", serialize($params));
-			unset($_SESSION["SESS_RECOUNT_DB"]);
+			unset(\Bitrix\Main\Application::getInstance()->getSession()["SESS_RECOUNT_DB"]);
 		}
 		else
 		{
@@ -38,4 +40,3 @@ class CDiskQuota extends CAllDiskQuota
 		return array("status" => "done", "size" => $DBSize, "time" => $params["time"]);
 	}
 }
-?>

@@ -6,15 +6,13 @@
  * @copyright 2001-2013 Bitrix
  */
 
-require($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/main/classes/general/agent.php");
-
 class CAgent extends CAllAgent
 {
 	public static function CheckAgents()
 	{
 		global $CACHE_MANAGER;
 
-		define("START_EXEC_AGENTS_1", microtime());
+		define("START_EXEC_AGENTS_1", microtime(true));
 
 		define("BX_CHECK_AGENT_START", true);
 
@@ -41,7 +39,7 @@ class CAgent extends CAllAgent
 
 		$res = CAgent::ExecuteAgents($str_crontab);
 
-		define("START_EXEC_AGENTS_2", microtime());
+		define("START_EXEC_AGENTS_2", microtime(true));
 
 		return $res;
 	}
@@ -80,7 +78,7 @@ class CAgent extends CAllAgent
 		{
 			if (CACHED_b_agent !== false)
 			{
-				$rs = $DB->Query("SELECT UNIX_TIMESTAMP(MIN(NEXT_EXEC))-UNIX_TIMESTAMP(NOW()) DATE_DIFF FROM b_agent WHERE ACTIVE = 'Y' ".$str_crontab."");
+				$rs = $DB->Query("SELECT UNIX_TIMESTAMP(NEXT_EXEC)-UNIX_TIMESTAMP(NOW()) DATE_DIFF FROM b_agent WHERE ACTIVE = 'Y' ".$str_crontab." ORDER BY NEXT_EXEC ASC LIMIT 1");
 				$ar = $rs->Fetch();
 				if (!$ar || $ar["DATE_DIFF"] < 0)
 					$date_diff = 0;

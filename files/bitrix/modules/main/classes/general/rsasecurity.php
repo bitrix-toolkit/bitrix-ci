@@ -101,8 +101,12 @@ class CRsaSecurity
 
 		$formid = preg_replace("/[^a-z0-9_]/is", "", $formid);
 
-		if(!isset($_SESSION['__STORED_RSA_RAND']))
-			$_SESSION['__STORED_RSA_RAND'] = $this->GetNewRsaRand();
+		$session = \Bitrix\Main\Application::getInstance()->getSession();
+
+		if($session['__STORED_RSA_RAND'] == '')
+		{
+			$session['__STORED_RSA_RAND'] = $this->GetNewRsaRand();
+		}
 
 		$arSafeParams = array();
 		foreach($arParams as $param)
@@ -111,7 +115,7 @@ class CRsaSecurity
 		$arData = array(
 			"formid" => $formid,
 			"key" => $this->provider->GetPublicKey(),
-			"rsa_rand" => $_SESSION['__STORED_RSA_RAND'],
+			"rsa_rand" => $session['__STORED_RSA_RAND'],
 			"params" => $arSafeParams,
 		);
 
@@ -156,7 +160,9 @@ top.BX.defer(top.rsasec_form_bind)('.CUtil::PhpToJSObject($arData).');
 		if($accepted_params['__RSA_RAND'] == '')
 			return self::ERROR_SESS_VALUE; //no session control value
 
-		if($accepted_params['__RSA_RAND'] <> $_SESSION['__STORED_RSA_RAND'])
+		$session = \Bitrix\Main\Application::getInstance()->getSession();
+
+		if($accepted_params['__RSA_RAND'] <> $session['__STORED_RSA_RAND'])
 			return self::ERROR_SESS_CHECK; //session control value does not match
 
 		CUtil::decodeURIComponent($accepted_params);
@@ -186,7 +192,6 @@ top.BX.defer(top.rsasec_form_bind)('.CUtil::PhpToJSObject($arData).');
 
 	protected function GetNewRsaRand()
 	{
-		return uniqid("", true);
+		return \Bitrix\Main\Security\Random::getString(20);
 	}
 }
-?>

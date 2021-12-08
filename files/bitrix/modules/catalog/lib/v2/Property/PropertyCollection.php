@@ -3,8 +3,6 @@
 namespace Bitrix\Catalog\v2\Property;
 
 use Bitrix\Catalog\v2\BaseCollection;
-use Bitrix\Catalog\v2\BaseEntity;
-use Bitrix\Main\InvalidOperationException;
 use Bitrix\Main\Result;
 
 /**
@@ -25,30 +23,6 @@ class PropertyCollection extends BaseCollection
 		$this->repository = $repository;
 	}
 
-	/**
-	 * @param \Bitrix\Catalog\v2\BaseEntity|\Bitrix\Catalog\v2\Property\HasPropertyCollection|null $parent
-	 * @return \Bitrix\Catalog\v2\BaseCollection
-	 */
-	public function setParent(?BaseEntity $parent): BaseCollection
-	{
-		parent::setParent($parent);
-
-		if ($parent)
-		{
-			if (!($parent instanceof HasPropertyCollection))
-			{
-				throw new InvalidOperationException(sprintf(
-					'Parent entity must implement {%s} interface',
-					HasPropertyCollection::class
-				));
-			}
-
-			$parent->setPropertyCollection($this);
-		}
-
-		return $this;
-	}
-
 	public function findBySetting(string $field, $value): ?Property
 	{
 		/** @var \Bitrix\Catalog\v2\Property\Property $item */
@@ -63,12 +37,12 @@ class PropertyCollection extends BaseCollection
 		return null;
 	}
 
-	public function findByIndex(string $index): ?Property
+	public function findByCode(string $code): ?Property
 	{
 		/** @var \Bitrix\Catalog\v2\Property\Property $item */
 		foreach ($this->getIterator() as $item)
 		{
-			if ($item->getIndex() === $index)
+			if ($item->getCode() === $code)
 			{
 				return $item;
 			}
@@ -85,7 +59,17 @@ class PropertyCollection extends BaseCollection
 	{
 		foreach ($propertyValues as $index => $values)
 		{
-			$property = $this->findByIndex($index);
+			$property = null;
+
+			if (is_numeric($index))
+			{
+				$property = $this->findById((int)$index);
+			}
+
+			if (!$property)
+			{
+				$property = $this->findByCode($index);
+			}
 
 			if ($property)
 			{
@@ -103,7 +87,7 @@ class PropertyCollection extends BaseCollection
 		/** @var \Bitrix\Catalog\v2\Property\Property $property */
 		foreach ($this->getIterator() as $property)
 		{
-			$values[$property->getIndex()] = $property->getPropertyValueCollection()->toArray();
+			$values[$property->getId()] = $property->getPropertyValueCollection()->toArray();
 		}
 
 		return $values;

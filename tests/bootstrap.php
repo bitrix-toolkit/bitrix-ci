@@ -4,8 +4,10 @@ use Sheerockoff\BitrixCi\Bootstrap;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-echo 'SQL dump migration...';
-Bootstrap::migrate();
-echo "COMPLETE\n";
+if (!getenv('SKIP_MIGRATION', true) && !getenv('SKIP_MIGRATION')) {
+    file_put_contents('php://stdout', 'SQL dump migration...');
+    Bootstrap::migrate();
+    file_put_contents('php://stdout', "COMPLETE\n");
+}
 
 Bootstrap::bootstrap();

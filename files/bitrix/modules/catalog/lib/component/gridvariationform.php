@@ -5,10 +5,12 @@ namespace Bitrix\Catalog\Component;
 use Bitrix\Catalog\Config\State;
 use Bitrix\Catalog\v2\Property\Property;
 use Bitrix\Currency\CurrencyManager;
+use Bitrix\Iblock\ElementTable;
 use Bitrix\Iblock\PropertyTable;
 use Bitrix\Main\Grid\Editor\Types;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Text\HtmlFilter;
+use Bitrix\Currency\Integration\IblockMoneyProperty;
 
 class GridVariationForm extends VariationForm
 {
@@ -16,6 +18,13 @@ class GridVariationForm extends VariationForm
 	protected $entity;
 
 	protected $headers = [];
+
+	protected function prepareFieldName(string $name): string
+	{
+		$name = parent::prepareFieldName($name);
+
+		return static::formatFieldName($name);
+	}
 
 	public static function formatFieldName($name): string
 	{
@@ -29,13 +38,6 @@ class GridVariationForm extends VariationForm
 		return static::formatFieldName($name);
 	}
 
-	protected function prepareFieldName(string $name): string
-	{
-		$name = parent::prepareFieldName($name);
-
-		return static::formatFieldName($name);
-	}
-
 	protected function getPropertyDescription(Property $property): array
 	{
 		$description = parent::getPropertyDescription($property);
@@ -45,8 +47,28 @@ class GridVariationForm extends VariationForm
 			switch ($description['type'])
 			{
 				case 'multilist':
+					$dropdownItems = [];
+
+					if (!empty($description['data']['items']) && is_array($description['data']['items']))
+					{
+						$dropdownItems = $description['data']['items'];
+					}
+
+					$description['editable'] = [
+						'TYPE' => Types::MULTISELECT,
+						'DATA' => [
+							'ITEMS' => $dropdownItems,
+						]
+					];
+					break;
 				case 'list':
 					$dropdownItems = [];
+
+					if (!$description['required'])
+					{
+						$dropdownItems[] = Loc::getMessage('CATALOG_PRODUCT_CARD_VARIATION_GRID_NOT_SELECTED');
+					}
+
 					if (!empty($description['data']['items']) && is_array($description['data']['items']))
 					{
 						foreach ($description['data']['items'] as $item)
@@ -69,8 +91,15 @@ class GridVariationForm extends VariationForm
 				case 'boolean':
 					$description['editable'] = ['TYPE' => Types::CHECKBOX];
 					break;
-				case 'date':
+				case 'datetime':
 					$description['editable'] = ['TYPE' => Types::DATE];
+					break;
+				case 'money':
+					$description['editable'] = [
+						'TYPE' => Types::MONEY,
+						'CURRENCY_LIST' => CurrencyManager::getSymbolList(),
+						'HTML_ENTITY' => true,
+					];
 					break;
 				default:
 					$description['editable'] = ['TYPE' => Types::TEXT];
@@ -80,9 +109,9 @@ class GridVariationForm extends VariationForm
 		return $description;
 	}
 
-	public function getColumnValues(): array
+	public function getColumnValues(bool $allowDefaultValues = true): array
 	{
-		$values = parent::getValues();
+		$values = parent::getValues($allowDefaultValues);
 
 		foreach ($this->getGridHeaders() as $description)
 		{
@@ -105,10 +134,16 @@ class GridVariationForm extends VariationForm
 					if (is_array($currentValue))
 					{
 						$formatted = [];
+						$items = [];
+
+						foreach ($description['editable']['DATA']['ITEMS'] as $item)
+						{
+							$items[$item['VALUE']] = $item['HTML'] ?? HtmlFilter::encode($item['NAME']);
+						}
 
 						foreach ($currentValue as $multipleItemValue)
 						{
-							$formatted[] = HtmlFilter::encode($description['editable']['items'][$multipleItemValue]);
+							$formatted[] = $items[$multipleItemValue];
 						}
 
 						$values[$name] = $formatted;
@@ -123,6 +158,15 @@ class GridVariationForm extends VariationForm
 					break;
 				case 'custom':
 					$values[$name] = $values[$description['data']['view']];
+					break;
+				case 'money':
+					if (isset($description['data']['isProductProperty']) && $description['data']['isProductProperty'])
+					{
+						$separatedValues = IblockMoneyProperty::getSeparatedValues($values[$name]);
+						$amount = (float)($separatedValues['AMOUNT'] . '.' . $separatedValues['DECIMALS']);
+						$currency = $separatedValues['CURRENCY'];
+						$values[$name] = \CCurrencyLang::CurrencyFormat($amount, $currency, true);
+					}
 					break;
 			}
 
@@ -148,11 +192,12 @@ class GridVariationForm extends VariationForm
 			[
 				'id' => static::formatFieldName('NAME'),
 				'name' => Loc::getMessage('CATALOG_PRODUCT_CARD_VARIATION_GRID_HEADER_NAME'),
+				'title' => Loc::getMessage('CATALOG_PRODUCT_CARD_VARIATION_GRID_HEADER_NAME'),
 				'sort' => false,
 				'type' => 'string',
 				'editable' => [
 					'TYPE' => Types::TEXT,
-					'PLACEHOLDER' => Loc::getMessage('CATALOG_PRODUCT_CARD_VARIATION_GRID_NEW_PRODUCT_PLACEHOLDER'),
+					'PLACEHOLDER' => Loc::getMessage('CATALOG_PRODUCT_CARD_VARIATION_GRID_NEW_VARIATION_PLACEHOLDER'),
 				],
 				'width' => $defaultWidth,
 				'default' => false,
@@ -163,28 +208,43 @@ class GridVariationForm extends VariationForm
 		{
 			$isDirectory = $property['settings']['PROPERTY_TYPE'] === PropertyTable::TYPE_STRING
 				&& $property['settings']['USER_TYPE'] === 'directory';
-			$headers[] = [
+			$header = [
 				'id' => $property['name'],
 				'name' => $property['title'],
+				'title' => $property['title'],
 				'type' => $property['type'],
+				'align' => $property['type'] === 'number' ? 'right' : 'left',
 				'sort' => false,
-				'default' => $property['index'] === self::MORE_PHOTO,
+				'default' => $property['propertyCode'] === self::MORE_PHOTO,
 				'data' => $property['data'],
 				'width' => $isDirectory ? 160 : null,
 				'editable' => $property['editable'],
 			];
+			if (!empty($property['isEnabledOfferTree']))
+			{
+				$header['hint'] = Loc::getMessage('CATALOG_PRODUCT_CARD_VARIATION_GRID_OFFER_TREE_HINT');
+			}
+			$headers[] = $header;
 		}
 
-		$currencyList = CurrencyManager::getCurrencyList();
+		$headers = array_merge(
+			$headers,
+			$this->getProductFieldHeaders(['ACTIVE', 'QUANTITY', 'MEASURE', 'MEASURE_RATIO'], $defaultWidth)
+		);
+
+		$currencyList = CurrencyManager::getSymbolList();
 		$purchasingPriceName = static::formatFieldName('PURCHASING_PRICE_FIELD');
 		$headers[] = [
 			'id' => $purchasingPriceName,
 			'name' => Loc::getMessage('CATALOG_PRODUCT_CARD_VARIATION_GRID_HEADER_PURCHASING_PRICE'),
+			'title' => Loc::getMessage('CATALOG_PRODUCT_CARD_VARIATION_GRID_HEADER_PURCHASING_PRICE'),
 			'sort' => false,
 			'type' => 'money',
+			'align' => 'right',
 			'editable' => [
 				'TYPE' => Types::MONEY,
 				'CURRENCY_LIST' => $currencyList,
+				'HTML_ENTITY' => true,
 			],
 			'width' => $defaultWidth,
 			'default' => false,
@@ -198,203 +258,205 @@ class GridVariationForm extends VariationForm
 			{
 				$columnName = htmlspecialcharsbx(!empty($priceType['NAME_LANG']) ? $priceType['NAME_LANG'] : $priceType['NAME']);
 
-				if ($priceType['BASE'] === 'Y')
-				{
-					$basePriceName = static::formatFieldName(BaseForm::PRICE_FIELD_PREFIX.'BASE_FIELD');
-					$headers[] = [
-						'id' => $basePriceName,
-						'name' => Loc::getMessage('CATALOG_PRODUCT_CARD_VARIATION_GRID_BASE_PRICE_VALUE', [
-							'#PRICE_NAME#' => $columnName,
-						]),
-						'sort' => false, // 'SCALED_PRICE_'.$priceType['ID'],
-						'type' => 'money',
-						'editable' => [
-							'TYPE' => Types::MONEY,
-							'CURRENCY_LIST' => $currencyList,
-						],
-						'base' => true,
-						'width' => $defaultWidth,
-						'default' => true,
-					];
-				}
-				$priceName = static::formatFieldName(BaseForm::PRICE_FIELD_PREFIX.$priceType['ID'].'_FIELD');
+				$priceId = static::formatFieldName(BaseForm::PRICE_FIELD_PREFIX.$priceType['ID'].'_FIELD');
 				$headers[] = [
-					'id' => $priceName,
+					'id' => $priceId,
 					'name' => $columnName,
-					'sort' => false,
+					'title' => $columnName,
+					'sort' => false, // 'SCALED_PRICE_'.$priceType['ID'],
 					'type' => 'money',
+					'align' => 'right',
 					'editable' => [
 						'TYPE' => Types::MONEY,
 						'CURRENCY_LIST' => $currencyList,
+						'HTML_ENTITY' => true,
 					],
+					'base' => $priceType['BASE'] === 'Y',
 					'width' => $defaultWidth,
-					'default' => false,
+					'default' => $priceType['BASE'] === 'Y',
 				];
 			}
 		}
 
-		$fields = [
-			'ACTIVE', 'QUANTITY', 'MEASURE', 'MEASURE_RATIO', 'AVAILABLE',
-			'VAT_ID', 'VAT_INCLUDED', 'QUANTITY_RESERVED',
-			'QUANTITY_TRACE', 'CAN_BUY_ZERO', // 'SUBSCRIBE',
-			'WEIGHT', 'WIDTH', 'LENGTH', 'HEIGHT',
-			'SHOW_COUNTER', 'CODE', 'TIMESTAMP_X', 'USER_NAME',
-			'DATE_CREATE', 'EXTERNAL_ID', 'BAR_CODE',
-			// 'TAGS', 'DISCOUNT', 'STORE', 'PRICE_TYPE',
-		];
-
-		$defaultFields = [
-			'QUANTITY', 'MEASURE', 'NAME',
-		];
-
-		$immutableFields = [
-			'TIMESTAMP_X', 'USER_NAME', 'DATE_CREATE', 'CREATED_USER_NAME',
-		];
-
-		foreach ($fields as $code)
-		{
-			$type = 'string';
-			$editable = false;
-			if (!in_array($code, $immutableFields, true))
-			{
-				$editable = [
-					'TYPE' => Types::TEXT,
-				];
-			}
-
-			switch ($code)
-			{
-				case 'ACTIVE':
-				case 'VAT_INCLUDED':
-				case 'AVAILABLE':
-					$type = 'boolean';
-					$editable = [
-						'TYPE' => Types::CHECKBOX,
-					];
-					break;
-
-				case 'VAT_ID':
-					$vatList = [];
-					$type = 'list';
-					$vatRaws = \Bitrix\Catalog\VatTable::getList([
-						'select' => ['ID', 'NAME'],
-						'filter' => ['=ACTIVE' => 'Y'],
-					]);
-					foreach ($vatRaws as $vat)
-					{
-						$vatList[$vat['ID']] = htmlspecialcharsbx($vat['NAME']);
-					}
-					$editable = [
-						'TYPE' => Types::DROPDOWN,
-						'items' => $vatList,
-					];
-					break;
-
-				case 'MEASURE':
-					$measureList = [];
-					$type = 'list';
-					$measureRaws = \Bitrix\Catalog\MeasureTable::getList([
-						'select' => ['ID', 'CODE', 'MEASURE_TITLE'],
-					]);
-
-					foreach ($measureRaws as $measure)
-					{
-						$measureList[$measure['ID']] = htmlspecialcharsbx($measure['MEASURE_TITLE']);
-						if (empty($measureList[$measure['ID']]))
-						{
-							$measureList[$measure['ID']] = \CCatalogMeasureClassifier::getMeasureTitle(
-								$measure["CODE"],
-								'MEASURE_TITLE'
-							);
-						}
-					}
-					$editable = [
-						'TYPE' => Types::DROPDOWN,
-						'items' => $measureList,
-					];
-					break;
-
-				case 'QUANTITY':
-					$type = 'number';
-					if (State::isUsedInventoryManagement())
-					{
-						$editable = false;
-					}
-					else
-					{
-						$editable = [
-							'TYPE' => Types::NUMBER,
-							'PLACEHOLDER' => 0,
-						];
-					}
-					break;
-
-				case 'MEASURE_RATIO':
-					$type = 'number';
-					$editable = [
-						'TYPE' => Types::NUMBER,
-						'PLACEHOLDER' => 0,
-					];
-					break;
-
-				case 'QUANTITY_TRACE':
-				case 'CAN_BUY_ZERO':
-				case 'SUBSCRIBE':
-					$type = 'list';
-
-					$items = [];
-					foreach ($this->getCatalogEnumFields($code) as $field)
-					{
-						$items[$field['VALUE']] = $field['NAME'];
-					}
-
-					$editable = [
-						'TYPE' => Types::DROPDOWN,
-						'items' => $items,
-					];
-					break;
-			}
-
-			$headers[] = [
-				'id' => static::formatFieldName($code),
-				'name' => Loc::getMessage('CATALOG_PRODUCT_CARD_VARIATION_GRID_HEADER_'.$code),
-				'sort' => false,
-				'type' => $type,
-				'editable' => $editable,
-				'width' => $defaultWidth,
-				'default' => in_array($code, $defaultFields, true),
-			];
-		}
+		$headers = array_merge(
+			$headers,
+			$this->getProductFieldHeaders(
+				[
+					'AVAILABLE', 'VAT_ID', 'VAT_INCLUDED', 'QUANTITY_RESERVED',
+					'QUANTITY_TRACE', 'CAN_BUY_ZERO', // 'SUBSCRIBE',
+					'WEIGHT', 'WIDTH', 'LENGTH', 'HEIGHT',
+					'SHOW_COUNTER', 'CODE', 'TIMESTAMP_X', 'USER_NAME',
+					'DATE_CREATE', 'XML_ID',
+					// 'BAR_CODE', 'TAGS', 'DISCOUNT', 'STORE', 'PRICE_TYPE',
+				],
+				$defaultWidth
+			)
+		);
 
 		$this->headers = $headers;
 
 		return $this->headers;
 	}
 
-	public function getValues(): array
+	protected function getProductFieldHeaders(array $fields, int $defaultWidth): array
 	{
-		$values = parent::getValues();
+		$headers = [];
+
+		$numberFields = ['QUANTITY', 'QUANTITY_RESERVED', 'MEASURE_RATIO', 'WEIGHT', 'WIDTH', 'LENGTH', 'HEIGHT'];
+		$numberFields = array_fill_keys($numberFields, true);
+
+		$immutableFields = ['TIMESTAMP_X', 'USER_NAME', 'DATE_CREATE', 'CREATED_USER_NAME', 'AVAILABLE'];
+		$immutableFields = array_fill_keys($immutableFields, true);
+
+		$defaultFields = ['QUANTITY', 'MEASURE', 'NAME'];
+		$defaultFields = array_fill_keys($defaultFields, true);
+
+		foreach ($fields as $code)
+		{
+			$type = isset($numberFields[$code]) ? 'number' : 'string';
+
+			switch ($code)
+			{
+				case 'AVAILABLE':
+				case 'ACTIVE':
+				case 'VAT_INCLUDED':
+					$type = 'boolean';
+					break;
+
+				case 'VAT_ID':
+				case 'MEASURE':
+				case 'QUANTITY_TRACE':
+				case 'CAN_BUY_ZERO':
+				case 'SUBSCRIBE':
+					$type = 'list';
+					break;
+			}
+
+			$editable = false;
+
+			if (!isset($immutableFields[$code]))
+			{
+				$editable = [
+					'TYPE' => Types::TEXT,
+				];
+
+				switch ($code)
+				{
+					case 'ACTIVE':
+					case 'VAT_INCLUDED':
+						$editable = [
+							'TYPE' => Types::CHECKBOX,
+						];
+						break;
+
+					case 'VAT_ID':
+						$vatList = [
+							'D' => Loc::getMessage("CATALOG_PRODUCT_CARD_VARIATION_GRID_DEFAULT",
+								['#VALUE#' => Loc::getMessage("CATALOG_PRODUCT_CARD_VARIATION_GRID_NOT_SELECTED")]),
+						];
+
+						$iblockVatId = $this->entity->getIblockInfo()->getVatId();
+
+						foreach ($this->getVats() as $vat)
+						{
+							if ((int)$vat['ID'] === $iblockVatId)
+							{
+								$vatList['D'] = Loc::getMessage("CATALOG_PRODUCT_CARD_VARIATION_GRID_DEFAULT",
+									['#VALUE#' => htmlspecialcharsbx($vat['NAME'])]);
+							}
+							$vatList[$vat['ID']] = htmlspecialcharsbx($vat['NAME']);
+						}
+						$editable = [
+							'TYPE' => Types::DROPDOWN,
+							'items' => $vatList,
+						];
+						break;
+
+					case 'MEASURE':
+						$measureList = [];
+
+						foreach ($this->getMeasures() as $measure)
+						{
+							$measureList[$measure['ID']] = htmlspecialcharsbx($measure['MEASURE_TITLE']);
+							if (empty($measureList[$measure['ID']]))
+							{
+								$measureList[$measure['ID']] = \CCatalogMeasureClassifier::getMeasureTitle(
+									$measure["CODE"],
+									'MEASURE_TITLE'
+								);
+							}
+						}
+						$editable = [
+							'TYPE' => Types::DROPDOWN,
+							'items' => $measureList,
+						];
+						break;
+
+					case 'QUANTITY':
+					case 'QUANTITY_RESERVED':
+						if (State::isUsedInventoryManagement())
+						{
+							$editable = false;
+						}
+						else
+						{
+							$editable = [
+								'TYPE' => Types::NUMBER,
+								'PLACEHOLDER' => 0,
+							];
+						}
+						break;
+
+					case 'MEASURE_RATIO':
+						$editable = [
+							'TYPE' => Types::NUMBER,
+							'PLACEHOLDER' => 0,
+						];
+						break;
+
+					case 'QUANTITY_TRACE':
+					case 'CAN_BUY_ZERO':
+					case 'SUBSCRIBE':
+						$items = [];
+						foreach ($this->getCatalogEnumFields($code) as $field)
+						{
+							$items[$field['VALUE']] = $field['NAME'];
+						}
+
+						$editable = [
+							'TYPE' => Types::DROPDOWN,
+							'items' => $items,
+						];
+						break;
+				}
+			}
+
+			$headers[] = [
+				'id' => static::formatFieldName($code),
+				'name' => Loc::getMessage('CATALOG_PRODUCT_CARD_VARIATION_GRID_HEADER_'.$code),
+				'title' => Loc::getMessage('CATALOG_PRODUCT_CARD_VARIATION_GRID_HEADER_'.$code),
+				'sort' => false,
+				'type' => $type,
+				'align' => $type === 'number' ? 'right' : 'left',
+				'editable' => $editable,
+				'width' => $defaultWidth,
+				'default' => isset($defaultFields[$code]),
+			];
+		}
+
+		return $headers;
+	}
+
+	public function getValues(bool $allowDefaultValues = true): array
+	{
+		$values = parent::getValues($allowDefaultValues);
 
 		foreach ($this->getDescriptions() as $description)
 		{
 			$name = $description['name'];
-			$currentValue = $values[$name] ?? '';
 
 			switch ($description['type'])
 			{
-				case 'multilist':
-					if (is_array($currentValue))
-					{
-						$formatted = [];
-
-						foreach ($currentValue as $multipleItemValue)
-						{
-							$formatted[] = $description['editable']['items'][$multipleItemValue];
-						}
-
-						$values[$name] = implode(', ', $formatted);
-					}
-					break;
 				case 'custom':
 					$values[$name] = $values[$description['data']['view']];
 					break;
@@ -411,11 +473,6 @@ class GridVariationForm extends VariationForm
 						],
 					];
 					break;
-				default:
-					if (is_array($values[$name]))
-					{
-						$values[$name] = implode(', ', $values[$name]);
-					}
 			}
 		}
 
@@ -447,7 +504,7 @@ class GridVariationForm extends VariationForm
 		return $settings;
 	}
 
-	protected function getFilePropertyViewHtml($value): string
+	protected function getImagePropertyViewHtml($value): string
 	{
 		$fileCount = 0;
 
@@ -536,7 +593,7 @@ HTML;
 	{
 		if ($field['priceTypeId'] === 'PURCHASING_PRICE')
 		{
-			$price = $this->entity->getField('PURCHASING_PRICE') ?? 0;
+			$price = $this->entity->getField('PURCHASING_PRICE');
 			$currency = $this->entity->getField('PURCHASING_CURRENCY');
 		}
 		else
@@ -545,12 +602,17 @@ HTML;
 				->getPriceCollection()
 				->findByGroupId($field['priceTypeId'])
 			;
-			$price = $priceItem ? $priceItem->getPrice() : 0;
+			$price = $priceItem ? $priceItem->getPrice() : null;
 			$currency = $priceItem ? $priceItem->getCurrency() : null;
 		}
 
 		$currency = $currency ?? CurrencyManager::getBaseCurrency();
 
 		return \CCurrencyLang::CurrencyFormat($price, $currency, true);
+	}
+
+	protected function getElementTableMap(): array
+	{
+		return ElementTable::getMap();
 	}
 }

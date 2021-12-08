@@ -21,6 +21,7 @@ class HttpClient
 	const HTTP_HEAD = "HEAD";
 	const HTTP_PATCH = "PATCH";
 	const HTTP_DELETE = "DELETE";
+	const HTTP_OPTIONS = "OPTIONS";
 
 	const DEFAULT_SOCKET_TIMEOUT = 30;
 	const DEFAULT_STREAM_TIMEOUT = 60;
@@ -85,8 +86,10 @@ class HttpClient
 	 *		"compress" bool Accept gzip encoding (default false)
 	 *		"charset" string Charset for body in POST and PUT
 	 *		"disableSslVerification" bool Pass true to disable ssl check
-	 *      "bodyLengthMax" int Maximum length of the body.
-	 *      "privateIp" bool Enable or disable requests to private IPs (default true).
+	 *		"bodyLengthMax" int Maximum length of the body.
+	 *		"privateIp" bool Enable or disable requests to private IPs (default true).
+	 * 	"cookies" array of cookies for HTTP request.
+	 * 	"headers" array of headers for HTTP request.
 	 * 	All the options can be set separately with setters.
 	 */
 	public function __construct(array $options = null)
@@ -152,6 +155,14 @@ class HttpClient
 			if(isset($options["privateIp"]))
 			{
 				$this->setPrivateIp($options["privateIp"]);
+			}
+			if(isset($options["cookies"]))
+			{
+				$this->setCookies($options["cookies"]);
+			}
+			if(isset($options["headers"]))
+			{
+				$this->setHeaders($options["headers"]);
 			}
 		}
 	}
@@ -416,6 +427,21 @@ class HttpClient
 		if($replace == true || $this->requestHeaders->get($name) === null)
 		{
 			$this->requestHeaders->set($name, $value);
+		}
+		return $this;
+	}
+
+	/**
+	 * Sets an array of headers for HTTP request.
+	 *
+	 * @param array $headers Array of header_name => value pairs.
+	 * @return $this
+	 */
+	public function setHeaders(array $headers)
+	{
+		foreach ($headers as $name => $value)
+		{
+			$this->setHeader($name, $value);
 		}
 		return $this;
 	}
@@ -844,12 +870,12 @@ class HttpClient
 					$this->setHeader("Content-Type", $contentType);
 				}
 			}
-			if($entityBody <> '' || $method == self::HTTP_POST)
+			if($method == self::HTTP_POST || $method == self::HTTP_PUT)
 			{
 				//HTTP/1.0 requires Content-Length for POST
 				if($this->requestHeaders->get("Content-Length") === null)
 				{
-					$this->setHeader("Content-Length", BinaryString::getLength($entityBody));
+					$this->setHeader("Content-Length", strlen($entityBody));
 				}
 			}
 		}
@@ -943,7 +969,7 @@ class HttpClient
 			{
 				$buf = $this->receive();
 
-				$this->receivedBytesLength += BinaryString::getLength($buf);
+				$this->receivedBytesLength += strlen($buf);
 
 				if(!$this->checkErrors($buf))
 				{
@@ -968,7 +994,7 @@ class HttpClient
 
 			$buf = $this->receive($count);
 
-			$receivedBytesLength = BinaryString::getLength($buf);
+			$receivedBytesLength = strlen($buf);
 			$this->receivedBytesLength += $receivedBytesLength;
 
 			if(!$this->checkErrors($buf))
@@ -1014,7 +1040,7 @@ class HttpClient
 		if(is_resource($this->outputStream))
 		{
 			$compressed = stream_get_contents($this->outputStream, -1, 10);
-			$compressed = BinaryString::getSubstring($compressed, 0, -8);
+			$compressed = substr($compressed, 0, -8);
 			if($compressed <> '')
 			{
 				$uncompressed = gzinflate($compressed);
@@ -1026,7 +1052,7 @@ class HttpClient
 		}
 		else
 		{
-			$compressed = BinaryString::getSubstring($this->result, 10, -8);
+			$compressed = substr($this->result, 10, -8);
 			if($compressed <> '')
 			{
 				$this->result = gzinflate($compressed);

@@ -85,7 +85,8 @@ class AuthCode extends Main\Engine\Controller
 
 		if($result->isSuccess())
 		{
-			if(!$USER->IsAuthorized() && $shortCode->getUser()->getActive())
+			$codeUser = $shortCode->getUser();
+			if(!$USER->IsAuthorized() && $codeUser->getActive() && !$codeUser->getBlocked())
 			{
 				if(Main\Loader::includeModule("security"))
 				{
@@ -204,7 +205,7 @@ class AuthCode extends Main\Engine\Controller
 		{
 			$signer = new Main\Security\Sign\Signer();
 			$string = $signer->unsign($signedData, static::SIGNATURE_SALT);
-			return unserialize(base64_decode($string));
+			return unserialize(base64_decode($string), ['allowed_classes' => false]);
 		}
 		catch(Main\SystemException $exception)
 		{

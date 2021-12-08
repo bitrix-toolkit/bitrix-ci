@@ -42,6 +42,7 @@ class CEventLog
 		$url = preg_replace("/(&?sessid=[0-9a-z]+)/", "", $_SERVER["REQUEST_URI"]);
 		$SITE_ID = defined("ADMIN_SECTION") && ADMIN_SECTION==true ? false : SITE_ID;
 
+		$session = \Bitrix\Main\Application::getInstance()->getSession();
 		$arFields = array(
 			"SEVERITY" => array_key_exists($arFields["SEVERITY"], $arSeverity)? $arFields["SEVERITY"]: "UNKNOWN",
 			"AUDIT_TYPE_ID" => $arFields["AUDIT_TYPE_ID"] == ''? "UNKNOWN": $arFields["AUDIT_TYPE_ID"],
@@ -52,7 +53,7 @@ class CEventLog
 			"REQUEST_URI" => $url,
 			"SITE_ID" => $arFields["SITE_ID"] == '' ? $SITE_ID : $arFields["SITE_ID"],
 			"USER_ID" => is_object($USER) && ($USER->GetID() > 0)? $USER->GetID(): false,
-			"GUEST_ID" => (isset($_SESSION) && array_key_exists("SESS_GUEST_ID", $_SESSION) && $_SESSION["SESS_GUEST_ID"] > 0? $_SESSION["SESS_GUEST_ID"]: false),
+			"GUEST_ID" => ($session->isStarted() && $session->has("SESS_GUEST_ID") && $session["SESS_GUEST_ID"] > 0? $session["SESS_GUEST_ID"]: false),
 			"DESCRIPTION" => $arFields["DESCRIPTION"],
 			"~TIMESTAMP_X" => $DB->GetNowFunction(),
 		);
@@ -105,7 +106,7 @@ class CEventLog
 				if(count($val) <= 0)
 					continue;
 			}
-			elseif($val == '')
+			elseif((string)$val == '')
 			{
 				continue;
 			}
@@ -188,9 +189,9 @@ class CEventLog
 			if (array_key_exists($by, $arOFields))
 			{
 				if ($order != "ASC")
-					$order = "DESC".($DB->type=="ORACLE" ? " NULLS LAST" : "");
+					$order = "DESC";
 				else
-					$order = "ASC".($DB->type=="ORACLE" ? " NULLS FIRST" : "");
+					$order = "ASC";
 				$arSqlOrder[$by] = $arOFields[$by]." ".$order;
 			}
 		}
@@ -252,6 +253,7 @@ class CEventLog
 			"USER_LOGOUT" => "[USER_LOGOUT] ".GetMessage("MAIN_EVENTLOG_USER_LOGOUT"),
 			"USER_PASSWORD_CHANGED" => "[USER_PASSWORD_CHANGED] ".GetMessage("MAIN_EVENTLOG_USER_PASSWORD_CHANGED"),
 			"USER_BLOCKED" => "[USER_BLOCKED] ".GetMessage("MAIN_EVENTLOG_USER_BLOCKED"),
+			"USER_PERMISSIONS_FAIL" => "[USER_PERMISSIONS_FAIL] ".GetMessage("MAIN_EVENTLOG_USER_PERMISSIONS_FAIL"),
 			"USER_REGISTER" => "[USER_REGISTER] ".GetMessage("MAIN_EVENTLOG_USER_REGISTER"),
 			"USER_REGISTER_FAIL" => "[USER_REGISTER_FAIL] ".GetMessage("MAIN_EVENTLOG_USER_REGISTER_FAIL"),
 			"USER_GROUP_CHANGED" => "[USER_GROUP_CHANGED] ".GetMessage("MAIN_EVENTLOG_GROUP"),
@@ -312,7 +314,7 @@ class CEventMain
 
 	public static function GetEventInfo($row, $arParams)
 	{
-		$DESCRIPTION = unserialize($row["DESCRIPTION"]);
+		$DESCRIPTION = unserialize($row["DESCRIPTION"], ['allowed_classes' => false]);
 		$userURL = $EventPrint = "";
 		$rsUser = CUser::GetByID($row['ITEM_ID']);
 		if($arUser = $rsUser->GetNext())

@@ -10,7 +10,7 @@ $arError = $arSmile = $arFields = $arLang = array();
 
 /* LANGS */
 $arLangTitle = array("reference_id" => array(), "reference" => array());
-$db_res = CLanguage::GetList(($b="sort"), ($o="asc"));
+$db_res = CLanguage::GetList();
 while ($res = $db_res->GetNext(true, false))
 {
 	$arLang[$res["LID"]] = $res;
@@ -63,11 +63,11 @@ if ($REQUEST_METHOD == "POST" && ($save <> '' || $apply <> '' || $save_and_add <
 		else
 		{
 			@chmod($_SERVER["DOCUMENT_ROOT"].$sUploadDir.$fileName, BX_FILE_PERMISSIONS);
-			$imgArray = CFile::GetImageSize($_SERVER["DOCUMENT_ROOT"].$sUploadDir.$fileName);
-			if (is_array($imgArray))
+			$info = (new \Bitrix\Main\File\Image($_SERVER["DOCUMENT_ROOT"].$sUploadDir.$fileName))->getInfo();
+			if ($info)
 			{
-				$arImageSize['WIDTH'] = $imgArray[0];
-				$arImageSize['HEIGHT'] = $imgArray[1];
+				$arImageSize['WIDTH'] = $info->getWidth();
+				$arImageSize['HEIGHT'] = $info->getHeight();
 			}
 			else
 			{

@@ -11,7 +11,7 @@
 ********************************************************************/
 class CDatabase extends CDatabaseMysql
 {
-	function ConnectInternal()
+	protected function ConnectInternal()
 	{
 		if (DBPersistent && !$this->bNodeConnection)
 			$this->db_Conn = @mysql_pconnect($this->DBHost, $this->DBLogin, $this->DBPassword);
@@ -21,8 +21,10 @@ class CDatabase extends CDatabaseMysql
 		if(!$this->db_Conn)
 		{
 			$s = (DBPersistent && !$this->bNodeConnection? "mysql_pconnect" : "mysql_connect");
-			if($this->debug || (isset($_SESSION["SESS_AUTH"]["ADMIN"]) && $_SESSION["SESS_AUTH"]["ADMIN"]))
+			if($this->debug)
+			{
 				echo "<br><font color=#ff0000>Error! ".$s."()</font><br>".mysql_error()."<br>";
+			}
 
 			SendError("Error! ".$s."()\n".mysql_error()."\n");
 
@@ -31,8 +33,10 @@ class CDatabase extends CDatabaseMysql
 
 		if(!mysql_select_db($this->DBName, $this->db_Conn))
 		{
-			if($this->debug || (isset($_SESSION["SESS_AUTH"]["ADMIN"]) && $_SESSION["SESS_AUTH"]["ADMIN"]))
+			if($this->debug)
+			{
 				echo "<br><font color=#ff0000>Error! mysql_select_db(".$this->DBName.")</font><br>".mysql_error($this->db_Conn)."<br>";
+			}
 
 			SendError("Error! mysql_select_db(".$this->DBName.")\n".mysql_error($this->db_Conn)."\n");
 
@@ -57,49 +61,31 @@ class CDatabase extends CDatabaseMysql
 		mysql_close($resource);
 	}
 
-	function LastID()
+	public function LastID()
 	{
 		$this->DoConnect();
 		return mysql_insert_id($this->db_Conn);
 	}
 
-	function ForSql($strValue, $iMaxLength = 0)
+	public function ForSql($strValue, $iMaxLength = 0)
 	{
 		if ($iMaxLength > 0)
 			$strValue = mb_substr($strValue, 0, $iMaxLength);
 
-		if (!isset($this) || !is_object($this) || !$this->db_Conn)
-		{
-			global $DB;
-			$DB->DoConnect();
-			return mysql_real_escape_string($strValue, $DB->db_Conn);
-		}
-		else
-		{
-			$this->DoConnect();
-			return mysql_real_escape_string($strValue, $this->db_Conn);
-		}
+		$this->DoConnect();
+		return mysql_real_escape_string($strValue, $this->db_Conn);
 	}
 
-	function ForSqlLike($strValue, $iMaxLength = 0)
+	public function ForSqlLike($strValue, $iMaxLength = 0)
 	{
 		if ($iMaxLength > 0)
 			$strValue = mb_substr($strValue, 0, $iMaxLength);
 
-		if(!isset($this) || !is_object($this) || !$this->db_Conn)
-		{
-			global $DB;
-			$DB->DoConnect();
-			return mysql_real_escape_string(str_replace("\\", "\\\\", $strValue), $DB->db_Conn);
-		}
-		else
-		{
-			$this->DoConnect();
-			return mysql_real_escape_string(str_replace("\\", "\\\\", $strValue), $this->db_Conn);
-		}
+		$this->DoConnect();
+		return mysql_real_escape_string(str_replace("\\", "\\\\", $strValue), $this->db_Conn);
 	}
 
-	function GetTableFields($table)
+	public function GetTableFields($table)
 	{
 		if(!array_key_exists($table, $this->column_cache))
 		{
@@ -135,15 +121,13 @@ class CDBResult extends CDBResultMysql
 		parent::__construct($res);
 	}
 
-	/** @deprecated */
-	public function CDBResult($res = null)
-	{
-		self::__construct($res);
-	}
-
 	protected function FetchRow()
 	{
-		return mysql_fetch_array($this->result, MYSQL_ASSOC);
+		if (is_resource($this->result))
+		{
+			return mysql_fetch_array($this->result, MYSQL_ASSOC);
+		}
+		return false;
 	}
 
 	function SelectedRowsCount()
@@ -208,7 +192,8 @@ class CDBResult extends CDBResultMysql
 			$this->NavPageCount++;
 
 		//page number to display. start with 1
-		$this->NavPageNomer = ($this->PAGEN < 1 || $this->PAGEN > $this->NavPageCount? ($_SESSION[$this->SESS_PAGEN] < 1 || $_SESSION[$this->SESS_PAGEN] > $this->NavPageCount? 1:$_SESSION[$this->SESS_PAGEN]):$this->PAGEN);
+		$session = \Bitrix\Main\Application::getInstance()->getSession();
+		$this->NavPageNomer = ($this->PAGEN < 1 || $this->PAGEN > $this->NavPageCount? ($session[$this->SESS_PAGEN] < 1 || $session[$this->SESS_PAGEN] > $this->NavPageCount? 1: $session[$this->SESS_PAGEN]):$this->PAGEN);
 
 		//rows to skip
 		$NavFirstRecordShow = $this->NavPageSize * ($this->NavPageNomer-1);

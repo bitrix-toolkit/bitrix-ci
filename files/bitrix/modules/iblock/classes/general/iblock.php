@@ -1,8 +1,10 @@
-<?
-use Bitrix\Main\Loader,
-	Bitrix\Main\Localization\Loc,
-	Bitrix\Main,
-	Bitrix\Iblock;
+<?php
+
+use Bitrix\Main;
+use Bitrix\Main\File\Image;
+use Bitrix\Main\Loader;
+use Bitrix\Main\Localization\Loc;
+use Bitrix\Iblock;
 
 IncludeModuleLangFile(__FILE__);
 
@@ -66,7 +68,7 @@ class CAllIBlock
 		if (!empty($arButtons[$mode]) && is_array($arButtons[$mode]))
 		{
 			//Try to detect component via backtrace
-			if ($componentName === '' && function_exists("debug_backtrace"))
+			if ($componentName === '')
 			{
 				$arTrace = debug_backtrace();
 				foreach($arTrace as $arCallInfo)
@@ -281,7 +283,7 @@ class CAllIBlock
 		$bWorkflow = self::$workflowIncluded && ($arIBlock["WORKFLOW"] !== "N");
 		$s = $bWorkflow? "&WF=Y": "";
 
-		$arLabels = $arOptions["LABELS"];
+		$arLabels = ($arOptions["LABELS"] ?? []);
 
 		if($ELEMENT_ID > 0 && CIBlockElementRights::UserHasRightTo($IBLOCK_ID, $ELEMENT_ID, "element_edit"))
 		{
@@ -301,8 +303,8 @@ class CAllIBlock
 			);
 
 			$arButton = array(
-				"TEXT" => ($arLabels["ELEMENT_EDIT_TEXT"] <> ''? $arLabels["ELEMENT_EDIT_TEXT"] : $arIBlock["ELEMENT_EDIT"]),
-				"TITLE" => ($arLabels["ELEMENT_EDIT_TITLE"] <> ''? $arLabels["ELEMENT_EDIT_TITLE"] : $arIBlock["ELEMENT_EDIT"]),
+				"TEXT" => (($arLabels["ELEMENT_EDIT_TEXT"] ?? '') <> ''? $arLabels["ELEMENT_EDIT_TEXT"] : $arIBlock["ELEMENT_EDIT"]),
+				"TITLE" => (($arLabels["ELEMENT_EDIT_TITLE"] ?? '') <> ''? $arLabels["ELEMENT_EDIT_TITLE"] : $arIBlock["ELEMENT_EDIT"]),
 				"ACTION" => 'javascript:'.$action,
 				"ACTION_URL" => $url,
 				"ONCLICK" => $action,
@@ -358,8 +360,8 @@ class CAllIBlock
 					)
 				);
 				$arButton = array(
-					"TEXT" => ($arLabels["ELEMENT_ADD_TEXT"] <> ''? $arLabels["ELEMENT_ADD_TEXT"] : $arIBlock["ELEMENT_ADD"]),
-					"TITLE" => ($arLabels["ELEMENT_ADD_TITLE"] <> ''? $arLabels["ELEMENT_ADD_TITLE"] : $arIBlock["ELEMENT_ADD"]),
+					"TEXT" => (($arLabels["ELEMENT_ADD_TEXT"] ?? '') <> ''? $arLabels["ELEMENT_ADD_TEXT"] : $arIBlock["ELEMENT_ADD"]),
+					"TITLE" => (($arLabels["ELEMENT_ADD_TITLE"] ?? '') <> ''? $arLabels["ELEMENT_ADD_TITLE"] : $arIBlock["ELEMENT_ADD"]),
 					"ACTION" => 'javascript:'.$action,
 					"ACTION_URL" => $url,
 					"ONCLICK" => $action,
@@ -399,8 +401,8 @@ class CAllIBlock
 			$url .= '&ID='.(preg_match('/^iblock_list_admin\.php/', $url)? "E": "").$ELEMENT_ID."&return_url=".UrlEncode($return_url["delete_element"]);
 			$url = "/bitrix/admin/".$url;
 			$arButton = array(
-				"TEXT" => ($arLabels["ELEMENT_DELETE_TEXT"] <> ''? $arLabels["ELEMENT_DELETE_TEXT"] : $arIBlock["ELEMENT_DELETE"]),
-				"TITLE" => ($arLabels["ELEMENT_DELETE_TITLE"] <> ''? $arLabels["ELEMENT_DELETE_TITLE"] : $arIBlock["ELEMENT_DELETE"]),
+				"TEXT" => (($arLabels["ELEMENT_DELETE_TEXT"] ?? '') <> ''? $arLabels["ELEMENT_DELETE_TEXT"] : $arIBlock["ELEMENT_DELETE"]),
+				"TITLE" => (($arLabels["ELEMENT_DELETE_TITLE"] ?? '') <> ''? $arLabels["ELEMENT_DELETE_TITLE"] : $arIBlock["ELEMENT_DELETE"]),
 				"ACTION"=>"javascript:if(confirm('".GetMessageJS("IBLOCK_PANEL_ELEMENT_DEL_CONF")."'))jsUtils.Redirect([], '".CUtil::JSEscape($url)."')",
 				"ACTION_URL" => $url,
 				"ONCLICK"=>"if(confirm('".GetMessageJS("IBLOCK_PANEL_ELEMENT_DEL_CONF")."'))jsUtils.Redirect([], '".CUtil::JSEscape($url)."')",
@@ -479,8 +481,8 @@ class CAllIBlock
 					);
 
 					$arButton = array(
-						"TEXT" => ($arLabels["SECTION_ADD_TEXT"] <> ''? $arLabels["SECTION_ADD_TEXT"] : $arIBlock["SECTION_ADD"]),
-						"TITLE" => ($arLabels["SECTION_ADD_TITLE"] <> ''? $arLabels["SECTION_ADD_TITLE"] : $arIBlock["SECTION_ADD"]),
+						"TEXT" => (($arLabels["SECTION_ADD_TEXT"] ?? '') <> ''? $arLabels["SECTION_ADD_TEXT"] : $arIBlock["SECTION_ADD"]),
+						"TITLE" => (($arLabels["SECTION_ADD_TITLE"] ?? '') <> ''? $arLabels["SECTION_ADD_TITLE"] : $arIBlock["SECTION_ADD"]),
 						"ACTION" => 'javascript:'.$action,
 						"ACTION_URL" => $url,
 						"ICON" => "bx-context-toolbar-create-icon",
@@ -534,8 +536,8 @@ class CAllIBlock
 					'find_el_y'=>'Y', 'clear_filter'=>'Y', 'apply_filter'=>'Y'));
 
 			$arButton = array(
-				"TEXT" => ($arLabels["ELEMENTS_NAME_TEXT"] <> ''? $arLabels["ELEMENTS_NAME_TEXT"] : $arIBlock["ELEMENTS_NAME"]),
-				"TITLE" => ($arLabels["ELEMENTS_NAME_TITLE"] <> ''? $arLabels["ELEMENTS_NAME_TITLE"] : $arIBlock["ELEMENTS_NAME"]),
+				"TEXT" => (($arLabels["ELEMENTS_NAME_TEXT"] ?? '') <> ''? $arLabels["ELEMENTS_NAME_TEXT"] : $arIBlock["ELEMENTS_NAME"]),
+				"TITLE" => (($arLabels["ELEMENTS_NAME_TITLE"] ?? '') <> ''? $arLabels["ELEMENTS_NAME_TITLE"] : $arIBlock["ELEMENTS_NAME"]),
 				"ACTION" => "javascript:jsUtils.Redirect([], '".CUtil::JSEscape($url)."')",
 				"ACTION_URL" => $url,
 				"ONCLICK" => "jsUtils.Redirect([], '".CUtil::JSEscape($url)."')",
@@ -553,8 +555,8 @@ class CAllIBlock
 
 			$url = "/bitrix/admin/".CIBlock::GetAdminSectionListLink($IBLOCK_ID, array('find_section_section'=>$SECTION_ID));
 			$arButton = array(
-				"TEXT" => ($arLabels["SECTIONS_NAME_TEXT"] <> ''? $arLabels["SECTIONS_NAME_TEXT"] : $arIBlock["SECTIONS_NAME"]),
-				"TITLE" => ($arLabels["SECTIONS_NAME_TITLE"] <> ''? $arLabels["SECTIONS_NAME_TITLE"] : $arIBlock["SECTIONS_NAME"]),
+				"TEXT" => (($arLabels["SECTIONS_NAME_TEXT"] ?? '') <> ''? $arLabels["SECTIONS_NAME_TEXT"] : $arIBlock["SECTIONS_NAME"]),
+				"TITLE" => (($arLabels["SECTIONS_NAME_TITLE"] ?? '') <> ''? $arLabels["SECTIONS_NAME_TITLE"] : $arIBlock["SECTIONS_NAME"]),
 				"ACTION" => "javascript:jsUtils.Redirect([], '".CUtil::JSEscape($url)."')",
 				"ACTION_URL" => $url,
 				"ONCLICK" => "jsUtils.Redirect([], '".CUtil::JSEscape($url)."')",
@@ -719,6 +721,7 @@ class CAllIBlock
 
 			$CACHE_MANAGER->Clean($cache_id, "b_iblock");
 		}
+		Iblock\IblockTable::getEntity()->cleanCache();
 	}
 
 	///////////////////////////////////////////////////////////////////
@@ -1126,6 +1129,10 @@ class CAllIBlock
 		global $USER_FIELD_MANAGER;
 
 		$ID = (int)$ID;
+		if ($ID <= 0)
+		{
+			return false;
+		}
 
 		$APPLICATION->ResetException();
 		foreach(GetModuleEvents("iblock", "OnBeforeIBlockDelete", true) as $arEvent)
@@ -1233,10 +1240,10 @@ class CAllIBlock
 		global $APPLICATION;
 		$this->LAST_ERROR = "";
 
-		$NAME = isset($arFields["NAME"])? $arFields["NAME"]: "";
+		$NAME = $arFields["NAME"] ?? "";
 		if(
 			($ID===false || array_key_exists("NAME", $arFields))
-			&& $NAME == ''
+			&& (string)$NAME === ''
 		)
 			$this->LAST_ERROR .= GetMessage("IBLOCK_BAD_NAME")."<br>";
 
@@ -1337,6 +1344,21 @@ class CAllIBlock
 					{
 						$this->LAST_ERROR .= Loc::getMessage("IBLOCK_FIELD_API_CODE_UNIQUE_ERROR").'<br>';
 					}
+				}
+			}
+		}
+
+		if (is_set($arFields, "REST_ON"))
+		{
+			if ($arFields['REST_ON'] !== 'Y')
+			{
+				$arFields['REST_ON'] = 'N';
+			}
+			else
+			{
+				if (!$arFields['API_CODE'])
+				{
+					$this->LAST_ERROR .= Loc::getMessage("IBLOCK_BAD_REST_ON_WO_API_CODE").'<br>';
 				}
 			}
 		}
@@ -2145,7 +2167,7 @@ REQ
 			{
 				$a = &$arDefFields[$FIELD_ID]["DEFAULT_VALUE"];
 
-				$a = $a <> ''? unserialize($a) : array();
+				$a = $a <> ''? unserialize($a, ['allowed_classes' => false]) : array();
 
 				if(array_key_exists("TRANS_LEN", $a))
 				{
@@ -2782,7 +2804,7 @@ REQ
 
 		if($server_name)
 		{
-			$url = str_replace("#LANG#", $arr["LANG_DIR"], $url);
+			$url = str_replace("#LANG#", ($arr["LANG_DIR"] ?? ''), $url);
 			if((defined("ADMIN_SECTION") && ADMIN_SECTION===true) || !defined("BX_STARTED"))
 			{
 				static $cache = array();
@@ -2827,14 +2849,14 @@ REQ
 			"#SECTION_CODE_PATH#",
 		);
 		$arReplace = array(
-			$arr["LANG_DIR"],
+			($arr["LANG_DIR"] ?? ''),
 			$preparedId,
-			rawurlencode(isset($arr["~CODE"])? $arr["~CODE"]: $arr["CODE"]),
-			rawurlencode(isset($arr["~EXTERNAL_ID"])? $arr["~EXTERNAL_ID"]: $arr["EXTERNAL_ID"]),
-			rawurlencode(isset($arr["~IBLOCK_TYPE_ID"])? $arr["~IBLOCK_TYPE_ID"]: $arr["IBLOCK_TYPE_ID"]),
-			intval($arr["IBLOCK_ID"]) > 0? intval($arr["IBLOCK_ID"]): "",
-			rawurlencode(isset($arr["~IBLOCK_CODE"])? $arr["~IBLOCK_CODE"]: $arr["IBLOCK_CODE"]),
-			rawurlencode(isset($arr["~IBLOCK_EXTERNAL_ID"])? $arr["~IBLOCK_EXTERNAL_ID"]: $arr["IBLOCK_EXTERNAL_ID"]),
+			rawurlencode($arr["~CODE"] ?? $arr["CODE"] ?? ''),
+			rawurlencode($arr["~EXTERNAL_ID"] ?? $arr["EXTERNAL_ID"] ?? ''),
+			rawurlencode($arr["~IBLOCK_TYPE_ID"] ?? $arr["IBLOCK_TYPE_ID"]),
+			intval(($arr["IBLOCK_ID"] ?? 0)) > 0 ? intval($arr["IBLOCK_ID"]) : "",
+			rawurlencode($arr["~IBLOCK_CODE"] ?? $arr["IBLOCK_CODE"]),
+			rawurlencode($arr["~IBLOCK_EXTERNAL_ID"] ?? $arr["IBLOCK_EXTERNAL_ID"] ?? ''),
 		);
 
 		if($arrType === "E")
@@ -2885,10 +2907,10 @@ REQ
 		}
 		else
 		{
-			$arReplace[] = intval($arr["ELEMENT_ID"]) > 0? intval($arr["ELEMENT_ID"]): "";
-			$arReplace[] = rawurlencode(isset($arr["~ELEMENT_CODE"])? $arr["~ELEMENT_CODE"]: $arr["ELEMENT_CODE"]);
-			$arReplace[] = intval($arr["IBLOCK_SECTION_ID"]) > 0? intval($arr["IBLOCK_SECTION_ID"]): "";
-			$arReplace[] = rawurlencode(isset($arr["~SECTION_CODE"])? $arr["~SECTION_CODE"]: $arr["SECTION_CODE"]);
+			$arReplace[] = intval(($arr["ELEMENT_ID"] ?? 0)) > 0? intval($arr["ELEMENT_ID"]): "";
+			$arReplace[] = rawurlencode($arr["~ELEMENT_CODE"] ?? $arr["ELEMENT_CODE"] ?? '');
+			$arReplace[] = intval(($arr["IBLOCK_SECTION_ID"] ?? 0)) > 0? intval($arr["IBLOCK_SECTION_ID"]): "";
+			$arReplace[] = rawurlencode($arr["~SECTION_CODE"] ?? $arr["SECTION_CODE"] ?? '');
 			$arReplace[] = "";
 		}
 
@@ -3236,26 +3258,36 @@ REQ
 		if(!file_exists($file) && !is_file($file))
 			return GetMessage("IBLOCK_BAD_FILE_NOT_FOUND");
 
-		$width = intval($arResize["WIDTH"]);
-		$height = intval($arResize["HEIGHT"]);
+		$width = (int)$arResize["WIDTH"];
+		$height = (int)$arResize["HEIGHT"];
 
 		if($width <= 0 && $height <= 0)
 			return $arFile;
 
-		$orig = CFile::GetImageSize($file, true);
-		if(!is_array($orig))
+		$image = new Image($file);
+		$imageInfo = $image->getInfo(false);
+		if (empty($imageInfo))
+		{
 			return GetMessage("IBLOCK_BAD_FILE_NOT_PICTURE");
+		}
+		$orig = [
+			0 => $imageInfo->getWidth(),
+			1 => $imageInfo->getHeight(),
+			2 => $imageInfo->getFormat(),
+			3 => $imageInfo->getAttributes(),
+			"mime" => $imageInfo->getMime(),
+		];
 
 		$width_orig = $orig[0];
 		$height_orig = $orig[1];
 
 		$orientation = 0;
-		$exifData = array();
+		$exifData = [];
 		$image_type = $orig[2];
-		if($image_type == IMAGETYPE_JPEG)
+		if($image_type == Image::FORMAT_JPEG)
 		{
-			$exifData = CFile::ExtractImageExif($file);
-			if ($exifData  && isset($exifData['Orientation']))
+			$exifData = $image->getExifData();
+			if (isset($exifData['Orientation']))
 			{
 				$orientation = $exifData['Orientation'];
 				if ($orientation >= 5 && $orientation <= 8)
@@ -3296,7 +3328,7 @@ REQ
 				$height = $height_new;
 
 			$image_type = $orig[2];
-			if($image_type == IMAGETYPE_JPEG)
+			if ($image_type == Image::FORMAT_JPEG)
 			{
 				$image = imagecreatefromjpeg($file);
 				if ($image === false)
@@ -3319,19 +3351,31 @@ REQ
 						|| $orientation == 4 || $orientation == 5
 					)
 					{
-						CFile::ImageFlipHorizontal($image);
+						$engine = new Image\Gd();
+						$engine->setResource($image);
+						$engine->flipHorizontal();
 					}
 				}
 			}
-			elseif($image_type == IMAGETYPE_GIF)
+			elseif ($image_type == Image::FORMAT_GIF)
+			{
 				$image = imagecreatefromgif($file);
-			elseif($image_type == IMAGETYPE_PNG)
+			}
+			elseif ($image_type == Image::FORMAT_PNG)
+			{
 				$image = imagecreatefrompng($file);
+			}
+			elseif ($image_type == Image::FORMAT_WEBP)
+			{
+				$image = imagecreatefromwebp($file);
+			}
 			else
-				return GetMessage("IBLOCK_BAD_FILE_UNSUPPORTED");
+			{
+				return GetMessage("IBLOCK_ERR_BAD_FILE_UNSUPPORTED");
+			}
 
 			$image_p = imagecreatetruecolor($width, $height);
-			if($image_type == IMAGETYPE_JPEG)
+			if($image_type == Image::FORMAT_JPEG)
 			{
 				if($arResize["METHOD"] === "resample")
 					imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
@@ -3343,7 +3387,7 @@ REQ
 				else
 					imagejpeg($image_p, $file);
 			}
-			elseif($image_type == IMAGETYPE_GIF && function_exists("imagegif"))
+			elseif($image_type == Image::FORMAT_GIF && function_exists("imagegif"))
 			{
 				imagetruecolortopalette($image_p, true, imagecolorstotal($image));
 				imagepalettecopy($image_p, $image);
@@ -3395,88 +3439,52 @@ REQ
 	public static function FilterPicture($filePath, $arFilter)
 	{
 		if (!file_exists($filePath))
-			return false;
-
-		$arFileSize = CFile::GetImageSize($filePath, true);
-		if(!is_array($arFileSize))
-			return false;
-
-		if ($arFilter["type"] === "text" && mb_strlen($arFilter["text"]) > 1 && $arFilter["coefficient"] > 0)
 		{
-			$arFilter["text_width"] = ($arFileSize[0]-5) * $arFilter["coefficient"] / 100;
+			return false;
+		}
+		if (
+			!isset($arFilter['name'])
+			|| ($arFilter['name'] !== 'sharpen' && $arFilter['name'] !== 'watermark')
+		)
+		{
+			return false;
 		}
 
-		switch ($arFileSize[2])
+		$image = new Image($filePath);
+		$imageInfo = $image->getInfo();
+		if (empty($imageInfo))
 		{
-		case IMAGETYPE_GIF:
-			$picture = imagecreatefromgif($filePath);
-			$bHasAlpha = true;
-			break;
+			return false;
+		}
+		if (!$image->load())
+		{
+			return false;
+		}
 
-		case IMAGETYPE_PNG:
-			$picture = imagecreatefrompng($filePath);
-			$bHasAlpha = true;
-			break;
-
-		case IMAGETYPE_JPEG:
-			$picture = imagecreatefromjpeg($filePath);
-			$orientation = 0;
-			$exifData = CFile::ExtractImageExif($filePath);
-			if ($exifData && isset($exifData['Orientation']))
-			{
-				$orientation = $exifData['Orientation'];
-			}
-			if ($orientation > 1)
-			{
-				if ($orientation == 7 || $orientation == 8)
-					$picture = imagerotate($picture, 90, null);
-				elseif ($orientation == 3 || $orientation == 4)
-					$picture = imagerotate($picture, 180, null);
-				elseif ($orientation == 5 || $orientation == 6)
-					$picture = imagerotate($picture, 270, null);
-
-				if (
-					$orientation == 2 || $orientation == 7
-					|| $orientation == 4 || $orientation == 5
-				)
+		$orientation = 0;
+		$exifData = $image->getExifData();
+		if (isset($exifData['Orientation']))
+		{
+			$orientation = $exifData['Orientation'];
+		}
+		$image->autoRotate($orientation);
+		switch ($arFilter['name'])
+		{
+			case 'sharpen':
+				$image->filter(Image\Mask::createSharpen($arFilter['precision']));
+				break;
+			case 'watermark':
+				if ($arFilter['type'] === 'text' && mb_strlen($arFilter['text']) > 1 && $arFilter['coefficient'] > 0)
 				{
-					CFile::ImageFlipHorizontal($picture);
+					$arFilter['text_width'] = ($imageInfo->getWidth() - 5) * $arFilter['coefficient'] / 100;
 				}
-			}
-			$bHasAlpha = false;
-			break;
-
-		default:
-			$picture = false;
-			$bHasAlpha = false;
-			break;
+				$watermark = Image\Watermark::createFromArray($arFilter);
+				$image->drawWatermark($watermark);
+				break;
 		}
-		if (!is_resource($picture))
-			return false;
+		$image->save(self::getDefaultJpegQuality());
+		$image->clear();
 
-		$bNeedCreatePicture = CFile::ApplyImageFilter($picture, $arFilter, $bHasAlpha);
-		if ($bNeedCreatePicture)
-		{
-			switch ($arFileSize[2])
-			{
-			case IMAGETYPE_GIF:
-				imagegif($picture, $filePath);
-				break;
-
-			case IMAGETYPE_PNG:
-				imagealphablending($picture, false);
-				imagesavealpha($picture, true);
-				imagepng($picture, $filePath);
-				break;
-
-			case IMAGETYPE_JPEG:
-				$jpgQuality = self::getDefaultJpegQuality();
-
-				imagejpeg($picture, $filePath, $jpgQuality);
-				break;
-			}
-		}
-		imagedestroy($picture);
 		return true;
 	}
 
@@ -3569,7 +3577,11 @@ REQ
 	public static function GetAdminSectionEditLink($IBLOCK_ID, $SECTION_ID, $arParams = array(), $strAdd = "")
 	{
 		if (
-			(defined("CATALOG_PRODUCT") || $arParams["force_catalog"] || array_key_exists('catalog', $arParams))
+			(
+				defined("CATALOG_PRODUCT")
+				|| (isset($arParams["force_catalog"]) && $arParams["force_catalog"])
+				|| array_key_exists('catalog', $arParams)
+			)
 			&& !array_key_exists("menu", $arParams)
 		)
 			$url = "cat_section_edit.php";
@@ -3585,7 +3597,7 @@ REQ
 			if (isset($value))
 				$url.= "&".urlencode($name)."=".urlencode($value);
 
-		if ($arParams["replace_script_name"])
+		if (isset($arParams["replace_script_name"]) && $arParams["replace_script_name"])
 		{
 			$url = self::replaceScriptName($url);
 		}
@@ -3608,7 +3620,10 @@ REQ
 	public static function GetAdminElementEditLink($IBLOCK_ID, $ELEMENT_ID, $arParams = array(), $strAdd = "")
 	{
 		if (
-			(defined("CATALOG_PRODUCT") || $arParams["force_catalog"])
+			(
+				defined("CATALOG_PRODUCT")
+				|| (isset($arParams["force_catalog"]) && $arParams["force_catalog"])
+			)
 			&& !array_key_exists("menu", $arParams)
 		)
 			$url = "cat_product_edit.php";
@@ -3624,7 +3639,7 @@ REQ
 			if (isset($value))
 				$url.= "&".urlencode($name)."=".urlencode($value);
 
-		if ($arParams["replace_script_name"])
+		if (isset($arParams["replace_script_name"]) && $arParams["replace_script_name"])
 		{
 			$url = self::replaceScriptName($url);
 		}
@@ -3674,7 +3689,7 @@ REQ
 			if (isset($value))
 				$url.= "&".urlencode($name)."=".urlencode($value);
 
-		if ($arParams["replace_script_name"])
+		if (isset($arParams["replace_script_name"]) && $arParams["replace_script_name"])
 		{
 			$url = self::replaceScriptName($url);
 		}
@@ -3741,7 +3756,7 @@ REQ
 			if (isset($value))
 				$url.= "&".urlencode($name)."=".urlencode($value);
 
-		if ($arParams["replace_script_name"])
+		if (isset($arParams["replace_script_name"]) && $arParams["replace_script_name"])
 		{
 			$url = self::replaceScriptName($url);
 		}

@@ -134,16 +134,25 @@ class CAllIBlockProperty
 		/** @var CMain $APPLICATION */
 		global $DB, $APPLICATION;
 		$ID = (int)$ID;
+		if ($ID <= 0)
+		{
+			return false;
+		}
 
 		$APPLICATION->ResetException();
 		foreach (GetModuleEvents("iblock", "OnBeforeIBlockPropertyDelete", true) as $arEvent)
 		{
 			if(ExecuteModuleEventEx($arEvent, array($ID))===false)
 			{
-				$err = GetMessage("MAIN_BEFORE_DEL_ERR").' '.$arEvent['TO_NAME'];
 				if($ex = $APPLICATION->GetException())
-					$err .= ': '.$ex->GetString();
-				$APPLICATION->ThrowException($err);
+				{
+					$APPLICATION->ThrowException($ex->GetString());
+				}
+				else
+				{
+					$APPLICATION->ThrowException(GetMessage("MAIN_BEFORE_DEL_ERR1"));
+				}
+
 				return false;
 			}
 		}
@@ -214,6 +223,8 @@ class CAllIBlockProperty
 		$seq->Drop();
 
 		CIBlock::clearIblockTagCache($arProperty["IBLOCK_ID"]);
+
+		Iblock\PropertyTable::getEntity()->cleanCache();
 
 		$res = $DB->Query("DELETE FROM b_iblock_property WHERE ID=".$ID, true);
 
@@ -346,6 +357,8 @@ class CAllIBlockProperty
 					//TODO: add error handling
 					unset($featureResult);
 				}
+
+				Iblock\PropertyTable::getEntity()->cleanCache();
 			}
 		}
 
@@ -511,7 +524,7 @@ class CAllIBlockProperty
 								$arFields["USER_TYPE_SETTINGS"] = (
 									is_array($oldData["USER_TYPE_SETTINGS"])
 									? $oldData["USER_TYPE_SETTINGS"]
-									: unserialize($oldData["USER_TYPE_SETTINGS"])
+									: unserialize($oldData["USER_TYPE_SETTINGS"], ['allowed_classes' => false])
 								);
 							}
 						}
@@ -584,6 +597,8 @@ class CAllIBlockProperty
 				//TODO: add error handling
 				unset($featureResult);
 			}
+
+			Iblock\PropertyTable::getEntity()->cleanCache();
 
 			global $BX_IBLOCK_PROP_CACHE;
 			if (isset($arFields["IBLOCK_ID"]))
@@ -1138,7 +1153,7 @@ class CAllIBlockProperty
 		return false;
 	}
 
-	function DropColumnSQL($strTable, $arColumns)
+	public static function DropColumnSQL($strTable, $arColumns)
 	{
 		return array();
 	}

@@ -26,6 +26,7 @@ class UrlPreview
 		'vimeo.com' => 'vimeo.com',
 		'rutube.ru' => 'rutube.ru',
 		'facebook.com' => 'facebook.com',
+		'fb.watch' => 'fb.watch',
 		'vk.com' => 'vk.com',
 		'instagram.com' => 'instagram.com',
 	];
@@ -43,7 +44,6 @@ class UrlPreview
 		if(!static::isEnabled())
 			return false;
 
-		$url = static::unfoldShortLink($url);
 		$url = static::normalizeUrl($url);
 		if($url == '')
 			return false;
@@ -104,9 +104,10 @@ class UrlPreview
 
 		if(is_array($metadata))
 		{
+			$fullUrl = static::unfoldShortLink($metadata['URL']);
 			if($metadata['TYPE'] == UrlMetadataTable::TYPE_DYNAMIC)
 			{
-				$routeRecord = Router::dispatch(new Uri(static::unfoldShortLink($metadata['URL'])));
+				$routeRecord = Router::dispatch(new Uri($fullUrl));
 
 				if(isset($routeRecord['MODULE']) && Loader::includeModule($routeRecord['MODULE']))
 				{
@@ -481,7 +482,8 @@ class UrlPreview
 	 */
 	protected static function fetchUrlMetadata($url)
 	{
-		$uriParser = new Uri($url);
+		$fullUrl = static::unfoldShortLink($url);
+		$uriParser = new Uri($fullUrl);
 		if(static::isUrlLocal($uriParser))
 		{
 			if($routeRecord = Router::dispatch($uriParser))
@@ -708,11 +710,17 @@ class UrlPreview
 	 */
 	protected static function unfoldShortLink($shortUrl)
 	{
+		static $cache = [];
+		if ($cache[$shortUrl])
+		{
+			return $cache[$shortUrl];
+		}
 		$result = $shortUrl;
 		if($shortUri = \CBXShortUri::GetUri($shortUrl))
 		{
 			$result = $shortUri['URI'];
 		}
+		$cache[$shortUrl] = $result;
 		return $result;
 	}
 

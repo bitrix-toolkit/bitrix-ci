@@ -36,10 +36,10 @@ class CMenu
 		global $USER;
 		if(
 			$this->debug !== false
-			&& $_SESSION["SESS_SHOW_INCLUDE_TIME_EXEC"] == "Y"
+			&& \Bitrix\Main\Application::getInstance()->getKernelSession()["SESS_SHOW_INCLUDE_TIME_EXEC"] == "Y"
 			&& (
 				$USER->IsAdmin()
-				|| $_SESSION["SHOW_SQL_STAT"]=="Y"
+				|| \Bitrix\Main\Application::getInstance()->getKernelSession()["SHOW_SQL_STAT"]=="Y"
 			)
 		)
 		{

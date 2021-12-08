@@ -13,6 +13,7 @@ class Cookie
 	protected $httpOnly = true;
 	protected $spread;
 	protected $name;
+	protected $originalName;
 	protected $path = '/';
 	protected $secure = false;
 	protected $value;
@@ -34,6 +35,7 @@ class Cookie
 		{
 			$this->name = $name;
 		}
+		$this->originalName = $name;
 		$this->value = $value;
 		$this->expires = $expires;
 		if ($this->expires === null)
@@ -110,6 +112,11 @@ class Cookie
 	{
 		$this->name = $name;
 		return $this;
+	}
+
+	public function getOriginalName(): string
+	{
+		return $this->originalName;
 	}
 
 	public function getName()

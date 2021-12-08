@@ -133,7 +133,8 @@ class SqlTracker implements \Iterator
 	{
 		if ($this->logFilePath)
 		{
-			$header = "TIME: ".round($executionTime, 6)." SESSION: ".session_id()." ".$additional."\n";
+			$sessionId = \Bitrix\Main\Application::getInstance()->getKernelSession()->getId();
+			$header = "TIME: ".round($executionTime, 6)." SESSION: ".$sessionId." ".$additional."\n";
 			$headerLength = mb_strlen($header);
 			$body = $this->formatSql($sql);
 			$trace = $this->formatTrace(\Bitrix\Main\Diag\Helper::getBackTrace($this->depthBackTrace, null, $traceSkip));

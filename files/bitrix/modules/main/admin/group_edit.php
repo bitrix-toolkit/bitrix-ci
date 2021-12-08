@@ -10,7 +10,6 @@
  * @global CMain $APPLICATION
  * @global CUser $USER
  * @global CDatabase $DB
- * @global array $BX_GROUP_POLICY;
  */
 
 require_once(dirname(__FILE__)."/../include/prolog_admin_before.php");
@@ -36,7 +35,7 @@ while ($mr = $modules->Fetch())
 	$arModules[] = $mr["ID"];
 
 $arSites = array();
-$rsSites = CSite::GetList($by="sort", $order="asc", array("ACTIVE" => "Y"));
+$rsSites = CSite::GetList("sort", "asc", array("ACTIVE" => "Y"));
 while ($arSite = $rsSites->GetNext())
 {
 	$arSites["reference_id"][] = $arSite["ID"];
@@ -59,6 +58,8 @@ $arBXGroupPolicy = array(
 		"PASSWORD_LOWERCASE" => "N",
 		"PASSWORD_DIGITS" => "N",
 		"PASSWORD_PUNCTUATION" => "N",
+		"PASSWORD_CHANGE_DAYS" => "",
+		"PASSWORD_UNIQUE_COUNT" => "",
 		"LOGIN_ATTEMPTS" => "",
 		"BLOCK_LOGIN_ATTEMPTS" => "",
 		"BLOCK_TIME" => "",
@@ -75,6 +76,8 @@ $arBXGroupPolicy = array(
 		"PASSWORD_LOWERCASE" => "N",
 		"PASSWORD_DIGITS" => "N",
 		"PASSWORD_PUNCTUATION" => "N",
+		"PASSWORD_CHANGE_DAYS" => "0",
+		"PASSWORD_UNIQUE_COUNT" => "0",
 		"LOGIN_ATTEMPTS" => 0,
 		"BLOCK_LOGIN_ATTEMPTS" => 0,
 		"BLOCK_TIME" => "",
@@ -91,6 +94,8 @@ $arBXGroupPolicy = array(
 		"PASSWORD_LOWERCASE" => "Y",
 		"PASSWORD_DIGITS" => "Y",
 		"PASSWORD_PUNCTUATION" => "N",
+		"PASSWORD_CHANGE_DAYS" => "90",
+		"PASSWORD_UNIQUE_COUNT" => "1",
 		"LOGIN_ATTEMPTS" => 0,
 		"BLOCK_LOGIN_ATTEMPTS" => 0,
 		"BLOCK_TIME" => "",
@@ -107,6 +112,8 @@ $arBXGroupPolicy = array(
 		"PASSWORD_LOWERCASE" => "Y",
 		"PASSWORD_DIGITS" => "Y",
 		"PASSWORD_PUNCTUATION" => "Y",
+		"PASSWORD_CHANGE_DAYS" => "30",
+		"PASSWORD_UNIQUE_COUNT" => "3",
 		"LOGIN_ATTEMPTS" => 3,
 		"BLOCK_LOGIN_ATTEMPTS" => 0,
 		"BLOCK_TIME" => "",
@@ -125,6 +132,8 @@ $BX_GROUP_POLICY_CONTROLS = array(
 	"PASSWORD_LOWERCASE"	=>	array("checkbox", "Y"),
 	"PASSWORD_DIGITS"	=>	array("checkbox", "Y"),
 	"PASSWORD_PUNCTUATION"	=>	array("checkbox", "Y"),
+	"PASSWORD_CHANGE_DAYS"	=>	array("text", 5),
+	"PASSWORD_UNIQUE_COUNT"	=>	array("text", 5),
 	"LOGIN_ATTEMPTS"	=>	array("text", 5),
 	"BLOCK_LOGIN_ATTEMPTS"	=>	array("text", 5),
 	"BLOCK_TIME"	=>	array("text", 5),
@@ -148,7 +157,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && ($_REQUEST["save"] <> '' || $_REQUEST
 	$group = new CGroup;
 
 	$arGroupPolicy = array();
-	foreach ($BX_GROUP_POLICY as $key => $value)
+	foreach (CUser::$GROUP_POLICY as $key => $value)
 	{
 		$curVal = ${"gp_".$key};
 		$curValParent = ${"gp_".$key."_parent"};
@@ -461,7 +470,7 @@ $tabControl->BeginNextTab();
 			</script>
 			<?
 			$ind = -1;
-			$dbUsers = CUser::GetList(($b="id"), ($o="asc"), array("ACTIVE" => "Y"));
+			$dbUsers = CUser::GetList("id", "asc", array("ACTIVE" => "Y"));
 			while ($arUsers = $dbUsers->Fetch())
 			{
 				$ind++;
@@ -583,6 +592,8 @@ $tabControl->BeginNextTab();
 						level.low++;
 					break;
 				case "PASSWORD_LENGTH":
+				case "BLOCK_TIME":
+				case "PASSWORD_UNIQUE_COUNT":
 					level.total++;
 					if(parseInt(el2.value) >= parseInt(arGroupPolicy['high'][key]))
 						level.high++;
@@ -592,6 +603,8 @@ $tabControl->BeginNextTab();
 						level.low++;
 					break;
 				case "LOGIN_ATTEMPTS":
+				case "BLOCK_LOGIN_ATTEMPTS":
+				case "PASSWORD_CHANGE_DAYS":
 					level.total++;
 					if(parseInt(el2.value) > 0)
 					{
@@ -678,11 +691,11 @@ $tabControl->BeginNextTab();
 		</td>
 	</tr>
 	<?
-	$arGroupPolicy = unserialize(htmlspecialcharsback($str_SECURITY_POLICY));
+	$arGroupPolicy = unserialize(htmlspecialcharsback($str_SECURITY_POLICY), ['allowed_classes' => false]);
 	if (!is_array($arGroupPolicy))
 		$arGroupPolicy = array();
 
-	foreach ($BX_GROUP_POLICY as $key => $value)
+	foreach (CUser::$GROUP_POLICY as $key => $value)
 	{
 		$curVal = $arGroupPolicy[$key];
 		$curValParent = !array_key_exists($key, $arGroupPolicy);
@@ -694,7 +707,7 @@ $tabControl->BeginNextTab();
 		?>
 		<tr valign="top">
 			<td><label for="gp_<?echo $key?>"><?
-			$gpTitle = GetMessage("GP_".$key);
+			$gpTitle = GetMessage("GP_".$key, ["#SPECIAL_CHARS#" => \CUser::PASSWORD_SPECIAL_CHARS]);
 			if ($gpTitle == '')
 				$gpTitle = $key;
 
@@ -786,7 +799,7 @@ $tabControl->BeginNextTab();
 			<select id="subordinate_groups" name="subordinate_groups[]" multiple size="6">
 			<?
 			$arSubordinateGroups = CGroup::GetSubordinateGroups($ID);
-			$rsData = CGroup::GetList($by, $order, array("ACTIVE"=>"Y", "ADMIN"=>"N", "ANONYMOUS"=>"N"));
+			$rsData = CGroup::GetList('', '', array("ACTIVE"=>"Y", "ADMIN"=>"N", "ANONYMOUS"=>"N"));
 			while($arRes = $rsData->Fetch())
 			{
 				$arRes['ID'] = intval($arRes['ID']);

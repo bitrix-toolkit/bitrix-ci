@@ -5,31 +5,34 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        PHP: ["7.1", "7.2", "7.3", "7.4"]
-    container:
-      image: webdevops/php-dev:${{ matrix.PHP }}
-      env:
-        MYSQL_HOST: mysql
-        MYSQL_DATABASE: bitrix-ci
-        MYSQL_USER: bitrix-ci
-        MYSQL_PASSWORD: bitrix-ci
+        PHP: ["7.3", "7.4"]
     services:
       mysql:
         image: mysql:5.7
         env:
-          MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+          MYSQL_HOST: 127.0.0.1
           MYSQL_DATABASE: bitrix-ci
           MYSQL_USER: bitrix-ci
           MYSQL_PASSWORD: bitrix-ci
+          MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    env:
+      MYSQL_HOST: 127.0.0.1
+      MYSQL_DATABASE: bitrix-ci
+      MYSQL_USER: bitrix-ci
+      MYSQL_PASSWORD: bitrix-ci
     steps:
       - name: Checkout source
         uses: actions/checkout@v1
 
-      - name: Set up environment
-        run: |
-          echo 'short_open_tag=1' >> /opt/docker/etc/php/php.ini
-          echo 'mbstring.func_overload=2' >> /opt/docker/etc/php/php.ini
-          cat /opt/docker/etc/php/php.ini
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.PHP }}
+          tools: composer
+          ini-values: short_open_tag=1, mbstring.func_overload=2
 
       - name: Install dependencies
         run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist

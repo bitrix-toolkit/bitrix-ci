@@ -1,4 +1,5 @@
-<?
+<?php
+
 require_once($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/main/classes/general/favorites.php");
 
 class CFavorites extends CAllFavorites
@@ -13,7 +14,7 @@ class CFavorites extends CAllFavorites
 		{
 			foreach ($arFilter as $key => $val)
 			{
-				if ($val == '' || $val=="NOT_REF") continue;
+				if ((string)$val == '' || $val=="NOT_REF") continue;
 				switch(mb_strtoupper($key))
 				{
 					case "ID":

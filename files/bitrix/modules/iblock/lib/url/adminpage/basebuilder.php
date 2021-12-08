@@ -1,8 +1,8 @@
 <?php
 namespace Bitrix\Iblock\Url\AdminPage;
 
-use Bitrix\Main,
-	Bitrix\Iblock;
+use Bitrix\Main;
+use	Bitrix\Iblock;
 
 abstract class BaseBuilder
 {
@@ -12,34 +12,40 @@ abstract class BaseBuilder
 	protected const TYPE_WEIGHT = null;
 	protected const PATH_PREFIX = '';
 
-	protected const PAGE_ELEMENT_LIST = 'elementList';
-	protected const PAGE_ELEMENT_DETAIL = 'elementDetail';
-	protected const PAGE_ELEMENT_COPY = 'elementCopy';
-	protected const PAGE_ELEMENT_SAVE = 'elementSave';
-	protected const PAGE_ELEMENT_SEARCH = 'elementSearch';
-	protected const PAGE_SECTION_LIST = 'sectionList';
-	protected const PAGE_SECTION_DETAIL = 'sectionDetail';
-	protected const PAGE_SECTION_COPY = 'sectionCopy';
-	protected const PAGE_SECTION_SAVE = 'sectionSave';
-	protected const PAGE_SECTION_SEARCH = 'sectionSearch';
+	public const PAGE_ELEMENT_LIST = 'elementList';
+	public const PAGE_ELEMENT_DETAIL = 'elementDetail';
+	public const PAGE_ELEMENT_COPY = 'elementCopy';
+	public const PAGE_ELEMENT_SAVE = 'elementSave';
+	public const PAGE_ELEMENT_SEARCH = 'elementSearch';
+	public const PAGE_SECTION_LIST = 'sectionList';
+	public const PAGE_SECTION_DETAIL = 'sectionDetail';
+	public const PAGE_SECTION_COPY = 'sectionCopy';
+	public const PAGE_SECTION_SAVE = 'sectionSave';
+	public const PAGE_SECTION_SEARCH = 'sectionSearch';
 
-	protected $id = null;
+	public const ENTITY_SECTION = 'section';
+	public const ENTITY_ELEMENT = 'element';
 
-	protected $weight = null;
-
-	protected $languageId = null;
+	/** @var Main\HttpRequest */
+	protected $request;
+	/** @var string */
+	protected $id;
+	/** @var int */
+	protected $weight;
+	/** @var string */
+	protected $languageId;
 
 	/** @var int */
-	protected $iblockId = null;
+	protected $iblockId;
 	/** @var array */
-	protected $iblock = null;
+	protected $iblock;
 	/** @var string */
-	protected $iblockListMode = null;
+	protected $iblockListMode;
 	/** @var bool */
-	protected $iblockListMixed = null;
+	protected $iblockListMixed;
 
 	/** @var string */
-	protected $prefix = null;
+	protected $prefix;
 
 	protected $urlParams = [];
 
@@ -50,14 +56,23 @@ abstract class BaseBuilder
 	protected $urlTemplates = [];
 
 	protected $templateVariables = [];
+	/** @var bool */
+	protected $sliderMode;
 
 	public function __construct()
 	{
+		$this->request = Main\Context::getCurrent()->getRequest();
+
 		$this->initSettings();
 		$this->initConfig();
 		$this->resetIblock();
 		$this->initIblockListMode();
 		$this->initUrlTemplates();
+	}
+
+	public function __destruct()
+	{
+		$this->request = null;
 	}
 
 	public function getId(): string
@@ -85,21 +100,24 @@ abstract class BaseBuilder
 
 	public function setIblockId(int $iblockId): void
 	{
-		$this->resetIblock();
-		if ($iblockId > 0)
+		if ($this->iblockId !== $iblockId)
 		{
-			$iblock = \CIBlock::GetArrayByID($iblockId);
-			if (!empty($iblock) && is_array($iblock))
+			$this->resetIblock();
+			if ($iblockId > 0)
 			{
-				$this->iblockId = $iblockId;
-				$this->iblock = $iblock;
+				$iblock = \CIBlock::GetArrayByID($iblockId);
+				if (!empty($iblock) && is_array($iblock))
+				{
+					$this->iblockId = $iblockId;
+					$this->iblock = $iblock;
+				}
+				unset($iblock);
 			}
-			unset($iblock);
+			$this->initIblockListMode();
+			$this->initUrlTemplates();
+			$this->setTemplateVariable('#IBLOCK_ID#', (string)$this->iblockId);
+			$this->setTemplateVariable('#BASE_PARAMS#', $this->getBaseParams());
 		}
-		$this->initIblockListMode();
-		$this->initUrlTemplates();
-		$this->setTemplateVariable('#IBLOCK_ID#', (string)$this->iblockId);
-		$this->setTemplateVariable('#BASE_PARAMS#', $this->getBaseParams());
 	}
 
 	public function setPrefix(string $prefix): void
@@ -110,6 +128,10 @@ abstract class BaseBuilder
 
 	public function setUrlParams(array $list): void
 	{
+		if ($this->isSliderMode())
+		{
+			$list += static::getSliderOptions();
+		}
 		$this->urlParams = array_filter($list, [__CLASS__, 'clearNull']);
 		$this->compiledUrlParams = $this->compileUrlParams($this->urlParams);
 	}
@@ -125,6 +147,31 @@ abstract class BaseBuilder
 		return $this->iblockListMixed;
 	}
 
+	public function setMixedIblockList(): void
+	{
+		$this->setIblockListMode(Iblock\IblockTable::LIST_MODE_COMBINED);
+	}
+
+	public function setSeparateIblockList(): void
+	{
+		$this->setIblockListMode(Iblock\IblockTable::LIST_MODE_SEPARATE);
+	}
+
+	public function preloadUrlData(string $entityType, array $entityIds): void
+	{
+		switch ($entityType)
+		{
+			case self::ENTITY_SECTION:
+				$this->preloadSectionUrlData($entityIds);
+				break;
+			case self::ENTITY_ELEMENT:
+				$this->preloadElementUrlData($entityIds);
+				break;
+		}
+	}
+
+	public function clearPreloadedUrlData(): void {}
+
 	abstract public function use(): bool;
 
 	public function getSectionListUrl(?int $parentId, array $options = [], string $additional = ''): string
@@ -139,7 +186,7 @@ abstract class BaseBuilder
 	{
 		return $this->fillUrlTemplate(
 			$this->getUrlTemplate(self::PAGE_SECTION_DETAIL),
-			$this->getDetailVariables(self::PAGE_SECTION_DETAIL, (int)$entityId, $options, $additional)
+			$this->getDetailVariables(self::PAGE_SECTION_DETAIL, $entityId, $options, $additional)
 		);
 	}
 
@@ -147,7 +194,7 @@ abstract class BaseBuilder
 	{
 		return $this->fillUrlTemplate(
 			$this->getUrlTemplate(self::PAGE_SECTION_SAVE),
-			$this->getDetailVariables(self::PAGE_SECTION_SAVE, (int)$entityId, $options, $additional)
+			$this->getDetailVariables(self::PAGE_SECTION_SAVE, $entityId, $options, $additional)
 		);
 	}
 
@@ -171,7 +218,7 @@ abstract class BaseBuilder
 	{
 		return $this->fillUrlTemplate(
 			$this->getUrlTemplate(self::PAGE_ELEMENT_DETAIL),
-			$this->getDetailVariables(self::PAGE_ELEMENT_DETAIL, (int)$entityId, $options, $additional)
+			$this->getDetailVariables(self::PAGE_ELEMENT_DETAIL, $entityId, $options, $additional)
 		);
 	}
 
@@ -179,7 +226,7 @@ abstract class BaseBuilder
 	{
 		return $this->fillUrlTemplate(
 			$this->getUrlTemplate(self::PAGE_ELEMENT_COPY),
-			$this->getDetailVariables(self::PAGE_ELEMENT_COPY, (int)$entityId, $options, $additional)
+			$this->getDetailVariables(self::PAGE_ELEMENT_COPY, $entityId, $options, $additional)
 		);
 	}
 
@@ -187,7 +234,7 @@ abstract class BaseBuilder
 	{
 		return $this->fillUrlTemplate(
 			$this->getUrlTemplate(self::PAGE_ELEMENT_SAVE),
-			$this->getDetailVariables(self::PAGE_ELEMENT_SAVE, (int)$entityId, $options, $additional)
+			$this->getDetailVariables(self::PAGE_ELEMENT_SAVE, $entityId, $options, $additional)
 		);
 	}
 
@@ -199,6 +246,11 @@ abstract class BaseBuilder
 		);
 	}
 
+	public function getContextMenuItems(string $pageType, array $items = [], array $options = []): ?array
+	{
+		return null;
+	}
+
 	public function getBaseParams(): string
 	{
 		return 'IBLOCK_ID='.$this->iblockId
@@ -206,9 +258,38 @@ abstract class BaseBuilder
 			.'&lang='.urlencode($this->languageId);
 	}
 
+	public function getUrlParams(array $options = [], string $additional = ''): string
+	{
+		return $this->getBaseParams().$this->extendUrl($options, $additional);
+	}
+
 	public function getLanguageParam(): string
 	{
 		return 'lang='.urlencode($this->languageId);
+	}
+
+	public function setSliderMode(bool $mode): void
+	{
+		$this->sliderMode = $mode;
+	}
+
+	public function isSliderMode(): bool
+	{
+		return $this->sliderMode;
+	}
+
+	protected function checkCurrentPage(array $urlList): bool
+	{
+		$currentPage = $this->request->getRequestedPage();
+		foreach ($urlList as $url)
+		{
+			if (strncmp($currentPage, $url, strlen($url)) === 0)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	protected function initSettings(): void
@@ -217,6 +298,7 @@ abstract class BaseBuilder
 		$this->weight = static::TYPE_WEIGHT;
 		$this->setLanguageId(LANGUAGE_ID);
 		$this->setPrefix(static::PATH_PREFIX);
+		$this->setSliderMode($this->request->get('IFRAME') === 'Y');
 	}
 
 	protected function initConfig(): void
@@ -252,14 +334,26 @@ abstract class BaseBuilder
 			&& $listMode != Iblock\IblockTable::LIST_MODE_COMBINED
 		)
 		{
-			$listMode = ((string)Main\Config\Option::get('iblock', 'combined_list_mode') == 'Y'
+			$listMode = ((string)Main\Config\Option::get('iblock', 'combined_list_mode') === 'Y'
 				? Iblock\IblockTable::LIST_MODE_COMBINED
 				: Iblock\IblockTable::LIST_MODE_SEPARATE
 			);
 		}
 		$this->iblockListMode = $listMode;
-		unset($listMode);
 		$this->iblockListMixed = ($this->iblockListMode === Iblock\IblockTable::LIST_MODE_COMBINED);
+	}
+
+	protected function setIblockListMode(string $listMode): void
+	{
+		if (
+			$listMode === Iblock\IblockTable::LIST_MODE_SEPARATE
+			|| $listMode === Iblock\IblockTable::LIST_MODE_COMBINED
+		)
+		{
+			$this->iblockListMode = $listMode;
+			$this->iblockListMixed = ($this->iblockListMode === Iblock\IblockTable::LIST_MODE_COMBINED);
+			$this->initUrlTemplates();
+		}
 	}
 
 	protected function compileUrlParams(array $params): string
@@ -319,6 +413,19 @@ abstract class BaseBuilder
 		return $result;
 	}
 
+	protected function getEntityFilter(?int $entityId): string
+	{
+		$result = '';
+		if ($entityId !== null && $entityId >= 0)
+		{
+			$result = $this->compileUrlParams([
+				'ID' => $entityId,
+			]);
+		}
+
+		return $result;
+	}
+
 	protected function extendUrl(array $options = [], string $additional = ''): string
 	{
 		$result = $this->compiledUrlParams;
@@ -364,9 +471,14 @@ abstract class BaseBuilder
 		$this->templateVariables[$name] = $value;
 	}
 
+	protected function getTemplateVariables(): array
+	{
+		return $this->templateVariables;
+	}
+
 	protected function getExtendedVariables(array $options = [], string $additional = ''): array
 	{
-		$replaces = $this->templateVariables;
+		$replaces = $this->getTemplateVariables();
 		$replaces['#ADDITIONAL_PARAMETERS#'] = $this->extendUrl($options, $additional);
 		return $replaces;
 	}
@@ -379,15 +491,28 @@ abstract class BaseBuilder
 		return $replaces;
 	}
 
-	protected function getDetailVariables(string $page, int $entityId, array $options = [], string $additional = ''): array
+	protected function getDetailVariables(string $page, ?int $entityId, array $options = [], string $additional = ''): array
 	{
 		$replaces = $this->getExtendedVariables($options, $additional);
 		$replaces['#ENTITY_ID#'] = (string)$entityId;
+		$replaces['#ENTITY_FILTER#'] = $this->getEntityFilter($entityId);
 		return $replaces;
 	}
 
 	protected function getCopyAction(): string
 	{
 		return '&action=copy';
+	}
+
+	protected function preloadSectionUrlData(array $sectionIds): void {}
+
+	protected function preloadElementUrlData(array $elementIds): void {}
+
+	protected static function getSliderOptions(): array
+	{
+		return [
+			'IFRAME' => 'Y',
+			'IFRAME_TYPE' => 'SIDE_SLIDER',
+		];
 	}
 }

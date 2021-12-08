@@ -5,6 +5,23 @@
 # docker-compose up -d
 # chrome http://localhost
 
+# sale
+mkdir -p ./files/bitrix/modules
+cp -r ./public/bitrix/modules/sale ./files/bitrix/modules/
+rm -rf ./files/bitrix/modules/sale/admin
+rm -rf ./files/bitrix/modules/sale/de
+rm -rf ./files/bitrix/modules/sale/delivery
+rm -rf ./files/bitrix/modules/sale/export
+rm -rf ./files/bitrix/modules/sale/handlers
+rm -rf ./files/bitrix/modules/sale/install
+rm -rf ./files/bitrix/modules/sale/la
+rm -rf ./files/bitrix/modules/sale/payment
+rm -rf ./files/bitrix/modules/sale/reports
+rm -rf ./files/bitrix/modules/sale/ru
+rm -rf ./files/bitrix/modules/sale/services
+rm -rf ./files/bitrix/modules/sale/tools
+rm -rf ./files/bitrix/modules/sale/ttf
+
 # catalog
 mkdir -p ./files/bitrix/modules
 cp -r ./public/bitrix/modules/catalog ./files/bitrix/modules/

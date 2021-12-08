@@ -124,6 +124,12 @@ class CatalogViewedProductTable extends Main\Entity\DataManager
 	public static function refresh($productId, $fuserId, $siteId = SITE_ID, $elementId = 0, $recommendationId = '')
 	{
 		$rowId = -1;
+
+		if (Option::get('catalog', 'enable_viewed_products') !== 'Y')
+		{
+			return $rowId;
+		}
+
 		$productId = (int)$productId;
 		$fuserId = (int)$fuserId;
 		$siteId = (string)$siteId;
@@ -441,8 +447,12 @@ class CatalogViewedProductTable extends Main\Entity\DataManager
 	 *
 	 * @return string
 	 */
-	public static function clearAgent()
+	public static function clearAgent(): string
 	{
+		if (Option::get('catalog', 'enable_viewed_products') !== 'Y')
+		{
+			return '';
+		}
 		self::clear((int)Option::get('catalog', 'viewed_time'));
 		return '\Bitrix\Catalog\CatalogViewedProductTable::clearAgent();';
 	}

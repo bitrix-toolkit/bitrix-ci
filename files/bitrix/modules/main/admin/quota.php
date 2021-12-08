@@ -11,7 +11,7 @@ if (isset($_REQUEST["id"]) && trim($_REQUEST["id"]) <> '' && check_bitrix_sessid
 	$_REQUEST["recount"] = ($_REQUEST["recount"] == "begin"? true : false);
 	if (mb_strtolower($_REQUEST["id"]) == "db")
 	{
-		$_SESSION["SESS_RECOUNT_DB"] = "Y";
+		\Bitrix\Main\Application::getInstance()->getSession()["SESS_RECOUNT_DB"] = "Y";
 		$res = $quota->SetDBSize();
 	}
 	else 

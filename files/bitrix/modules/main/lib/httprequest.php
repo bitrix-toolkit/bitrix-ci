@@ -395,14 +395,29 @@ class HttpRequest extends Request
 
 		$cookiePrefixLength = mb_strlen($cookiePrefix);
 
-		$cookiesNew = array();
+		$cookiesCrypter = new Web\CookiesCrypter();
+		$cookiesNew = $cookiesToDecrypt = [];
 		foreach ($cookies as $name => $value)
 		{
 			if (mb_strpos($name, $cookiePrefix) !== 0)
 				continue;
 
-			$cookiesNew[mb_substr($name, $cookiePrefixLength)] = $value;
+			$name = mb_substr($name, $cookiePrefixLength);
+			if (is_string($value) && $cookiesCrypter->shouldDecrypt($name, $value))
+			{
+				$cookiesToDecrypt[$name] = $value;
+			}
+			else
+			{
+				$cookiesNew[$name] = $value;
+			}
 		}
+
+		foreach ($cookiesToDecrypt as $name => $value)
+		{
+			$cookiesNew[$name] = $cookiesCrypter->decrypt($name, $value, $cookiesNew);
+		}
+
 		return $cookiesNew;
 	}
 

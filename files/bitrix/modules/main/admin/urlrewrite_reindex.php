@@ -24,14 +24,14 @@ if($Reindex <> '' && check_bitrix_sessid())
 			$NS["SITE_ID"] = $site_id;
 	}
 	else
-		$NS = unserialize($_REQUEST['NS']);
+		$NS = unserialize($_REQUEST['NS'], ['allowed_classes' => false]);
 
 	$res = \Bitrix\Main\UrlRewriter::reindexAll(($NS["stepped"]=="Y"? $NS["max_execution_time"]:0), $NS);
 
 	if(is_array($res)):
 		//$res["STAT"]=$NS["STAT"];
 		//$res["STAT"][]=$res["CNT"]-$NS["CNT"];
-		//$perfomance = "<br>",implode($res["STAT"],", ");
+		//$perfomance = "<br>",implode(", ", $res["STAT"]);
 		CAdminMessage::ShowMessage(array(
 			"MESSAGE"=>GetMessage("url_rewrite_mess_title"),
 			"DETAILS"=>GetMessage("MURL_REINDEX_TOTAL")." <b>".$res["CNT"]."</b>",

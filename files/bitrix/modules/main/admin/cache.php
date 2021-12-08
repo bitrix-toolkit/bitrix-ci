@@ -68,7 +68,7 @@ if(
 		else
 		{
 			$path = "";
-			$_SESSION["CACHE_STAT"] = array();
+			\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"] = array();
 		}
 
 		$bDoNotCheckExpiredDate =
@@ -106,18 +106,18 @@ if(
 			)
 			{
 				$file_size = filesize($file);
-				$_SESSION["CACHE_STAT"]["scanned"]++;
-				$_SESSION["CACHE_STAT"]["space_total"]+=$file_size;
+				\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"]["scanned"]++;
+				\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"]["space_total"]+=$file_size;
 
 				if(@unlink($file))
 				{
-					$_SESSION["CACHE_STAT"]["deleted"]++;
-					$_SESSION["CACHE_STAT"]["space_freed"]+=$file_size;
+					\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"]["deleted"]++;
+					\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"]["space_freed"]+=$file_size;
 					$space_freed+=$file_size;
 				}
 				else
 				{
-					$_SESSION["CACHE_STAT"]["errors"]++;
+					\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"]["errors"]++;
 				}
 
 				if(time() >= $endTime)
@@ -141,8 +141,8 @@ if(
 				{
 					$file_size = filesize($file);
 
-					$_SESSION["CACHE_STAT"]["scanned"]++;
-					$_SESSION["CACHE_STAT"]["space_total"]+=$file_size;
+					\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"]["scanned"]++;
+					\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"]["space_total"]+=$file_size;
 
 					if(
 						$bDoNotCheckExpiredDate
@@ -151,12 +151,12 @@ if(
 					{
 						if(@unlink($file))
 						{
-							$_SESSION["CACHE_STAT"]["deleted"]++;
-							$_SESSION["CACHE_STAT"]["space_freed"]+=$file_size;
+							\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"]["deleted"]++;
+							\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"]["space_freed"]+=$file_size;
 						}
 						else
 						{
-							$_SESSION["CACHE_STAT"]["errors"]++;
+							\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"]["errors"]++;
 						}
 					}
 				}
@@ -172,7 +172,7 @@ if(
 	else
 	{
 		$file = false;
-		$_SESSION["CACHE_STAT"] = array();
+		\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"] = array();
 	}
 
 	if(is_string($file))
@@ -182,11 +182,11 @@ if(
 		CAdminMessage::ShowMessage(array(
 			"MESSAGE"=>GetMessage("main_cache_in_progress"),
 			"DETAILS"=> ""
-				.GetMessage("main_cache_files_scanned_count", array("#value#" => "<b>".intval($_SESSION["CACHE_STAT"]["scanned"])."</b>"))."<br>"
-				.GetMessage("main_cache_files_scanned_size", array("#value#" => "<b>".CFile::FormatSize($_SESSION["CACHE_STAT"]["space_total"])."</b>"))."<br>"
-				.GetMessage("main_cache_files_deleted_count", array("#value#" => "<b>".intval($_SESSION["CACHE_STAT"]["deleted"])."</b>"))."<br>"
-				.GetMessage("main_cache_files_deleted_size", array("#value#" => "<b>".CFile::FormatSize($_SESSION["CACHE_STAT"]["space_freed"])."</b>"))."<br>"
-				.GetMessage("main_cache_files_delete_errors", array("#value#" => "<b>".intval($_SESSION["CACHE_STAT"]["errors"])."</b>"))."<br>"
+				.GetMessage("main_cache_files_scanned_count", array("#value#" => "<b>".intval(\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"]["scanned"])."</b>"))."<br>"
+				.GetMessage("main_cache_files_scanned_size", array("#value#" => "<b>".CFile::FormatSize(\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"]["space_total"])."</b>"))."<br>"
+				.GetMessage("main_cache_files_deleted_count", array("#value#" => "<b>".intval(\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"]["deleted"])."</b>"))."<br>"
+				.GetMessage("main_cache_files_deleted_size", array("#value#" => "<b>".CFile::FormatSize(\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"]["space_freed"])."</b>"))."<br>"
+				.GetMessage("main_cache_files_delete_errors", array("#value#" => "<b>".intval(\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"]["errors"])."</b>"))."<br>"
 				.GetMessage("main_cache_files_last_path", array("#value#" => "<b>".htmlspecialcharsbx($currentPath)."</b>"))."<br>"
 			,
 			"HTML"=>true,
@@ -221,20 +221,22 @@ if(
 			BXClearCache(true);
 			$GLOBALS["CACHE_MANAGER"]->CleanAll();
 			$GLOBALS["stackCacheManager"]->CleanAll();
+			$taggedCache = \Bitrix\Main\Application::getInstance()->getTaggedCache();
+			$taggedCache->deleteAllTags();
 			$page = \Bitrix\Main\Composite\Page::getInstance();
 			$page->deleteAll();
 		}
 
-		if ($_SESSION["CACHE_STAT"])
+		if (\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"])
 		{
 			CAdminMessage::ShowMessage(array(
 				"MESSAGE"=>GetMessage("main_cache_finished"),
 				"DETAILS"=> ""
-					.GetMessage("main_cache_files_scanned_count", array("#value#" => "<b>".intval($_SESSION["CACHE_STAT"]["scanned"])."</b>"))."<br>"
-					.GetMessage("main_cache_files_scanned_size", array("#value#" => "<b>".CFile::FormatSize($_SESSION["CACHE_STAT"]["space_total"])."</b>"))."<br>"
-					.GetMessage("main_cache_files_deleted_count", array("#value#" => "<b>".intval($_SESSION["CACHE_STAT"]["deleted"])."</b>"))."<br>"
-					.GetMessage("main_cache_files_deleted_size", array("#value#" => "<b>".CFile::FormatSize($_SESSION["CACHE_STAT"]["space_freed"])."</b>"))."<br>"
-					.GetMessage("main_cache_files_delete_errors", array("#value#" => "<b>".intval($_SESSION["CACHE_STAT"]["errors"])."</b>"))."<br>"
+					.GetMessage("main_cache_files_scanned_count", array("#value#" => "<b>".intval(\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"]["scanned"])."</b>"))."<br>"
+					.GetMessage("main_cache_files_scanned_size", array("#value#" => "<b>".CFile::FormatSize(\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"]["space_total"])."</b>"))."<br>"
+					.GetMessage("main_cache_files_deleted_count", array("#value#" => "<b>".intval(\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"]["deleted"])."</b>"))."<br>"
+					.GetMessage("main_cache_files_deleted_size", array("#value#" => "<b>".CFile::FormatSize(\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"]["space_freed"])."</b>"))."<br>"
+					.GetMessage("main_cache_files_delete_errors", array("#value#" => "<b>".intval(\Bitrix\Main\Application::getInstance()->getSession()["CACHE_STAT"]["errors"])."</b>"))."<br>"
 				,
 				"HTML"=>true,
 				"TYPE"=>"OK",

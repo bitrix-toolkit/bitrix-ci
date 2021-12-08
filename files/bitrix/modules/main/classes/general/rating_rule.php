@@ -1,4 +1,4 @@
-<?
+<?php
 
 IncludeModuleLangFile($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/main/classes/general/rating_rule.php");
 
@@ -42,7 +42,7 @@ class CRatingRule
 			for ($i=0; $i<count($filter_keys); $i++)
 			{
 				$val = $arFilter[$filter_keys[$i]];
-				if ($val == '' || $val=="NOT_REF") continue;
+				if ((string)$val == '' || $val=="NOT_REF") continue;
 				switch(mb_strtoupper($filter_keys[$i]))
 				{
 					case "ID":
@@ -279,8 +279,8 @@ class CRatingRule
 		$arConfigs = $ratingRule->Fetch();
 		if ($arConfigs['ACTIVE'] == 'Y')
 		{
-			$arConfigs['CONDITION_CONFIG'] = unserialize(htmlspecialcharsback($arConfigs['CONDITION_CONFIG']));
-			$arConfigs['ACTION_CONFIG']	 = unserialize(htmlspecialcharsback($arConfigs['ACTION_CONFIG']));
+			$arConfigs['CONDITION_CONFIG'] = unserialize(htmlspecialcharsback($arConfigs['CONDITION_CONFIG']), ['allowed_classes' => false]);
+			$arConfigs['ACTION_CONFIG']	 = unserialize(htmlspecialcharsback($arConfigs['ACTION_CONFIG']), ['allowed_classes' => false]);
 			
 			$arConfigs['CONDITION_MODULE'] = isset($arConfigs['CONDITION_MODULE']) && $arConfigs['CONDITION_MODULE'] <> ''? $arConfigs['CONDITION_MODULE']: 'main';
 			if(CModule::IncludeModule(mb_strtolower($arConfigs['CONDITION_MODULE']))) {
@@ -310,8 +310,8 @@ class CRatingRule
 			for ($i=0; $i<count($filter_keys); $i++)
 			{
 				$val = $arFilter[$filter_keys[$i]];
-				if ($val == '' || $val=="NOT_REF") continue;
-				switch(mb_strtoupper($filter_keys[$i]))
+				if ((string)$val == '' || $val=="NOT_REF") continue;
+				switch(strtoupper($filter_keys[$i]))
 				{
 					case "RULE_ID":
 						$arSqlSearch[] = GetFilterQuery("RULE_ID", $val, "N");
@@ -460,7 +460,7 @@ class CRatingRule
 		return true;
 	}
 
-	function err_mess()
+	public static function err_mess()
 	{
 		return "<br>Class: CRatingRule<br>File: ".__FILE__;
 	}

@@ -1,0 +1,26 @@
+<?php
+$MESS["ERROR_NO_NAME"] = "Не зазначена назва статусу мовою";
+$MESS["SALE_CODE_LEN"] = "буква";
+$MESS["SALE_EDIT_RECORD"] = "Зміна статусу #ID#";
+$MESS["SALE_NEW_RECORD"] = "Новий статус";
+$MESS["SALE_STATUS_TYPE_ORDER_EXISTS"] = "Статусу \"#STATUS_ID#\" не можна встановити тип \"#STATUS_TYPE#\" тому, що є <a href=\"/bitrix/admin/sale_order.php?set_filter=Y&filter_status[]=#CURRENT_STATUS_ID#\" target=\"_blank\">замовлення</a> з таким статусом";
+$MESS["SALE_STATUS_TYPE_SHIPMENT_EXISTS"] = "Статусу \"#STATUS_ID#\" не можна встановити тип \"#STATUS_TYPE#\" тому,що <a href=\"/bitrix/admin/sale_order_shipment.php?&set_filter=Y&&filter_status[]=#CURRENT_STATUS_ID#\" target=\"_blank\">відвантаження</a> з таким статусом";
+$MESS["SALE_STATUS_WRONG_TYPE"] = "Статусу \"#STATUS_ID#\" не можна встановити тип \"#STATUS_TYPE#\"";
+$MESS["SSEN_2FLIST"] = "Список статусів";
+$MESS["SSEN_ACCESS_PERMS"] = "Права на доступ";
+$MESS["SSEN_COLOR"] = "Колір статусу";
+$MESS["SSEN_DELETE_STATUS"] = "Видалити статус";
+$MESS["SSEN_DELETE_STATUS_CONFIRM"] = "Ви впевнені, що хочете видалити цей статус? Якщо є замовлення з цим статусом, то статус видалено не буде.";
+$MESS["SSEN_GROUPS_LINK"] = "Групи користувачів";
+$MESS["SSEN_INVALID_TASK_ID_FOR"] = "Не правильний рівень доступу";
+$MESS["SSEN_NEW_STATUS"] = "Додати новий статус";
+$MESS["SSEN_NOTIFY_ASK"] = "Відправляти поштове сповіщення користувачу при переході замовлення в цей статус";
+$MESS["SSEN_NOTIFY_LINK"] = "Поштовий шаблон статусу";
+$MESS["SSEN_NOTIFY_W_CONTENT"] = "Шаблон стане доступний після збереження статусу.";
+$MESS["SSEN_NOTIFY_W_TITLE"] = "Статус не збережено!";
+$MESS["SSEN_PERM_GROUPS_ABSENT"] = "Ні груп користувачів з рівнем доступу [U] - обробка замовлень.";
+$MESS["SSEN_TAB_STATUS"] = "Статус замовлення";
+$MESS["SSEN_TAB_STATUS_DESCR"] = "Статус замовлення";
+$MESS["SSEN_TASKS_LINK"] = "Рівні доступу";
+$MESS["SSEN_TYPE_D"] = "Доставка";
+$MESS["SSEN_TYPE_O"] = "Замовлення";

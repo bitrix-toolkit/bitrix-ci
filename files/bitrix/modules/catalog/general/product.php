@@ -130,7 +130,6 @@ class CAllCatalogProduct
 	 */
 	public static function ClearCache()
 	{
-		self::$arProductCache = [];
 		self::$vatCache = [];
 	}
 
@@ -153,14 +152,15 @@ class CAllCatalogProduct
 
 	/**
 	 * @deprecated deprecated since catalog 15.5.2
-	 * @see \Bitrix\Catalog\ProductTable::isExistProduct()
+	 * @see \Bitrix\Catalog\Model\Product::getCacheItem()
 	 *
 	 * @param int $intID
 	 * @return bool
 	 */
 	public static function IsExistProduct($intID)
 	{
-		return Catalog\ProductTable::isExistProduct($intID);
+		$data = Catalog\Model\Product::getCacheItem($intID, true);
+		return (!empty($data));
 	}
 
 	public static function CheckFields($ACTION, &$arFields, $ID = 0)
@@ -1026,7 +1026,7 @@ class CAllCatalogProduct
 				return false;
 
 			$iterator = Catalog\PriceTable::getList(array(
-				'select' => array('ID', 'CATALOG_GROUP_ID', 'PRICE', 'CURRENCY'),
+				'select' => array('ID', 'CATALOG_GROUP_ID', 'PRICE', 'CURRENCY', 'PRICE_SCALE'),
 				'filter' => array(
 					'=PRODUCT_ID' => $intProductID,
 					'@CATALOG_GROUP_ID' => $priceTypeList,
@@ -1205,6 +1205,13 @@ class CAllCatalogProduct
 			{
 				$minimalPrice = $result;
 			}
+			elseif (
+				$minimalPrice['COMPARE_PRICE'] == $result['COMPARE_PRICE']
+				&& $minimalPrice['RAW_PRICE']['PRICE_SCALE'] > $result['RAW_PRICE']['PRICE_SCALE']
+			)
+			{
+				$minimalPrice = $result;
+			}
 
 			unset($currentPrice, $result);
 		}
@@ -1213,9 +1220,11 @@ class CAllCatalogProduct
 
 		$discountValue = ($minimalPrice['BASE_PRICE'] - $minimalPrice['PRICE']);
 
+		unset($minimalPrice['RAW_PRICE']['PRICE_SCALE']);
 		$arResult = array(
 			'PRICE' => $minimalPrice['RAW_PRICE'],
 			'RESULT_PRICE' => array(
+				'ID' => $minimalPrice['RAW_PRICE']['ID'],
 				'PRICE_TYPE_ID' => $minimalPrice['RAW_PRICE']['CATALOG_GROUP_ID'],
 				'BASE_PRICE' => $minimalPrice['BASE_PRICE'],
 				'DISCOUNT_PRICE' => $minimalPrice['PRICE'],
@@ -1390,7 +1399,10 @@ class CAllCatalogProduct
 			}
 
 			$iterator = Catalog\PriceTable::getList(array(
-				'select' => array('ID', 'CATALOG_GROUP_ID', 'PRICE', 'CURRENCY', 'QUANTITY_FROM', 'QUANTITY_TO', 'PRODUCT_ID'),
+				'select' => array(
+					'ID', 'PRODUCT_ID', 'CATALOG_GROUP_ID',
+					'PRICE', 'CURRENCY', 'QUANTITY_FROM', 'QUANTITY_TO', 'PRICE_SCALE'
+				),
 				'filter' => array(
 					'=PRODUCT_ID' => array_keys($products),
 					'@CATALOG_GROUP_ID' => $priceTypeList
@@ -1682,14 +1694,23 @@ class CAllCatalogProduct
 			{
 				$minimalPrice[$basketCode] = $result;
 			}
+			elseif (
+				$minimalPrice[$basketCode]['COMPARE_PRICE'] == $result['COMPARE_PRICE']
+				&& $minimalPrice[$basketCode]['RAW_PRICE']['PRICE_SCALE'] > $result['RAW_PRICE']['PRICE_SCALE']
+			)
+			{
+				$minimalPrice[$basketCode] = $result;
+			}
 
 			unset($currentPrice, $result);
 
 			$discountValue = ($minimalPrice[$basketCode]['BASE_PRICE'] - $minimalPrice[$basketCode]['PRICE']);
 
+			unset($minimalPrice[$basketCode]['RAW_PRICE']['PRICE_SCALE']);
 			$productResult = array(
 				'PRICE' => $minimalPrice[$basketCode]['RAW_PRICE'],
 				'RESULT_PRICE' => array(
+					'ID' => $minimalPrice[$basketCode]['RAW_PRICE']['ID'],
 					'PRICE_TYPE_ID' => $minimalPrice[$basketCode]['RAW_PRICE']['CATALOG_GROUP_ID'],
 					'BASE_PRICE' => $minimalPrice[$basketCode]['BASE_PRICE'],
 					'DISCOUNT_PRICE' => $minimalPrice[$basketCode]['PRICE'],
@@ -2117,6 +2138,14 @@ class CAllCatalogProduct
 		{
 			if (isset($userResult['PRICE']['CATALOG_GROUP_ID']))
 				$userResult['RESULT_PRICE']['PRICE_TYPE_ID'] = $userResult['PRICE']['CATALOG_GROUP_ID'];
+		}
+
+		if (!isset($userResult['RESULT_PRICE']['ID']))
+		{
+			if (isset($userResult['PRICE']['ID']))
+			{
+				$userResult['RESULT_PRICE']['ID'] = $userResult['PRICE']['ID'];
+			}
 		}
 
 		$componentResultMode = Catalog\Product\Price\Calculation::isComponentResultMode();

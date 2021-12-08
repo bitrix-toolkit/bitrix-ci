@@ -4,7 +4,6 @@ namespace Bitrix\Main\Page;
 use Bitrix\Main;
 use Bitrix\Main\IO;
 use Bitrix\Main\Config\Option;
-use Bitrix\Main\Text\BinaryString;
 
 class Asset
 {
@@ -524,9 +523,9 @@ class Asset
 					'NAME' => $targetName,
 					'PARENT_NAME' => $targetName,
 					'UNIQUE' => $targetInfo['UNIQUE'],
-					'PREFIX' => $targetInfo['PREFIX'],
+					'PREFIX' => ($targetInfo['PREFIX'] ?? ''),
 					'MODE' => $targetInfo['MODE'],
-					'MODULE_NAME' => $targetInfo['MODULE_NAME'],
+					'MODULE_NAME' => ($targetInfo['MODULE_NAME'] ?? ''),
 				];
 
 				if (!empty($targetInfo[$key]))
@@ -536,10 +535,10 @@ class Asset
 						$res[$key][] = [
 							'NAME' => $subSetName,
 							'PARENT_NAME' => $targetName,
-							'UNIQUE' => $val['UNIQUE'],
-							'PREFIX' => $val['PREFIX'],
-							'MODE' => $val['MODE'],
-							'MODULE_NAME' => $val['MODULE_NAME'],
+							'UNIQUE' => ($val['UNIQUE'] ?? ''),
+							'PREFIX' => ($val['PREFIX'] ?? ''),
+							'MODE' => ($val['MODE'] ?? 0),
+							'MODULE_NAME' => ($val['MODULE_NAME'] ?? ''),
 						];
 					}
 				}
@@ -838,13 +837,13 @@ class Asset
 		$areas = $this->getScriptAreas($content);
 		foreach ($areas as $area)
 		{
-			if (BinaryString::getPosition($area->attrs, "data-skip-moving") !== false || !self::isValidScriptType($area->attrs))
+			if (strpos($area->attrs, "data-skip-moving") !== false || !self::isValidScriptType($area->attrs))
 			{
 				continue;
 			}
 
-			$js .= BinaryString::getSubstring($content, $area->openTagStart, $area->closingTagEnd - $area->openTagStart);
-			$newContent .= BinaryString::getSubstring($content, $offset, $area->openTagStart - $offset);
+			$js .= substr($content, $area->openTagStart, $area->closingTagEnd - $area->openTagStart);
+			$newContent .= substr($content, $offset, $area->openTagStart - $offset);
 			$offset = $area->closingTagEnd;
 		}
 
@@ -853,8 +852,8 @@ class Asset
 			return;
 		}
 
-		$newContent .= BinaryString::getSubstring($content, $offset);
-		$bodyEnd = BinaryString::getLastPositionIgnoreCase($newContent, "</body>");
+		$newContent .= substr($content, $offset);
+		$bodyEnd = strripos($newContent, "</body>");
 		if ($bodyEnd === false)
 		{
 			$content = $newContent.$js;
@@ -878,28 +877,28 @@ class Asset
 
 		$offset = 0;
 		$areas = [];
-		$content = BinaryString::changeCaseToLower($content);
-		while (($openTagStart = BinaryString::getPosition($content, $openTag, $offset)) !== false)
+		$content = strtolower($content);
+		while (($openTagStart = strpos($content, $openTag, $offset)) !== false)
 		{
-			$endingPos = BinaryString::getPosition($content, $ending, $openTagStart);
+			$endingPos = strpos($content, $ending, $openTagStart);
 			if ($endingPos === false)
 			{
 				break;
 			}
 
-			$attrsStart = $openTagStart + mb_strlen($openTag);
-			$attrs = BinaryString::getSubstring($content, $attrsStart, $endingPos - $attrsStart);
-			$openTagEnd = $endingPos + mb_strlen($ending);
+			$attrsStart = $openTagStart + strlen($openTag);
+			$attrs = substr($content, $attrsStart, $endingPos - $attrsStart);
+			$openTagEnd = $endingPos + strlen($ending);
 
 			$realClosingTag = $closingTag.$ending;
-			$closingTagStart = BinaryString::getPosition($content, $realClosingTag, $openTagEnd);
+			$closingTagStart = strpos($content, $realClosingTag, $openTagEnd);
 			if ($closingTagStart === false)
 			{
 				$offset = $openTagEnd;
 				continue;
 			}
 
-			$closingTagEnd = $closingTagStart + mb_strlen($realClosingTag);
+			$closingTagEnd = $closingTagStart + strlen($realClosingTag);
 			while (isset($content[$closingTagEnd]) && $content[$closingTagEnd] === "\n")
 			{
 				$closingTagEnd++;
@@ -1279,7 +1278,8 @@ class Asset
 					continue;
 				}
 
-				if ($moduleInfo = $this->isKernelCSS($cssInfo['PATH']))
+				$moduleInfo = $this->isKernelCSS($cssInfo['PATH']);
+				if ($moduleInfo)
 				{
 					$cssInfo['TARGET'] = 'KERNEL';
 					if ($this->sliceKernel() && $this->optimizeCss())
@@ -1598,7 +1598,7 @@ class Asset
 				else
 				{
 					$this->assetList['CSS'][$setInfo['PARENT_NAME']][$setInfo['NAME']] = $optimizedAsset['FILES'];
-					$this->assetList['SOURCE_CSS'][$setInfo['PARENT_NAME']][$setInfo['NAME']] = $optimizedAsset['SOURCE_FILES'];
+					$this->assetList['SOURCE_CSS'][$setInfo['PARENT_NAME']][$setInfo['NAME']] = ($optimizedAsset['SOURCE_FILES'] ?? []);
 					$this->targetList[$setInfo['PARENT_NAME']]['CSS_RES'][$setInfo['NAME']][] = $resCss;
 				}
 			}
@@ -1717,7 +1717,7 @@ class Asset
 				}
 				$optAsset = $this->optimizeAsset($listAsset, $setInfo['UNIQUE'], $setInfo['PREFIX'], $setInfo['NAME'], 'js', $data);
 				$this->assetList['JS'][$setInfo['PARENT_NAME']][$setInfo['NAME']] = $optAsset['FILES'];
-				$this->assetList['SOURCE_JS'][$setInfo['PARENT_NAME']][$setInfo['NAME']] = $optAsset['SOURCE_FILES'];
+				$this->assetList['SOURCE_JS'][$setInfo['PARENT_NAME']][$setInfo['NAME']] = ($optAsset['SOURCE_FILES'] ?? []);
 				$this->targetList[$setInfo['PARENT_NAME']]['JS_RES'][$setInfo['NAME']][] = $optAsset['RESULT'].$resJs;
 			}
 			unset($optAsset, $resJs, $listAsset);
@@ -2398,23 +2398,23 @@ class Asset
 	{
 		$sourceMapName = "";
 
-		$length = BinaryString::getLength($content);
+		$length = strlen($content);
 		$position = $length > 512 ? $length - 512 : 0;
-		$lastLine = BinaryString::getPosition($content, self::SOURCE_MAP_TAG, $position);
+		$lastLine = strpos($content, self::SOURCE_MAP_TAG, $position);
 		if ($lastLine !== false)
 		{
-			$nameStart = $lastLine + mb_strlen(self::SOURCE_MAP_TAG);
-			if (($newLinePos = BinaryString::getPosition($content, "\n", $nameStart)) !== false)
+			$nameStart = $lastLine + strlen(self::SOURCE_MAP_TAG);
+			if (($newLinePos = strpos($content, "\n", $nameStart)) !== false)
 			{
-				$sourceMapName = BinaryString::getSubstring($content, $nameStart, $newLinePos - $nameStart);
+				$sourceMapName = substr($content, $nameStart, $newLinePos - $nameStart);
 			}
 			else
 			{
-				$sourceMapName = BinaryString::getSubstring($content, $nameStart);
+				$sourceMapName = substr($content, $nameStart);
 			}
 
 			$sourceMapName = trim($sourceMapName);
-			$content = BinaryString::getSubstring($content, 0, $lastLine);
+			$content = substr($content, 0, $lastLine);
 		}
 
 		return $sourceMapName;
@@ -2431,20 +2431,20 @@ class Asset
 		$line = 0;
 
 		$result = [];
-		while (($newLinePos = BinaryString::getPosition($content, "\n", $offset)) !== false)
+		while (($newLinePos = strpos($content, "\n", $offset)) !== false)
 		{
 			$line++;
 			$offset = $newLinePos + 1;
-			if (BinaryString::getSubstring($content, $offset, mb_strlen(self::HEADER_START_TAG)) === self::HEADER_START_TAG)
+			if (substr($content, $offset, strlen(self::HEADER_START_TAG)) === self::HEADER_START_TAG)
 			{
-				$endingPos = BinaryString::getPosition($content, self::HEADER_END_TAG, $offset);
+				$endingPos = strpos($content, self::HEADER_END_TAG, $offset);
 				if ($endingPos === false)
 				{
 					break;
 				}
 
-				$startData = $offset + mb_strlen(self::HEADER_START_TAG);
-				$data = unserialize(BinaryString::getSubstring($content, $startData, $endingPos - $startData));
+				$startData = $offset + strlen(self::HEADER_START_TAG);
+				$data = unserialize(substr($content, $startData, $endingPos - $startData), ['allowed_classes' => false]);
 
 				if (is_array($data))
 				{
@@ -2520,7 +2520,7 @@ class Asset
 		}
 
 		$written = fwrite($fh, $content);
-		$len = Main\Text\BinaryString::getLength($content);
+		$len = strlen($content);
 		fclose($fh);
 
 		@unlink($filePath);

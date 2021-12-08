@@ -102,7 +102,7 @@ class CControllerClient
 			if(!$ar_mem)
 				return false;
 
-			$arGroupsMap = unserialize(COption::GetOptionString("controller", "auth_controller", serialize(array())));
+			$arGroupsMap = unserialize(COption::GetOptionString("controller", "auth_controller", serialize(array())), ['allowed_classes' => false]);
 			$res = CControllerMember::CheckUserAuth($ar_mem["ID"], $login, $password, $arGroupsMap);
 
 			if(!is_array($res))
@@ -200,7 +200,7 @@ class CControllerClient
 			$arFields["PERSONAL_BIRTHDAY"] = $DB->FormatDate($arFields["PERSONAL_BIRTHDAY"], $FORMAT_DATE, FORMAT_DATE);
 		}
 
-		$dbr_user = CUser::GetList($O = '', $B = '', array(
+		$dbr_user = CUser::GetList('', '', array(
 			"LOGIN_EQUAL_EXACT" => $arFields["LOGIN"],
 			"EXTERNAL_AUTH_ID" => "__controller",
 		));
@@ -556,7 +556,7 @@ class CControllerClient
 	{
 		static $arCachedData;
 		if(!isset($arCachedData) || $bRefresh)
-			$arCachedData = unserialize(COption::GetOptionString("main", "~controller_backup", ""));
+			$arCachedData = unserialize(COption::GetOptionString("main", "~controller_backup", ""), ['allowed_classes' => false]);
 
 		return $arCachedData;
 	}
@@ -939,7 +939,7 @@ class __CControllerPacket
 	{
 		if (CheckSerializedData($parameters))
 		{
-			$arParameters = unserialize($parameters);
+			$arParameters = unserialize($parameters, ['allowed_classes' => false]);
 			if ($encoding)
 			{
 				if (array_key_exists("file", $arParameters))
@@ -971,28 +971,7 @@ class __CControllerPacket
 	 */
 	protected function _decode(&$arParameters, $encodingFrom ,$encodingTo)
 	{
-		global $APPLICATION;
-
-		if (is_array($arParameters))
-		{
-			$res = array();
-			foreach ($arParameters as $key => $value)
-			{
-				if (is_string($key))
-				{
-					$key = $APPLICATION->ConvertCharset($key, $encodingFrom, $encodingTo);
-				}
-
-				$this->_decode($value, $encodingFrom, $encodingTo);
-
-				$res[$key] = $value;
-			}
-			$arParameters = $res;
-		}
-		elseif (is_string($arParameters))
-		{
-			$arParameters = $APPLICATION->ConvertCharset($arParameters, $encodingFrom, $encodingTo);
-		}
+		$arParameters = \Bitrix\Main\Text\Encoding::convertEncoding($arParameters, $encodingFrom, $encodingTo);
 	}
 
 	/**
@@ -1392,8 +1371,6 @@ class __CControllerPacketResponse extends __CControllerPacket
 	// Разбирает строку ответа по полям объекта
 	function ParseResult($result)
 	{
-		global $APPLICATION;
-
 		$ar_result = array();
 		$pairs = explode('&', trim($result, " \n\r\t"));
 		foreach ($pairs as $pair)
@@ -1418,8 +1395,8 @@ class __CControllerPacketResponse extends __CControllerPacket
 			$this->arParameters = $arParameters;
 			if (isset($ar_result['encoding']))
 			{
-				if($this->text && is_object($APPLICATION))
-					$this->text = $APPLICATION->ConvertCharset($this->text, $this->encoding, SITE_CHARSET);
+				if($this->text)
+					$this->text = \Bitrix\Main\Text\Encoding::convertEncoding($this->text, $this->encoding, SITE_CHARSET);
 			}
 		}
 

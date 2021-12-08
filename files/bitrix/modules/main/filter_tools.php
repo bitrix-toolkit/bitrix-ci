@@ -1,4 +1,6 @@
 <?
+use \Bitrix\Main\Application;
+
 IncludeModuleLangFile(__FILE__);
 
 /*********************************************************************
@@ -20,9 +22,9 @@ function CheckFilterDates($date1, $date2, &$date1_wrong, &$date2_wrong, &$date2_
 
 function InitFilterEx($arName, $varName, $action="set", $session=true, $FilterLogic="FILTER_logic")
 {
-
-	if ($session && is_array($_SESSION["SESS_ADMIN"][$varName]))
-		$FILTER = $_SESSION["SESS_ADMIN"][$varName];
+	$sessAdmin = Application::getInstance()->getSession()["SESS_ADMIN"];
+	if ($session && is_array($sessAdmin[$varName]))
+		$FILTER = $sessAdmin[$varName];
 	else
 		$FILTER = Array();
 
@@ -53,7 +55,7 @@ function InitFilterEx($arName, $varName, $action="set", $session=true, $FilterLo
 			if(isset($$bdays) || isset($FILTER[$bdays]))
 			{
 				$FILTER[$bdays] = $$bdays;
-				if ($$bdays <> '' && $$bdays!="NOT_REF")
+				if ((string)$$bdays <> '' && $$bdays!="NOT_REF")
 					$$name = GetTime(time()-86400*intval($FILTER[$bdays]));
 			}
 
@@ -67,7 +69,7 @@ function InitFilterEx($arName, $varName, $action="set", $session=true, $FilterLo
 			if(isset($$direction) || isset($FILTER[$direction]))
 				$$direction = $FILTER[$direction];
 
-			if (isset($FILTER[$bdays]) && $FILTER[$bdays] <> '' && $FILTER[$bdays]!="NOT_REF")
+			if (isset($FILTER[$bdays]) && (string)$FILTER[$bdays] <> '' && $FILTER[$bdays]!="NOT_REF")
 			{
 				$$bdays = $FILTER[$bdays];
 				$$name = GetTime(time()-86400*intval($FILTER[$bdays]));
@@ -77,9 +79,9 @@ function InitFilterEx($arName, $varName, $action="set", $session=true, $FilterLo
 
 	if($session)
 	{
-		if(!is_array($_SESSION["SESS_ADMIN"]))
-			$_SESSION["SESS_ADMIN"] = array();
-		$_SESSION["SESS_ADMIN"][$varName] = $FILTER;
+		if(!is_array(Application::getInstance()->getSession()["SESS_ADMIN"]))
+			Application::getInstance()->getSession()->set("SESS_ADMIN", []);
+		Application::getInstance()->getSession()["SESS_ADMIN"][$varName] = $FILTER;
 	}
 }
 
@@ -88,7 +90,7 @@ function DelFilterEx($arName, $varName, $session=true, $FilterLogic="FILTER_logi
 	global $$FilterLogic;
 
 	if ($session)
-		unset($_SESSION["SESS_ADMIN"][$varName]);
+		unset(Application::getInstance()->getSession()["SESS_ADMIN"][$varName]);
 
 	foreach ($arName as $name)
 	{
@@ -110,7 +112,7 @@ function DelFilterEx($arName, $varName, $session=true, $FilterLogic="FILTER_logi
 function InitFilter($arName)
 {
 	$md5Path = md5(GetPagePath());
-	$FILTER = $_SESSION["SESS_ADMIN"][$md5Path];
+	$FILTER = Application::getInstance()->getSession()->get("SESS_ADMIN")[$md5Path];
 
 	foreach ($arName as $name)
 	{
@@ -122,13 +124,13 @@ function InitFilter($arName)
 			$$name = $FILTER[$name];
 	}
 
-	$_SESSION["SESS_ADMIN"][$md5Path] = $FILTER;
+	Application::getInstance()->getSession()->get("SESS_ADMIN")[$md5Path] = $FILTER;
 }
 
 function DelFilter($arName)
 {
 	$md5Path = md5(GetPagePath());
-	unset($_SESSION["SESS_ADMIN"][$md5Path]);
+	unset(Application::getInstance()->getSession()->get("SESS_ADMIN")[$md5Path]);
 
 	foreach ($arName as $name)
 	{
@@ -169,7 +171,7 @@ function GetFilterHiddens($var = "filter_", $button = array("filter" => "Y", "se
 					$res .= '<input type="hidden" name="'.htmlspecialcharsbx($var_name).'[]" value="'.htmlspecialcharsbx($v).'">';
 				}
 			}
-			elseif ($value <> '' && $value!="NOT_REF")
+			elseif ((string)$value <> '' && $value!="NOT_REF")
 			{
 				$res .= '<input type="hidden" name="'.htmlspecialcharsbx($var_name).'" value="'.htmlspecialcharsbx($value).'">';
 			}
@@ -225,7 +227,7 @@ function GetFilterParams($var="filter_", $bDoHtmlEncode=true, $button = array("f
 				foreach($value as $v)
 					$res .= "&".urlencode($var_name)."[]=".urlencode($v);
 			}
-			elseif($value <> '' && $value!="NOT_REF")
+			elseif((string)$value <> '' && $value!="NOT_REF")
 			{
 				$res .= "&".urlencode($var_name)."=".urlencode($value);
 			}
@@ -268,7 +270,7 @@ function GetFilterStr($arr, $button="set_filter")
 				}
 			}
 		}
-		elseif ($value <> '' && $value!="NOT_REF")
+		elseif ((string)$value <> '' && $value!="NOT_REF")
 		{
 			$str .= "&".urlencode($var)."=".urlencode($value);
 		}
@@ -298,7 +300,7 @@ function GetUrlFromArray($arr)
 				$str .= "&".$key.urlencode("[]")."=".urlencode($a);
 			}
 		}
-		elseif($value <> '' && $value!="NOT_REF")
+		elseif((string)$value <> '' && $value!="NOT_REF")
 		{
 			$str .= "&".$key."=".urlencode($value);
 		}
@@ -313,7 +315,7 @@ function ShowAddFavorite($filterName=false, $btnName="set_filter", $module="stat
 		$alt=GetMessage("MAIN_ADD_TO_FAVORITES");
 	if ($filterName===false)
 		$filterName = $sFilterID;
-	$url = urlencode($SCRIPT_NAME."?".$QUERY_STRING. GetUrlFromArray($_SESSION["SESS_ADMIN"][$filterName])."&".$btnName."=Y");
+	$url = urlencode($SCRIPT_NAME."?".$QUERY_STRING. GetUrlFromArray(Application::getInstance()->getSession()["SESS_ADMIN"][$filterName])."&".$btnName."=Y");
 	$str = "<a target='_blank' href='".BX_ROOT."/admin/favorite_edit.php?lang=".LANG."&module=$module&url=$url'><img alt='".$alt."' src='".BX_ROOT."/images/main/add_favorite.gif' width='16' height='16' border=0></a>";
 	echo $str;
 }
@@ -654,14 +656,14 @@ function InitSorting($Path=false, $sByVar="by", $sOrderVar="order")
 	$md5Path = md5($Path);
 
 	if ($$sByVar <> '')
-		$_SESSION["SESS_SORT_BY"][$md5Path] = $$sByVar;
+		Application::getInstance()->getSession()["SESS_SORT_BY"][$md5Path] = $$sByVar;
 	else
-		$$sByVar = $_SESSION["SESS_SORT_BY"][$md5Path];
+		$$sByVar = Application::getInstance()->getSession()["SESS_SORT_BY"][$md5Path];
 
 	if($$sOrderVar <> '')
-		$_SESSION["SESS_SORT_ORDER"][$md5Path] = $$sOrderVar;
+		Application::getInstance()->getSession()["SESS_SORT_ORDER"][$md5Path] = $$sOrderVar;
 	else
-		$$sOrderVar = $_SESSION["SESS_SORT_ORDER"][$md5Path];
+		$$sOrderVar = Application::getInstance()->getSession()["SESS_SORT_ORDER"][$md5Path];
 
 	mb_strtolower($$sByVar);
 	mb_strtolower($$sOrderVar);

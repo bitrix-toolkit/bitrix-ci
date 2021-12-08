@@ -86,12 +86,11 @@ class SectionType extends ElementType
 			self::$iblockIncluded = Loader::includeModule('iblock');
 		}
 
-		$elementEnumList = false;
+		$section = false;
 
 		if(self::$iblockIncluded && (int)$userField['SETTINGS']['IBLOCK_ID'])
 		{
-			$sectionEnum = new CIBlockSectionEnum();
-			$section = $sectionEnum::getTreeList(
+			$section = CIBlockSectionEnum::getTreeList(
 				(int)$userField['SETTINGS']['IBLOCK_ID'],
 				$userField['SETTINGS']['ACTIVE_FILTER']
 			);
@@ -143,8 +142,7 @@ class SectionType extends ElementType
 			];
 		}
 
-		$sectionEnum = new CIBlockSectionEnum();
-		$sectionEnumList = $sectionEnum::getTreeList(
+		$sectionEnumList = CIBlockSectionEnum::getTreeList(
 			(int)$userField['SETTINGS']['IBLOCK_ID'],
 			$userField['SETTINGS']['ACTIVE_FILTER']
 		);
@@ -160,5 +158,11 @@ class SectionType extends ElementType
 		}
 
 		$userField['USER_TYPE']['FIELDS'] = $result;
+	}
+
+	public static function getDefaultValue(array $userField, array $additionalParameters = [])
+	{
+		$value = ($userField['SETTINGS']['DEFAULT_VALUE'] ?? '');
+		return ($userField['MULTIPLE'] === 'Y' ? [$value] : $value);
 	}
 }

@@ -45,7 +45,8 @@ class CCatalogAdminToolsAll
 		$intIBlockID,
 		&$arCatalog,
 		$arParams,
-		BaseBuilder $urlBuilder = null
+		BaseBuilder $urlBuilder = null,
+		$gridId = ''
 	)
 	{
 		$arResult = false;
@@ -84,93 +85,138 @@ class CCatalogAdminToolsAll
 		$arItems = array();
 		$arSubItems = array();
 
-		if ($arCatalog['CATALOG'] == 'Y')
+		$productLimits = Catalog\Config\State::getExceedingProductLimit($intIBlockID);
+		if (!empty($productLimits))
 		{
-			$arParams[self::$strMainPrefix.self::TAB_KEY] = self::TAB_CATALOG;
-			$arItems[] = array(
-				'ICON' => 'btn_new',
-				'TEXT' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_PROD'),
-				'TITLE' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_PROD_TITLE'),
-				'LINK' => $urlBuilder->getElementDetailUrl(0, $arParams),
-				'PUBLIC' => $productCardEnabled, // TODO: remove this hack after refactoring \CAdminUiList::AddAdminContextMenu
-				'SHOW_TITLE' => true
-			);
-
-			if (!$productCardEnabled)
+			$helpLink = Catalog\Config\Feature::getProductLimitHelpLink();
+			if (!empty($helpLink))
 			{
-				if (CCatalogSku::TYPE_FULL == $arCatalog['CATALOG_TYPE'])
-				{
-					$arParams[self::$strMainPrefix.self::TAB_KEY] = self::TAB_SKU;
-					$arSubItems[] = array(
-						'TEXT' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_SKU'),
-						'TITLE' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_SKU_TITLE'),
-						'LINK' => $urlBuilder->getElementDetailUrl(0, $arParams),
-						'SHOW_TITLE' => true
-					);
-				}
-				if (Catalog\Config\Feature::isProductSetsEnabled())
-				{
-					if (CCatalogSku::TYPE_OFFERS != $arCatalog['CATALOG_TYPE'])
-					{
-						$arParams[self::$strMainPrefix.self::TAB_KEY] = self::TAB_SET;
-						$arSubItems[] = array(
-							'TEXT' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_SET'),
-							'TITLE' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_SET_TITLE'),
-							'LINK' => $urlBuilder->getElementDetailUrl(0, $arParams),
-							'SHOW_TITLE' => true
-						);
-					}
-					$arParams[self::$strMainPrefix.self::TAB_KEY] = self::TAB_GROUP;
-					$arSubItems[] = array(
-						'TEXT' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_GROUP'),
-						'TITLE' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_GROUP_TITLE'),
-						'LINK' => $urlBuilder->getElementDetailUrl(0, $arParams),
-						'SHOW_TITLE' => true
-					);
-				}
+				$arItems[] = [
+					'ICON' => 'btn_lock',
+					'TEXT' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_PROD'),
+					'TITLE' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_PROD'),
+					$helpLink['TYPE'] => $helpLink['LINK'],
+				];
 			}
 		}
 		else
 		{
-			$arParams[self::$strMainPrefix.self::TAB_KEY] = self::TAB_SKU;
-			$arItems[] = array(
-				'ICON' => 'btn_new',
-				'TEXT' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_SKU'),
-				'TITLE' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_SKU_TITLE'),
-				'LINK' => $urlBuilder->getElementDetailUrl(0, $arParams),
-				'SHOW_TITLE' => true
-			);
-		}
-		if (!empty($arSubItems))
-		{
-			$arItems[] = array(
-				'TEXT' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_EXT'),
-				'TITLE' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_EXT_TITLE'),
-				'MENU' => $arSubItems
-			);
-		}
-
-		if (
-			$publicShop
-			&& $arCatalog['CATALOG'] === 'Y'
-			&& (
-				CCatalogSku::TYPE_FULL == $arCatalog['CATALOG_TYPE']
-				|| CCatalogSku::TYPE_CATALOG == $arCatalog['CATALOG_TYPE']
-			)
-			&& \Bitrix\Main\Loader::includeModule('crm')
-		)
-		{
-			if (\Bitrix\Crm\Order\Import\Instagram::isAvailable())
+			if ($arCatalog['CATALOG'] == 'Y')
 			{
-				$arItems[] = [
-					'TEXT' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_INSTAGRAM_IMPORT'),
-					'TITLE' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_INSTAGRAM_IMPORT_TITLE'),
-					'LINK' => \Bitrix\Main\Config\Option::get('crm', 'path_to_order_import_instagram'),
-					'PUBLIC' => true,
-					'SHOW_TITLE' => true,
-				];
+				$arParams[self::$strMainPrefix.self::TAB_KEY] = self::TAB_CATALOG;
+				$arItems[] = array(
+					'ICON' => 'btn_new',
+					'TEXT' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_PROD'),
+					'TITLE' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_PROD_TITLE'),
+					'ID' => 'create_new_product_button_' . $gridId,
+					'LINK' => $urlBuilder->getElementDetailUrl(0, $arParams),
+					'PUBLIC' => $productCardEnabled, // TODO: remove this hack after refactoring \CAdminUiList::AddAdminContextMenu
+					'SHOW_TITLE' => true
+				);
+
+				if (!$productCardEnabled)
+				{
+					if (CCatalogSku::TYPE_FULL == $arCatalog['CATALOG_TYPE'])
+					{
+						$arParams[self::$strMainPrefix.self::TAB_KEY] = self::TAB_SKU;
+						$arSubItems[] = array(
+							'TEXT' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_SKU'),
+							'TITLE' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_SKU_TITLE'),
+							'LINK' => $urlBuilder->getElementDetailUrl(0, $arParams),
+							'SHOW_TITLE' => true
+						);
+					}
+					if (Catalog\Config\Feature::isProductSetsEnabled())
+					{
+						if (CCatalogSku::TYPE_OFFERS != $arCatalog['CATALOG_TYPE'])
+						{
+							$arParams[self::$strMainPrefix.self::TAB_KEY] = self::TAB_SET;
+							$arSubItems[] = array(
+								'TEXT' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_SET'),
+								'TITLE' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_SET_TITLE'),
+								'LINK' => $urlBuilder->getElementDetailUrl(0, $arParams),
+								'SHOW_TITLE' => true
+							);
+						}
+						$arParams[self::$strMainPrefix.self::TAB_KEY] = self::TAB_GROUP;
+						$arSubItems[] = array(
+							'TEXT' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_GROUP'),
+							'TITLE' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_GROUP_TITLE'),
+							'LINK' => $urlBuilder->getElementDetailUrl(0, $arParams),
+							'SHOW_TITLE' => true
+						);
+					}
+					else
+					{
+						$helpLink = Catalog\Config\Feature::getProductSetsHelpLink();
+						if (!empty($helpLink))
+						{
+							if (CCatalogSku::TYPE_OFFERS != $arCatalog['CATALOG_TYPE'])
+							{
+								$arSubItems[] = [
+									'TEXT' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_SET'),
+									'TITLE' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_SET_TITLE'),
+									$helpLink['TYPE'] => $helpLink['LINK'],
+									'ICON' => 'btn_lock',
+									'SHOW_TITLE' => true
+								];
+							}
+							$arSubItems[] = [
+								'TEXT' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_GROUP'),
+								'TITLE' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_GROUP_TITLE'),
+								$helpLink['TYPE'] => $helpLink['LINK'],
+								'ICON' => 'btn_lock',
+								'SHOW_TITLE' => true
+							];
+						}
+					}
+				}
+			}
+			else
+			{
+				$arParams[self::$strMainPrefix.self::TAB_KEY] = self::TAB_SKU;
+				$arItems[] = array(
+					'ICON' => 'btn_new',
+					'TEXT' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_SKU'),
+					'TITLE' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_SKU_TITLE'),
+					'ID' => 'create_new_product_button_' . $gridId,
+					'LINK' => $urlBuilder->getElementDetailUrl(0, $arParams),
+					'PUBLIC' => $productCardEnabled, // TODO: remove this hack after refactoring \CAdminUiList::AddAdminContextMenu
+					'SHOW_TITLE' => true
+				);
+			}
+			if (!empty($arSubItems))
+			{
+				$arItems[] = array(
+					'TEXT' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_EXT'),
+					'TITLE' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_EXT_TITLE'),
+					'MENU' => $arSubItems
+				);
+			}
+
+			if (
+				$publicShop
+				&& $arCatalog['CATALOG'] === 'Y'
+				&& (
+					CCatalogSku::TYPE_FULL == $arCatalog['CATALOG_TYPE']
+					|| CCatalogSku::TYPE_CATALOG == $arCatalog['CATALOG_TYPE']
+				)
+				&& \Bitrix\Main\Loader::includeModule('crm')
+			)
+			{
+				if (\Bitrix\Crm\Order\Import\Instagram::isAvailable())
+				{
+					$arItems[] = [
+						'TEXT' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_INSTAGRAM_IMPORT'),
+						'TITLE' => Loc::getMessage('BT_CAT_ADM_TOOLS_ADD_INSTAGRAM_IMPORT_TITLE'),
+						'LINK' => \Bitrix\Main\Config\Option::get('crm', 'path_to_order_import_instagram'),
+						'PUBLIC' => true,
+						'SHOW_TITLE' => true,
+					];
+				}
 			}
 		}
+		unset($productLimits);
 
 		if (!empty($arItems))
 			$arResult = $arItems;
@@ -1105,8 +1151,8 @@ class CCatalogAdminProductSetEdit
 		foreach ($arSets as $key => $arOneSet)
 		{
 			$blockName = self::$strMainPrefix.'_'.$arOneSet['ITEM_ID'];
-			if ((int)$key == 0)
-				$blockName .= '_'.randString(8);
+			$blockName .= '_'.Main\Security\Random::getString(8, true);
+
 			$strNamePrefix = self::$strMainPrefix.'['.$key.']';
 			$strIDPrefix = $blockName.'_'.$key;
 			?><table id="<? echo $strIDPrefix; ?>_TBL" class="internal" style="margin: 0 auto;">

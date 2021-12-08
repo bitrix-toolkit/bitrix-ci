@@ -643,7 +643,7 @@ class CSmile
 		if (file_exists($sUnpackDir.'install.csv'))
 		{
 			$arLang = Array();
-			$db_res = CLanguage::GetList($b="sort", $o="asc");
+			$db_res = CLanguage::GetList();
 			while ($res = $db_res->Fetch())
 			{
 				if (file_exists($sUnpackDir.'install_lang_'. $res["LID"].'.csv'))
@@ -656,7 +656,7 @@ class CSmile
 					while($smile = $csvFile->Fetch())
 					{
 						if (defined('BX_UTF') && BX_UTF && $res["LID"] == 'ru')
-							$smile[1] = $APPLICATION->ConvertCharset($smile[1], 'windows-1251', 'utf-8');
+							$smile[1] = \Bitrix\Main\Text\Encoding::convertEncoding($smile[1], 'windows-1251', 'utf-8');
 
 						$arLang[$smile[0]][$res["LID"]] = $smile[1];
 					}
@@ -687,8 +687,8 @@ class CSmile
 
 				$smile['IMAGE'] = GetFileName($smile['IMAGE']);
 
-				$imgArray = CFile::GetImageSize($sUnpackDir.$smile['IMAGE']);
-				if (!is_array($imgArray))
+				$info = (new \Bitrix\Main\File\Image($sUnpackDir.$smile['IMAGE']))->getInfo();
+				if (!$info)
 					continue;
 
 				$arInsert = Array(
@@ -723,8 +723,8 @@ class CSmile
 
 					if (is_file($sUnpackDir.$file))
 					{
-						$imgArray = CFile::GetImageSize($sUnpackDir.$file);
-						if (is_array($imgArray))
+						$info = (new \Bitrix\Main\File\Image($sUnpackDir.$file))->getInfo();
+						if ($info)
 						{
 							$smileHR = self::IMAGE_SD;
 							$smileType = CSmile::TYPE_SMILE;
@@ -764,8 +764,8 @@ class CSmile
 								'CLICKABLE' => 'Y',
 								'SORT' => $sort,
 								'IMAGE' => $file,
-								'IMAGE_WIDTH' => intval($imgArray[0]),
-								'IMAGE_HEIGHT' => intval($imgArray[1]),
+								'IMAGE_WIDTH' => intval($info->getWidth()),
+								'IMAGE_HEIGHT' => intval($info->getHeight()),
 								'IMAGE_DEFINITION' => $smileHR,
 								'TYPING' => ':'.(isset($smileSet['STRING_ID'])? $smileSet['STRING_ID']: $smileSet['ID']).'/'.$smileCode.':',
 							);
@@ -980,7 +980,7 @@ class CSmileGallery
 
 		$arLang = Array();
 		$arLang2 = Array();
-		$langs = CLanguage::GetList($b="", $o="");
+		$langs = CLanguage::GetList();
 		while($language = $langs->Fetch())
 		{
 			$lid = $language["LID"];
@@ -1033,7 +1033,7 @@ class CSmileGallery
 		$arLang = Array();
 		$arLang2 = Array();
 		$arLang3 = Array();
-		$langs = CLanguage::GetList($b="", $o="");
+		$langs = CLanguage::GetList();
 		while($language = $langs->Fetch())
 		{
 			$lid = $language["LID"];

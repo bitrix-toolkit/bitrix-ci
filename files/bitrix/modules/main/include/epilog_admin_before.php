@@ -8,7 +8,7 @@
  * @global CCacheManager $CACHE_MANAGER
  */
 
-define("START_EXEC_EPILOG_BEFORE_1", microtime());
+define("START_EXEC_EPILOG_BEFORE_1", microtime(true));
 $GLOBALS["BX_STATE"] = "EB";
 
 if($USER->IsAuthorized() && (!defined("BX_AUTH_FORM") || !BX_AUTH_FORM))
@@ -32,7 +32,7 @@ if($USER->IsAuthorized() && (!defined("BX_AUTH_FORM") || !BX_AUTH_FORM))
 	if(
 		$USER->IsAuthorized()
 		&& (!defined('BX_PUBLIC_MODE') || BX_PUBLIC_MODE != 1)
-		&& (!isset($_SESSION["SS_B24NET_STATE"]) || $_SESSION["SS_B24NET_STATE"] !== $USER->GetID())
+		&& (!isset(\Bitrix\Main\Application::getInstance()->getSession()["SS_B24NET_STATE"]) || \Bitrix\Main\Application::getInstance()->getSession()["SS_B24NET_STATE"] !== $USER->GetID())
 		&& \Bitrix\Main\ModuleManager::isModuleInstalled("socialservices")
 		&& \Bitrix\Main\Config\Option::get("socialservices", "bitrix24net_id", "") != ""
 	)

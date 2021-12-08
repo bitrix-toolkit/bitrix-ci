@@ -4,6 +4,10 @@ namespace Bitrix\Main\Component;
 
 
 use Bitrix\Main\Security;
+use Bitrix\Main\SystemException;
+use Bitrix\Main\Type\Date;
+use Bitrix\Main\Type\DateTime;
+use Bitrix\Main\Web\Uri;
 
 class ParameterSigner
 {
@@ -41,7 +45,24 @@ class ParameterSigner
 			self::refineComponentName($componentName)
 		);
 
-		return unserialize(base64_decode($unsignedParameters));
+		$decoded = base64_decode($unsignedParameters);
+		if ($decoded === false)
+		{
+			return [];
+		}
+
+		return static::unserialize($decoded);
+	}
+
+	private static function unserialize(string $str)
+	{
+		return unserialize($str, ['allowed_classes' => [
+			DateTime::class,
+			Date::class,
+			Uri::class,
+			\DateTime::class,
+			\DateTimeZone::class,
+		]]);
 	}
 
 	protected static function refineComponentName($componentName)

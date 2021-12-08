@@ -29,16 +29,6 @@ class CIBlockResult extends CDBResult
 		parent::__construct($res);
 	}
 
-	/**
-	 * @deprected
-	 *
-	 * @param $res
-	 */
-	function CIBlockResult($res)
-	{
-		self::__construct($res);
-	}
-
 	function SetUrlTemplates($DetailUrl = "", $SectionUrl = "", $ListUrl = "")
 	{
 		$this->strDetailUrl = $DetailUrl;
@@ -91,9 +81,9 @@ class CIBlockResult extends CDBResult
 		if(!isset($this) || !is_object($this))
 			return $res;
 
-		$arUpdate = array();
 		if($res)
 		{
+			$arUpdate = array();
 			if(!empty($this->arIBlockLongProps) && is_array($this->arIBlockLongProps))
 			{
 				foreach($res as $k=>$v)
@@ -143,7 +133,7 @@ class CIBlockResult extends CDBResult
 						}
 						else
 						{
-							$tmp = unserialize($res[$field_name]);
+							$tmp = unserialize($res[$field_name], ['allowed_classes' => false]);
 							if (!isset($tmp['ID']))
 								$update = true;
 						}
@@ -189,14 +179,22 @@ class CIBlockResult extends CDBResult
 						}
 					}
 				}
-				foreach($arUpdate as $strTable=>$arFields)
+
+				if (!empty($arUpdate))
 				{
-					$strUpdate = $DB->PrepareUpdate($strTable, $arFields);
-					if($strUpdate!="")
+					$pool = \Bitrix\Main\Application::getInstance()->getConnectionPool();
+					$pool->useMasterOnly(true);
+					foreach ($arUpdate as $strTable => $arFields)
 					{
-						$strSql = "UPDATE ".$strTable." SET ".$strUpdate." WHERE IBLOCK_ELEMENT_ID = ".intval($res["ID"]);
-						$DB->QueryBind($strSql, $arFields);
+						$strUpdate = $DB->PrepareUpdate($strTable, $arFields);
+						if ($strUpdate != "")
+						{
+							$strSql = "UPDATE ".$strTable." SET ".$strUpdate." WHERE IBLOCK_ELEMENT_ID = ".intval($res["ID"]);
+							$DB->QueryBind($strSql, $arFields);
+						}
 					}
+					$pool->useMasterOnly(false);
+					unset($pool);
 				}
 			}
 			if(!empty($this->arIBlockConvProps) && is_array($this->arIBlockConvProps))
@@ -243,6 +241,7 @@ class CIBlockResult extends CDBResult
 				unset($res["UC_ID"]);
 				unset($res["UC_LOGIN"]);
 			}
+			unset($arUpdate);
 		}
 		elseif(
 			defined("BX_COMP_MANAGED_CACHE")
@@ -277,7 +276,7 @@ class CIBlockResult extends CDBResult
 			if($TEMPLATE)
 			{
 				$res_tmp = $res;
-				if((intval($res["IBLOCK_ID"]) <= 0) && (intval($res["ID"]) > 0))
+				if((intval(($res["IBLOCK_ID"] ?? 0)) <= 0) && (intval($res["ID"]) > 0))
 				{
 					$res_tmp["IBLOCK_ID"] = $res["ID"];
 					$res_tmp["IBLOCK_CODE"] = $res["CODE"];
@@ -302,7 +301,7 @@ class CIBlockResult extends CDBResult
 			}
 
 			//If this is Element or Section then process it's detail and section URLs
-			if($res["IBLOCK_ID"] <> '')
+			if(($res["IBLOCK_ID"] ?? '') <> '')
 			{
 
 				if(array_key_exists("GLOBAL_ACTIVE", $res))

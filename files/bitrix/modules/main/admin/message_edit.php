@@ -276,8 +276,8 @@ if($REQUEST_METHOD=="POST" && ($save <> '' || $apply <> '')&& $isAdmin && check_
 }
 
 $arEventMessageFile = array();
-$str_ACTIVE="Y";
-$str_EVENT_NAME=$EVENT_NAME;
+$str_ACTIVE = "Y";
+$str_EVENT_NAME = $_REQUEST["EVENT_NAME"];
 $em = CEventMessage::GetByID($ID);
 if(!$em->ExtractEditFields("str_"))
 {
@@ -312,7 +312,6 @@ $arMailSiteTemplate = array();
 $mailSiteTemplateDb = CSiteTemplate::GetList(null, array('TYPE' => 'mail'));
 while($mailSiteTemplate = $mailSiteTemplateDb->GetNext())
 	$arMailSiteTemplate[] = $mailSiteTemplate;
-
 
 if(!$isUserHavePhpAccess)
 {

@@ -47,7 +47,7 @@ if($_SERVER['REQUEST_METHOD']=="POST" && ($_POST['save']<>"" || $_POST['apply']<
 	{
 		if($apply <> "")
 		{
-			$_SESSION["SESS_ADMIN"]["RATING_RULE_EDIT_MESSAGE"]=array("MESSAGE"=>GetMessage("RATING_RULE_EDIT_SUCCESS"), "TYPE"=>"OK");
+			\Bitrix\Main\Application::getInstance()->getSession()["SESS_ADMIN"]["RATING_RULE_EDIT_MESSAGE"]=array("MESSAGE"=>GetMessage("RATING_RULE_EDIT_SUCCESS"), "TYPE"=>"OK");
 			LocalRedirect("rating_rule_edit.php?ID=".$ID."&lang=".LANG);
 		}
 		else
@@ -77,8 +77,8 @@ if($ID>0 && !$bTypeChange)
 	$ratingRule = CRatingRule::GetByID($ID);
 	if(!($arRatingRule = $ratingRule->ExtractFields("str_")))
 		$ID=0;
-	$str_CONDITION_CONFIG = unserialize(htmlspecialcharsback($str_CONDITION_CONFIG));
-	$str_ACTION_CONFIG = unserialize(htmlspecialcharsback($str_ACTION_CONFIG));
+	$str_CONDITION_CONFIG = unserialize(htmlspecialcharsback($str_CONDITION_CONFIG), ['allowed_classes' => false]);
+	$str_ACTION_CONFIG = unserialize(htmlspecialcharsback($str_ACTION_CONFIG), ['allowed_classes' => false]);
 }
 
 $sDocTitle = ($ID>0? GetMessage("MAIN_RATING_RULE_EDIT_RECORD", array("#ID#"=>$ID)) : GetMessage("MAIN_RATING_RULE_NEW_RECORD"));
@@ -113,10 +113,10 @@ if($ID>0)
 $context = new CAdminContextMenu($aMenu);
 $context->Show();
 
-if(is_array($_SESSION["SESS_ADMIN"]["RATING_RULE_EDIT_MESSAGE"]))
+if(is_array(\Bitrix\Main\Application::getInstance()->getSession()["SESS_ADMIN"]["RATING_RULE_EDIT_MESSAGE"]))
 {
-	CAdminMessage::ShowMessage($_SESSION["SESS_ADMIN"]["RATING_RULE_EDIT_MESSAGE"]);
-	$_SESSION["SESS_ADMIN"]["RATING_RULE_EDIT_MESSAGE"]=false;
+	CAdminMessage::ShowMessage(\Bitrix\Main\Application::getInstance()->getSession()["SESS_ADMIN"]["RATING_RULE_EDIT_MESSAGE"]);
+	\Bitrix\Main\Application::getInstance()->getSession()["SESS_ADMIN"]["RATING_RULE_EDIT_MESSAGE"]=false;
 }
 
 if($message)

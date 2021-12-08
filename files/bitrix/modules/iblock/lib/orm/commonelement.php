@@ -28,6 +28,7 @@ abstract class CommonElement extends EO_CommonElement
 	 *
 	 * @param $iblockSectionId
 	 *
+	 * @return CommonElement
 	 * @throws \Bitrix\Main\ArgumentException
 	 * @throws \Bitrix\Main\SystemException
 	 */
@@ -61,6 +62,8 @@ abstract class CommonElement extends EO_CommonElement
 			// rewrite value
 			parent::sysSetValue('IBLOCK_SECTION_ID', $newIblockSectionId);
 		}
+
+		return $this;
 	}
 
 	/**
@@ -69,7 +72,7 @@ abstract class CommonElement extends EO_CommonElement
 	 * @param $fieldName
 	 * @param $value
 	 *
-	 * @return EntityObject
+	 * @return EntityObject|CommonElement
 	 * @throws \Bitrix\Main\ArgumentException
 	 * @throws \Bitrix\Main\SystemException
 	 */
@@ -85,7 +88,11 @@ abstract class CommonElement extends EO_CommonElement
 			/** @var EntityObject $currentValue */
 			$currentValue = $this->get($fieldName);
 
-			if (!empty($currentValue))
+			if (empty($currentValue))
+			{
+				parent::sysSetValue($fieldName, $value);
+			}
+			else
 			{
 				// set value directly
 				$currentValue->set('VALUE', $value->get('VALUE'));
@@ -94,12 +101,15 @@ abstract class CommonElement extends EO_CommonElement
 				{
 					$currentValue->set('DESCRIPTION', $value->get('DESCRIPTION'));
 				}
-
-				// mark current object as changed, or else save() will be skipped
-				$this->sysChangeState(State::CHANGED);
-
-				return $this;
 			}
+
+			// mark current object as changed, or else save() will be skipped
+			if ($this->state === State::ACTUAL)
+			{
+				$this->sysChangeState(State::CHANGED);
+			}
+
+			return $this;
 		}
 
 		return parent::sysSetValue($fieldName, $value);

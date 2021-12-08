@@ -135,6 +135,7 @@ function _ShowGroupPropertyField($name, $property_fields, $values, $bVarsFromFor
 		$res .= '>'.str_repeat(" . ", $ar["DEPTH_LEVEL"]-1).$ar["NAME"].'</option>';
 	}
 
+	echo '<input type="hidden" name="'.$name.'[]" value="">';
 	echo '<select name="'.$name.'[]" size="'.$property_fields["MULTIPLE_CNT"].'" '.($property_fields["MULTIPLE"]=="Y"?"multiple":"").'>';
 	echo '<option value=""'.(!$bWas?' selected':'').'>'.GetMessage("IBLOCK_AT_NOT_SET").'</option>';
 	echo $res;
@@ -397,6 +398,7 @@ function _ShowListPropertyField($name, $property_fields, $values, $bInitDef = fa
 	{
 		$cnt = 0;
 		$wSel = false;
+		$res_tmp = '';
 		while($ar_enum = $prop_enums->Fetch())
 		{
 			$cnt++;
@@ -422,10 +424,10 @@ function _ShowListPropertyField($name, $property_fields, $values, $bInitDef = fa
 
 		if($cnt==1)
 			$res = $res_tmp;
-		elseif($multiple!="Y")
+		elseif($multiple!="Y" && $property_fields['IS_REQUIRED'] != 'Y')
 			$res = '<input type="radio" name="'.$name.'[]" value=""'.(!$wSel?" checked":"").' id="'.$uniq.'"><label for="'.$uniq.'">'.htmlspecialcharsex(($def_text ? $def_text : GetMessage("IBLOCK_AT_PROP_NO") )).'</label><br>'.$res;
 
-		if($multiple=="Y" || $cnt==1)
+		if($multiple=="Y" || $cnt==1 || $property_fields['IS_REQUIRED'] == 'Y')
 			$res = '<input type="hidden" name="'.$name.'" value="">'.$res;
 	}
 	else //list property as list
@@ -604,26 +606,57 @@ function _ShowUserPropertyField($name, $property_fields, $values, $bInitDef = fa
 	echo $html;
 }
 
-function _ShowPropertyField($name, $property_fields, $values, $bInitDef = false, $bVarsFromForm = false, $max_file_size_show = 50000, $form_name = "form_element", $bCopy = false)
+function _ShowPropertyField(
+	$name,
+	$property_fields,
+	$values,
+	$bInitDef = false,
+	$bVarsFromForm = false,
+	$max_file_size_show = 50000,
+	$form_name = "form_element",
+	$bCopy = false
+)
 {
 	$type = $property_fields["PROPERTY_TYPE"];
-	if($property_fields["USER_TYPE"]!="")
-		_ShowUserPropertyField($name, $property_fields, $values, $bInitDef, $bVarsFromForm, $max_file_size_show, $form_name, $bCopy);
-	elseif($type=="L") //list property
-		_ShowListPropertyField($name, $property_fields, $values, $bInitDef);
-	elseif($type=="F") //file property
-		_ShowFilePropertyField($name, $property_fields, $values, $max_file_size_show, $bVarsFromForm);
-	elseif($type=="G") //section link
+	$userType = (string)$property_fields["USER_TYPE"] ?? '';
+	$foundUserType = false;
+	if ($userType !== '')
 	{
-		if(function_exists("_ShowGroupPropertyField_custom"))
-			_ShowGroupPropertyField_custom($name, $property_fields, $values, $bVarsFromForm);
-		else
-			_ShowGroupPropertyField($name, $property_fields, $values, $bVarsFromForm);
+		$userTypeDescription = CIBlockProperty::GetUserType($userType);
+		if (!empty($userTypeDescription))
+		{
+			$foundUserType = true;
+			_ShowUserPropertyField($name, $property_fields, $values, $bInitDef, $bVarsFromForm, $max_file_size_show, $form_name, $bCopy);
+		}
 	}
-	elseif($type=="E") //element link
-		_ShowElementPropertyField($name, $property_fields, $values, $bVarsFromForm);
-	else
-		_ShowStringPropertyField($name, $property_fields, $values, $bInitDef, $bVarsFromForm);
+	if (!$foundUserType)
+	{
+		switch ($type)
+		{
+			case Iblock\PropertyTable::TYPE_LIST:
+				_ShowListPropertyField($name, $property_fields, $values, $bInitDef);
+				break;
+			case Iblock\PropertyTable::TYPE_FILE:
+				_ShowFilePropertyField($name, $property_fields, $values, $max_file_size_show, $bVarsFromForm);
+				break;
+			case Iblock\PropertyTable::TYPE_SECTION:
+				if (function_exists("_ShowGroupPropertyField_custom"))
+				{
+					_ShowGroupPropertyField_custom($name, $property_fields, $values, $bVarsFromForm);
+				}
+				else
+				{
+					_ShowGroupPropertyField($name, $property_fields, $values, $bVarsFromForm);
+				}
+				break;
+			case Iblock\PropertyTable::TYPE_ELEMENT:
+				_ShowElementPropertyField($name, $property_fields, $values, $bVarsFromForm);
+				break;
+			default:
+				_ShowStringPropertyField($name, $property_fields, $values, $bInitDef, $bVarsFromForm);
+				break;
+		}
+	}
 }
 
 function _ShowHiddenValue($name, $value)
@@ -647,7 +680,7 @@ class _CIBlockError
 {
 	var $err_type, $err_text, $err_level;
 
-	function _CIBlockError($err_level = false, $err_type = "", $err_text = "")
+	public function __construct($err_level = false, $err_type = "", $err_text = "")
 	{
 		$this->err_type = $err_type;
 		$this->err_text = preg_replace("#<br>$#i", "", $err_text);

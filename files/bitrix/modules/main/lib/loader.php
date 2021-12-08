@@ -1,11 +1,13 @@
 <?php
 namespace Bitrix\Main;
 
+use Bitrix\Main\DI\ServiceLocator;
+
 /**
  * Class Loader loads required files, classes and modules. It is the only class which is included directly.
  * @package Bitrix\Main
  */
-final class Loader
+class Loader
 {
 	/**
 	 * Can be used to prevent loading all modules except main and fileman
@@ -15,17 +17,17 @@ final class Loader
 	const BITRIX_HOLDER = "bitrix";
 	const LOCAL_HOLDER = "local";
 
-	private static $safeModeModules = ["main" => true, "fileman" => true];
-	private static $loadedModules = ["main" => true];
-	private static $semiloadedModules = [];
-	private static $modulesHolders = ["main" => self::BITRIX_HOLDER];
-	private static $sharewareModules = [];
+	protected static $safeModeModules = ["main" => true, "fileman" => true];
+	protected static $loadedModules = ["main" => true];
+	protected static $semiloadedModules = [];
+	protected static $modulesHolders = ["main" => self::BITRIX_HOLDER];
+	protected static $sharewareModules = [];
 
 	/**
 	 * Custom autoload paths.
-	 * @var array [namespace => path]
+	 * @var array [namespace => [ [path1, depth1], [path2, depth2] ]
 	 */
-	private static $namespaces = [];
+	protected static $namespaces = [];
 
 	/**
 	 * Returned by includeSharewareModule() if module is not found
@@ -44,17 +46,19 @@ final class Loader
 	 */
 	const MODULE_DEMO_EXPIRED = 3;
 
-	private static $autoLoadClasses = [];
+	protected static $autoLoadClasses = [];
 
 	/**
 	 * @var bool Controls throwing exception by requireModule method
 	 */
-	private static $requireThrowException = true;
+	protected static $requireThrowException = true;
 
+	/** @deprecated   */
 	const ALPHA_LOWER = "qwertyuioplkjhgfdsazxcvbnm";
+	/** @deprecated   */
 	const ALPHA_UPPER = "QWERTYUIOPLKJHGFDSAZXCVBNM";
 
-	/**
+     /**
 	 * Includes a module by its name.
 	 *
 	 * @param string $moduleName Name of the included module
@@ -72,8 +76,7 @@ final class Loader
 			throw new LoaderException(sprintf("Module name '%s' is not correct", $moduleName));
 		}
 
-		//todo: change to strtolower when mbstring.func_overload will be 0
-		$moduleName = strtr($moduleName, self::ALPHA_UPPER, self::ALPHA_LOWER);
+		$moduleName = strtolower($moduleName);
 
 		if (self::SAFE_MODE)
 		{
@@ -145,6 +148,10 @@ final class Loader
 		{
 			//unregister the namespace if "include" fails
 			self::unregisterNamespace($baseName);
+		}
+		else
+		{
+			ServiceLocator::getInstance()->registerByModuleSettings($moduleName);
 		}
 
 		return self::$loadedModules[$moduleName];
@@ -271,9 +278,7 @@ final class Loader
 		foreach ($classes as $class => $file)
 		{
 			$class = ltrim($class, "\\");
-
-			//todo: change to strtolower when mbstring.func_overload will be 0
-			$class = strtr($class, self::ALPHA_UPPER, self::ALPHA_LOWER);
+			$class = strtolower($class);
 
 			self::$autoLoadClasses[$class] = [
 				"module" => $moduleName,
@@ -291,14 +296,13 @@ final class Loader
 	 */
 	public static function registerNamespace($namespace, $path)
 	{
-		//todo: change to strtolower when mbstring.func_overload will be 0
-		$namespace = strtr($namespace, self::ALPHA_UPPER, self::ALPHA_LOWER);
 		$namespace = trim($namespace, "\\")."\\";
+		$namespace = strtolower($namespace);
 
 		$path = rtrim($path, "/\\");
 		$depth = substr_count(rtrim($namespace, "\\"), "\\");
 
-		self::$namespaces[$namespace] = [
+		self::$namespaces[$namespace][] = [
 			"path" => $path,
 			"depth" => $depth,
 		];
@@ -310,9 +314,8 @@ final class Loader
 	 */
 	public static function unregisterNamespace($namespace)
 	{
-		//todo: change to strtolower when mbstring.func_overload will be 0
-		$namespace = strtr($namespace, self::ALPHA_UPPER, self::ALPHA_LOWER);
 		$namespace = trim($namespace, "\\")."\\";
+		$namespace = strtolower($namespace);
 
 		unset(self::$namespaces[$namespace]);
 	}
@@ -337,8 +340,7 @@ final class Loader
 		// fix web env
 		$className = ltrim($className, "\\");
 
-		//todo: change to strtolower when mbstring.func_overload will be 0
-		$classLower = strtr($className, self::ALPHA_UPPER, self::ALPHA_LOWER);
+		$classLower = strtolower($className);
 
 		static $documentRoot = null;
 		if ($documentRoot === null)
@@ -354,7 +356,14 @@ final class Loader
 			{
 				$module = $pathInfo["module"];
 				$holder = (isset(self::$modulesHolders[$module])? self::$modulesHolders[$module] : self::BITRIX_HOLDER);
-				require_once($documentRoot."/".$holder."/modules/".$module."/".$pathInfo["file"]);
+
+				$filePath = (defined('REPOSITORY_ROOT'))
+					? REPOSITORY_ROOT
+					: "{$documentRoot}/{$holder}/modules";
+
+				$filePath .= '/'.$module."/".$pathInfo["file"];
+
+				require_once($filePath);
 			}
 			else
 			{
@@ -397,37 +406,39 @@ final class Loader
 				if(isset(self::$namespaces[$namespace]))
 				{
 					//found
-					$depth = self::$namespaces[$namespace]["depth"];
-					$path = self::$namespaces[$namespace]["path"];
-
-					$fileParts = explode("\\", $classInfo["real"]);
-
-					for ($i=0; $i <= $depth; $i++)
+					foreach (self::$namespaces[$namespace] as $namespaceLocation)
 					{
-						array_shift($fileParts);
-					}
+						$depth = $namespaceLocation["depth"];
+						$path = $namespaceLocation["path"];
 
-					$classPath = implode("/", $fileParts);
+						$fileParts = explode("\\", $classInfo["real"]);
 
-					//todo: change to strtolower when mbstring.func_overload will be 0
-					$classPathLower = strtr($classPath, self::ALPHA_UPPER, self::ALPHA_LOWER);
+						for ($i=0; $i <= $depth; $i++)
+						{
+							array_shift($fileParts);
+						}
 
-					// final path lower case
-					$filePath = $path.'/'.$classPathLower.".php";
+						$classPath = implode("/", $fileParts);
 
-					if (file_exists($filePath))
-					{
-						require_once($filePath);
-						break 2;
-					}
+						$classPathLower = strtolower($classPath);
 
-					// final path original case
-					$filePath = $path.'/'.$classPath.".php";
+						// final path lower case
+						$filePath = $path.'/'.$classPathLower.".php";
 
-					if (file_exists($filePath))
-					{
-						require_once($filePath);
-						break 2;
+						if (file_exists($filePath))
+						{
+							require_once($filePath);
+							break 3;
+						}
+
+						// final path original case
+						$filePath = $path.'/'.$classPath.".php";
+
+						if (file_exists($filePath))
+						{
+							require_once($filePath);
+							break 3;
+						}
 					}
 				}
 
@@ -445,7 +456,7 @@ final class Loader
 	public static function requireClass($className)
 	{
 		$file = ltrim($className, "\\");    // fix web env
-		$file = strtr($file, self::ALPHA_UPPER, self::ALPHA_LOWER);
+		$file = strtolower($file);
 
 		if (preg_match("#[^\\\\/a-zA-Z0-9_]#", $file))
 			return;
@@ -506,7 +517,7 @@ final class Loader
 	 * Checks if file exists in /local or /bitrix directories
 	 *
 	 * @param string $path File path relative to /local/ or /bitrix/
-	 * @param string $root Server document root, default self::getDocumentRoot()
+	 * @param string|null $root Server document root, default self::getDocumentRoot()
 	 * @return string|bool Returns combined path or false if the file does not exist in both dirs
 	 */
 	public static function getLocal($path, $root = null)
@@ -568,10 +579,3 @@ class LoaderException extends \Exception
 		parent::__construct($message, $code, $previous);
 	}
 }
-
-$loaderDocumentRoot = Loader::getDocumentRoot();
-Loader::registerNamespace("Bitrix\\Main", $loaderDocumentRoot."/bitrix/modules/main/lib");
-Loader::registerNamespace("Bitrix\\UI", $loaderDocumentRoot.'/bitrix/modules/ui/lib');
-
-\spl_autoload_register([Loader::class, 'autoLoad']);
-

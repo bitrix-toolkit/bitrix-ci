@@ -49,12 +49,12 @@ class CComponentAjax
 		{
 			if ($_GET['bitrix_disable_ajax'] == 'N')
 			{
-				unset($_SESSION['bitrix_disable_ajax']);
+				unset(\Bitrix\Main\Application::getInstance()->getSession()['bitrix_disable_ajax']);
 			}
 
-			if ($_GET['bitrix_disable_ajax'] == 'Y' || $_SESSION['bitrix_disable_ajax'] == 'Y')
+			if ($_GET['bitrix_disable_ajax'] == 'Y' || \Bitrix\Main\Application::getInstance()->getSession()['bitrix_disable_ajax'] == 'Y')
 			{
-				$_SESSION['bitrix_disable_ajax'] = 'Y';
+				\Bitrix\Main\Application::getInstance()->getSession()['bitrix_disable_ajax'] = 'Y';
 				return null;
 			}
 		}
@@ -83,7 +83,7 @@ class CComponentAjax
 			// dirty hack: try to get breadcrumb call params
 			for ($i = 0, $cnt = count($APPLICATION->buffer_content_type); $i < $cnt; $i++)
 			{
-				if ($APPLICATION->buffer_content_type[$i]['F'][1] == 'GetNavChain')
+				if (is_array($APPLICATION->buffer_content_type[$i]['F']) && $APPLICATION->buffer_content_type[$i]['F'][1] === 'GetNavChain')
 				{
 					$this->__nav_params = $APPLICATION->buffer_content_type[$i]['P'];
 				}

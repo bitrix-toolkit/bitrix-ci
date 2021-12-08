@@ -40,7 +40,7 @@ IncludeModuleLangFile(__FILE__);
 if($_REQUEST["action"] == "authorize" && check_bitrix_sessid() && $USER->CanDoOperation('edit_php'))
 {
 	$USER->Logout();
-	$USER->Authorize(intval($_REQUEST["ID"]));
+	$USER->Authorize(intval($_REQUEST["ID"]), false, false, null, false);
 	LocalRedirect("user_admin.php?lang=".LANGUAGE_ID);
 }
 
@@ -173,7 +173,7 @@ if (!$USER->CanDoOperation('edit_php'))
 if($lAdmin->EditAction())
 {
 	$editableFields = array(
-		"ACTIVE"=>1, "LOGIN"=>1, "TITLE"=>1, "NAME"=>1, "LAST_NAME"=>1, "SECOND_NAME"=>1, "EMAIL"=>1, "PERSONAL_PROFESSION"=>1,
+		"ACTIVE"=>1, "BLOCKED"=>1, "LOGIN"=>1, "TITLE"=>1, "NAME"=>1, "LAST_NAME"=>1, "SECOND_NAME"=>1, "EMAIL"=>1, "PERSONAL_PROFESSION"=>1,
 		"PERSONAL_WWW"=>1, "PERSONAL_ICQ"=>1, "PERSONAL_GENDER"=>1, "PERSONAL_PHONE"=>1, "PERSONAL_MOBILE"=>1,
 		"PERSONAL_CITY"=>1, "PERSONAL_STREET"=>1, "WORK_COMPANY"=>1, "WORK_DEPARTMENT"=>1, "WORK_POSITION"=>1,
 		"WORK_WWW"=>1, "WORK_PHONE"=>1, "WORK_CITY"=>1, "XML_ID"=>1,
@@ -211,7 +211,7 @@ if($lAdmin->EditAction())
 
 		foreach($arFields as $key => $field)
 		{
-			if(!isset($editableFields[$key]) && mb_strpos($key, "UF_") !== 0)
+			if(!isset($editableFields[$key]) && strpos($key, "UF_") !== 0)
 			{
 				unset($arFields[$key]);
 			}
@@ -355,6 +355,7 @@ if ($totalCountRequest)
 	$lAdmin->sendTotalCountResponse($result->getCount());
 }
 
+$edit = ($USER->canDoOperation('edit_subordinate_users') || $USER->canDoOperation('edit_all_users'));
 $n = 0;
 $pageSize = $lAdmin->getNavSize();
 while ($userData = $result->fetch())
@@ -371,12 +372,17 @@ while ($userData = $result->fetch())
 	$USER_FIELD_MANAGER->addUserFields($entity_id, $userData, $row);
 	$row->addViewField("ID", "<a href='".$userEditUrl."' title='".GetMessage("MAIN_EDIT_TITLE")."'>".$userId."</a>");
 	$own_edit = ($USER->canDoOperation('edit_own_profile') && ($USER->getParam("USER_ID") == $userId));
-	$edit = ($USER->canDoOperation('edit_subordinate_users') || $USER->canDoOperation('edit_all_users'));
 	$can_edit = (intval($userId) > 1 && ($own_edit || $edit));
 	if ($userId == 1 || $own_edit || !$can_edit)
+	{
 		$row->addCheckField("ACTIVE", false);
+		$row->addCheckField("BLOCKED", false);
+	}
 	else
+	{
 		$row->addCheckField("ACTIVE");
+		$row->addCheckField("BLOCKED");
+	}
 
 	if ($can_edit && $edit)
 	{
@@ -392,8 +398,11 @@ while ($userData = $result->fetch())
 		$row->addViewField("PERSONAL_WWW", TxtToHtml($userData["PERSONAL_WWW"]));
 		$row->addInputField("PERSONAL_WWW");
 		$row->addInputField("PERSONAL_ICQ");
-		$row->addSelectField("PERSONAL_GENDER", array("" => GetMessage("USER_DONT_KNOW"),
-			"M" => GetMessage("USER_MALE"), "F" => GetMessage("USER_FEMALE")));
+		$row->addSelectField("PERSONAL_GENDER", array(
+			"" => GetMessage("USER_DONT_KNOW"),
+			"M" => GetMessage("USER_MALE"),
+			"F" => GetMessage("USER_FEMALE"),
+		));
 		$row->addInputField("PERSONAL_PHONE");
 		$row->addInputField("PERSONAL_MOBILE");
 		$row->addInputField("PERSONAL_CITY");
@@ -553,6 +562,7 @@ function setHeaderColumn(CAdminUiList $lAdmin)
 	$arHeaders = array(
 		array("id"=>"LOGIN", "content"=>GetMessage("LOGIN"), "sort"=>"login", "default"=>true),
 		array("id"=>"ACTIVE", "content"=>GetMessage('ACTIVE'),	"sort"=>"active", "default"=>true, "align" => "center"),
+		array("id"=>"BLOCKED", "content"=>GetMessage("main_user_admin_blocked"), "sort"=>"blocked", "default"=>false, "align" => "center"),
 		array("id"=>"TIMESTAMP_X", "content"=>GetMessage('TIMESTAMP'), "sort"=>"timestamp_x", "default"=>true),
 		array("id"=>"TITLE", "content"=>GetMessage("USER_ADMIN_TITLE"), "sort"=>"title"),
 		array("id"=>"NAME", "content"=>GetMessage("NAME"), "sort"=>"name",	"default"=>true),
@@ -623,12 +633,12 @@ function getUserQuery(CAdminUiList $lAdmin, $arFilter, $filterFields, $excelMode
 		$listSelectFields = array_diff($listSelectFields, $listRatingColumn);
 
 	$userQuery->setSelect($listSelectFields);
-	$sortBy = mb_strtoupper($by);
+	$sortBy = strtoupper($by);
 	if(!UserTable::getEntity()->hasField($sortBy))
 	{
 		$sortBy = "ID";
 	}
-	$sortOrder = mb_strtoupper($order);
+	$sortOrder = strtoupper($order);
 	if($sortOrder <> "DESC" && $sortOrder <> "ASC")
 	{
 		$sortOrder = "DESC";

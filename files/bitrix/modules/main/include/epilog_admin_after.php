@@ -13,7 +13,7 @@
  * @global CDatabase $DB
  */
 
-define("START_EXEC_EPILOG_AFTER_1", microtime());
+define("START_EXEC_EPILOG_AFTER_1", microtime(true));
 $GLOBALS["BX_STATE"] = "EA";
 
 global $USER, $APPLICATION, $DB;
@@ -26,12 +26,20 @@ $buffer = $APPLICATION->EndBufferContentMan();
 //used in debug_info.php
 $main_exec_time = round((getmicrotime()-START_EXEC_TIME), 4);
 
-if(!defined("ADMIN_AJAX_MODE") && ($_REQUEST["mode"] != 'excel'))
+if(!defined("ADMIN_AJAX_MODE") && (($_REQUEST["mode"] ?? '') != 'excel'))
 {
+	//it's possible the method doesn't exist on update
+	$session = null;
+	$application = \Bitrix\Main\Application::getInstance();
+	if(method_exists($application, 'getKernelSession'))
+	{
+		$session = $application->getKernelSession();
+	}
+
 	$canEditPHP = $USER->CanDoOperation('edit_php');
-	$bShowTime = ($_SESSION["SESS_SHOW_TIME_EXEC"] == 'Y');
+	$bShowTime = ($session && $session["SESS_SHOW_TIME_EXEC"] == 'Y');
 	$bShowStat = ($DB->ShowSqlStat && $canEditPHP);
-	$bShowCacheStat = (\Bitrix\Main\Data\Cache::getShowCacheStat() && ($canEditPHP || $_SESSION["SHOW_CACHE_STAT"]=="Y"));
+	$bShowCacheStat = (\Bitrix\Main\Data\Cache::getShowCacheStat() && ($canEditPHP || ($session && $session["SHOW_CACHE_STAT"] == "Y")));
 
 	if($bShowTime || $bShowStat || $bShowCacheStat)
 	{

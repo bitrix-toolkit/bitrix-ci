@@ -27,8 +27,6 @@ class CZip implements IBXArchive
 
 	const ReadBlockSize = 2048;
 
-	private static $bMbstring = false;
-
 	public function __construct($pzipname)
 	{
 		$this->io = CBXVirtualIo::GetInstance();
@@ -38,9 +36,6 @@ class CZip implements IBXArchive
 		$this->arPackedFilesData = array();
 		$this->_errorReset();
 		$this->fileSystemEncoding = $this->_getfileSystemEncoding();
-		self::$bMbstring = extension_loaded("mbstring");
-
-		return;
 	}
 
 	/**
@@ -1088,7 +1083,7 @@ class CZip implements IBXArchive
 		$arHeader['extra']             = '';
 		$arHeader['extra_len']         = 0;
 		$arHeader['filename']          = \Bitrix\Main\Text\Encoding::convertEncoding($filename, $this->fileSystemEncoding, "cp866");
-		$arHeader['filename_len']      = self::$bMbstring? mb_strlen(\Bitrix\Main\Text\Encoding::convertEncoding($filename, $this->fileSystemEncoding, "cp866"), "latin1") : mb_strlen(\Bitrix\Main\Text\Encoding::convertEncoding($filename, $this->fileSystemEncoding, "cp866"));
+		$arHeader['filename_len']      = strlen(\Bitrix\Main\Text\Encoding::convertEncoding($filename, $this->fileSystemEncoding, "cp866"));
 		$arHeader['flag']              = 0;
 		$arHeader['index']             = -1;
 		$arHeader['internal']          = 0;
@@ -1164,7 +1159,7 @@ class CZip implements IBXArchive
 				}
 
 				//set header params
-				$arHeader['compressed_size'] = self::$bMbstring? mb_strlen($compressedContent, "latin1") : mb_strlen($compressedContent);
+				$arHeader['compressed_size'] = strlen($compressedContent);
 				$arHeader['compression']     = 8;
 
 				//generate header
@@ -1240,7 +1235,7 @@ class CZip implements IBXArchive
 							$arHeader['crc'],
 							$arHeader['compressed_size'],
 							$arHeader['size'],
-			self::$bMbstring? mb_strlen($arHeader['stored_filename'], 'latin1') : mb_strlen($arHeader['stored_filename']),
+			strlen($arHeader['stored_filename']),
 							$arHeader['extra_len']
 							);
 
@@ -1249,7 +1244,7 @@ class CZip implements IBXArchive
 
 		//write the variable fields
 		if ($arHeader['stored_filename'] <> '')
-			fputs($this->zipfile, $arHeader['stored_filename'], (self::$bMbstring? mb_strlen($arHeader['stored_filename'], 'latin1') : mb_strlen($arHeader['stored_filename'])));
+			fputs($this->zipfile, $arHeader['stored_filename'], strlen($arHeader['stored_filename']));
 		if ($arHeader['extra_len'] != 0)
 			fputs($this->zipfile, $arHeader['extra'], $arHeader['extra_len']);
 
@@ -1279,7 +1274,7 @@ class CZip implements IBXArchive
 							$arHeader['crc'],
 							$arHeader['compressed_size'],
 							$arHeader['size'],
-			self::$bMbstring? mb_strlen($arHeader['stored_filename'], 'latin1') : mb_strlen($arHeader['stored_filename']),
+			strlen($arHeader['stored_filename']),
 							$arHeader['extra_len'],
 							$arHeader['comment_len'],
 							$arHeader['disk'],
@@ -1293,7 +1288,7 @@ class CZip implements IBXArchive
 		//variable fields
 		if ($arHeader['stored_filename'] <> '')
 		{
-			fputs($this->zipfile, $arHeader['stored_filename'], (self::$bMbstring? mb_strlen($arHeader['stored_filename'], 'latin1') : mb_strlen($arHeader['stored_filename'])));
+			fputs($this->zipfile, $arHeader['stored_filename'], strlen($arHeader['stored_filename']));
 		}
 		if ($arHeader['extra_len'] != 0)
 		{
@@ -1457,10 +1452,11 @@ class CZip implements IBXArchive
 			$extract = false;
 
 			//look for the specific extract rules
-			if ((isset($arParams['by_name'])) && ($arParams['by_name'] != 0))
+			if ((isset($arParams['by_name'])) && is_array($arParams['by_name']))
 			{
 				//is filename in the list
-				for ($j = 0; ($j<sizeof($arParams['by_name'])) && (!$extract); $j++)
+				$count = count($arParams['by_name']);
+				for ($j = 0; $j < $count && !$extract; $j++)
 				{
 					//is directory
 					if (mb_substr($arParams['by_name'][$j], -1) == "/")
@@ -1486,10 +1482,10 @@ class CZip implements IBXArchive
 					$extract = true;
 				}
 			}
-			else if ((isset($arParams['by_index'])) && ($arParams['by_index'] != 0))
+			else if ((isset($arParams['by_index'])) && is_array($arParams['by_index']))
 			{
 				//extract by index rule (if index is in the list)
-				for ($j = $j_start; ($j<sizeof($arParams['by_index'])) && (!$extract); $j++)
+				for ($j = $j_start, $n = count($arParams['by_index']); $j < $n && !$extract; $j++)
 				{
 					if (($i>=$arParams['by_index'][$j]['start']) && ($i<=$arParams['by_index'][$j]['end']))
 					{
@@ -1814,7 +1810,7 @@ class CZip implements IBXArchive
 		$binary_data = fread($this->zipfile, 26);
 
 		//look for invalid block size
-		if ((self::$bMbstring? mb_strlen($binary_data, "latin1") : mb_strlen($binary_data)) != 26)
+		if (strlen($binary_data) != 26)
 		{
 			$arHeader['filename'] = "";
 			$arHeader['status']   = "invalid_header";
@@ -1893,7 +1889,7 @@ class CZip implements IBXArchive
 		$binary_data = fread($this->zipfile, 42);
 
 		//if block size is not valid
-		if ((self::$bMbstring? mb_strlen($binary_data, "latin1") : mb_strlen($binary_data)) != 42)
+		if (strlen($binary_data) != 42)
 		{
 			$arHeader['filename'] = "";
 			$arHeader['status']   = "invalid_header";
@@ -2049,7 +2045,7 @@ class CZip implements IBXArchive
 		$binary_data = fread($this->zipfile, 18);
 
 		//if block size is not valid
-		if ((self::$bMbstring? mb_strlen($binary_data, "latin1") : mb_strlen($binary_data)) != 18)
+		if (strlen($binary_data) != 18)
 		{
 			$this->_errorLog("ERR_ARC_END_SIZE", str_replace("#SIZE#", mb_strlen($binary_data), GetMessage("MAIN_ZIP_ERR_ARC_END_SIZE")));
 			return $this->arErrors;
@@ -2130,10 +2126,10 @@ class CZip implements IBXArchive
 			$isFound = false;
 
 			//name rule
-			if ((isset($arParams['by_name'])) && ($arParams['by_name'] != 0))
+			if ((isset($arParams['by_name'])) && is_array($arParams['by_name']))
 			{
 				//if the filename is in the list
-				for ($j = 0; ($j<sizeof($arParams['by_name'])) && (!$isFound); $j++)
+				for ($j = 0, $n = count($arParams['by_name']); $j < $n && !$isFound; $j++)
 				{
 					if (mb_substr($arParams['by_name'][$j], -1) == "/")
 					{
@@ -2163,10 +2159,10 @@ class CZip implements IBXArchive
 					$isFound = true;
 				}
 			}
-			else if ((isset($arParams['by_index'])) && ($arParams['by_index'] != 0))
+			else if ((isset($arParams['by_index'])) && is_array($arParams['by_index']))
 			{
 				//index rule: if index is in the list
-				for ($j = $j_start; ($j<sizeof($arParams['by_index'])) && (!$isFound); $j++)
+				for ($j = $j_start, $n = count($arParams['by_index']); $j < $n && !$isFound; $j++)
 				{
 					if (($i>=$arParams['by_index'][$j]['start'])
 						&& ($i<=$arParams['by_index'][$j]['end']))

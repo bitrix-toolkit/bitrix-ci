@@ -19,7 +19,20 @@ Loc::loadMessages(__FILE__);
  * </ul>
  *
  * @package Bitrix\Catalog
- **/
+ *
+ * DO NOT WRITE ANYTHING BELOW THIS
+ *
+ * <<< ORMENTITYANNOTATION
+ * @method static EO_Vat_Query query()
+ * @method static EO_Vat_Result getByPrimary($primary, array $parameters = array())
+ * @method static EO_Vat_Result getById($id)
+ * @method static EO_Vat_Result getList(array $parameters = array())
+ * @method static EO_Vat_Entity getEntity()
+ * @method static \Bitrix\Catalog\EO_Vat createObject($setDefaultValues = true)
+ * @method static \Bitrix\Catalog\EO_Vat_Collection createCollection()
+ * @method static \Bitrix\Catalog\EO_Vat wakeUpObject($row)
+ * @method static \Bitrix\Catalog\EO_Vat_Collection wakeUpCollection($rows)
+ */
 
 class VatTable extends Main\Entity\DataManager
 {
@@ -82,5 +95,44 @@ class VatTable extends Main\Entity\DataManager
 		return array(
 			new Main\Entity\Validator\Length(null, 50),
 		);
+	}
+
+	/**
+	 * Returns the ID of the active VAT rate for the specified value. If necessary, it creates a new VAT rate.
+	 *
+	 * @param float $rate Vat rate value.
+	 * @param bool $create Create new vat, if not exists.
+	 * @return int|null
+	 */
+	public static function getActiveVatIdByRate(float $rate, bool $create = false): ?int
+	{
+		if ($rate < 0 || $rate > 100)
+		{
+			return null;
+		}
+		$row = static::getList([
+			'select' => ['ID'],
+			'filter' => [
+				'=ACTIVE' => 'Y',
+				'=RATE' => $rate,
+			]
+		])->fetch();
+		if (!empty($row))
+		{
+			return (int)$row['ID'];
+		}
+
+		if ($create)
+		{
+			$result = static::add([
+				'ACTIVE' => 'Y',
+				'NAME' => $rate . '%',
+				'RATE' => $rate,
+			]);
+
+			return $result->isSuccess() ? (int)$result->getId() : null;
+		}
+
+		return null;
 	}
 }

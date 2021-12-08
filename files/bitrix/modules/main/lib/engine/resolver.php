@@ -4,6 +4,7 @@ namespace Bitrix\Main\Engine;
 
 
 use Bitrix\Main\Config\Configuration;
+use Bitrix\Main\ObjectException;
 
 final class Resolver
 {
@@ -25,28 +26,21 @@ final class Resolver
 		$actionName = array_pop($parts);
 
 		$controllerClass = self::buildControllerClassName($vendor, $module, $parts);
+		if (!$controllerClass)
+		{
+			return null;
+		}
+
 		try
 		{
-			$reflectionClass = new \ReflectionClass($controllerClass);
-			if ($reflectionClass->isAbstract())
-			{
-				return null;
-			}
+			$controller = ControllerBuilder::build($controllerClass, [
+				'scope' => $scope,
+				'currentUser' => CurrentUser::get(),
+			]);
 
-			if (!$reflectionClass->isSubclassOf(Controller::className()))
-			{
-				return null;
-			}
-
-			/** @var Controller $controller */
-			/** @see \Bitrix\Main\Engine\Controller::__construct */
-			$controller = $reflectionClass->newInstance();
-			$controller->setScope($scope);
-			$controller->setCurrentUser(CurrentUser::get());
-
-			return array($controller, $actionName);
+			return [$controller, $actionName];
 		}
-		catch (\ReflectionException $exception)
+		catch (ObjectException $exception)
 		{}
 
 		return null;
@@ -93,7 +87,17 @@ final class Resolver
 			return null;
 		}
 
-		$defaultPath = mb_strtolower(strtr($defaultNamespaceByModule, ['\\' => '.']));
+		$defaultPath = strtr($defaultNamespaceByModule, ['\\' => '.']);
+
+		// do not lower if probably psr4
+		$firstLetter = mb_substr($controllerName, 0, 1);
+
+		if ($firstLetter === mb_strtolower($firstLetter))
+		{
+			$defaultPath = mb_strtolower($defaultPath);
+		}
+
+
 		array_unshift($actionParts, ...explode('.', $defaultPath));
 		array_push($actionParts, $controllerName);
 

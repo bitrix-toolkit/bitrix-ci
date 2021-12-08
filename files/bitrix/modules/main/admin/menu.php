@@ -17,7 +17,7 @@ if(!method_exists($USER, "CanDoOperation"))
 
 IncludeModuleLangFile(__FILE__);
 
-global $DBType, $adminMenu, $adminPage;
+global $adminMenu, $adminPage;
 
 $aMenu = array();
 if($USER->CanDoOperation('view_all_users') || $USER->CanDoOperation('view_subordinate_users') || $USER->CanDoOperation('edit_own_profile') || $USER->CanDoOperation('view_groups') || $USER->CanDoOperation('view_other_settings'))
@@ -499,23 +499,17 @@ if($USER->CanDoOperation('view_other_settings') || $USER->CanDoOperation('view_e
 					"more_url" => array("phpinfo.php"),
 					"title" => GetMessage("MAIN_MENU_PHPINFO_ALT"),
 				),
-				(mb_strtoupper($DBType) == "MYSQL"?
-					Array(
-						"text" => GetMessage("MAIN_MENU_OPTIMIZE_DB"),
-						"url" => "repair_db.php?optimize_tables=Y&lang=".LANGUAGE_ID,
-						"more_url" => array(),
-						"title" => GetMessage("MAIN_MENU_OPTIMIZE_DB_ALT"),
-					)
-					:null
+				Array(
+					"text" => GetMessage("MAIN_MENU_OPTIMIZE_DB"),
+					"url" => "repair_db.php?optimize_tables=Y&lang=".LANGUAGE_ID,
+					"more_url" => array(),
+					"title" => GetMessage("MAIN_MENU_OPTIMIZE_DB_ALT"),
 				),
-				(mb_strtoupper($DBType) == "MYSQL"?
-					Array(
-						"text" => GetMessage("MAIN_MENU_REPAIR_DB"),
-						"url" => "repair_db.php?lang=".LANGUAGE_ID,
-						"more_url" => array(),
-						"title" => GetMessage("MAIN_MENU_REPAIR_DB_ALT"),
-					)
-					:null
+				Array(
+					"text" => GetMessage("MAIN_MENU_REPAIR_DB"),
+					"url" => "repair_db.php?lang=".LANGUAGE_ID,
+					"more_url" => array(),
+					"title" => GetMessage("MAIN_MENU_REPAIR_DB_ALT"),
 				),
 			),
 		);
@@ -577,7 +571,7 @@ if($USER->CanDoOperation('install_updates') || (in_array(LANGUAGE_ID, array("ru"
 				{
 					if($ht->getStatus() == "200")
 					{
-						$res = $APPLICATION->ConvertCharset($res, "windows-1251", SITE_CHARSET);
+						$res = \Bitrix\Main\Text\Encoding::convertEncoding($res, "windows-1251", SITE_CHARSET);
 						require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/classes/general/xml.php");
 
 						$objXML = new CDataXML();
@@ -788,7 +782,7 @@ if($USER->CanDoOperation('view_other_settings'))
 	);
 }
 
-if ($USER->CanDoOperation("view_other_settings") && \Bitrix\Main\Analytics\SiteSpeed::isRussianSiteManager())
+if ($USER->CanDoOperation("view_other_settings") && \Bitrix\Main\Analytics\SiteSpeed::isOn())
 {
 	AddEventHandler("main", "OnBuildGlobalMenu", array("\\Bitrix\\Main\\Analytics\\SiteSpeed", "onBuildGlobalMenu"));
 }

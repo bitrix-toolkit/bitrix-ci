@@ -1,0 +1,23 @@
+<?
+$MESS["SALE_CASHBOX_CORRECTION_ACCESS_DENIED"] = "Доступ запрещен.";
+$MESS["SALE_CASHBOX_CORRECTION_TITLE"] = "Коррекция";
+$MESS["SALE_CASHBOX_CORRECTION_SAVE_CHECK"] = "Чек создан и отправлен на печать";
+$MESS["SALE_CASHBOX_CORRECTION_ADD"] = "Добавить чек коррекции";
+$MESS["SALE_CASHBOX_CORRECTION_GROUP_ADD"] = "Добавить чек";
+$MESS["SALE_CASHBOX_CORRECTION_GROUP_EXPORT_TO_EXCEL"] = "Экспорт оплат в Excel";
+$MESS["SALE_CASHBOX_CORRECTION_GROUP_EXPORT_TO_CSV"] = "Экспорт оплат в CSV";
+$MESS["SALE_CHECK_CORRECTION_PAYMENT_ID"] = "ID оплаты";
+$MESS["SALE_CHECK_CORRECTION_ORDER_ID"] = "ID заказа";
+$MESS["SALE_CHECK_CORRECTION_ORDER_PAID"] = "Оплачен";
+$MESS["SALE_CHECK_CORRECTION_ORDER_PAID_Y"] = "Да";
+$MESS["SALE_CHECK_CORRECTION_ORDER_PAID_N"] = "Нет";
+$MESS["SALE_CHECK_CORRECTION_ORDER_SUM"] = "Сумма";
+$MESS["SALE_CHECK_CORRECTION_ORDER_DATE_BILL"] = "Дата создания оплаты";
+$MESS["SALE_CHECK_CORRECTION_PAY_SYSTEM_NAME"] = "Платежная система";
+$MESS["SALE_F_CORRECTION_DATE_BILL"] = "Дата создания";
+$MESS["SALE_F_CORRECTION_CHECK_PRINTED"] = "Чек напечатан";
+$MESS["SALE_F_CORRECTION_ORDER_ID"] = "ID заказа";
+$MESS["SALE_F_CORRECTION_PAID"] = "Оплачен";
+$MESS["CORRECTION_CHECK_EXPORT_CSV_TITLE"] = "Экспорт записей в CSV";
+$MESS["CORRECTION_CHECK_STEXPORT_SUMMARY"] = "Будет сформирован файл экспорта для записей в таблице. Выполнение этой операции может занять продолжительное время при большом количестве данных.";
+$MESS["CORRECTION_CHECK_EXPORT_EXCEL_TITLE"] = "Экспорт записей в Excel";

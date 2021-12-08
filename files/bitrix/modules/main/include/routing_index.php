@@ -8,7 +8,9 @@
 
 use Bitrix\Main\Context;
 use Bitrix\Main\Engine\Action;
+use Bitrix\Main\Engine\AutoWire\Parameter;
 use Bitrix\Main\Engine\Contract\RoutableAction;
+use Bitrix\Main\Engine\Response\Json;
 use Bitrix\Main\Loader;
 use Bitrix\Main\Routing\CompileCache;
 use Bitrix\Main\Routing\Controllers\PublicPageController;
@@ -33,6 +35,7 @@ $request = \Bitrix\Main\Application::getInstance()->getContext()->getRequest();
 $routes = new RoutingConfigurator;
 $router = new Router;
 $routes->setRouter($router);
+$application->setRouter($router);
 
 // files with routes
 $files = [];
@@ -45,12 +48,21 @@ if (!empty($routingConfig['config']))
 
 	foreach ($fileNames as $fileName)
 	{
-		$files[] = $_SERVER["DOCUMENT_ROOT"].'/bitrix/routes/'.basename($fileName);
+		foreach (['local', 'bitrix'] as $vendor)
+		{
+			if (file_exists($_SERVER["DOCUMENT_ROOT"].'/'.$vendor.'/routes/'.basename($fileName)))
+			{
+				$files[] = $_SERVER["DOCUMENT_ROOT"].'/'.$vendor.'/routes/'.basename($fileName);
+			}
+		}
 	}
 }
 
 // system files
-$files[] = $_SERVER["DOCUMENT_ROOT"].'/bitrix/routes/web_bitrix.php';
+if (file_exists($_SERVER["DOCUMENT_ROOT"].'/bitrix/routes/web_bitrix.php'))
+{
+	$files[] = $_SERVER["DOCUMENT_ROOT"].'/bitrix/routes/web_bitrix.php';
+}
 
 foreach ($files as $file)
 {
@@ -69,6 +81,8 @@ $route = $router->match($request);
 
 if (!empty($route))
 {
+	$application->setCurrentRoute($route);
+
 	// copy route parameters to the request
 	if ($route->getParametersValues())
 	{
@@ -96,8 +110,59 @@ if (!empty($route))
 	}
 	elseif ($controller instanceof \Closure)
 	{
-		$controller($request);
-		die;
+		$b = \Bitrix\Main\Engine\AutoWire\Binder::buildForFunction($controller);
+
+		// pass current route
+		$b->appendAutoWiredParameter(new Parameter(
+			\Bitrix\Main\Routing\Route::class, function () use ($route) {
+				return $route;
+			}
+		));
+
+		// pass request
+		$b->appendAutoWiredParameter(new Parameter(
+			\Bitrix\Main\HttpRequest::class, function () use ($request) {
+			return $request;
+		}
+		));
+
+		// pass named parameters
+		$b->setSourcesParametersToMap([
+			$route->getParametersValues()->getValues()
+		]);
+
+		// init kernel
+		require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
+
+		// call
+		$result = $b->invoke();
+
+		// send response
+		if ($result !== null)
+		{
+			if ($result instanceof \Bitrix\Main\HttpResponse)
+			{
+				// ready response
+				$response = $result;
+			}
+			elseif (is_array($result))
+			{
+				// json
+				$response = new Json($result);
+			}
+			else
+			{
+				// string
+				$response = new \Bitrix\Main\HttpResponse;
+				$response->setContent($result);
+			}
+
+			$application->getContext()->setResponse($response);
+			$response->send();
+		}
+
+		// terminate app
+		$application->terminate(0);
 	}
 	elseif (is_array($controller))
 	{
@@ -155,13 +220,7 @@ if (!empty($route))
 		'Unknown controller `%s`', $controller
 	));
 }
-
-//admin section 404
-if(strpos($request->getRequestUri(), "/bitrix/admin/") === 0)
+else
 {
-	$_SERVER["REAL_FILE_PATH"] = "/bitrix/admin/404.php";
-	include($_SERVER["DOCUMENT_ROOT"]."/bitrix/admin/404.php");
-	die();
+	require_once __DIR__.'/urlrewrite.php';
 }
-
-define("BX_CHECK_SHORT_URI", true);

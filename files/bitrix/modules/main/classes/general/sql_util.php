@@ -13,11 +13,8 @@ class CSqlUtil
 		}
 
 		global $DB;
-		$isOracle = $DB->type === 'ORACLE';
 
-		$sql = $isOracle
-			? "SELECT COUNT(1) AS QTY FROM {$tableName}"
-			: "SELECT COUNT(*) AS QTY FROM {$tableName}";
+		$sql = "SELECT COUNT(*) AS QTY FROM {$tableName}";
 
 		if(is_array($arFilter) && !empty($arFilter))
 		{
@@ -145,16 +142,10 @@ class CSqlUtil
 		// ORACLE AND MSSQL require datetime/date field in select list if it present in order list
 		if ($arField["TYPE"] == "datetime")
 		{
-			if (($DB->type == "ORACLE" || $DB->type == "MSSQL") && (array_key_exists($fieldKey, $arOrder)))
-				$strSqlSelect .= $arField["FIELD"]." as ".$fieldKey."_X1, ";
-
 			$strSqlSelect .= $DB->DateToCharFunction($arField["FIELD"], "FULL")." as ".$fieldKey;
 		}
 		elseif ($arField["TYPE"] == "date")
 		{
-			if (($DB->type == "ORACLE" || $DB->type == "MSSQL") && (array_key_exists($fieldKey, $arOrder)))
-				$strSqlSelect .= $arField["FIELD"]." as ".$fieldKey."_X1, ";
-
 			$strSqlSelect .= $DB->DateToCharFunction($arField["FIELD"], "SHORT")." as ".$fieldKey;
 		}
 		else
@@ -374,21 +365,6 @@ class CSqlUtil
 						else
 							$arSqlOrder[] = $arFields[$by]["FIELD"]." ".$order;
 					}
-					elseif($dbType === "MSSQL")
-					{
-						if($order === 'ASC')
-							$arSqlOrder[] = '(CASE WHEN '.$arFields[$by]["FIELD"].' IS NULL THEN 1 ELSE 0 END) '.$order.', '.$arFields[$by]["FIELD"]." ".$order;
-						else
-							$arSqlOrder[] = $arFields[$by]["FIELD"]." ".$order;
-
-					}
-					elseif($dbType === "ORACLE")
-					{
-						if($order === 'DESC')
-							$arSqlOrder[] = $arFields[$by]["FIELD"]." ".$order." NULLS LAST";
-						else
-							$arSqlOrder[] = $arFields[$by]["FIELD"]." ".$order;
-					}
 				}
 
 				if (isset($arFields[$by]["FROM"])
@@ -480,7 +456,12 @@ class CSqlUtil
 						{
 							if ($arFields[$key]["TYPE"] == "int")
 							{
-								array_walk($vals, create_function("&\$item", "\$item=IntVal(\$item);"));
+								array_walk(
+									$vals,
+									function (&$item) {
+										$item = (int)$item;
+									}
+								);
 								$vals = array_unique($vals);
 								$val = implode(",", $vals);
 
@@ -491,7 +472,12 @@ class CSqlUtil
 							}
 							elseif ($arFields[$key]["TYPE"] == "double")
 							{
-								array_walk($vals, create_function("&\$item", "\$item=DoubleVal(\$item);"));
+								array_walk(
+									$vals,
+									function (&$item) {
+										$item = (float)$item;
+									}
+								);
 								$vals = array_unique($vals);
 								$val = implode(",", $vals);
 
@@ -502,7 +488,12 @@ class CSqlUtil
 							}
 							elseif ($arFields[$key]["TYPE"] == "string" || $arFields[$key]["TYPE"] == "char")
 							{
-								array_walk($vals, create_function("&\$item", "\$item=\"'\".\$GLOBALS[\"DB\"]->ForSql(\$item).\"'\";"));
+								array_walk(
+									$vals,
+									function (&$item) {
+										$item = "'".$GLOBALS["DB"]->ForSql($item)."'";
+									}
+								);
 								$vals = array_unique($vals);
 								$val = implode(",", $vals);
 
@@ -513,7 +504,12 @@ class CSqlUtil
 							}
 							elseif ($arFields[$key]["TYPE"] == "datetime")
 							{
-								array_walk($vals, create_function("&\$item", "\$item=\"'\".\$GLOBALS[\"DB\"]->CharToDateFunction(\$GLOBALS[\"DB\"]->ForSql(\$item), \"FULL\").\"'\";"));
+								array_walk(
+									$vals,
+									function (&$item) {
+										$item = $GLOBALS["DB"]->CharToDateFunction($item, "FULL");
+									}
+								);
 								$vals = array_unique($vals);
 								$val = implode(",", $vals);
 
@@ -524,7 +520,12 @@ class CSqlUtil
 							}
 							elseif ($arFields[$key]["TYPE"] == "date")
 							{
-								array_walk($vals, create_function("&\$item", "\$item=\"'\".\$GLOBALS[\"DB\"]->CharToDateFunction(\$GLOBALS[\"DB\"]->ForSql(\$item), \"SHORT\").\"'\";"));
+								array_walk(
+									$vals,
+									function (&$item) {
+										$item = $GLOBALS["DB"]->CharToDateFunction($item, "SHORT");
+									}
+								);
 								$vals = array_unique($vals);
 								$val = implode(",", $vals);
 
@@ -810,17 +811,6 @@ class CSqlUtil
 		if($dbType === 'MYSQL')
 		{
 			$sql .= ' LIMIT '.$top;
-		}
-		elseif($dbType === 'MSSQL')
-		{
-			if(mb_substr($sql, 0, 7) === 'SELECT ')
-			{
-				$sql = 'SELECT TOP '.$top.mb_substr($sql, 6);
-			}
-		}
-		elseif($dbType === 'ORACLE')
-		{
-			$sql = 'SELECT * FROM ('.$sql.') WHERE ROWNUM <= '.$top;
 		}
 	}
 

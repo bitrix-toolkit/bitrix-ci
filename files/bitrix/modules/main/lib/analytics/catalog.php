@@ -39,7 +39,7 @@ class Catalog
 		{
 			return;
 		}
-		
+
 		// exclude empty cookie
 		if (!static::getBxUserId())
 		{
@@ -413,7 +413,7 @@ class Catalog
 		return $data;
 	}
 
-	protected function getBxUserId()
+	protected static function getBxUserId()
 	{
 		return $_COOKIE['BX_USER_ID'];
 	}
@@ -434,7 +434,7 @@ class Catalog
 
 	public static function isOn()
 	{
-		return SiteSpeed::isRussianSiteManager()
+		return SiteSpeed::isOn()
 			&& Option::get("main", "gather_catalog_stat", "Y") === "Y"
 			&& defined("LICENSE_KEY") && LICENSE_KEY !== "DEMO"
 		;

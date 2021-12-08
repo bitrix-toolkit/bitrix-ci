@@ -28,7 +28,7 @@ return array(
         array(
             'value' =>
                 array(
-                    'debug' => false,
+                    'debug' => boolval(getenv('DEBUG', true) ?: getenv('DEBUG')),
                     'handled_errors_types' => 4437,
                     'exception_errors_types' => 4437,
                     'ignore_silence' => false,
@@ -58,7 +58,7 @@ return array(
         array(
             'value' =>
                 array(
-                    'crypto_key' => 'ae667e86fa8aa6316c4e00ae7a602fe1',
+                    'crypto_key' => 'e2a3663194d34560294cab6be2edc09e',
                 ),
             'readonly' => true,
         ),

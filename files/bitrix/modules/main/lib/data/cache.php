@@ -214,6 +214,13 @@ class Cache
 	{
 		global $USER;
 
+		$kernelSession = null;
+		$application = \Bitrix\Main\Application::getInstance();
+		if ($application->isExtendedKernelInitialized())
+		{
+			 $kernelSession = $application->getKernelSession();
+		}
+
 		if (isset(static::$clearCacheSession) || isset(static::$clearCache))
 		{
 			if (is_object($USER) && $USER->CanDoOperation('cache_control'))
@@ -222,11 +229,11 @@ class Cache
 				{
 					if (static::$clearCacheSession === true)
 					{
-						$_SESSION["SESS_CLEAR_CACHE"] = "Y";
+						$kernelSession["SESS_CLEAR_CACHE"] = "Y";
 					}
 					else
 					{
-						unset($_SESSION["SESS_CLEAR_CACHE"]);
+						unset($kernelSession["SESS_CLEAR_CACHE"]);
 					}
 				}
 
@@ -237,7 +244,7 @@ class Cache
 			}
 		}
 
-		if (isset($_SESSION["SESS_CLEAR_CACHE"]) && $_SESSION["SESS_CLEAR_CACHE"] === "Y")
+		if (isset($kernelSession["SESS_CLEAR_CACHE"]) && $kernelSession["SESS_CLEAR_CACHE"] === "Y")
 		{
 			return true;
 		}

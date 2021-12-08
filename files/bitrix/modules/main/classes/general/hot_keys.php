@@ -284,7 +284,7 @@ class CHotKeysCode
 		{
 			foreach ($arFilter as $key => $val)
 			{
-				if ($val == '' || $val == "NOT_REF")
+				if ((string)$val == '' || $val == "NOT_REF")
 					continue;
 				$key = mb_strtoupper($key);
 				switch($key)
@@ -469,7 +469,7 @@ class CHotKeys
 		if(is_array($this->arList) || !self::$optUse)
 			return false;
 
-		if(isset($_SESSION["hasHotKeys"]) && $_SESSION["hasHotKeys"] == false)
+		if(isset(\Bitrix\Main\Application::getInstance()->getSession()["hasHotKeys"]) && \Bitrix\Main\Application::getInstance()->getSession()["hasHotKeys"] == false)
 			return false;
 
 		$uid = $USER->GetID();
@@ -491,13 +491,13 @@ class CHotKeys
 		if(is_array($this->arList))
 		{
 			$CACHE_MANAGER->Set(self::$cacheId, $this->arList);
-			$_SESSION["hasHotKeys"] = true;
+			\Bitrix\Main\Application::getInstance()->getSession()["hasHotKeys"] = true;
 		}
 		else  //for the first user's login let's try to set default keys
 		{
 			if(!$this->IsDefaultOpt())
 			{
-				$_SESSION["hasHotKeys"] = false;
+				\Bitrix\Main\Application::getInstance()->getSession()["hasHotKeys"] = false;
 				return false;
 			}
 
@@ -506,7 +506,7 @@ class CHotKeys
 
 			if(!$setDef || !$setNoDef)
 			{
-				$_SESSION["hasHotKeys"] = false;
+				\Bitrix\Main\Application::getInstance()->getSession()["hasHotKeys"] = false;
 				return false;
 			}
 
@@ -756,7 +756,7 @@ class CHotKeys
 		{
 			foreach ($arFilter as $key => $val)
 			{
-				if ($val == '' || $val == "NOT_REF")
+				if ((string)$val == '' || $val == "NOT_REF")
 					continue;
 				$key = mb_strtoupper($key);
 				switch($key)
@@ -819,7 +819,7 @@ class CHotKeys
 
 		global $DB;
 
-		unset($_SESSION["hasHotKeys"]);
+		unset(\Bitrix\Main\Application::getInstance()->getSession()["hasHotKeys"]);
 		$this->CleanCache();
 
 		$arPrepFields = array(
@@ -838,7 +838,7 @@ class CHotKeys
 
 		global $DB;
 
-		unset($_SESSION["hasHotKeys"]);
+		unset(\Bitrix\Main\Application::getInstance()->getSession()["hasHotKeys"]);
 		$this->CleanCache();
 
 		$strUpdate = $DB->PrepareUpdate("b_hot_keys", $arFields);
@@ -856,7 +856,7 @@ class CHotKeys
 	{
 		global $DB;
 
-		unset($_SESSION["hasHotKeys"]);
+		unset(\Bitrix\Main\Application::getInstance()->getSession()["hasHotKeys"]);
 		$this->CleanCache();
 
 		$sql = "DELETE FROM b_hot_keys WHERE ID=".intval($ID);
@@ -872,7 +872,7 @@ class CHotKeys
 
 		$uid = intval($userID);
 
-		unset($_SESSION["hasHotKeys"]);
+		unset(\Bitrix\Main\Application::getInstance()->getSession()["hasHotKeys"]);
 
 		$sql = "DELETE FROM b_hot_keys WHERE USER_ID=".$uid;
 		$delRes = $DB->Query($sql, false, $this->ErrOrig()." Line: ".__LINE__);
@@ -919,7 +919,7 @@ class CHotKeys
 
 		if(intval($charCode)<256)
 		{
-			if(!($codeSymb = $this->arServSymb[intval($charCode)]))
+			if(!($codeSymb = ($this->arServSymb[intval($charCode)] ?? 0)))
 				$codeSymb = chr($charCode);
 		}
 		else
@@ -1184,7 +1184,7 @@ class CHotKeys
 
 		$arInput = null;
 		if(CheckSerializedData($fileContent))
-			$arInput = unserialize($fileContent);
+			$arInput = unserialize($fileContent, ['allowed_classes' => false]);
 
 		if(!is_array($arInput) || empty($arInput))
 			return false;

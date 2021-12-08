@@ -112,4 +112,6 @@ $MESS["MAIN_ADMIN_AUTH_TITLE"] = "Авторизоваться под данны
 $MESS["MAIN_USER_EDIT_HISTORY"] = "История";
 $MESS["MAIN_USER_EDIT_HISTORY_TITLE"] = "История изменения профиля пользователя";
 $MESS["main_user_edit_phone_number"] = "Номер телефона для регистрации:";
+$MESS["main_user_edit_blocked"] = "Заблокирован:";
+$MESS["main_user_edit_pass_expired"] = "Требуется сменить пароль при следующем входе:";
 ?>

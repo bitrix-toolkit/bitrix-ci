@@ -1,16 +1,17 @@
 <?php
 namespace Bitrix\Catalog\Product;
 
-use Bitrix\Main,
-	Bitrix\Main\Loader,
-	Bitrix\Main\Localization\LanguageTable,
-	Bitrix\Main\Localization\Loc,
-	Bitrix\Main\ModuleManager,
-	Bitrix\Main\ORM,
-	Bitrix\Main\TaskTable,
-	Bitrix\Main\Text,
-	Bitrix\Catalog,
-	Bitrix\Highloadblock as Highload;
+use Bitrix\Main;
+use Bitrix\Main\Loader;
+use Bitrix\Main\Localization\LanguageTable;
+use Bitrix\Main\Localization\Loc;
+use Bitrix\Main\ModuleManager;
+use Bitrix\Main\ORM;
+use Bitrix\Main\TaskTable;
+use Bitrix\Main\Text;
+use Bitrix\Main\UserField;
+use Bitrix\Catalog;
+use Bitrix\Highloadblock as Highload;
 
 final class SystemField
 {
@@ -46,7 +47,7 @@ final class SystemField
 	/**
 	 * @return string
 	 */
-	public static function execAgent()
+	public static function execAgent(): string
 	{
 		$result = '';
 		$createResult = self::create();
@@ -60,7 +61,7 @@ final class SystemField
 	/**
 	 * @return Main\Result
 	 */
-	public static function create()
+	public static function create(): Main\Result
 	{
 		$result = new Main\Result();
 
@@ -80,7 +81,7 @@ final class SystemField
 	/**
 	 * @return void
 	 */
-	public static function delete()
+	public static function delete(): void
 	{
 		self::$currentFieldSet = null;
 	}
@@ -88,7 +89,7 @@ final class SystemField
 	/**
 	 * @return array
 	 */
-	public static function getFieldList()
+	public static function getFieldList(): array
 	{
 		if (self::$currentFieldSet === null)
 		{
@@ -123,7 +124,7 @@ final class SystemField
 	 * @throws \Bitrix\Main\ObjectPropertyException
 	 * @throws \Bitrix\Main\SystemException
 	 */
-	public static function convertRow(array &$row)
+	public static function convertRow(array &$row): void
 	{
 		if (!self::initHighloadBlock())
 			return;
@@ -166,10 +167,10 @@ final class SystemField
 		unset($id);
 	}
 
-	public static function prepareRow(array &$row)
+	public static function prepareRow(array &$row): void
 	{
 		self::initStorageList();
-		$fieldList = static::getFieldList();
+		$fieldList = self::getFieldList();
 		if (
 			isset($fieldList[self::CODE_MARKING_CODE_GROUP])
 			&& array_key_exists(self::CODE_MARKING_CODE_GROUP, $row)
@@ -215,7 +216,7 @@ final class SystemField
 	/**
 	 * @return array|null
 	 */
-	public static function getGroupActions()
+	public static function getGroupActions(): ?array
 	{
 		$result = [];
 
@@ -230,7 +231,7 @@ final class SystemField
 	 * @param string $fieldId
 	 * @return array|null
 	 */
-	public static function getGroupActionRequest(string $fieldId)
+	public static function getGroupActionRequest(string $fieldId): ?array
 	{
 		$value = Main\Context::getCurrent()->getRequest()->get(self::getFormRowFieldName($fieldId));
 		return ($value === null ? null : [$fieldId => $value]);
@@ -243,7 +244,7 @@ final class SystemField
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	public static function handlerHighloadBlockBeforeDelete(ORM\Event $event)
+	public static function handlerHighloadBlockBeforeDelete(ORM\Event $event): ORM\EventResult
 	{
 		$result = new ORM\EventResult();
 
@@ -284,7 +285,7 @@ final class SystemField
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	public static function handlerHighloadBlockBeforeUpdate(ORM\Event $event)
+	public static function handlerHighloadBlockBeforeUpdate(ORM\Event $event): ORM\EventResult
 	{
 		$result = new ORM\EventResult();
 
@@ -326,9 +327,60 @@ final class SystemField
 	}
 
 	/**
+	 * @param Main\Event $event
+	 * @return Main\EventResult
+	 */
+	public static function handlerHighloadBlockBeforeUninstall(Main\Event $event): Main\EventResult
+	{
+		$error = '';
+
+		$module = $event->getParameter('module');
+		if ($module === 'highloadblock')
+		{
+			if (
+				self::allowedMarkingCodeGroup()
+				&& self::initHighloadBlock()
+			)
+			{
+				$storage = self::getStorageDescription(self::CODE_MARKING_CODE_GROUP);
+				if (!empty($storage))
+				{
+					$row = self::getHighloadBlockStorage($storage);
+					if (!empty($row))
+					{
+						$error = new Main\Error(
+							Loc::getMessage(
+								'BX_CATALOG_PRODUCT_SYSTEMFIELD_ERR_DISALLOW_UNINSTALL_HIGHLOADBLOCK',
+								['#NAME#' => $storage['NAME']]
+							)
+						);
+					}
+				}
+				unset($storage);
+			}
+		}
+		unset($module);
+
+		if ($error === '')
+		{
+			return new Main\EventResult(Main\EventResult::SUCCESS);
+		}
+		else
+		{
+			return new Main\EventResult(
+				Main\EventResult::ERROR,
+				[
+					'error' => $error
+				],
+				'catalog'
+			);
+		}
+	}
+
+	/**
 	 * @return bool
 	 */
-	private static function isExistHighloadBlock()
+	private static function isExistHighloadBlock(): bool
 	{
 		return Main\IO\Directory::isDirectoryExists(
 			Main\Application::getDocumentRoot().'/bitrix/modules/highloadblock/'
@@ -338,7 +390,7 @@ final class SystemField
 	/**
 	 * @return bool
 	 */
-	private static function checkHighloadBlock()
+	private static function checkHighloadBlock(): bool
 	{
 		$result = self::initHighloadBlock();
 		if (!$result)
@@ -349,7 +401,7 @@ final class SystemField
 	/**
 	 * @return bool
 	 */
-	private static function initHighloadBlock()
+	private static function initHighloadBlock(): bool
 	{
 		if (self::$highloadInclude === null)
 			self::$highloadInclude = Loader::includeModule('highloadblock');
@@ -363,7 +415,7 @@ final class SystemField
 	 * @throws \Bitrix\Main\ObjectPropertyException
 	 * @throws \Bitrix\Main\SystemException
 	 */
-	private static function highloadBlockAlert()
+	private static function highloadBlockAlert(): void
 	{
 		if (
 			!self::initBitrix24()
@@ -421,7 +473,7 @@ final class SystemField
 	/**
 	 * @return bool
 	 */
-	private static function initBitrix24()
+	private static function initBitrix24(): bool
 	{
 		if (self::$bitrix24Include === null)
 			self::$bitrix24Include = Loader::includeModule('bitrix24');
@@ -431,7 +483,7 @@ final class SystemField
 	/**
 	 * @return void
 	 */
-	private static function initStorageList()
+	private static function initStorageList(): void
 	{
 		if (!empty(self::$storageList))
 			return;
@@ -445,7 +497,7 @@ final class SystemField
 	/**
 	 * @return array
 	 */
-	private static function getLanguages()
+	private static function getLanguages(): array
 	{
 		if (empty(self::$languages))
 		{
@@ -466,7 +518,7 @@ final class SystemField
 	 * @param string $code
 	 * @return string
 	 */
-	private static function getStorageTableName(string $code)
+	private static function getStorageTableName(string $code): string
 	{
 		return self::STORAGE_TABLE_NAME_PREFIX.''.mb_strtolower($code);
 	}
@@ -475,7 +527,7 @@ final class SystemField
 	 * @param string $code
 	 * @return string
 	 */
-	private static function getStorageName(string $code)
+	private static function getStorageName(string $code): string
 	{
 		return Text\StringHelper::snake2camel(self::STORAGE_NAME_PREFIX.$code);
 	}
@@ -484,17 +536,17 @@ final class SystemField
 	 * @param string $code
 	 * @return array|null
 	 */
-	private static function getStorageDescription(string $code)
+	private static function getStorageDescription(string $code): ?array
 	{
 		self::initStorageList();
-		return (isset(self::$storageList[$code]) ? self::$storageList[$code] : null);
+		return (self::$storageList[$code] ?? null);
 	}
 
 	/**
 	 * @param string $code
 	 * @return array
 	 */
-	private static function getStorageLangTitles(string $code)
+	private static function getStorageLangTitles(string $code): array
 	{
 		$result = [];
 
@@ -520,7 +572,7 @@ final class SystemField
 	/**
 	 * @return Main\Result
 	 */
-	private static function createMarkingCodeGroup()
+	private static function createMarkingCodeGroup(): Main\Result
 	{
 		$result = new Main\Result();
 		if (!self::allowedMarkingCodeGroup())
@@ -601,7 +653,7 @@ final class SystemField
 	/**
 	 * @return bool
 	 */
-	private static function allowedMarkingCodeGroup()
+	private static function allowedMarkingCodeGroup(): bool
 	{
 		if (!self::initBitrix24())
 		{
@@ -634,7 +686,7 @@ final class SystemField
 	 * @param array $storage
 	 * @return Main\Result
 	 */
-	private static function createMarkingCodeGroupField(array $storage)
+	private static function createMarkingCodeGroupField(array $storage): Main\Result
 	{
 		$result = new Main\Result();
 
@@ -702,7 +754,7 @@ final class SystemField
 	/**
 	 * @return array
 	 */
-	private static function getMarkingCodeGroupStorageFields()
+	private static function getMarkingCodeGroupStorageFields(): array
 	{
 		$result = [];
 
@@ -749,7 +801,7 @@ final class SystemField
 
 			$result[] = [
 				'FIELD_NAME' => self::FIELD_PREFIX.$fieldId,
-				'USER_TYPE_ID' => \CUserTypeString::USER_TYPE_ID,
+				'USER_TYPE_ID' => UserField\Types\StringType::USER_TYPE_ID,
 				'XML_ID' => $fieldId,
 				'SORT' => $sort,
 				'MULTIPLE' => 'N',
@@ -778,11 +830,11 @@ final class SystemField
 	 * @param array $storage
 	 * @return Main\Result
 	 */
-	private static function fillMarkingCodeGroups(array $storage)
+	private static function fillMarkingCodeGroups(array $storage): Main\Result
 	{
 		$result = new Main\Result();
 
-		$groupCodes = ['02', '03', '05', '5408', '8258', '8721', '9840', '06', '5010', '5137', '5139', '5140'];
+		$groupCodes = ['02', '03', '05', '17485', '8258', '8721', '9840', '06', '5010', '5137', '5139', '5140'];
 		$groupTitles = Loc::loadLanguageFile(
 			$_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/catalog/regionalsystemfields/markingcodegroup.php',
 			'ru'
@@ -791,7 +843,8 @@ final class SystemField
 		$internalResult = self::transformMarkingCodes(
 			$storage,
 			[
-				['OLD_XML_ID' => '5048', 'NEW_XML_ID' => '5408']
+				['OLD_XML_ID' => '5048', 'NEW_XML_ID' => '17485'],
+				['OLD_XML_ID' => '5408', 'NEW_XML_ID' => '17485']
 			]
 		);
 		if (!$internalResult->isSuccess())
@@ -828,7 +881,7 @@ final class SystemField
 	 * @param array $values
 	 * @return Main\Result
 	 */
-	private static function transformMarkingCodes(array $block, array $values)
+	private static function transformMarkingCodes(array $block, array $values): Main\Result
 	{
 		$result = new Main\Result();
 
@@ -865,7 +918,7 @@ final class SystemField
 	/**
 	 * @return array|null
 	 */
-	private static function getMarkingCodeGroupAction()
+	private static function getMarkingCodeGroupAction(): ?array
 	{
 		self::initStorageList();
 
@@ -929,10 +982,7 @@ final class SystemField
 			]
 		];
 
-		$title = (isset($description['EDIT_FORM_LABEL'][LANGUAGE_ID])
-			? $description['EDIT_FORM_LABEL'][LANGUAGE_ID]
-			: $storage['UF_FIELD']
-		);
+		$title = $description['EDIT_FORM_LABEL'][LANGUAGE_ID] ?? $storage['UF_FIELD'];
 
 		$result = [
 			'NAME' => $title,
@@ -944,7 +994,11 @@ final class SystemField
 		return $result;
 	}
 
-	private static function getFormRowFieldName(string $field)
+	/**
+	 * @param string $field
+	 * @return string
+	 */
+	private static function getFormRowFieldName(string $field): string
 	{
 		return self::FIELD_NAME_PREFIX.mb_strtoupper($field);
 	}
@@ -953,7 +1007,7 @@ final class SystemField
 	 * @param string $field
 	 * @return string
 	 */
-	private static function getFormRowFieldId(string $field)
+	private static function getFormRowFieldId(string $field): string
 	{
 		return self::FIELD_ID_PREFIX.mb_strtolower($field).'_id';
 	}
@@ -962,7 +1016,7 @@ final class SystemField
 	 * @param array $block
 	 * @return Main\Result
 	 */
-	private static function createHighloadBlock(array $block)
+	private static function createHighloadBlock(array $block): Main\Result
 	{
 		$result = new Main\Result();
 
@@ -1042,21 +1096,27 @@ final class SystemField
 		return $result;
 	}
 
-	/**
-	 * @param array $block
-	 * @param array $options
-	 * @return Main\Result
-	 */
-	private static function createHighloadBlockStorage(array $block, array $options = [])
+	private static function getHighloadBlockStorage(array $block): ?array
 	{
-		$result = new Main\Result();
-
 		$iterator = Highload\HighloadBlockTable::getList([
 			'select' => ['ID', 'NAME', 'TABLE_NAME'],
 			'filter' => ['=NAME' => $block['NAME'], '=TABLE_NAME' => $block['TABLE_NAME']]
 		]);
 		$row = $iterator->fetch();
 		unset($iterator);
+		return (!empty($row) ? $row: null);
+	}
+
+	/**
+	 * @param array $block
+	 * @param array $options
+	 * @return Main\Result
+	 */
+	private static function createHighloadBlockStorage(array $block, array $options = []): Main\Result
+	{
+		$result = new Main\Result();
+
+		$row = self::getHighloadBlockStorage($block);
 		if (!empty($row))
 		{
 			if (isset($options['ALLOW_UPDATE']) && $options['ALLOW_UPDATE'] === true)
@@ -1103,7 +1163,7 @@ final class SystemField
 	 * @param array $block
 	 * @return Main\Result
 	 */
-	private static function setHighloadBlockTitle(array $block)
+	private static function setHighloadBlockTitle(array $block): Main\Result
 	{
 		$result = new Main\Result();
 
@@ -1136,7 +1196,7 @@ final class SystemField
 	 * @param array $block
 	 * @return Main\Result
 	 */
-	private static function setHighloadBlockRights(array $block)
+	private static function setHighloadBlockRights(array $block): Main\Result
 	{
 		$result = new Main\Result();
 
@@ -1182,13 +1242,12 @@ final class SystemField
 		return $result;
 	}
 
-
 	/**
 	 * @param string $moduleId
 	 * @param array $filter
 	 * @return array
 	 */
-	private static function getModuleTasks(string $moduleId, array $filter = [])
+	private static function getModuleTasks(string $moduleId, array $filter = []): array
 	{
 		$result = [];
 
@@ -1211,7 +1270,7 @@ final class SystemField
 	 * @param array $block
 	 * @return Main\Result
 	 */
-	private static function setHighloadBlockFields(array $block)
+	private static function setHighloadBlockFields(array $block): Main\Result
 	{
 		$result = new Main\Result();
 
@@ -1272,7 +1331,7 @@ final class SystemField
 	 * @param array $values
 	 * @return Main\Result
 	 */
-	private static function fillHighloadBlock(array $block, array $values)
+	private static function fillHighloadBlock(array $block, array $values): Main\Result
 	{
 		$result = new Main\Result();
 
@@ -1327,7 +1386,7 @@ final class SystemField
 	 * @param array $field
 	 * @return Main\Result
 	 */
-	private static function createUserField(array $field)
+	private static function createUserField(array $field): Main\Result
 	{
 		global $APPLICATION;
 

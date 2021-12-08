@@ -52,7 +52,7 @@ class SkuRepository extends BaseIblockElementRepository implements SkuRepository
 		};
 
 		return $this->factory
-			->createCollection($product)
+			->createCollection()
 			->setIteratorCallback($callback)
 			;
 	}
@@ -90,7 +90,7 @@ class SkuRepository extends BaseIblockElementRepository implements SkuRepository
 		return $filter;
 	}
 
-	protected function makeEntity(array $fields): BaseIblockElementEntity
+	protected function makeEntity(array $fields = []): BaseIblockElementEntity
 	{
 		$type = (int)($fields['TYPE'] ?? 0);
 
@@ -121,12 +121,12 @@ class SkuRepository extends BaseIblockElementRepository implements SkuRepository
 			/** @var BaseProduct $product */
 			foreach ($products as $product)
 			{
-				$productSkuItems = $skuByProductMap[$product->getId()];
-
-				$this
-					->getCollectionByProduct($product)
+				$productSkuItems = $skuByProductMap[$product->getId()] ?? [];
+				$skuCollection = $this->getCollectionByProduct($product)
+					->setParent($product)
 					->add(...$productSkuItems)
 				;
+				$product->setSkuCollection($skuCollection);
 			}
 		}
 	}
@@ -186,5 +186,15 @@ class SkuRepository extends BaseIblockElementRepository implements SkuRepository
 				yield $this->createEntity($item);
 			}
 		}
+	}
+
+	public function setDetailUrlTemplate(?string $template): BaseIblockElementRepository
+	{
+		if ($this->productRepository->getDetailUrlTemplate() === null)
+		{
+			$this->productRepository->setDetailUrlTemplate($template);
+		}
+
+		return parent::setDetailUrlTemplate($template);
 	}
 }

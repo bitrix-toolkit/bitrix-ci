@@ -533,7 +533,7 @@ function set_presets()
 	</select>
 	</td>
 	<td valign="top" rowspan="<?echo count($arSettings)+1?>">
-		<?for($i=0;$i < 12; $i++):?>
+		<?for($i=0;$i < 10; $i++):?>
 			<img id="CAPTCHA_<?echo $i?>" src="/bitrix/admin/captcha.php?Preview=Y&amp;captcha_sid=<?echo $CAPTCHA_CODE?>&amp;i=<?echo $i?>&amp;j=0" width="180" height="40" alt="CAPTCHA" /><br><br><br>
 		<?endfor?>
 	</td>

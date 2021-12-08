@@ -4,6 +4,7 @@ if (ini_get('short_open_tag') == 0 && mb_strtoupper(ini_get('short_open_tag')) !
 ?><?
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
 define('START_TIME', microtime(1));
+define('BX_FORCE_DISABLE_SEPARATED_SESSION_MODE', true);
 define('CLI', defined('BX_CRONTAB') && BX_CRONTAB === true || !$_SERVER['DOCUMENT_ROOT']);
 @define('LANGUAGE_ID', 'en');
 @define('NOT_CHECK_PERMISSIONS', true);
@@ -97,6 +98,7 @@ elseif (!CLI) // hit from bitrixcloud service
 		RaiseErrorAndDie('Backup is disabled', 4);
 
 	session_write_close();
+	ini_set("session.use_strict_mode", "0");
 	session_id(md5($backup_secret_key));
 	session_start();
 	$NS =& $_SESSION['BX_DUMP_STATE'];
@@ -127,12 +129,8 @@ while(ob_end_flush());
 
 @set_time_limit(0);
 
-if (function_exists('mb_internal_encoding'))
-	mb_internal_encoding('ISO-8859-1');
-
 $bGzip = function_exists('gzcompress');
-$bMcrypt = function_exists('mcrypt_encrypt') || function_exists('openssl_encrypt');
-$bBitrixCloud = $bMcrypt && CModule::IncludeModule('bitrixcloud') && CModule::IncludeModule('clouds');
+$bBitrixCloud = function_exists('openssl_encrypt') && CModule::IncludeModule('bitrixcloud') && CModule::IncludeModule('clouds');
 
 if ($public)
 {
@@ -168,7 +166,7 @@ else
 		'dump_old_cnt' => IntOption('dump_old_cnt'),
 		'dump_old_size' => IntOption('dump_old_size'),
 
-		'dump_site_id' => is_array($ar = unserialize(COption::GetOptionString("main","dump_site_id"."_auto"))) ? $ar : array(),
+		'dump_site_id' => is_array($ar = unserialize(COption::GetOptionString("main","dump_site_id"."_auto"), ['allowed_classes' => false])) ? $ar : array(),
 	);
 
 	$arExpertBackupDefaultParams = array(
@@ -181,7 +179,7 @@ else
 		'dump_file_kernel' => IntOption('dump_file_kernel', 1),
 		'dump_do_clouds' => IntOption('dump_do_clouds', 1),
 		'skip_mask' => IntOption('skip_mask', 0),
-		'skip_mask_array' => is_array($ar = unserialize(COption::GetOptionString("main","skip_mask_array_auto"))) ? $ar : array(),
+		'skip_mask_array' => is_array($ar = unserialize(COption::GetOptionString("main","skip_mask_array_auto"), ['allowed_classes' => false])) ? $ar : array(),
 		'dump_max_file_size' => IntOption('dump_max_file_size', 0),
 	);
 
@@ -227,7 +225,7 @@ if (!$NS['step'])
 	else
 	{
 		$prefix = str_replace('/', '', COption::GetOptionString("main", "server_name", ""));
-		$arc_name = CBackup::GetArcName(preg_match('#^[a-z0-9\.\-]+$#i', $prefix) ? mb_substr($prefix, 0, 20).'_' : '');
+		$arc_name = CBackup::GetArcName(preg_match('#^[a-z0-9\.\-]+$#i', $prefix) ? substr($prefix, 0, 20).'_' : '');
 	}
 
 	$NS['arc_name'] = $arc_name.($NS['dump_encrypt_key'] ? ".enc" : ".tar").($arParams['dump_use_compression'] ? ".gz" : '');
@@ -236,7 +234,7 @@ if (!$NS['step'])
 	if (count($arParams['dump_site_id']))
 	{
 		$NS['site_path_list'] = array();
-		$res = CSite::GetList($by='sort', $order='asc', array('ACTIVE'=>'Y'));
+		$res = CSite::GetList('sort', 'asc', array('ACTIVE'=>'Y'));
 		while($f = $res->Fetch())
 		{
 			$root = rtrim(str_replace('\\','/',$f['ABS_DOC_ROOT']),'/');
@@ -353,7 +351,7 @@ if ($NS['step'] <= 2)
 					{
 						$size = filesize($name);
 						$NS['arc_size'] += $size;
-						$name = CTar::getNextName($name);
+						$name = $tar->getNextName($name);
 					}
 					$NS['step_finished']++;
 
@@ -476,11 +474,12 @@ if ($NS['step'] == 4)
 
 		$NS['arc_size'] = 0;
 		$name = $NS["arc_name"];
+		$tar = new CTar();
 		while(file_exists($name))
 		{
 			$size = filesize($name);
 			$NS['arc_size'] += $size;
-			$name = CTar::getNextName($name);
+			$name = $tar->getNextName($name);
 		}
 		DeleteDirFilesEx(BX_ROOT.'/backup/clouds');
 		if ($arParams['dump_file_public'] && $arParams['dump_file_kernel'])
@@ -532,10 +531,11 @@ if ($NS['step'] == 6)
 		if (!CModule::IncludeModule('clouds'))
 			RaiseErrorAndDie(GetMessage("MAIN_DUMP_NO_CLOUDS_MODULE"), 600, $NS['arc_name']);
 
+		$tar = new CTar();
 		while(CheckPoint())
 		{
 			$file_size = filesize($NS["arc_name"]);
-			$file_name = $NS['BUCKET_ID'] == -1? basename($NS['arc_name']) : mb_substr($NS['arc_name'], mb_strlen(DOCUMENT_ROOT));
+			$file_name = $NS['BUCKET_ID'] == -1? basename($NS['arc_name']) : substr($NS['arc_name'], strlen(DOCUMENT_ROOT));
 			$obUpload = new CCloudStorageUpload($file_name);
 
 			if ($NS['BUCKET_ID'] == -1)
@@ -563,7 +563,12 @@ if ($NS['step'] == 6)
 					}
 				}
 				else
-					$obBucket = unserialize($NS['obBucket']);
+				{
+					$obBucket = unserialize(
+						$NS['obBucket'],
+						['allowed_classes' => ['CBitrixCloudBackupBucket']]
+					);
+				}
 
 				$obBucket->Init();
 				$obBucket->GetService()->setPublic(false);
@@ -630,7 +635,7 @@ if ($NS['step'] == 6)
 					$oBucket->IncFileCounter($file_size);
 				}
 
-				if (file_exists($arc_name = CTar::getNextName($NS['arc_name'])))
+				if (file_exists($arc_name = $tar->getNextName($NS['arc_name'])))
 				{
 					unset($NS['obBucket']);
 					$NS['arc_name'] = $arc_name;
@@ -651,7 +656,7 @@ if ($NS['step'] == 6)
 							$size = filesize($name);
 							if (unlink($name) && COption::GetOptionInt('main', 'disk_space', 0) > 0)
 								CDiskQuota::updateDiskQuota("file", $size, "del");
-							$name = CTar::getNextName($name);
+							$name = $tar->getNextName($name);
 						}
 					}
 					break;
@@ -751,11 +756,12 @@ if ($NS['step'] == 7)
 if (COption::GetOptionInt('main', 'disk_space', 0) > 0)
 {
 	$name = $NS["arc_name"];
+	$tar = new CTar();
 	while(file_exists($name))
 	{
 		$size = filesize($name);
 		CDiskQuota::updateDiskQuota("file", $size, "add");
-		$name = CTar::getNextName($name);
+		$name = $tar->getNextName($name);
 	}
 }
 
@@ -789,7 +795,7 @@ function IntOption($name, $def = 0)
 	static $CACHE;
 	$name .= '_auto';
 
-	if (!$CACHE[$name])
+	if (!isset($CACHE[$name]))
 		$CACHE[$name] = COption::GetOptionInt("main", $name, $def);
 	return $CACHE[$name];
 }

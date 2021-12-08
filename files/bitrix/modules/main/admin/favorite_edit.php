@@ -80,7 +80,7 @@ if($_SERVER['REQUEST_METHOD']=="POST" && ($_POST['save']<>"" || $_POST['apply']<
 	{
 		if($apply <> "")
 		{
-			$_SESSION["SESS_ADMIN"]["FAVORITES_EDIT_MESSAGE"]=array("MESSAGE"=>GetMessage("fav_edit_success"), "TYPE"=>"OK");
+			\Bitrix\Main\Application::getInstance()->getSession()["SESS_ADMIN"]["FAVORITES_EDIT_MESSAGE"]=array("MESSAGE"=>GetMessage("fav_edit_success"), "TYPE"=>"OK");
 			LocalRedirect("favorite_edit.php?ID=".$ID."&lang=".LANG);
 		}
 		else
@@ -145,10 +145,10 @@ if($ID>0)
 $context = new CAdminContextMenu($aMenu);
 $context->Show();
 
-if(is_array($_SESSION["SESS_ADMIN"]["FAVORITES_EDIT_MESSAGE"]))
+if(is_array(\Bitrix\Main\Application::getInstance()->getSession()["SESS_ADMIN"]["FAVORITES_EDIT_MESSAGE"]))
 {
-	CAdminMessage::ShowMessage($_SESSION["SESS_ADMIN"]["FAVORITES_EDIT_MESSAGE"]);
-	$_SESSION["SESS_ADMIN"]["FAVORITES_EDIT_MESSAGE"]=false;
+	CAdminMessage::ShowMessage(\Bitrix\Main\Application::getInstance()->getSession()["SESS_ADMIN"]["FAVORITES_EDIT_MESSAGE"]);
+	\Bitrix\Main\Application::getInstance()->getSession()["SESS_ADMIN"]["FAVORITES_EDIT_MESSAGE"]=false;
 }
 
 if($message)

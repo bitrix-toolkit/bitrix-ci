@@ -1,0 +1,26 @@
+<?php
+$MESS["ERROR_NO_NAME"] = "Die Statusbezeichnung ist in dieser Sprache nicht verfügbar";
+$MESS["SALE_CODE_LEN"] = "Buchstabe";
+$MESS["SALE_EDIT_RECORD"] = "Status Nr. #ID# bearbeiten";
+$MESS["SALE_NEW_RECORD"] = "Neuer Status";
+$MESS["SALE_STATUS_TYPE_ORDER_EXISTS"] = "Der Status \"#STATUS_ID#\" kann nicht auf den Typ \"#STATUS_TYPE#\" geändert werden, weil es <a href=\"/bitrix/admin/sale_order.php?set_filter=Y&filter_status[]=#CURRENT_STATUS_ID#\" target=\"_blank\">Bestellungen</a> in diesem Status gibt.";
+$MESS["SALE_STATUS_TYPE_SHIPMENT_EXISTS"] = "Der Status \"#STATUS_ID#\" kann nicht auf den Typ \"#STATUS_TYPE#\" geändert werden, weil es <a href=\"/bitrix/admin/sale_order_shipment.php?&set_filter=Y&&filter_status[]=#CURRENT_STATUS_ID#\" target=\"_blank\">Lieferungen</a> in diesem Status gibt.";
+$MESS["SALE_STATUS_WRONG_TYPE"] = "Der Status \"#STATUS_ID#\" kann nicht auf den Statustyp \"#STATUS_TYPE#\" gesetzt werden.";
+$MESS["SSEN_2FLIST"] = "Status";
+$MESS["SSEN_ACCESS_PERMS"] = "Zugriffsrechte";
+$MESS["SSEN_COLOR"] = "Farbe des Status";
+$MESS["SSEN_DELETE_STATUS"] = "Status löschen";
+$MESS["SSEN_DELETE_STATUS_CONFIRM"] = "Sind Sie sicher, dass  Sie diesen Status löschen wollen? Status mit aktiven Bestellungen kann nicht gelöscht werden.";
+$MESS["SSEN_GROUPS_LINK"] = "Nutzergruppen";
+$MESS["SSEN_INVALID_TASK_ID_FOR"] = "Nicht korrektes Level der Zugriffsrechte für";
+$MESS["SSEN_NEW_STATUS"] = "Neuer Status";
+$MESS["SSEN_NOTIFY_ASK"] = "E-Mail-Benachrichtigung an den Nutzer senden, wenn Bestellung diesen Status bekommt";
+$MESS["SSEN_NOTIFY_LINK"] = "E-Mail-Vorlage des Status";
+$MESS["SSEN_NOTIFY_W_CONTENT"] = "Die Vorlage wird verfügbar, wenn der Status gespeichert wird.";
+$MESS["SSEN_NOTIFY_W_TITLE"] = "Status nicht gespeichert!";
+$MESS["SSEN_PERM_GROUPS_ABSENT"] = "Es gibt keine Nutzergruppen mit dem Zugriffsrecht [U] - Bestellbearbeitung.";
+$MESS["SSEN_TAB_STATUS"] = "Bestellstatus";
+$MESS["SSEN_TAB_STATUS_DESCR"] = "Bestellstatus";
+$MESS["SSEN_TASKS_LINK"] = "Level der Zugriffsrechte";
+$MESS["SSEN_TYPE_D"] = "Lieferung";
+$MESS["SSEN_TYPE_O"] = "Bestellung";

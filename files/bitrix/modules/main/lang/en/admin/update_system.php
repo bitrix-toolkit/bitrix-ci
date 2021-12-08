@@ -1,4 +1,4 @@
-<?
+<?php
 $MESS["SUP_ACTIVE"] = "Updates are available:";
 $MESS["SUP_ACTIVE_PERIOD"] = "from #DATE_FROM# till #DATE_TO#";
 $MESS["SUP_APPLY"] = "Apply";
@@ -20,6 +20,7 @@ $MESS["SUP_HISTORY"] = "History of updates";
 $MESS["SUP_HTTP_BX_MASTER"] = "The web cluster may only be updated using a master copy at <a href=\"#ADDR#\">#ADDR#</a>";
 $MESS["SUP_INITIAL"] = "Initialising...";
 $MESS["SUP_LICENSE_KEY"] = "License key";
+$MESS["SUP_MARKET_SUBSCRIPTION"] = "Bitrix24.Market Plus is active till:";
 $MESS["SUP_MSSQL_L4111"] = "You are using MS SQL #VERS#, but the system requires version 10.0 or higher (Microsoft SQL Server 2008 or higher). Please update your MS SQL installation or contact the techsupport.";
 $MESS["SUP_MSSQL_LNATIVE"] = "You are using an ODBC driver to connect with the MSSQL server. Please switch to the SQLSRV expansion or refer to technical support.";
 $MESS["SUP_MYSQL_COLL_ERROR"] = "Collation of your MySQL database '#CD#' does not match that of the connection '#CC#'.";
@@ -207,5 +208,6 @@ $MESS["SUP_USERS_IS_NOT_LIMITED"] = "Your license has no maximum user limit.";
 $MESS["SUP_WRONG_APACHE_MOD_REWRITE"] = "Apache mod_rewrite module to transform URL's is not installed. Please install this module or contact your hosting service provider's helpdesk.";
 $MESS["SUP_WRONG_CHARSET_ERROR_HINT1"] = "UTF-8 charset configuration is incorrect. The default_charset parameter and the script internal encoding (mb_internal_encoding()) must be set to UTF-8. Please add the mb_internal_encoding('UTF-8'); line to the dbconn.php file or contact your hosting service provider's helpdesk.";
 $MESS["SUP_WRONG_CHARSET_ERROR_HINT2"] = "Single-byte encoding configuration is incorrect. The default_charset parameter and the script internal encoding (mb_internal_encoding()) must not be set to UTF-8. Please add a mb_internal_encoding('Windows-1252'); line (or specify any other required encoding) to the dbconn.php file or contact your hosting service provider's helpdesk.";
+$MESS["SUP_WRONG_GD"] = "GD image processing library version 2 or higher is required to update the system. Please fix the issue or contact your hosting provider's technical support.";
 $MESS["SUP_WRONG_INTERNAL_ENCODING_ERROR"] = "The current value of the mbstring.internal_encoding option is outdated and in conflict with the default_charset value. Please fix the issue or contact your hosting service provider's helpdesk.";
-?>
+$MESS["SUP_WRONG_MBSTRING_OVERLOAD"] = "The <b>mbstring.func_overload</b> parameter has to be removed to update the system. Please fix the issue or contact your hosting provider's technical support.";

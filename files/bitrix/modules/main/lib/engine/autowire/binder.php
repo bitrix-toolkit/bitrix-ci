@@ -326,7 +326,21 @@ final class Binder
 					continue;
 				}
 
-				return $autoWireParameter->constructValue($parameter, $result);
+				$constructedValue = $autoWireParameter->constructValue($parameter, $result);
+				if ($constructedValue === null)
+				{
+					if ($parameter->isDefaultValueAvailable())
+					{
+						return $parameter->getDefaultValue();
+					}
+
+					throw new BinderArgumentException(
+						"Could not construct parameter {{$parameter->getName()}}",
+						$parameter
+					);
+				}
+
+				return $constructedValue;
 			}
 
 			if ($parameter->isDefaultValueAvailable())
@@ -340,7 +354,7 @@ final class Binder
 				$exceptionMessage = $result->getErrorMessages()[0];
 			}
 
-			throw new ArgumentException(
+			throw new BinderArgumentException(
 				$exceptionMessage,
 				$parameter
 			);
@@ -354,10 +368,23 @@ final class Binder
 				return $parameter->getDefaultValue();
 			}
 
-			throw new ArgumentException(
+			throw new BinderArgumentException(
 				"Could not find value for parameter {{$parameter->getName()}}",
 				$parameter
 			);
+		}
+		elseif ($parameter->getType() instanceof \ReflectionNamedType)
+		{
+			/** @var \ReflectionNamedType $reflectionType */
+			$reflectionType = $parameter->getType();
+			$declarationChecker = new TypeDeclarationChecker($reflectionType, $value);
+			if (!$declarationChecker->isSatisfied())
+			{
+				throw new BinderArgumentException(
+					"Invalid value {{$value}} to match with parameter {{$parameter->getName()}}. Should be value of type {$reflectionType->getName()}.",
+					$parameter
+				);
+			}
 		}
 
 		if ($parameter->isArray())

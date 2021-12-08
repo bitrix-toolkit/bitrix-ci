@@ -145,7 +145,7 @@ abstract class DataManager
 	final public static function getObjectClassName()
 	{
 		$class = static::getObjectClass();
-		return mb_substr($class, mb_strrpos($class, '\\') + 1);
+		return substr($class, strrpos($class, '\\') + 1);
 	}
 
 	protected static function getObjectClassByDataClass($dataClass)
@@ -153,8 +153,8 @@ abstract class DataManager
 		$objectClass = static::getEntityClass()::normalizeName($dataClass);
 
 		// make class name more unique
-		$namespace = mb_substr($objectClass, 0, mb_strrpos($objectClass, '\\') + 1);
-		$className = mb_substr($objectClass, mb_strrpos($objectClass, '\\') + 1);
+		$namespace = substr($objectClass, 0, strrpos($objectClass, '\\') + 1);
+		$className = substr($objectClass, strrpos($objectClass, '\\') + 1);
 
 		$className = static::getEntityClass()::getDefaultObjectClassName($className);
 
@@ -184,7 +184,7 @@ abstract class DataManager
 	final public static function getCollectionClassName()
 	{
 		$class = static::getCollectionClass();
-		return mb_substr($class, mb_strrpos($class, '\\') + 1);
+		return substr($class, strrpos($class, '\\') + 1);
 	}
 
 	protected static function getCollectionClassByDataClass($dataClass)
@@ -192,8 +192,8 @@ abstract class DataManager
 		$objectClass = static::getEntityClass()::normalizeName($dataClass);
 
 		// make class name more unique
-		$namespace = mb_substr($objectClass, 0, mb_strrpos($objectClass, '\\') + 1);
-		$className = mb_substr($objectClass, mb_strrpos($objectClass, '\\') + 1);
+		$namespace = substr($objectClass, 0, strrpos($objectClass, '\\') + 1);
+		$className = substr($objectClass, strrpos($objectClass, '\\') + 1);
 
 		$className = static::getEntityClass()::getDefaultCollectionClassName($className);
 
@@ -485,6 +485,16 @@ abstract class DataManager
 						$query->disableDataDoubling();
 					}
 					break;
+				case 'private_fields':
+					if($value)
+					{
+						$query->enablePrivateFields();
+					}
+					else
+					{
+						$query->disablePrivateFields();
+					}
+					break;
 				case 'cache':
 					$query->setCacheTtl($value["ttl"]);
 					if(isset($value["cache_joins"]))
@@ -533,7 +543,7 @@ abstract class DataManager
 
 		$result = $query->exec()->fetch();
 
-		return $result['CNT'];
+		return (int)$result['CNT'];
 	}
 
 	/**
@@ -925,6 +935,7 @@ abstract class DataManager
 
 			// build standard primary
 			$primary = null;
+			$isGuessedPrimary = false;
 
 			if (!empty($id))
 			{
@@ -937,6 +948,7 @@ abstract class DataManager
 				{
 					// for those who did not set 'autocomplete' flag but wants to get id from result
 					$primary = array('ID' => $id);
+					$isGuessedPrimary = true;
 				}
 			}
 			else
@@ -949,9 +961,12 @@ abstract class DataManager
 			$result->setData($fields + $ufdata);
 			$result->setObject($object);
 
-			foreach ($primary as $primaryName => $primaryValue)
+			if (!$isGuessedPrimary)
 			{
-				$object->sysSetActual($primaryName, $primaryValue);
+				foreach ($primary as $primaryName => $primaryValue)
+				{
+					$object->sysSetActual($primaryName, $primaryValue);
+				}
 			}
 
 			// save uf data
@@ -990,7 +1005,7 @@ abstract class DataManager
 		$rows = array_values($rows);
 		$forceSeparateQueries = false;
 
-		if (!$ignoreEvents && count($rows) > 1 && mb_strlen(static::getEntity()->getAutoIncrement()))
+		if (!$ignoreEvents && count($rows) > 1 && strlen(static::getEntity()->getAutoIncrement()))
 		{
 			$forceSeparateQueries = true;
 
@@ -1442,90 +1457,94 @@ abstract class DataManager
 			$dataSample = $allSqlData[0];
 			asort($dataSample);
 
-			foreach ($allSqlData as $data)
+			if (!empty($allSqlData[0]))
 			{
-				asort($data);
 
-				if ($data !== $dataSample)
+				foreach ($allSqlData as $data)
 				{
-					$areEqual = false;
-					break;
+					asort($data);
+
+					if ($data !== $dataSample)
+					{
+						$areEqual = false;
+						break;
+					}
 				}
-			}
 
-			// save data
-			$connection = $entity->getConnection();
-			$helper = $connection->getSqlHelper();
-			$tableName = $entity->getDBTableName();
+				// save data
+				$connection = $entity->getConnection();
+				$helper = $connection->getSqlHelper();
+				$tableName = $entity->getDBTableName();
 
-			// save data
-			if ($areEqual)
-			{
-				// one query
-				$update = $helper->prepareUpdate($tableName, $dataSample);
-				$where = [];
-				$isSinglePrimary = (count($entity->getPrimaryArray()) == 1);
-
-				foreach ($allSqlData as $k => $data)
+				// save data
+				if ($areEqual)
 				{
-					$replacedPrimary = static::replaceFieldName($objects[$k]->primary);
+					// one query
+					$update = $helper->prepareUpdate($tableName, $dataSample);
+					$where = [];
+					$isSinglePrimary = (count($entity->getPrimaryArray()) == 1);
+
+					foreach ($allSqlData as $k => $data)
+					{
+						$replacedPrimary = static::replaceFieldName($objects[$k]->primary);
+
+						if ($isSinglePrimary)
+						{
+							// for single primary IN is better
+							$primaryName = key($replacedPrimary);
+							$primaryValue = current($replacedPrimary);
+							$tableField = $entity->getConnection()->getTableField($tableName, $primaryName);
+
+							$where[] = $helper->convertToDb($primaryValue, $tableField);
+						}
+						else
+						{
+							$id = [];
+
+							foreach ($replacedPrimary as $primaryName => $primaryValue)
+							{
+								$id[] = $helper->prepareAssignment($tableName, $primaryName, $primaryValue);
+							}
+							$where[] = implode(' AND ', $id);
+						}
+					}
 
 					if ($isSinglePrimary)
 					{
-						// for single primary IN is better
-						$primaryName = key($replacedPrimary);
-						$primaryValue = current($replacedPrimary);
-						$tableField = $entity->getConnection()->getTableField($tableName, $primaryName);
-
-						$where[] = $helper->convertToDb($primaryValue, $tableField);
+						$where = $helper->quote($entity->getPrimary()).' IN ('.join(', ', $where).')';
 					}
 					else
 					{
+						$where = '('.join(') OR (', $where).')';
+					}
+
+					$sql = "UPDATE ".$helper->quote($tableName)." SET ".$update[0]." WHERE ".$where;
+					$connection->queryExecute($sql, $update[1]);
+
+					$result->setAffectedRowsCount($connection);
+				}
+				else
+				{
+					// query for each row
+					foreach ($allSqlData as $k => $dataReplacedColumn)
+					{
+						$update = $helper->prepareUpdate($tableName, $dataReplacedColumn);
+
+						$replacedPrimary = static::replaceFieldName($objects[$k]->primary);
+
 						$id = [];
 
 						foreach ($replacedPrimary as $primaryName => $primaryValue)
 						{
 							$id[] = $helper->prepareAssignment($tableName, $primaryName, $primaryValue);
 						}
-						$where[] = implode(' AND ', $id);
+						$where = implode(' AND ', $id);
+
+						$sql = "UPDATE ".$helper->quote($tableName)." SET ".$update[0]." WHERE ".$where;
+						$connection->queryExecute($sql, $update[1]);
+
+						$result->setAffectedRowsCount($connection);
 					}
-				}
-
-				if ($isSinglePrimary)
-				{
-					$where = $helper->quote($entity->getPrimary()).' IN ('.join(', ', $where).')';
-				}
-				else
-				{
-					$where = '('.join(') OR (', $where).')';
-				}
-
-				$sql = "UPDATE ".$helper->quote($tableName)." SET ".$update[0]." WHERE ".$where;
-				$connection->queryExecute($sql, $update[1]);
-
-				$result->setAffectedRowsCount($connection);
-			}
-			else
-			{
-				// query for each row
-				foreach ($allSqlData as $k => $dataReplacedColumn)
-				{
-					$update = $helper->prepareUpdate($tableName, $dataReplacedColumn);
-
-					$replacedPrimary = static::replaceFieldName($objects[$k]->primary);
-
-					$id = [];
-
-					foreach ($replacedPrimary as $primaryName => $primaryValue)
-					{
-						$id[] = $helper->prepareAssignment($tableName, $primaryName, $primaryValue);
-					}
-					$where = implode(' AND ', $id);
-
-					$sql = "UPDATE ".$helper->quote($tableName)." SET ".$update[0]." WHERE ".$where;
-					$connection->queryExecute($sql, $update[1]);
-
-					$result->setAffectedRowsCount($connection);
 				}
 			}
 
@@ -1861,9 +1880,9 @@ abstract class DataManager
 		$optionString = Main\Config\Option::get("main", "~crypto_".$table);
 		if($optionString <> '')
 		{
-			$options = unserialize($optionString);
+			$options = unserialize($optionString, ['allowed_classes' => false]);
 		}
-		$options[mb_strtoupper($field)] = $mode;
+		$options[strtoupper($field)] = $mode;
 		Main\Config\Option::set("main", "~crypto_".$table, serialize($options));
 	}
 
@@ -1886,8 +1905,8 @@ abstract class DataManager
 		$optionString = Main\Config\Option::get("main", "~crypto_".$table);
 		if($optionString <> '')
 		{
-			$field = mb_strtoupper($field);
-			$options = unserialize($optionString);
+			$field = strtoupper($field);
+			$options = unserialize($optionString, ['allowed_classes' => false]);
 			if(isset($options[$field]) && $options[$field] === true)
 			{
 				return true;

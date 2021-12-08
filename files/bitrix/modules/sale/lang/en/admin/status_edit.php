@@ -1,0 +1,26 @@
+<?php
+$MESS["ERROR_NO_NAME"] = "The status name is not provided for the language";
+$MESS["SALE_CODE_LEN"] = "letter";
+$MESS["SALE_EDIT_RECORD"] = "Edit status #ID#";
+$MESS["SALE_NEW_RECORD"] = "New status";
+$MESS["SALE_STATUS_TYPE_ORDER_EXISTS"] = "The \"#STATUS_ID#\" status cannot be changed to \"#STATUS_TYPE#\" type because there are <a href=\"/bitrix/admin/sale_order.php?set_filter=Y&filter_status[]=#CURRENT_STATUS_ID#\" target=\"_blank\">orders</a> in this status.";
+$MESS["SALE_STATUS_TYPE_SHIPMENT_EXISTS"] = "The \"#STATUS_ID#\" status cannot be changed to \"#STATUS_TYPE#\" type because there are <a href=\"/bitrix/admin/sale_order_shipment.php?&set_filter=Y&&filter_status[]=#CURRENT_STATUS_ID#\" target=\"_blank\">shipments</a> in this status.";
+$MESS["SALE_STATUS_WRONG_TYPE"] = "Status \"#STATUS_ID#\" cannot be set to \"#STATUS_TYPE#\" type.";
+$MESS["SSEN_2FLIST"] = "Status list";
+$MESS["SSEN_ACCESS_PERMS"] = "Access permissions";
+$MESS["SSEN_COLOR"] = "Status color";
+$MESS["SSEN_DELETE_STATUS"] = "Delete status";
+$MESS["SSEN_DELETE_STATUS_CONFIRM"] = "Are you sure you want to delete this status? Status will not be deleted if there are any orders with this status.";
+$MESS["SSEN_GROUPS_LINK"] = "User groups";
+$MESS["SSEN_INVALID_TASK_ID_FOR"] = "Incorrect access permission for";
+$MESS["SSEN_NEW_STATUS"] = "Add a new status";
+$MESS["SSEN_NOTIFY_ASK"] = "Notify user by e-mail when order moves to this status";
+$MESS["SSEN_NOTIFY_LINK"] = "Status e-mail template";
+$MESS["SSEN_NOTIFY_W_CONTENT"] = "The template will become available once the status is saved.";
+$MESS["SSEN_NOTIFY_W_TITLE"] = "Status was not saved!";
+$MESS["SSEN_PERM_GROUPS_ABSENT"] = "There are no user groups with access permission [U] - order processing.";
+$MESS["SSEN_TAB_STATUS"] = "Order status";
+$MESS["SSEN_TAB_STATUS_DESCR"] = "Order status";
+$MESS["SSEN_TASKS_LINK"] = "Access permissions";
+$MESS["SSEN_TYPE_D"] = "Delivery";
+$MESS["SSEN_TYPE_O"] = "Order";

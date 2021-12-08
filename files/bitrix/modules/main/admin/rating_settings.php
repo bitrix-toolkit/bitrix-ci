@@ -17,7 +17,7 @@ IncludeModuleLangFile(__FILE__);
 
 if (isset($_POST["CLEAR_DATA"]) && $_POST["CLEAR_DATA"] == 'Y' && $USER->IsAdmin() && check_bitrix_sessid())
 {
-	$_SESSION["SESS_ADMIN"]["RATING_CONFIG_CLEAR_DATA"]=array("MESSAGE"=>GetMessage("RATING_SETTINGS_FRM_RATING_CLEAR_DATA_OK"), "TYPE"=>"OK");
+	\Bitrix\Main\Application::getInstance()->getSession()["SESS_ADMIN"]["RATING_CONFIG_CLEAR_DATA"]=array("MESSAGE"=>GetMessage("RATING_SETTINGS_FRM_RATING_CLEAR_DATA_OK"), "TYPE"=>"OK");
 	CRatings::ClearData();
 	LocalRedirect("rating_settings.php?lang=".LANG);
 }
@@ -42,7 +42,7 @@ $ratingAssignRatingGroupDelete = isset($_POST["RATING_ASSIGN_RATING_GROUP_DELETE
 $ratingAssignAuthorityGroupAdd = isset($_POST["RATING_ASSIGN_AUTHORITY_GROUP_ADD"]) ? intval($_POST["RATING_ASSIGN_AUTHORITY_GROUP_ADD"]) : 2;
 $ratingAssignAuthorityGroupDelete = isset($_POST["RATING_ASSIGN_AUTHORITY_GROUP_DELETE"]) ? intval($_POST["RATING_ASSIGN_AUTHORITY_GROUP_DELETE"]) : 2;
 
-$dbSites = CSite::GetList(($b = ""), ($o = ""), Array("ACTIVE" => "Y"));
+$dbSites = CSite::GetList('', '', Array("ACTIVE" => "Y"));
 $arSites = array();
 $aSubTabs = array();
 while ($site = $dbSites->Fetch())
@@ -157,7 +157,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $_POST['save']<>"" && check_bitrix_s
 		}
 		CRatings::SetAuthorityDefaultValue($arParams);
 	}
-	$_SESSION["SESS_ADMIN"]["RATING_CONFIG_SUCCESS"]=array("MESSAGE"=>GetMessage("RATING_CONFIG_SUCCESS"), "TYPE"=>"OK");
+	\Bitrix\Main\Application::getInstance()->getSession()["SESS_ADMIN"]["RATING_CONFIG_SUCCESS"]=array("MESSAGE"=>GetMessage("RATING_CONFIG_SUCCESS"), "TYPE"=>"OK");
 }
 
 
@@ -202,15 +202,15 @@ $APPLICATION->SetAdditionalCSS("/bitrix/themes/.default/ratings.css");
 require($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/main/include/prolog_admin_after.php");
 
 // displaying a message on the action taken
-if(is_array($_SESSION["SESS_ADMIN"]["RATING_CONFIG_SUCCESS"]))
+if(is_array(\Bitrix\Main\Application::getInstance()->getSession()["SESS_ADMIN"]["RATING_CONFIG_SUCCESS"]))
 {
-	CAdminMessage::ShowMessage($_SESSION["SESS_ADMIN"]["RATING_CONFIG_SUCCESS"]);
-	$_SESSION["SESS_ADMIN"]["RATING_CONFIG_SUCCESS"]=false;
+	CAdminMessage::ShowMessage(\Bitrix\Main\Application::getInstance()->getSession()["SESS_ADMIN"]["RATING_CONFIG_SUCCESS"]);
+	\Bitrix\Main\Application::getInstance()->getSession()["SESS_ADMIN"]["RATING_CONFIG_SUCCESS"]=false;
 }
-if(is_array($_SESSION["SESS_ADMIN"]["RATING_CONFIG_CLEAR_DATA"]))
+if(is_array(\Bitrix\Main\Application::getInstance()->getSession()["SESS_ADMIN"]["RATING_CONFIG_CLEAR_DATA"]))
 {
-	CAdminMessage::ShowMessage($_SESSION["SESS_ADMIN"]["RATING_CONFIG_CLEAR_DATA"]);
-	$_SESSION["SESS_ADMIN"]["RATING_CONFIG_CLEAR_DATA"]=false;
+	CAdminMessage::ShowMessage(\Bitrix\Main\Application::getInstance()->getSession()["SESS_ADMIN"]["RATING_CONFIG_CLEAR_DATA"]);
+	\Bitrix\Main\Application::getInstance()->getSession()["SESS_ADMIN"]["RATING_CONFIG_CLEAR_DATA"]=false;
 }
 if($message)
 	echo $message->Show();
@@ -437,7 +437,7 @@ $editTab->BeginNextTab();
 	$arRatingVoteGroupIdList2 = Array();
 	$arRatingVoteGroupIdList2["REFERENCE"][] = "";
 	$arRatingVoteGroupIdList2["REFERENCE_ID"][] = 0;
-	$rsGroups = CGroup::GetList($by="c_sort", $order="asc", $filter=array());
+	$rsGroups = CGroup::GetList();
 	while($arGroup = $rsGroups->Fetch())
 	{
 		if ($arGroup['ID'] == 2)

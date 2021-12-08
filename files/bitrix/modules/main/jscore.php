@@ -90,6 +90,7 @@ $arJSCoreConfig = array(
 		//'css' => $pathCSS.'/core_window.css',
 		'css' => $pathCSSPanel.'/popup.css',
 		'rel' => array('ajax', 'main.pageobject'),
+		'lang' => $pathLang.'/js_core.php',
 	),
 	'access' => array(
 		'js' => $pathJS.'/core_access.js',
@@ -261,7 +262,7 @@ $arJSCoreConfig = array(
 			'/bitrix/js/main/sidepanel/slider.js'
 		),
 		'css' => '/bitrix/js/main/sidepanel/css/sidepanel.css',
-		'rel' => array('ajax', 'fx', 'main.pageobject'),
+		'rel' => array('ajax', 'fx', 'main.pageobject', 'clipboard'),
 		'lang' => $pathLang.'/js/sidepanel.php',
 		'bundle_js' => 'sidepanel',
 		'bundle_css' => 'sidepanel'
@@ -478,7 +479,6 @@ $arJSCoreConfig = array(
 \Bitrix\Main\Page\Asset::getInstance()->addCssKernelInfo(
 	'main',
 	array(
-		'/bitrix/js/main/core/css/core.css',
 		'/bitrix/js/main/core/css/core_tooltip.css',
 		'/bitrix/js/main/core/css/core_date.css',
 		'/bitrix/js/main/core/css/core_uf.css'

@@ -10,9 +10,7 @@ class CAdminNotify
 	{
 		global $CACHE_MANAGER;
 
-		$by = 'lid';
-		$order = 'asc';
-		$rsLangs = CLanguage::GetList($by, $order);
+		$rsLangs = CLanguage::GetList('lid', 'asc');
 		while ($arLang = $rsLangs->Fetch())
 		{
 			$CACHE_MANAGER->Clean("admin_notify_list_".$arLang['LANGUAGE_ID']);
@@ -211,7 +209,7 @@ class CAdminNotify
 			for ($i=0, $ic=count($filter_keys); $i<$ic; $i++)
 			{
 				$val = $arFilter[$filter_keys[$i]];
-				if ($val == '' || $val=='NOT_REF') continue;
+				if ((string)$val == '' || $val=='NOT_REF') continue;
 				switch(mb_strtoupper($filter_keys[$i]))
 				{
 					case 'ID':

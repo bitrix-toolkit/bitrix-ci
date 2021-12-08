@@ -53,8 +53,9 @@ class IblockInfo
 	public function canHaveSku(): bool
 	{
 		return (
-			$this->getCatalogType() === \CAllCatalogSku::TYPE_OFFERS
-			|| $this->getCatalogType() === \CAllCatalogSku::TYPE_FULL
+			$this->getCatalogType() === \CCatalogSku::TYPE_OFFERS
+			|| $this->getCatalogType() === \CCatalogSku::TYPE_FULL
+			|| $this->getCatalogType() === \CCatalogSku::TYPE_PRODUCT
 		);
 	}
 
@@ -66,5 +67,10 @@ class IblockInfo
 	public function getSkuPropertyId(): ?int
 	{
 		return $this->canHaveSku() ? (int)$this->iblock->get('SKU_PROPERTY_ID') : null;
+	}
+
+	public function getVatId(): ?int
+	{
+		return (int)$this->iblock->get('VAT_ID') ?: null;
 	}
 }

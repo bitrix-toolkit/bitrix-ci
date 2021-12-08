@@ -213,12 +213,18 @@ class EventMessageCompiler
 	 */
 	protected function setMailAttachment()
 	{
-		$eventMessageAttachment = array();
+		$eventMessageAttachment = [];
+		$eventFilesContent = [];
 
 		// Attach files from message template
 		if(array_key_exists('FILE', $this->eventMessageFields))
 		{
 			$eventMessageAttachment = $this->eventMessageFields["FILE"];
+		}
+
+		if(array_key_exists('FILES_CONTENT', $this->event))
+		{
+			$eventFilesContent = $this->event["FILES_CONTENT"];
 		}
 
 		// Attach files from event
@@ -258,6 +264,21 @@ class EventMessageCompiler
 			}
 
 			$this->mailAttachment = $attachFileList;
+		}
+
+		if (count($eventFilesContent) > 0)
+		{
+			foreach ($eventFilesContent as $item)
+			{
+				$this->mailAttachment[] = [
+					'CONTENT_TYPE' => $item['CONTENT_TYPE'],
+					'NAME' => $item['NAME'],
+					'CONTENT' => $item['CONTENT'],
+					'ID' => $item['ID'],
+					'CHARSET' => $item['CHARSET'],
+					'METHOD' => $item['METHOD'],
+				];
+			}
 		}
 	}
 
@@ -403,14 +424,24 @@ class EventMessageCompiler
 	protected function replaceTemplate($str, $ar, $bNewLineToBreak=false)
 	{
 		$str = str_replace("%", "%2", $str);
-		foreach($ar as $key=>$val)
+
+		foreach ($ar as $key => $val)
 		{
-			if($bNewLineToBreak && mb_strpos($val, "<") === false)
+			if (is_array($val))
+			{
+				$val = implode(', ', $val);
+			}
+
+			if ($bNewLineToBreak && strpos($val, "<") === false)
+			{
 				$val = nl2br($val);
+			}
+
 			$val = str_replace("%", "%2", $val);
 			$val = str_replace("#", "%1", $val);
 			$str = str_replace("#".$key."#", $val, $str);
 		}
+
 		$str = str_replace("%1", "#", $str);
 		$str = str_replace("%2", "%", $str);
 
@@ -425,13 +456,6 @@ class EventMessageCompiler
 	 */
 	protected function getSiteFieldsArray($sites)
 	{
-		/*
-		global $BX_EVENT_SITE_PARAMS;
-		if($site_id !== false && isset($BX_EVENT_SITE_PARAMS[$site_id]))
-			return $BX_EVENT_SITE_PARAMS[$site_id];
-		*/
-
-
 		$site_id = $sites[0];
 
 		if(!empty($this->eventMessageId))
@@ -459,7 +483,7 @@ class EventMessageCompiler
 				$this->siteId = $arSite['LID'];
 				$this->languageId = $arSite['LANGUAGE_ID'];
 
-				$BX_EVENT_SITE_PARAMS[$site_id] = array(
+				\CEvent::$EVENT_SITE_PARAMS[$site_id] = array(
 					"SITE_NAME" => ($arSite["SITE_NAME"]<>''? $arSite["SITE_NAME"] : $SITE_NAME),
 					"SERVER_NAME" => ($arSite["SERVER_NAME"]<>''? $arSite["SERVER_NAME"] : $SERVER_NAME),
 					"DEFAULT_EMAIL_FROM" => ($arSite["EMAIL"]<>''? $arSite["EMAIL"] : $DEFAULT_EMAIL_FROM),
@@ -467,7 +491,7 @@ class EventMessageCompiler
 					"SITE_ID" => $arSite['LID'],
 					"SITE_DIR" => $arSite['DIR'],
 				);
-				return $BX_EVENT_SITE_PARAMS[$site_id];
+				return \CEvent::$EVENT_SITE_PARAMS[$site_id];
 			}
 		}
 

@@ -1,15 +1,16 @@
-<?
+<?php
+
 IncludeModuleLangFile(__FILE__);
 
 class CEventIBlock
 {
-	function MakeIBlockObject()
+	public static function MakeIBlockObject()
 	{
 		$obj = new CEventIBlock;
 		return $obj;
 	}
 
-	function GetFilter()
+	public static function GetFilter()
 	{
 		$arFilter = array();
 		$res = CIBlock::GetList(
@@ -40,20 +41,22 @@ class CEventIBlock
 
 		return  $arFilter;
 	}
-	function GetAuditTypes()
+
+	public static function GetAuditTypes()
 	{
-		AddEventHandler("main", "GetAuditTypesIblock", array("CAllIBlock", "GetAuditTypes"));
-		$db_events = GetModuleEvents("main", "GetAuditTypesIblock");
-		while($arEvent = $db_events->Fetch())
+		$AuditTypes = [];
+		AddEventHandler('main', 'GetAuditTypesIblock', ['CIBlock', 'GetAuditTypes']);
+		foreach (GetModuleEvents('main', 'GetAuditTypesIblock', true) as $arEvent)
 		{
 			$AuditTypes = ExecuteModuleEventEx($arEvent);
 		}
+
 		return $AuditTypes;
 	}
 
-	function GetEventInfo($row, $arParams, $arUser, $arResult)
+	public static function GetEventInfo($row, $arParams, $arUser, $arResult)
 	{
-		$DESCRIPTION = unserialize($row['DESCRIPTION']);
+		$DESCRIPTION = unserialize($row['DESCRIPTION'], ['allowed_classes' => false]);
 
 		$IblockURL = "";
 		if (mb_strpos($row['AUDIT_TYPE_ID'], "SECTION") !== false)
@@ -147,7 +150,7 @@ class CEventIBlock
 		);
 	}
 
-	function GetFilterSQL($var)
+	public static function GetFilterSQL($var)
 	{
 		if (is_array($var))
 			foreach($var as $key => $val)
@@ -162,5 +165,3 @@ class CEventIBlock
 		return $ar;
 	}
 }
-
-?>

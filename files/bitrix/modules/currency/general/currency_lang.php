@@ -8,26 +8,31 @@ Loc::loadMessages(__FILE__);
 
 class CAllCurrencyLang
 {
-	const SEP_EMPTY = 'N';
-	const SEP_DOT = 'D';
-	const SEP_COMMA = 'C';
-	const SEP_SPACE = 'S';
-	const SEP_NBSPACE = 'B';
+	/** @deprecated */
+	public const SEP_EMPTY = Currency\CurrencyClassifier::SEPARATOR_EMPTY;
+	/** @deprecated */
+	public const SEP_DOT = Currency\CurrencyClassifier::SEPARATOR_DOT;
+	/** @deprecated */
+	public const SEP_COMMA = Currency\CurrencyClassifier::SEPARATOR_COMMA;
+	/** @deprecated */
+	public const SEP_SPACE = Currency\CurrencyClassifier::SEPARATOR_SPACE;
+	/** @deprecated */
+	public const SEP_NBSPACE = Currency\CurrencyClassifier::SEPARATOR_NBSPACE;
 
 	static protected $arSeparators = array(
-		self::SEP_EMPTY => '',
-		self::SEP_DOT => '.',
-		self::SEP_COMMA => ',',
-		self::SEP_SPACE => ' ',
-		self::SEP_NBSPACE => '&nbsp;'
+		Currency\CurrencyClassifier::SEPARATOR_EMPTY => '',
+		Currency\CurrencyClassifier::SEPARATOR_DOT => '.',
+		Currency\CurrencyClassifier::SEPARATOR_COMMA => ',',
+		Currency\CurrencyClassifier::SEPARATOR_SPACE => ' ',
+		Currency\CurrencyClassifier::SEPARATOR_NBSPACE => '&nbsp;'
 	);
 
 	static protected $arDefaultValues = array(
 		'FORMAT_STRING' => '#',
-		'DEC_POINT' => '.',
+		'DEC_POINT' => Currency\CurrencyClassifier::DECIMAL_POINT_DOT,
 		'THOUSANDS_SEP' => ' ',
 		'DECIMALS' => 2,
-		'THOUSANDS_VARIANT' => self::SEP_SPACE,
+		'THOUSANDS_VARIANT' => Currency\CurrencyClassifier::SEPARATOR_SPACE,
 		'HIDE_ZERO' => 'N'
 	);
 
@@ -177,7 +182,7 @@ class CAllCurrencyLang
 				}
 				else
 				{
-					if (!preg_match('/^&(#[x]{0,1}[0-9a-zA-Z]+|[a-zA-Z]+);$/', $fields['THOUSANDS_SEP']))
+					if (!preg_match('/^&(#[x]?[0-9a-zA-Z]+|[a-zA-Z]+);$/', $fields['THOUSANDS_SEP']))
 					{
 						$errorMessages[] = array(
 							'id' => 'THOUSANDS_SEP',
@@ -311,6 +316,7 @@ class CAllCurrencyLang
 		$DB->Query($strSql, false, "File: ".__FILE__."<br>Line: ".__LINE__);
 
 		Currency\CurrencyManager::clearCurrencyCache($arFields['LID']);
+		Currency\CurrencyLangTable::getEntity()->cleanCache();
 
 		return true;
 	}
@@ -334,6 +340,7 @@ class CAllCurrencyLang
 			$DB->Query($strSql, false, "File: ".__FILE__."<br>Line: ".__LINE__);
 
 			Currency\CurrencyManager::clearCurrencyCache($lang);
+			Currency\CurrencyLangTable::getEntity()->cleanCache();
 		}
 
 		return true;
@@ -349,6 +356,7 @@ class CAllCurrencyLang
 			return false;
 
 		Currency\CurrencyManager::clearCurrencyCache($lang);
+		Currency\CurrencyLangTable::getEntity()->cleanCache();
 
 		$strSql = "delete from b_catalog_currency_lang where CURRENCY = '".$DB->ForSql($currency)."' and LID = '".$DB->ForSql($lang)."'";
 		$DB->Query($strSql, false, "File: ".__FILE__."<br>Line: ".__LINE__);
@@ -407,7 +415,7 @@ class CAllCurrencyLang
 		return $arCurrencyLang;
 	}
 
-	public static function GetList(&$by, &$order, $currency = "")
+	public static function GetList($by = 'lang', $order = 'asc', $currency = '')
 	{
 		global $DB;
 
@@ -416,18 +424,15 @@ class CAllCurrencyLang
 		if ('' != $currency)
 			$strSql .= "where CURL.CURRENCY = '".$DB->ForSql($currency, 3)."' ";
 
-		if (mb_strtolower($by) == "currency") $strSqlOrder = " order by CURL.CURRENCY ";
-		elseif (mb_strtolower($by) == "name") $strSqlOrder = " order by CURL.FULL_NAME ";
+		if (strtolower($by) == "currency") $strSqlOrder = " order by CURL.CURRENCY ";
+		elseif (strtolower($by) == "name") $strSqlOrder = " order by CURL.FULL_NAME ";
 		else
 		{
 			$strSqlOrder = " order BY CURL.LID ";
-			$by = "lang";
 		}
 
-		if ($order=="desc")
+		if ($order == "desc")
 			$strSqlOrder .= " desc ";
-		else
-			$order = "asc";
 
 		$strSql .= $strSqlOrder;
 		$res = $DB->Query($strSql, false, "File: ".__FILE__."<br>Line: ".__LINE__);
@@ -451,19 +456,19 @@ class CAllCurrencyLang
 		if ($boolFull)
 		{
 			return array(
-				self::SEP_EMPTY => Loc::getMessage('BT_CUR_LANG_SEP_VARIANT_EMPTY'),
-				self::SEP_DOT => Loc::getMessage('BT_CUR_LANG_SEP_VARIANT_DOT'),
-				self::SEP_COMMA => Loc::getMessage('BT_CUR_LANG_SEP_VARIANT_COMMA'),
-				self::SEP_SPACE => Loc::getMessage('BT_CUR_LANG_SEP_VARIANT_SPACE'),
-				self::SEP_NBSPACE => Loc::getMessage('BT_CUR_LANG_SEP_VARIANT_NBSPACE')
+				Currency\CurrencyClassifier::SEPARATOR_EMPTY => Loc::getMessage('BT_CUR_LANG_SEP_VARIANT_EMPTY'),
+				Currency\CurrencyClassifier::SEPARATOR_DOT => Loc::getMessage('BT_CUR_LANG_SEP_VARIANT_DOT'),
+				Currency\CurrencyClassifier::SEPARATOR_COMMA => Loc::getMessage('BT_CUR_LANG_SEP_VARIANT_COMMA'),
+				Currency\CurrencyClassifier::SEPARATOR_SPACE => Loc::getMessage('BT_CUR_LANG_SEP_VARIANT_SPACE'),
+				Currency\CurrencyClassifier::SEPARATOR_NBSPACE => Loc::getMessage('BT_CUR_LANG_SEP_VARIANT_NBSPACE')
 			);
 		}
 		return array(
-			self::SEP_EMPTY,
-			self::SEP_DOT,
-			self::SEP_COMMA,
-			self::SEP_SPACE,
-			self::SEP_NBSPACE
+			Currency\CurrencyClassifier::SEPARATOR_EMPTY,
+			Currency\CurrencyClassifier::SEPARATOR_DOT,
+			Currency\CurrencyClassifier::SEPARATOR_COMMA,
+			Currency\CurrencyClassifier::SEPARATOR_SPACE,
+			Currency\CurrencyClassifier::SEPARATOR_NBSPACE
 		);
 	}
 
@@ -474,57 +479,57 @@ class CAllCurrencyLang
 		$templates[] = array(
 			'TEXT' => '$1.234,10',
 			'FORMAT' => '$#',
-			'DEC_POINT' => ',',
-			'THOUSANDS_VARIANT' => self::SEP_DOT,
+			'DEC_POINT' => Currency\CurrencyClassifier::DECIMAL_POINT_COMMA,
+			'THOUSANDS_VARIANT' => Currency\CurrencyClassifier::SEPARATOR_DOT,
 			'DECIMALS' => '2'
 		);
 		$templates[] = array(
 			'TEXT' => '$1 234,10',
 			'FORMAT' => '$#',
-			'DEC_POINT' => ',',
-			'THOUSANDS_VARIANT' => self::SEP_SPACE,
+			'DEC_POINT' => Currency\CurrencyClassifier::DECIMAL_POINT_COMMA,
+			'THOUSANDS_VARIANT' => Currency\CurrencyClassifier::SEPARATOR_SPACE,
 			'DECIMALS' => '2'
 		);
 		$templates[] = array(
 			'TEXT' => '1.234,10 USD',
 			'FORMAT' => '# USD',
-			'DEC_POINT' => ',',
-			'THOUSANDS_VARIANT' => self::SEP_DOT,
+			'DEC_POINT' => Currency\CurrencyClassifier::DECIMAL_POINT_COMMA,
+			'THOUSANDS_VARIANT' => Currency\CurrencyClassifier::SEPARATOR_DOT,
 			'DECIMALS' => '2'
 		);
 		$templates[] = array(
 			'TEXT' => '1 234,10 USD',
 			'FORMAT' => '# USD',
-			'DEC_POINT' => ',',
-			'THOUSANDS_VARIANT' => self::SEP_SPACE,
+			'DEC_POINT' => Currency\CurrencyClassifier::DECIMAL_POINT_COMMA,
+			'THOUSANDS_VARIANT' => Currency\CurrencyClassifier::SEPARATOR_SPACE,
 			'DECIMALS' => '2'
 		);
 		$templates[] = array(
 			'TEXT' => '&euro;2.345,20',
 			'FORMAT' => '&euro;#',
-			'DEC_POINT' => ',',
-			'THOUSANDS_VARIANT' => self::SEP_DOT,
+			'DEC_POINT' => Currency\CurrencyClassifier::DECIMAL_POINT_COMMA,
+			'THOUSANDS_VARIANT' => Currency\CurrencyClassifier::SEPARATOR_DOT,
 			'DECIMALS' => '2'
 		);
 		$templates[] = array(
 			'TEXT' => '&euro;2 345,20',
 			'FORMAT' => '&euro;#',
-			'DEC_POINT' => ',',
-			'THOUSANDS_VARIANT' => self::SEP_SPACE,
+			'DEC_POINT' => Currency\CurrencyClassifier::DECIMAL_POINT_COMMA,
+			'THOUSANDS_VARIANT' => Currency\CurrencyClassifier::SEPARATOR_SPACE,
 			'DECIMALS' => '2'
 		);
 		$templates[] = array(
 			'TEXT' => '2.345,20 EUR',
 			'FORMAT' => '# EUR',
-			'DEC_POINT' => ',',
-			'THOUSANDS_VARIANT' => self::SEP_DOT,
+			'DEC_POINT' => Currency\CurrencyClassifier::DECIMAL_POINT_COMMA,
+			'THOUSANDS_VARIANT' => Currency\CurrencyClassifier::SEPARATOR_DOT,
 			'DECIMALS' => '2'
 		);
 		$templates[] = array(
 			'TEXT' => '2 345,20 EUR',
 			'FORMAT' => '# EUR',
-			'DEC_POINT' => ',',
-			'THOUSANDS_VARIANT' => self::SEP_SPACE,
+			'DEC_POINT' => Currency\CurrencyClassifier::DECIMAL_POINT_COMMA,
+			'THOUSANDS_VARIANT' => Currency\CurrencyClassifier::SEPARATOR_SPACE,
 			'DECIMALS' => '2'
 		);
 
@@ -534,15 +539,15 @@ class CAllCurrencyLang
 			$templates[] = array(
 				'TEXT' => '3.456,70 '.$rubTitle,
 				'FORMAT' => '# '.$rubTitle,
-				'DEC_POINT' => ',',
-				'THOUSANDS_VARIANT' => self::SEP_DOT,
+				'DEC_POINT' => Currency\CurrencyClassifier::DECIMAL_POINT_COMMA,
+				'THOUSANDS_VARIANT' => Currency\CurrencyClassifier::SEPARATOR_DOT,
 				'DECIMALS' => '2'
 			);
 			$templates[] = array(
 				'TEXT' => '3 456,70 '.$rubTitle,
 				'FORMAT' => '# '.$rubTitle,
-				'DEC_POINT' => ',',
-				'THOUSANDS_VARIANT' => self::SEP_SPACE,
+				'DEC_POINT' => Currency\CurrencyClassifier::DECIMAL_POINT_COMMA,
+				'THOUSANDS_VARIANT' => Currency\CurrencyClassifier::SEPARATOR_SPACE,
 				'DECIMALS' => '2'
 			);
 		}
@@ -585,6 +590,12 @@ class CAllCurrencyLang
 					$arCurFormat['FORMAT_STRING'] = self::$arDefaultValues['FORMAT_STRING'];
 				}
 
+				$sanitizer = new \CBXSanitizer();
+				$sanitizer->setLevel(\CBXSanitizer::SECURE_LEVEL_LOW);
+				$sanitizer->ApplyDoubleEncode(false);
+				$arCurFormat["FORMAT_STRING"] = $sanitizer->SanitizeHtml($arCurFormat["FORMAT_STRING"]);
+				unset($sanitizer);
+
 				if ($safeFormat)
 				{
 					$arCurFormat["FORMAT_STRING"] = strip_tags(preg_replace(
@@ -596,6 +607,22 @@ class CAllCurrencyLang
 				if (!isset($arCurFormat['HIDE_ZERO']) || empty($arCurFormat['HIDE_ZERO']))
 					$arCurFormat['HIDE_ZERO'] = self::$arDefaultValues['HIDE_ZERO'];
 			}
+
+			$arCurFormat['TEMPLATE'] = [
+				'SINGLE' => $arCurFormat['FORMAT_STRING'],
+				'PARTS' => [
+					0 => $arCurFormat['FORMAT_STRING']
+				],
+				'VALUE_INDEX' => 0
+			];
+			$parts = static::explodeFormatTemplate($arCurFormat['FORMAT_STRING']);
+			if (!empty($parts))
+			{
+				$arCurFormat['TEMPLATE']['PARTS'] = $parts;
+				$arCurFormat['TEMPLATE']['VALUE_INDEX'] = (int)array_search('#', $parts);
+			}
+			unset($parts);
+
 			self::$arCurrencyFormat[$currency] = $arCurFormat;
 		}
 		else
@@ -684,14 +711,19 @@ class CAllCurrencyLang
 		return false;
 	}
 
-	public static function getParsedCurrencyFormat(string $currency): ?array
+	public static function getParsedCurrencyFormat(string $currency): array
 	{
-		$arCurFormat = (isset(self::$arCurrencyFormat[$currency])
+		$result = (isset(self::$arCurrencyFormat[$currency])
 			? self::$arCurrencyFormat[$currency]
 			: self::GetFormatDescription($currency)
 		);
 
-		$result = preg_split('/(?<!&)(#)/', $arCurFormat['FORMAT_STRING'], -1, PREG_SPLIT_DELIM_CAPTURE);
+		return $result['TEMPLATE']['PARTS'];
+	}
+
+	protected static function explodeFormatTemplate(string $template): ?array
+	{
+		$result = preg_split('/(?<!&)(#)/', $template, -1, PREG_SPLIT_DELIM_CAPTURE);
 		if (!is_array($result))
 			return null;
 		$resultCount = count($result);

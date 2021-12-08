@@ -8,12 +8,16 @@
 
 namespace Bitrix\Main\ORM\Query\Filter;
 
+use Bitrix\Main\ORM\Fields\BooleanField;
+use Bitrix\Main\ORM\Fields\ExpressionField;
+use Bitrix\Main\ORM\Query\Filter\Expressions\ColumnExpression;
 use Bitrix\Main\ORM\Query\Query;
 use Bitrix\Main\ORM\Query\Chain;
 use Bitrix\Main\ORM\Fields\IReadable;
 use Bitrix\Main\DB\SqlExpression;
 use Bitrix\Main\ArgumentException;
 use Bitrix\Main\SystemException;
+use Bitrix\Main\Type\RandomSequence;
 
 /**
  * Handles filtering conditions for Query and join conditions for Entity References.
@@ -67,12 +71,12 @@ class ConditionTree
 			return $this->logic;
 		}
 
-		if (!in_array(mb_strtolower($logic), [static::LOGIC_AND, static::LOGIC_OR], true))
+		if (!in_array(strtolower($logic), [static::LOGIC_AND, static::LOGIC_OR], true))
 		{
 			throw new ArgumentException("Unknown logic");
 		}
 
-		$this->logic = mb_strtolower($logic);
+		$this->logic = strtolower($logic);
 
 		return $this;
 	}
@@ -86,7 +90,7 @@ class ConditionTree
 	 */
 	public function negative($negative = true)
 	{
-		$this->isNegative = $negative;
+		$this->isNegative = (bool) $negative;
 		return $this;
 	}
 
@@ -110,15 +114,13 @@ class ConditionTree
 	 *     or with expr helper
 	 *   where(Query::expr()->concat("NAME", "LAST_NAME"), 'Anton Ivanov')
 	 *
-	 * @param array ...$filter
+	 * @param mixed ...$filter
 	 *
 	 * @return $this
 	 * @throws ArgumentException
 	 */
-	public function where()
+	public function where(...$filter)
 	{
-		$filter = func_get_args();
-
 		// subfilter
 		if (count($filter) == 1 && $filter[0] instanceof ConditionTree)
 		{
@@ -185,14 +187,12 @@ class ConditionTree
 	 * Sets NOT before any conditions or subfilter.
 	 * @see ConditionTree::where()
 	 *
-	 * @param array ...$filter
+	 * @param mixed ...$filter
 	 *
 	 * @return $this
 	 */
-	public function whereNot()
+	public function whereNot(...$filter)
 	{
-		$filter = func_get_args();
-
 		$subFilter = new static();
 		call_user_func_array(array($subFilter, 'where'), $filter);
 
@@ -204,15 +204,13 @@ class ConditionTree
 	 * The same logic as where(), but value will be taken as another column name.
 	 * @see ConditionTree::where()
 	 *
-	 * @param array ...$filter
+	 * @param mixed ...$filter
 	 *
 	 * @return $this
 	 * @throws ArgumentException
 	 */
-	public function whereColumn()
+	public function whereColumn(...$filter)
 	{
-		$filter = func_get_args();
-
 		if (count($filter) == 3)
 		{
 			list($column, $operator, $value) = $filter;
@@ -432,6 +430,33 @@ class ConditionTree
 	}
 
 	/**
+	 * Any SQL Expression condition
+	 * @see ExpressionField
+	 *
+	 * @param string $expr
+	 * @param string[] $arguments
+	 *
+	 * @return $this
+	 * @throws ArgumentException
+	 * @throws SystemException
+	 */
+	public function whereExpr($expr, $arguments)
+	{
+		// get random field name
+		$randomSequence = new RandomSequence('orm.filter.expr');
+		$tmpName = 'TMP_'.$randomSequence->randString(10);
+
+		// set boolean expression
+		$tmpField = (new ExpressionField($tmpName, $expr, $arguments))
+			->configureValueType(BooleanField::class);
+
+		// add condition
+		$this->where($tmpField, 'expr', true);
+
+		return $this;
+	}
+
+	/**
 	 * Returns SQL for all conditions and subfilters.
 	 *
 	 * @param Chain[] $chains
@@ -499,16 +524,24 @@ class ConditionTree
 				);
 			}
 
-			$finalSql[] = $sql;
+			if ($sql != '')
+			{
+				$finalSql[] = $sql;
+			}
 		}
 
-		// concat with $this->logic
-		$sql = join(" ".mb_strtoupper($this->logic)." ", $finalSql);
+		$sql = null;
 
-		// and put NOT if negative
-		if ($this->isNegative)
+		if (!empty($finalSql))
 		{
-			$sql = count($finalSql) > 1 ? "NOT ({$sql})" : "NOT {$sql}";
+			// concat with $this->logic
+			$sql = join(" ".strtoupper($this->logic)." ", $finalSql);
+
+			// and put NOT if negative
+			if ($this->isNegative)
+			{
+				$sql = count($finalSql) > 1 ? "NOT ({$sql})" : "NOT {$sql}";
+			}
 		}
 
 		return $sql;
@@ -681,5 +714,82 @@ class ConditionTree
 		}
 
 		$this->conditions = $newConditions;
+	}
+
+	/**
+	 * Creates filter object from array
+	 *
+	 * @param $filter
+	 *
+	 * @return ConditionTree
+	 * @throws ArgumentException
+	 */
+	public static function createFromArray($filter)
+	{
+		$conditionTree = Query::filter();
+
+		if (isset($filter['logic']))
+		{
+			$conditionTree->logic($filter['logic']);
+			unset($filter['logic']);
+		}
+
+		if (isset($filter['negative']))
+		{
+			$conditionTree->negative($filter['negative']);
+			unset($filter['negative']);
+		}
+
+		foreach ($filter as $condition)
+		{
+			if (isset($condition[0]) && is_array($condition[0]))
+			{
+				$conditionTree->where(static::createFromArray($condition));
+			}
+			else
+			{
+				// parse regular filter condition
+				$valueKey = key(array_reverse($condition, true));
+				$valueElement = $condition[$valueKey];
+
+				if (is_array($valueElement))
+				{
+					if (isset($valueElement['value']))
+					{
+						$value = $valueElement['value'];
+					}
+					elseif (isset($valueElement['column']))
+					{
+						$value = new ColumnExpression($valueElement['column']);
+					}
+					else
+					{
+						// could be an array of columns
+						foreach ($valueElement as $k => $singleValue)
+						{
+							if (is_array($singleValue))
+							{
+								if (isset($singleValue['value']))
+								{
+									$valueElement[$k] = $singleValue['value'];
+								}
+								elseif (isset($singleValue['column']))
+								{
+									$valueElement[$k] = new ColumnExpression($singleValue['column']);
+								}
+							}
+						}
+
+						$value = $valueElement;
+					}
+
+					$condition[$valueKey] = $value;
+				}
+
+				$conditionTree->where(...$condition);
+			}
+		}
+
+		return $conditionTree;
 	}
 }

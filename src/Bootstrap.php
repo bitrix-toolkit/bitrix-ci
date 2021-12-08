@@ -17,7 +17,14 @@ class Bootstrap
         );
 
         if (!$db) {
-            throw new InvalidArgumentException('Mysql connection error.');
+            throw new InvalidArgumentException(sprintf(
+                '%s (host: %s, db: %s, user: %s, password: %s)',
+                mysqli_connect_error() ?: 'Mysql connection error',
+                getenv('MYSQL_HOST', true) ?: getenv('MYSQL_HOST'),
+                getenv('MYSQL_DATABASE', true) ?: getenv('MYSQL_DATABASE'),
+                getenv('MYSQL_USER', true) ?: getenv('MYSQL_USER'),
+                getenv('MYSQL_PASSWORD', true) ?: getenv('MYSQL_PASSWORD')
+            ));
         }
 
         $sqlDump = new SqlDump(__DIR__ . '/../dump.sql');
@@ -46,5 +53,10 @@ class Bootstrap
         CModule::IncludeModule('catalog');
         CModule::IncludeModule('currency');
         CModule::IncludeModule('highloadblock');
+        CModule::IncludeModule('sale');
+
+        while (ob_get_level()) {
+            ob_end_flush();
+        }
     }
 }

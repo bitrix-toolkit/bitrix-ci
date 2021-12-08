@@ -31,7 +31,7 @@ class CAllDiskQuota
 			$this->max_execution_time = intval($params["max_execution_time"]);
 	}
 
-	function SetDBSize()
+	public static function SetDBSize()
 	{
 	}
 
@@ -66,7 +66,7 @@ class CAllDiskQuota
 		if (!empty($record["size"]) && !$recount)
 		{
 			$record = array_merge(
-				unserialize(COption::GetOptionString("main_size", "~".$name."_params")),
+				unserialize(COption::GetOptionString("main_size", "~".$name."_params"), ['allowed_classes' => false]),
 				$record);
 
 			$record["path_to_last_file"] = str_replace("//", "/", $abs_path.$record["file"]);
@@ -236,12 +236,12 @@ class CAllDiskQuota
 		if ($id == "db")
 		{
 			if ($recount)
-				$_SESSION["SESS_RECOUNT_DB"] = "Y";
+				\Bitrix\Main\Application::getInstance()->getSession()["SESS_RECOUNT_DB"] = "Y";
 			$result = array("size" => COption::GetOptionString("main_size", "~db"));
 			$result["params"] = COption::GetOptionString("main_size", "~db_params");
-			if (!empty($result["params"]) && is_array(unserialize($result["params"])))
+			if (!empty($result["params"]) && is_array(unserialize($result["params"], ['allowed_classes' => false])))
 			{
-				$result = array_merge(unserialize($result["params"]), $result);
+				$result = array_merge(unserialize($result["params"], ['allowed_classes' => false]), $result);
 			}
 		}
 		elseif ($id == "files")
@@ -270,7 +270,7 @@ class CAllDiskQuota
 
 		if (COption::GetOptionInt("main_size", "~db") <= 0)
 		{
-			$_SESSION["SESS_RECOUNT_DB"] = "Y";
+			\Bitrix\Main\Application::getInstance()->getSession()["SESS_RECOUNT_DB"] = "Y";
 		}
 
 		$quota = doubleVal(COption::GetOptionInt("main", "disk_space")*1024*1024 -

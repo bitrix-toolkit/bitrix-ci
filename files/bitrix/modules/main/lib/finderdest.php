@@ -117,7 +117,7 @@ class FinderDestTable extends Main\UI\EntitySelector\EntityUsageTable
 			return;
 		}
 
-		foreach (static::getCompatEntities() as $entityId => $entity)
+		foreach (Main\UI\EntitySelector\Converter::getCompatEntities() as $entityId => $entity)
 		{
 			if (preg_match('/'.$entity['pattern'].'/i', $data['CODE'], $matches))
 			{
@@ -139,7 +139,9 @@ class FinderDestTable extends Main\UI\EntitySelector\EntityUsageTable
 
 				$cache = new \CPHPCache;
 				$cache->cleanDir('/sonet/log_dest_sort/'.intval($userId / 100));
-				$cache->cleanDir('/ui_selector/dest_sort/'.intval($userId / 100));
+				$cache->cleanDir(\Bitrix\Main\UI\Selector\Entities::getCacheDir([
+					'userId' => $userId,
+				]));
 
 				return;
 			}
@@ -234,7 +236,7 @@ class FinderDestTable extends Main\UI\EntitySelector\EntityUsageTable
 		{
 			if (!empty($option["VALUE"]))
 			{
-				$optionValue = unserialize($option["VALUE"]);
+				$optionValue = unserialize($option["VALUE"], ['allowed_classes' => false]);
 
 				if (is_array($optionValue))
 				{
@@ -274,7 +276,7 @@ class FinderDestTable extends Main\UI\EntitySelector\EntityUsageTable
 		{
 			if (!empty($option["VALUE"]))
 			{
-				$optionValue = unserialize($option["VALUE"]);
+				$optionValue = unserialize($option["VALUE"], ['allowed_classes' => false]);
 
 				if (is_array($optionValue))
 				{

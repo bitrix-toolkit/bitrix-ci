@@ -140,18 +140,6 @@ class CAdminSubList extends CAdminList
 			$this->arHideHeaders = $arHideHeaders;
 	}
 
-	/**
-	 * @deprecated
-	 * @param $table_id
-	 * @param bool $sort
-	 * @param $list_url
-	 * @param bool $arHideHeaders
-	 */
-	public function CAdminSubList($table_id, $sort = false, $list_url, $arHideHeaders = false)
-	{
-		self::__construct($table_id, $sort, $list_url, $arHideHeaders);
-	}
-
 	function GetListUrl($boolFull = false)
 	{
 		$boolFull = ($boolFull === true);
@@ -312,35 +300,41 @@ class CAdminSubList extends CAdminList
 			$this->arVisibleColumns[] = $id;
 	}
 
-	public function AddAdminContextMenu($aContext=array(), $bShowExcel=true, $bShowSettings=true)
+	protected function GetSystemContextMenu(array $config = []): array
 	{
-		$aAdditionalMenu = array();
+		$result = [];
 
-		if ($bShowSettings)
+		if (isset($config['settings']))
 		{
 			$this->__AddListUrlParams('mode','subsettings');
-			$aAdditionalMenu[]= array(
-				"TEXT"=>GetMessage("admin_lib_context_sett"),
-				"TITLE"=>GetMessage("admin_lib_context_sett_title"),
-				"ONCLICK"=>$this->table_id.".ShowSettings('".CUtil::JSEscape($this->GetListUrl(true))."')",
-				"ICON"=>"btn_sub_settings",
-			);
+			$result[] = [
+				"TEXT" => GetMessage("admin_lib_context_sett"),
+				"TITLE" => GetMessage("admin_lib_context_sett_title"),
+				"ONCLICK" => $this->table_id.".ShowSettings('".CUtil::JSEscape($this->GetListUrl(true))."')",
+				"ICON" => "btn_sub_settings",
+			];
 			$this->__DeleteListUrlParams('mode');
 		}
-		if($bShowExcel)
+		if (isset($config['excel']))
 		{
 			$this->__AddListUrlParams('mode','excel');
-			$aAdditionalMenu[] = array(
-				"TEXT"=>"Excel",
-				"TITLE"=>GetMessage("admin_lib_excel"),
-				"ONCLICK"=>"location.href='".htmlspecialcharsbx($this->GetListUrl(true))."'",
-				"ICON"=>"btn_sub_excel",
-			);
+			$result[] = [
+				"TEXT" => "Excel",
+				"TITLE" => GetMessage("admin_lib_excel"),
+				"ONCLICK" => "location.href='".htmlspecialcharsbx($this->GetListUrl(true))."'",
+				"ICON" => "btn_sub_excel",
+			];
 			$this->__DeleteListUrlParams('mode');
 		}
+		return $result;
+	}
 
-		if(count($aContext)>0 || count($aAdditionalMenu) > 0)
-			$this->context = new CAdminSubContextMenuList($aContext, $aAdditionalMenu);
+	protected function InitContextMenu(array $menu = [], array $additional = []): void
+	{
+		if (!empty($menu) || !empty($additional))
+		{
+			$this->context = new CAdminSubContextMenuList($menu, $additional);
+		}
 	}
 
 	/**
@@ -542,10 +536,7 @@ echo '<table class="adm-list-table" id="'.$this->table_id.'">
 <?
 		if($this->bEditMode || !empty($this->arUpdateErrorIDs))
 		{
-?>
-		<input type="button" name="save_sub" id="<?=$this->table_id;?>_save_sub_button" value="<?=GetMessage("admin_lib_list_edit_save");?>." title="<?=GetMessage("admin_lib_list_edit_save_title");?>" onclick="<?=$this->table_id;?>.ExecuteFormAction('SAVE_BUTTON');" />
-		<input type="button" name="cancel_sub" id="<?=$this->table_id;?>_cancel_sub_button" value="<?=GetMessage("admin_lib_list_edit_cancel");?>" title="<?=GetMessage("admin_lib_list_edit_cancel_title");?>" onclick="<?=$this->ActionAjaxReload($this->GetListUrl(true));?>"/>
-<?
+			$this->DisplayEditButtons();
 		}
 		else
 		{
@@ -866,6 +857,14 @@ function ReloadOffers()
 		})).Show();";
 	}
 
+	protected function DisplayEditButtons(): void
+	{
+?>
+		<input type="button" name="save_sub" id="<?=$this->table_id;?>_save_sub_button" value="<?=GetMessage("admin_lib_list_edit_save");?>." title="<?=GetMessage("admin_lib_list_edit_save_title");?>" onclick="<?=$this->table_id;?>.ExecuteFormAction('SAVE_BUTTON');" />
+		<input type="button" name="cancel_sub" id="<?=$this->table_id;?>_cancel_sub_button" value="<?=GetMessage("admin_lib_list_edit_cancel");?>" title="<?=GetMessage("admin_lib_list_edit_cancel_title");?>" onclick="<?=$this->ActionAjaxReload($this->GetListUrl(true));?>"/>
+<?
+	}
+
 	private function prepareGroupMultiControl(string $id, array $action)
 	{
 		$result = null;
@@ -1041,16 +1040,6 @@ class CAdminSubListRow extends CAdminListRow
 	public function __construct($aHeaders,$table_id)
 	{
 		parent::__construct($aHeaders,$table_id);
-	}
-
-	/**
-	 * @deprecated
-	 * @param $aHeaders
-	 * @param $table_id
-	 */
-	function CAdminSubListRow(&$aHeaders, $table_id)
-	{
-		self::__construct($aHeaders, $table_id);
 	}
 
 	public function Display()
@@ -1276,16 +1265,6 @@ class CAdminSubContextMenu extends CAdminContextMenu
 		parent::__construct($items, $additional_items);
 	}
 
-	/**
-	 * @deprecated
-	 * @param $items
-	 * @param array $additional_items
-	 */
-	function CAdminSubContextMenu($items, $additional_items = array())
-	{
-		self::__construct($items, $additional_items);
-	}
-
 	function Show()
 	{
 		$hkInst = CHotKeys::GetInstance();
@@ -1444,11 +1423,6 @@ class CAdminSubForm extends CAdminForm
 
 		if (is_array($list_url) && !empty($list_url['POST_PARAMS']))
 			$this->__SetListPostParams($list_url['POST_PARAMS'],true);
-	}
-
-	public function CAdminSubForm($name, $tabs, $bCanExpand = true, $bDenyAutosave = false, $list_url = '', $boolShowSettings = false)
-	{
-		self::__construct($name, $tabs, $bCanExpand, $bDenyAutosave, $list_url, $boolShowSettings);
 	}
 
 	function ShowSettings()
@@ -1765,7 +1739,7 @@ echo '
 		$result = '<script type="text/javascript">';
 		$result .= '
 			var currentWindow = top.window;
-			if (top.BX.SidePanel.Instance && top.BX.SidePanel.Instance.getTopSlider())
+			if (top.BX.SidePanel && top.BX.SidePanel.Instance && top.BX.SidePanel.Instance.getTopSlider())
 			{
 				currentWindow = top.BX.SidePanel.Instance.getTopSlider().getWindow();
 			}
@@ -1799,11 +1773,6 @@ class CAdminSubResult extends CAdminResult
 		parent::__construct($res, $table_id);
 	}
 
-	public function CAdminSubResult($res, $table_id, $list_url)
-	{
-		self::__construct($res, $table_id, $list_url);
-	}
-
 	public function NavStart($nPageSize=20, $bShowAll=true, $iNumPage=false)
 	{
 		$navResult = new CAdminSubResult(null, '', '');
@@ -1828,7 +1797,7 @@ class CAdminSubResult extends CAdminResult
 	 * @param string $list_url
 	 * @return int
 	 */
-	public function GetNavSize($table_id=false, $nPageSize=20, $list_url = '')
+	public static function GetNavSize($table_id=false, $nPageSize=20, $list_url = '')
 	{
 		$list_url = (string)$list_url;
 		if ($list_url != '')
@@ -1943,17 +1912,7 @@ class CAdminSubMessage extends CAdminMessage
 		parent::__construct($message,$exception);
 	}
 
-	/**
-	 * @deprecated
-	 * @param $message
-	 * @param bool $exception
-	 */
-	public function CAdminSubMessage($message, $exception=false)
-	{
-		self::__construct($message, $exception);
-	}
-
-	function Show()
+	public function Show()
 	{
 		if (defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1)
 		{
@@ -2016,7 +1975,7 @@ class CAdminSubMessage extends CAdminMessage
 		}
 	}
 
-	function ShowOldStyleError($message)
+	public static function ShowOldStyleError($message)
 	{
 		if(!empty($message))
 		{
@@ -2025,7 +1984,7 @@ class CAdminSubMessage extends CAdminMessage
 		}
 	}
 
-	function ShowMessage($message)
+	public static function ShowMessage($message)
 	{
 		if(!empty($message))
 		{
@@ -2034,7 +1993,7 @@ class CAdminSubMessage extends CAdminMessage
 		}
 	}
 
-	function ShowNote($message)
+	public static function ShowNote($message)
 	{
 		if(!empty($message))
 		{

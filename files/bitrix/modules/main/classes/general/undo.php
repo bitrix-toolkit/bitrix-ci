@@ -64,7 +64,7 @@ class CUndo
 		}
 
 		// Get params for Escaping
-		$arParams = unserialize($arUndo['CONTENT']);
+		$arParams = unserialize($arUndo['CONTENT'], ['allowed_classes' => false]);
 
 		// Check and call Undo handler
 		$p = mb_strpos($arUndo['UNDO_HANDLER'], "::");
@@ -132,7 +132,7 @@ class CUndo
 			$by = mb_strtoupper($by);
 			if (isset($arFields[$by]))
 			{
-				$strOrderBy .= $arFields[$by]["FIELD_NAME"].' '.(mb_strtolower($order) == 'desc'? 'desc'.($DB->type == "ORACLE"? " NULLS LAST": ""): 'asc'.($DB->type == "ORACLE"? " NULLS FIRST": "")).',';
+				$strOrderBy .= $arFields[$by]["FIELD_NAME"].' '.(mb_strtolower($order) == 'desc'? 'desc': 'asc').',';
 			}
 		}
 
@@ -183,17 +183,18 @@ class CUndo
 
 	public static function ShowUndoMessage($ID)
 	{
-		$_SESSION['BX_UNDO_ID'] = $ID;
+		\Bitrix\Main\Application::getInstance()->getSession()['BX_UNDO_ID'] = $ID;
 	}
 
 	public static function CheckNotifyMessage()
 	{
 		global $USER, $APPLICATION;
-		if (!is_array($_SESSION) || !array_key_exists("BX_UNDO_ID", $_SESSION))
+		$session = \Bitrix\Main\Application::getInstance()->getSession();
+		if (!$session->isStarted() || !$session->has('BX_UNDO_ID'))
 			return;
 
-		$ID = $_SESSION['BX_UNDO_ID'];
-		unset($_SESSION['BX_UNDO_ID']);
+		$ID = $session['BX_UNDO_ID'];
+		unset($session['BX_UNDO_ID']);
 
 		$arUndoList = CUndo::GetList(array('arFilter' => array('ID' => $ID, 'USER_ID' => $USER->GetId())));
 		if (!$arUndoList)

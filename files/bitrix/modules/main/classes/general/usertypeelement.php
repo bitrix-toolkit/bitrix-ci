@@ -15,7 +15,7 @@ class CUserTypeIBlockElement extends CUserTypeEnum
 {
 	private static $iblockIncluded = null;
 
-	function getUserTypeDescription()
+	public static function getUserTypeDescription()
 	{
 		if(self::isIblockIncluded())
 		{
@@ -201,7 +201,7 @@ class CUserTypeIBlockElement extends CUserTypeEnum
 		return [];
 	}
 
-	function getList($userField)
+	public static function getList($userField)
 	{
 		if(self::isIblockIncluded())
 		{
@@ -239,7 +239,10 @@ class CUserTypeIBlockElement extends CUserTypeEnum
 
 class CIBlockElementEnum extends CDBResult
 {
-	function getTreeList($iblockId, $activeFilter = 'N')
+	/**
+	 * @deprecated
+	 */
+	public static function getTreeList($iblockId, $activeFilter = 'N')
 	{
 		$result = false;
 

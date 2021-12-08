@@ -20,21 +20,22 @@ if(isset($_GET["k"]) && isset($_GET["s"]) && is_string($_GET["k"]) && is_string(
 				if($str <> '')
 				{
 					$host = $_SERVER["HTTP_HOST"];
-					if(($pos = mb_strpos($host, ":")) !== false)
-						$host = mb_substr($host, 0, $pos);
+					if(($pos = strpos($host, ":")) !== false)
+						$host = substr($host, 0, $pos);
 
 					$ar = explode(chr(1), $str);
 					setcookie($ar[0], $ar[1], $ar[2], $ar[3], $host, $ar[5], $ar[6]);
 
 					//logout
-					if(mb_substr($ar[0], -5) == '_UIDH' && $ar[1] == '')
+					if(substr($ar[0], -5) == '_UIDH' && $ar[1] == '')
 					{
-						session_start();
-						$_SESSION["SESS_AUTH"] = Array();
-						unset($_SESSION["SESS_AUTH"]);
-						unset($_SESSION["SESS_OPERATIONS"]);
-						unset($_SESSION["MODULE_PERMISSIONS"]);
-						unset($_SESSION["SESS_PWD_HASH_TESTED"]);
+						$kernelSession = \Bitrix\Main\Application::getInstance()->getKernelSession();
+						$kernelSession->start();
+						$kernelSession["SESS_AUTH"] = Array();
+						unset($kernelSession["SESS_AUTH"]);
+						unset($kernelSession["SESS_OPERATIONS"]);
+						unset($kernelSession["MODULE_PERMISSIONS"]);
+						unset($kernelSession["SESS_PWD_HASH_TESTED"]);
 					}
 				}
 			}

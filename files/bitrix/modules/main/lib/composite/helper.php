@@ -23,11 +23,11 @@ class Helper
 	{
 		if (self::isSpaMode())
 		{
-			return isset($options["SPA_REQUEST_URI"]) ? $options["SPA_REQUEST_URI"] : "/";
+			return ($options["SPA_REQUEST_URI"] ?? "/");
 		}
 		else
 		{
-			return $_SERVER["REQUEST_URI"];
+			return ($_SERVER["REQUEST_URI"] ?? '');
 		}
 	}
 
@@ -40,7 +40,7 @@ class Helper
 	 */
 	public static function getHttpHost($host = null)
 	{
-		return preg_replace("/:(80|443)$/", "", $host === null ? $_SERVER["HTTP_HOST"] : $host);
+		return preg_replace("/:(80|443)$/", "", $host === null ? ($_SERVER["HTTP_HOST"] ?? '') : $host);
 	}
 
 	/**
@@ -810,7 +810,7 @@ class Helper
 				$writings === false ? 0 : (isset($fileValues[1]) ? intval($fileValues[1]) + $writings : $writings),
 				$quota === false ? 0 : (isset($fileValues[2]) ? intval($fileValues[2]) + $quota : $quota),
 				$posts === false ? 0 : (isset($fileValues[3]) ? intval($fileValues[3]) + $posts : $posts),
-				$files === false ? 0 : $cacheSize > 0 ? $cacheSize : 0,
+				$files === false ? 0 : ($cacheSize > 0 ? $cacheSize : 0),
 			);
 
 			fseek($fp, 0);
