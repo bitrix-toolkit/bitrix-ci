@@ -23,6 +23,7 @@ jobs:
       MYSQL_DATABASE: bitrix-ci
       MYSQL_USER: bitrix-ci
       MYSQL_PASSWORD: bitrix-ci
+      DEBUG: true
     steps:
       - name: Checkout source
         uses: actions/checkout@v1
