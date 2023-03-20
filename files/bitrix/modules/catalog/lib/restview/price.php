@@ -34,19 +34,20 @@ final class Price extends Base
 			'CATALOG_GROUP_ID'=>[
 				'TYPE'=>DataType::TYPE_INT,
 				'ATTRIBUTES'=>[
-					Attributes::REQUIRED
+					Attributes::REQUIRED,
+					Attributes::IMMUTABLE
 				]
 			],
 			'PRICE'=>[
 				'TYPE'=>DataType::TYPE_FLOAT,
 				'ATTRIBUTES'=>[
-					Attributes::REQUIRED
+					Attributes::REQUIRED_ADD
 				]
 			],
 			'CURRENCY'=>[
 				'TYPE'=>DataType::TYPE_STRING,
 				'ATTRIBUTES'=>[
-					Attributes::REQUIRED
+					Attributes::REQUIRED_ADD
 				]
 			],
 			'TIMESTAMP_X'=>[
@@ -89,7 +90,7 @@ final class Price extends Base
 		return $arguments;
 	}
 
-	public function internalizeArguments($name, $arguments)
+	public function internalizeArguments($name, $arguments): array
 	{
 		if($name == 'modify')
 		{
@@ -128,7 +129,7 @@ final class Price extends Base
 		return $result;
 	}
 
-	public function checkArguments($name, $arguments)
+	public function checkArguments($name, $arguments): Result
 	{
 		if($name == 'modify')
 		{
@@ -189,10 +190,9 @@ final class Price extends Base
 		return $r;
 	}
 
-	public function externalizeResult($name, $fields)
+	public function externalizeResult($name, $fields): array
 	{
-		if($name == 'modify'
-		)
+		if ($name == 'modify')
 		{
 			return $this->externalizeFieldsModify($fields);
 		}

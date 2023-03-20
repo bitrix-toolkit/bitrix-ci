@@ -12,8 +12,26 @@ use Bitrix\Main\ORM;
 use Bitrix\Main\ORM\Data;
 use Bitrix\Main\ORM\Fields;
 
+/**
+ * Class ApplicationPasswordTable
+ *
+ * DO NOT WRITE ANYTHING BELOW THIS
+ *
+ * <<< ORMENTITYANNOTATION
+ * @method static EO_ApplicationPassword_Query query()
+ * @method static EO_ApplicationPassword_Result getByPrimary($primary, array $parameters = [])
+ * @method static EO_ApplicationPassword_Result getById($id)
+ * @method static EO_ApplicationPassword_Result getList(array $parameters = [])
+ * @method static EO_ApplicationPassword_Entity getEntity()
+ * @method static \Bitrix\Main\Authentication\EO_ApplicationPassword createObject($setDefaultValues = true)
+ * @method static \Bitrix\Main\Authentication\EO_ApplicationPassword_Collection createCollection()
+ * @method static \Bitrix\Main\Authentication\EO_ApplicationPassword wakeUpObject($row)
+ * @method static \Bitrix\Main\Authentication\EO_ApplicationPassword_Collection wakeUpCollection($rows)
+ */
 class ApplicationPasswordTable extends Data\DataManager
 {
+	use Data\Internal\DeleteByFilterTrait;
+
 	protected const PASSWORD_ALPHABET = "qwertyuiopasdfghjklzxcvbnm";
 	protected const PASSWORD_LENGTH = 16;
 
@@ -86,7 +104,7 @@ class ApplicationPasswordTable extends Data\DataManager
 		return $result;
 	}
 
-	public static function onBeforeDelete(ORM\Event $event)
+	public static function onDelete(ORM\Event $event)
 	{
 		$id = $event->getParameter("id");
 

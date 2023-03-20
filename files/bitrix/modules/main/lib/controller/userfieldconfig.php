@@ -2,9 +2,11 @@
 
 namespace Bitrix\Main\Controller;
 
+use Bitrix\Intranet\ActionFilter;
 use Bitrix\Main\Engine\Action;
 use Bitrix\Main\Engine\Controller;
 use Bitrix\Main\Error;
+use Bitrix\Main\Loader;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\UI\PageNavigation;
 use Bitrix\Main\UserField\UserFieldAccess;
@@ -14,27 +16,39 @@ use Bitrix\Main\Engine\Response\DataType\Page;
 
 class UserFieldConfig extends Controller
 {
-	protected $moduleId;
-	/** @var UserFieldAccess */
-	protected $access;
-
-	protected function init(): void
+	protected function getDefaultPreFilters()
 	{
-		parent::init();
+		$defaultPreFilters = parent::getDefaultPreFilters();
 
-		$moduleId = $this->getRequest()->get('moduleId');
-		if(empty($moduleId))
+		if (Loader::includeModule('intranet'))
 		{
-			$this->addError($this->getEmptyModuleIdError());
-			return;
+			$defaultPreFilters[] = new ActionFilter\IntranetUser();
 		}
 
-		$this->access = UserFieldAccess::getInstance($moduleId);
+		return $defaultPreFilters;
 	}
 
-	protected function processBeforeAction(Action $action): bool
+	protected function getAccess(string $moduleId, ?\CRestServer $restServer = null): ?UserFieldAccess
 	{
-		return (parent::processBeforeAction($action) && (count($this->getErrors()) <= 0));
+		$access = UserFieldAccess::getInstance($moduleId);
+
+		if ($restServer && Loader::includeModule('rest'))
+		{
+			$scopes = $restServer->getAuthScope();
+			if (!in_array($moduleId, $scopes))
+			{
+				$this->addError(
+					new Error(
+						'The current method required more scopes. (' . $moduleId . ')',
+						\Bitrix\Rest\Engine\ActionFilter\Scope::ERROR_INSUFFICIENT_SCOPE
+					)
+				);
+
+				return null;
+			}
+		}
+
+		return $access;
 	}
 
 	protected function processAfterAction(Action $action, $result)
@@ -74,23 +88,29 @@ class UserFieldConfig extends Controller
 		return new Error(Loc::getMessage('MAIN_USER_FIELD_CONTROLLER_ERROR'));
 	}
 
-	public function getTypesAction(): array
+	public function getTypesAction(string $moduleId, \CRestServer $restServer = null): ?array
 	{
+		$access = $this->getAccess($moduleId, $restServer);
+		if (!$access)
+		{
+			return null;
+		}
+
 		$result = [];
 
-		$restrictedTypes = array_flip($this->access->getRestrictedTypes());
+		$restrictedTypes = array_flip($access->getRestrictedTypes());
 
 		global $USER_FIELD_MANAGER;
 		$types = $USER_FIELD_MANAGER->GetUserType();
 
-		if(empty($restrictedTypes))
+		if (empty($restrictedTypes))
 		{
 			return $types;
 		}
 
-		foreach($types as $id => $type)
+		foreach ($types as $id => $type)
 		{
-			if(!isset($restrictedTypes[$id]))
+			if (!isset($restrictedTypes[$id]))
 			{
 				$result[$id] = [
 					'userTypeId' => $type['USER_TYPE_ID'],
@@ -106,9 +126,26 @@ class UserFieldConfig extends Controller
 
 	protected function prepareFields(array $fields): array
 	{
+		$allowedKeys = [
+			'editFormLabel' => true,
+			'multiple' => true,
+			'userTypeId' => true,
+			'fieldName' => true,
+			'enum' => true,
+			'entityId' => true,
+			'xmlId' => true,
+			'sort' => true,
+			'mandatory' => true,
+			'showFilter' => true,
+			'isSearchable' => true,
+			'settings' => true,
+		];
+
+		$fields = array_intersect_key($fields, $allowedKeys);
+
 		$converter = new Converter(Converter::TO_UPPER | Converter::KEYS | Converter::TO_SNAKE);
 
-		if($fields['showFilter'] === 'Y')
+		if ($fields['showFilter'] === 'Y')
 		{
 			$fields['showFilter'] = 'E';
 		}
@@ -118,19 +155,26 @@ class UserFieldConfig extends Controller
 
 	public function preparePublicData(array $field): array
 	{
-		foreach(UserFieldTable::getLabelFields() as $labelName)
+		foreach (UserFieldTable::getLabelFields() as $labelName)
 		{
-			if(isset($field[$labelName]) && !is_array($field[$labelName]))
+			if (isset($field[$labelName]) && !is_array($field[$labelName]))
 			{
 				$field[$labelName] = [
-					Loc::getCurrentLang() => $field[$labelName]
+					Loc::getCurrentLang() => $field[$labelName],
 				];
 			}
 		}
 		$settings = $field['SETTINGS'];
 
 		/** @noinspection CallableParameterUseCaseInTypeContextInspection */
-		$field = (new Converter(Converter::KEYS | Converter::TO_CAMEL | Converter::LC_FIRST | Converter::RECURSIVE))->process($field);
+		$field = (
+			new Converter(
+				Converter::KEYS
+				| Converter::TO_CAMEL
+				| Converter::LC_FIRST
+				| Converter::RECURSIVE
+			)
+		)->process($field);
 
 		$field['settings'] = $settings;
 
@@ -142,11 +186,11 @@ class UserFieldConfig extends Controller
 		global $APPLICATION;
 
 		$exception = $APPLICATION->GetException();
-		if(($exception instanceof \CAdminException) && is_array($exception->messages))
+		if (($exception instanceof \CAdminException) && is_array($exception->messages))
 		{
-			foreach($exception->messages as $message)
+			foreach ($exception->messages as $message)
 			{
-				if(isset($message['text']))
+				if (isset($message['text']))
 				{
 					$message = $message['text'];
 				}
@@ -163,31 +207,31 @@ class UserFieldConfig extends Controller
 		$storedEnum = [];
 		$updatedEnum = [];
 
-		foreach($currentEnums as $enumItem)
+		foreach ($currentEnums as $enumItem)
 		{
 			$storedEnum[$enumItem['ID']] = $enumItem;
 			$deletedEnum[$enumItem['ID']] = true;
 		}
 
 		$countAdded = 0;
-		foreach($newEnums as $enumItem)
+		foreach ($newEnums as $enumItem)
 		{
-			if(is_array($enumItem))
+			if (is_array($enumItem))
 			{
-				if(!empty($enumItem['id']))
+				if (!empty($enumItem['id']))
 				{
-					if(empty($enumItem['xmlId']))
+					if (empty($enumItem['xmlId']))
 					{
 						$enumItem['xmlId'] = $storedEnum[$enumItem['id']]['XML_ID'];
 					}
-					if(empty($enumItem['def']))
+					if (empty($enumItem['def']))
 					{
 						$enumItem['def'] = $storedEnum[$enumItem['id']]['DEF'];
 					}
 
 					unset($deletedEnum[$enumItem['id']]);
 				}
-				$itemKey = ($enumItem['id'] > 0 ? $enumItem['id'] : 'n'.($countAdded++));
+				$itemKey = ($enumItem['id'] > 0 ? $enumItem['id'] : 'n' . ($countAdded++));
 
 				$itemDescription = [
 					'VALUE' => $enumItem['value'],
@@ -195,13 +239,13 @@ class UserFieldConfig extends Controller
 					'SORT' => $enumItem['sort'],
 				];
 
-				if(!empty($enumItem['xmlId']))
+				if (!empty($enumItem['xmlId']))
 				{
 					$itemDescription['XML_ID'] = $enumItem['xmlId'];
 				}
 
 				$enumItem['sort'] = (int)$enumItem['sort'];
-				if($enumItem['sort'] > 0)
+				if ($enumItem['sort'] > 0)
 				{
 					$itemDescription['SORT'] = $enumItem['sort'];
 				}
@@ -210,11 +254,11 @@ class UserFieldConfig extends Controller
 			}
 		}
 
-		foreach($deletedEnum as $deletedId => $t)
+		foreach ($deletedEnum as $deletedId => $t)
 		{
 			$updatedEnum[$deletedId] = [
 				'ID' => $deletedId,
-				'DEL' => 'Y'
+				'DEL' => 'Y',
 			];
 		}
 
@@ -228,26 +272,31 @@ class UserFieldConfig extends Controller
 		$enumValuesManager = new \CUserFieldEnum();
 		$setEnumResult = $enumValuesManager->setEnumValues($id, $updatedEnum);
 
-		if(!$setEnumResult)
+		if (!$setEnumResult)
 		{
 			$this->fillErrorsFromApplication();
 		}
 	}
 
-	public function getAction(int $id): ?array
+	public function getAction(string $moduleId, int $id, \CRestServer $restServer = null): ?array
 	{
-		if($this->getErrors())
+		$access = $this->getAccess($moduleId, $restServer);
+		if (!$access)
 		{
 			return null;
 		}
-		if(!$this->access->canRead($id))
+		if ($this->getErrors())
+		{
+			return null;
+		}
+		if (!$access->canRead($id))
 		{
 			$this->addError($this->getReadAccessDeniedError());
 			return null;
 		}
 
 		$field = UserFieldTable::getFieldData($id);
-		if(is_array($field))
+		if (is_array($field))
 		{
 			return [
 				'field' => $this->preparePublicData($field),
@@ -257,8 +306,21 @@ class UserFieldConfig extends Controller
 		return null;
 	}
 
-	public function listAction(array $select = ['*'], array $order = [], array $filter = [], PageNavigation $pageNavigation = null): ?Page
+	public function listAction(
+		string $moduleId,
+		array $select = ['*'],
+		array $order = [],
+		array $filter = [],
+		PageNavigation $pageNavigation = null,
+		\CRestServer $restServer = null
+	): ?Page
 	{
+		$access = $this->getAccess($moduleId, $restServer);
+		if (!$access)
+		{
+			return null;
+		}
+
 		$converter = new Converter(Converter::TO_UPPER | Converter::KEYS | Converter::TO_SNAKE);
 		/** @noinspection CallableParameterUseCaseInTypeContextInspection */
 		$filter = $converter->process($filter);
@@ -267,16 +329,16 @@ class UserFieldConfig extends Controller
 		/** @noinspection CallableParameterUseCaseInTypeContextInspection */
 		$select = $converter->process($select);
 
-		if(!$this->access->canReadWithFilter($filter))
+		if (!$access->canReadWithFilter($filter))
 		{
 			$this->addError($this->getReadAccessDeniedError());
 			return null;
 		}
 		/** @noinspection CallableParameterUseCaseInTypeContextInspection */
-		$filter = $this->access->prepareFilter($filter);
+		$filter = $access->prepareFilter($filter);
 
 		$runtime = [];
-		if(!empty($select['LANGUAGE']) && is_string($select['LANGUAGE']))
+		if (!empty($select['LANGUAGE']) && is_string($select['LANGUAGE']))
 		{
 			$runtime[] = UserFieldTable::getLabelsReference('LABELS', $select['LANGUAGE']);
 			unset($select['LANGUAGE']);
@@ -290,35 +352,49 @@ class UserFieldConfig extends Controller
 			'filter' => $filter,
 			'order' => $order,
 			'offset' => $pageNavigation ? $pageNavigation->getOffset() : null,
-			'limit' => $pageNavigation ? $pageNavigation->getLimit(): null,
+			'limit' => $pageNavigation ? $pageNavigation->getLimit() : null,
 			'runtime' => $runtime,
 		]);
-		while($field = $list->fetch())
+		while ($field = $list->fetch())
 		{
 			$fields[] = $this->preparePublicData($field);
 		}
 
-		return new Page('fields', $fields, static function() use ($filter) {
+		return new Page('fields', $fields, static function () use ($filter) {
 			return UserFieldTable::getCount($filter);
 		});
 	}
 
-	public function addAction(array $field): ?array
+	public function addAction(string $moduleId, array $field, \CRestServer $restServer = null): ?array
 	{
+		$access = $this->getAccess($moduleId, $restServer);
+		if (!$access)
+		{
+			return null;
+		}
 		$field = $this->prepareFields($field);
-		if(!$this->access->canAdd($field))
+		if (!$access->canAdd($field))
 		{
 			$this->addError($this->getAddAccessDeniedError());
 			return null;
 		}
 
+		$fieldName = $field['FIELD_NAME'] ?? '';
+		$entityId = $field['ENTITY_ID'] ?? '';
+		$prefix = 'UF_' . $entityId . '_';
+		if (strpos($fieldName, $prefix) !== 0)
+		{
+			$this->addError(new Error(Loc::getMessage('MAIN_USER_FIELD_CONTROLLER_FIELD_NAME_ERROR')));
+			return null;
+		}
+
 		$userTypeEntity = new \CUserTypeEntity();
 		$id = $userTypeEntity->Add($field);
-		if($id > 0)
+		if ($id > 0)
 		{
-			if($field['USER_TYPE_ID'] === 'enumeration')
+			if ($field['USER_TYPE_ID'] === 'enumeration')
 			{
-				$this->updateEnums($id, $field['ENUM']);
+				$this->updateEnums($id, (array)$field['ENUM']);
 			}
 
 			return [
@@ -327,7 +403,7 @@ class UserFieldConfig extends Controller
 		}
 
 		$this->fillErrorsFromApplication();
-		if(!$this->getErrors())
+		if (!$this->getErrors())
 		{
 			$this->addError($this->getCommonError());
 		}
@@ -335,9 +411,14 @@ class UserFieldConfig extends Controller
 		return null;
 	}
 
-	public function updateAction(int $id, array $field): ?array
+	public function updateAction(string $moduleId, int $id, array $field, \CRestServer $restServer = null): ?array
 	{
-		if(!$this->access->canUpdate($id))
+		$access = $this->getAccess($moduleId, $restServer);
+		if (!$access)
+		{
+			return null;
+		}
+		if (!$access->canUpdate($id))
 		{
 			$this->addError($this->getUpdateAccessDeniedError());
 			return null;
@@ -346,12 +427,11 @@ class UserFieldConfig extends Controller
 		$field = $this->prepareFields($field);
 		$userTypeEntity = new \CUserTypeEntity();
 		$isUpdated = $userTypeEntity->Update($id, $field);
-		if($isUpdated)
+		if ($isUpdated)
 		{
-			if($field['USER_TYPE_ID'] === 'enumeration')
+			if ($field['USER_TYPE_ID'] === 'enumeration')
 			{
-				$field['ID'] = $id;
-				$this->updateEnums($id, $field['ENUM'], UserFieldTable::getFieldData($id)['ENUM']);
+				$this->updateEnums($id, (array)$field['ENUM'], (array)UserFieldTable::getFieldData($id)['ENUM']);
 			}
 
 			return [
@@ -360,7 +440,7 @@ class UserFieldConfig extends Controller
 		}
 
 		$this->fillErrorsFromApplication();
-		if(!$this->getErrors())
+		if (!$this->getErrors())
 		{
 			$this->addError($this->getCommonError());
 		}
@@ -368,9 +448,14 @@ class UserFieldConfig extends Controller
 		return null;
 	}
 
-	public function deleteAction(int $id): void
+	public function deleteAction(string $moduleId, int $id, \CRestServer $restServer = null): void
 	{
-		if(!$this->access->canDelete($id))
+		$access = $this->getAccess($moduleId, $restServer);
+		if (!$access)
+		{
+			return;
+		}
+		if (!$access->canDelete($id))
 		{
 			$this->addError($this->getDeleteAccessDeniedError());
 			return;

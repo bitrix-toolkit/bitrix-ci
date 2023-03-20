@@ -8,10 +8,11 @@ use Bitrix\Main\Engine\Response\DataType\Page;
 use Bitrix\Main\Error;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Result;
+use Bitrix\Main\UI\PageNavigation;
 
 Loc::loadMessages(__FILE__);
 
-final class ProfileValue extends ControllerBase
+class ProfileValue extends ControllerBase
 {
 	//region Actions
 	public function getFieldsAction()
@@ -24,25 +25,20 @@ final class ProfileValue extends ControllerBase
 		)];
 	}
 
-	public function listAction($select=[], $filter=[], $order=[], $start=0)
+	public function listAction(PageNavigation $pageNavigation, array $select = [], array $filter = [], array $order = [])
 	{
 		$result = [];
 
 		$select = empty($select)? ['*']:$select;
 		$order = empty($order)? ['ID'=>'ASC']:$order;
 
-		$r = \CSaleOrderUserPropsValue::GetList($order, $filter, false, self::getNavData($start), $select);
+		$r = \CSaleOrderUserPropsValue::GetList($order, $filter, false, self::getNavData($pageNavigation->getOffset()), $select);
 		while ($l = $r->fetch())
 			$result[] = $l;
 
 		return new Page('PROFILE_VALUES', $result, function() use ($filter)
 		{
-			$list = [];
-			$r = \CSaleOrderUserPropsValue::GetList([], $filter);
-			while ($l = $r->fetch())
-				$list[] = $l;
-
-			return count($list);
+			return (int)\CSaleOrderUserPropsValue::GetList([], $filter, []);
 		});
 	}
 

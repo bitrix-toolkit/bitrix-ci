@@ -1,5 +1,8 @@
 <?php
+
 namespace Bitrix\Main\Diag;
+
+use Bitrix\Main\Application;
 
 class SqlTracker implements \Iterator
 {
@@ -8,11 +11,27 @@ class SqlTracker implements \Iterator
 	/** @var float */
 	protected $time = 0.0;
 	/** @var int */
-	protected $depthBackTrace = 8;
+	protected static $depthBackTrace = 0;
 	/** @var integer */
 	protected $counter = 0;
 	/** @var string */
 	protected $logFilePath = "";
+
+	public function __construct()
+	{
+		if (self::$depthBackTrace == 0)
+		{
+			$eh = \Bitrix\Main\Config\Configuration::getValue('exception_handling');
+			if (!empty($eh['depth_back_trace']))
+			{
+				self::$depthBackTrace = (int) $eh['depth_back_trace'];
+			}
+			else
+			{
+				self::$depthBackTrace = 8;
+			}
+		}
+	}
 
 	/**
 	 * Clears all queries collected and resets execution time.
@@ -29,7 +48,7 @@ class SqlTracker implements \Iterator
 	/**
 	 * Creates new instance of SqlTrackerQuery object.
 	 *
-	 * @return \Bitrix\Main\Diag\SqlTrackerQuery
+	 * @return SqlTrackerQuery
 	 */
 	public function getNewTrackerQuery()
 	{
@@ -88,7 +107,7 @@ class SqlTracker implements \Iterator
 	 */
 	public function getDepthBackTrace()
 	{
-		return $this->depthBackTrace;
+		return self::$depthBackTrace;
 	}
 
 	/**
@@ -100,7 +119,7 @@ class SqlTracker implements \Iterator
 	 */
 	public function setDepthBackTrace($depthBackTrace)
 	{
-		$this->depthBackTrace = (int)$depthBackTrace;
+		self::$depthBackTrace = (int) $depthBackTrace;
 	}
 
 	/**
@@ -133,11 +152,20 @@ class SqlTracker implements \Iterator
 	{
 		if ($this->logFilePath)
 		{
-			$sessionId = \Bitrix\Main\Application::getInstance()->getKernelSession()->getId();
+			$application = Application::getInstance();
+			if ($application->isInitialized() && $application->getKernelSession()->isStarted())
+			{
+				$sessionId = $application->getKernelSession()->getId();
+			}
+			else
+			{
+				$sessionId = '-';
+			}
+
 			$header = "TIME: ".round($executionTime, 6)." SESSION: ".$sessionId." ".$additional."\n";
 			$headerLength = mb_strlen($header);
 			$body = $this->formatSql($sql);
-			$trace = $this->formatTrace(\Bitrix\Main\Diag\Helper::getBackTrace($this->depthBackTrace, null, $traceSkip));
+			$trace = $this->formatTrace(Helper::getBackTrace(self::$depthBackTrace, null, $traceSkip));
 			$footer = str_repeat("-", $headerLength);
 			$message =
 				"\n".$header.
@@ -204,7 +232,7 @@ class SqlTracker implements \Iterator
 	 * Returns formatted backtrace for log writing.
 	 * Format is multi line. Line separator is "\n".
 	 *
-	 * @param array $trace Backtrace.
+	 * @param array | null $trace Backtrace.
 	 *
 	 * @return string
 	 */
@@ -213,7 +241,7 @@ class SqlTracker implements \Iterator
 		if ($trace)
 		{
 			$traceLines = array();
-			foreach ($trace as $traceNum => $traceInfo)
+			foreach ($trace as $traceInfo)
 			{
 				$traceLine = '';
 

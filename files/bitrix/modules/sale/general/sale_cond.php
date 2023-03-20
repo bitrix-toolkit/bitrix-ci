@@ -223,41 +223,30 @@ class CSaleCondCtrlBasketGroup extends CSaleCondCtrlGroup
 		$sort = 200;
 		foreach ($controls as $controlId)
 		{
+			$row = array(
+				'ID' => $controlId,
+				'GROUP' => 'Y',
+				'GetControlShow' => array($className, 'GetControlShow'),
+				'GetConditionShow' => array($className, 'GetConditionShow'),
+				'IsGroup' => array($className, 'IsGroup'),
+				'Parse' => array($className, 'Parse'),
+				'Generate' => array($className, 'Generate'),
+				'ApplyValues' => array($className, 'ApplyValues'),
+				'InitParams' => array($className, 'InitParams'),
+				'SORT' => $sort,
+			);
+			if ($controlId !== 'CondBsktSubGroup' && $controlId !== 'CondBsktProductGroup')
+			{
+				$row['EXECUTE_MODULE'] = 'sale';
+			}
 			if ($controlId === 'CondCumulativeGroup')
 			{
-				$result[] = array(
-					'ID' => $controlId,
-					'GROUP' => 'Y',
-					'EXECUTE_MODULE' => 'sale',
-					'FORCED_SHOW_LIST' => array('Period', 'PeriodRelative'),
-					'GetControlShow' => array($className, 'GetControlShow'),
-					'GetConditionShow' => array($className, 'GetConditionShow'),
-					'IsGroup' => array($className, 'IsGroup'),
-					'Parse' => array($className, 'Parse'),
-					'Generate' => array($className, 'Generate'),
-					'ApplyValues' => array($className, 'ApplyValues'),
-					'InitParams' => array($className, 'InitParams'),
-					'SORT' => $sort,
-				);
+				$row['FORCED_SHOW_LIST'] = array('Period', 'PeriodRelative');
 			}
-			else
-			{
-				$result[] = array(
-					'ID' => $controlId,
-					'GROUP' => 'Y',
-					'GetControlShow' => array($className, 'GetControlShow'),
-					'GetConditionShow' => array($className, 'GetConditionShow'),
-					'IsGroup' => array($className, 'IsGroup'),
-					'Parse' => array($className, 'Parse'),
-					'Generate' => array($className, 'Generate'),
-					'ApplyValues' => array($className, 'ApplyValues'),
-					'InitParams' => array($className, 'InitParams'),
-					'SORT' => $sort,
-				);
-			}
+			$result[] = $row;
 			$sort++;
 		}
-		unset($controlId, $sort, $controls, $className);
+		unset($row, $controlId, $sort, $controls, $className);
 		return $result;
 	}
 
@@ -311,17 +300,11 @@ class CSaleCondCtrlBasketGroup extends CSaleCondCtrlGroup
 						$currency = Sale\Internals\SiteCurrencyTable::getSiteCurrency(static::$arInitParams['SITE_ID']);
 					if (!empty($currency))
 					{
-						if($oneControl['ID'] == 'CondCumulativeGroup' && $row['control'][2]['id'] === 'Value')
+						if ($oneControl['ID'] == 'CondCumulativeGroup')
 						{
-							//insert currency after Value atom.
-							array_splice($row['control'], 3, 0, $currency);
-							array_splice($row['control'], 4, 0, Loc::getMessage('BT_SALE_COND_GROUP_CUMULATIVE_BEFORE_CONDITION'));
 							$row['containsOneAction'] = true;
 						}
-						else
-						{
-							$row['control'][] = $currency;
-						}
+						$row['control'][] = $currency;
 					}
 					unset($currency);
 				}
@@ -516,27 +499,6 @@ class CSaleCondCtrlBasketGroup extends CSaleCondCtrlGroup
 						'VALIDATE' => ''
 					)
 				),
-				'All' => array(
-					'JS' => array(
-						'id' => 'All',
-						'name' => 'aggregator',
-						'type' => 'select',
-						'values' => array(
-							'AND' => Loc::getMessage('BT_SALE_COND_GROUP_SELECT_ALL'),
-							'OR' => Loc::getMessage('BT_SALE_COND_GROUP_SELECT_ANY')
-						),
-						'defaultText' => Loc::getMessage('BT_SALE_COND_GROUP_BASKET_NUMBER_GROUP_SELECT_DEF'),
-						'defaultValue' => 'AND',
-						'first_option' => '...'
-					),
-					'ATOM' => array(
-						'ID' => 'All',
-						'FIELD_TYPE' => 'string',
-						'FIELD_LENGTH' => 255,
-						'MULTIPLE' => 'N',
-						'VALIDATE' => 'list'
-					)
-				)
 			),
 			'CondBsktAmtGroup' => array(
 				'Logic' => array(
@@ -2262,8 +2224,11 @@ class CSaleCondCtrlOrderFields extends CSaleCondCtrlComplex
 		}
 		unset($arPersonType, $rsPersonTypes);
 
+		;
 		$salePaySystemList = [];
-		$filter = [];
+		$filter = [
+			'!=ID' => Sale\PaySystem\Manager::getInnerPaySystemId(),
+		];
 		$iterator = Sale\PaySystem\Manager::getList([
 			'select' => ['ID', 'NAME', 'SORT'],
 			'filter' => $filter,

@@ -859,7 +859,11 @@ class Mail
 			return $eol;
 		}
 
-		if(strtoupper(substr(PHP_OS, 0, 3)) == 'WIN')
+		if ((int)(explode('.', phpversion())[0]) >= 8)
+		{
+			$eol = "\r\n";
+		}
+		elseif(strtoupper(substr(PHP_OS, 0, 3)) == 'WIN')
 		{
 			$eol = "\r\n";
 		}
@@ -1026,7 +1030,7 @@ class Mail
 		if($textReplaced !== null) $text = $textReplaced;
 
 		$textReplaced = preg_replace_callback(
-			"/(background|background-image\\s*:\\s*url\\s*\\()([\"']?)(.*?)(\\2)(\\s*\\)(.*?);)/is",
+			"/(background\\s*:\\s*url\\s*\\(|background-image\\s*:\\s*url\\s*\\()([\"']?)(.*?)(\\2)(\\s*\\)(.*?);)/is",
 			array($this, $replaceImageFunction),
 			$text
 		);

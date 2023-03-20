@@ -18,7 +18,20 @@ Loc::loadMessages(__FILE__);
  * </ul>
  *
  * @package Bitrix\Sale
- **/
+ *
+ * DO NOT WRITE ANYTHING BELOW THIS
+ *
+ * <<< ORMENTITYANNOTATION
+ * @method static EO_TradingPlatform_Query query()
+ * @method static EO_TradingPlatform_Result getByPrimary($primary, array $parameters = array())
+ * @method static EO_TradingPlatform_Result getById($id)
+ * @method static EO_TradingPlatform_Result getList(array $parameters = array())
+ * @method static EO_TradingPlatform_Entity getEntity()
+ * @method static \Bitrix\Sale\EO_TradingPlatform createObject($setDefaultValues = true)
+ * @method static \Bitrix\Sale\EO_TradingPlatform_Collection createCollection()
+ * @method static \Bitrix\Sale\EO_TradingPlatform wakeUpObject($row)
+ * @method static \Bitrix\Sale\EO_TradingPlatform_Collection wakeUpCollection($rows)
+ */
 
 class TradingPlatformTable extends Entity\DataManager
 {
@@ -94,7 +107,7 @@ class TradingPlatformTable extends Entity\DataManager
 	public static function validateName()
 	{
 		return array(
-			new Entity\Validator\Length(null, 50),
+			new Entity\Validator\Length(null, 500),
 		);
 	}
 	public static function validateDescription()

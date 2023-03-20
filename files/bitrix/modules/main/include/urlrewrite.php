@@ -1,4 +1,7 @@
-<?
+<?php
+
+use Bitrix\Main\Web;
+
 error_reporting(E_COMPILE_ERROR|E_ERROR|E_CORE_ERROR|E_PARSE);
 
 require_once(__DIR__."/../bx_root.php");
@@ -72,7 +75,7 @@ if((isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] == '404') 
 			$_GET["SEF_APPLICATION_CUR_PAGE_URL"] = '';
 		}
 		$url = $requestUri = $_GET["SEF_APPLICATION_CUR_PAGE_URL"];
-		$_SERVER["REQUEST_URI"] = $REQUEST_URI = CHTTP::urnEncode($_GET["SEF_APPLICATION_CUR_PAGE_URL"]);
+		$_SERVER["REQUEST_URI"] = $REQUEST_URI = Web\Uri::urnEncode($_GET["SEF_APPLICATION_CUR_PAGE_URL"]);
 		unset($_GET["SEF_APPLICATION_CUR_PAGE_URL"]);
 	}
 
@@ -87,9 +90,17 @@ if((isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] == '404') 
 			$_GET += $vars;
 			$_REQUEST += $vars;
 			if (ini_get_bool("register_globals"))
-				$GLOBALS += $vars;
+			{
+				foreach ($vars as $key => $val)
+				{
+					if (!isset($GLOBALS[$key]))
+					{
+						$GLOBALS[$key] = $val;
+					}
+				}
+			}
 
-			$_SERVER["QUERY_STRING"] = $QUERY_STRING = CHTTP::urnEncode($params);
+			$_SERVER["QUERY_STRING"] = $QUERY_STRING = Web\Uri::urnEncode($params);
 		}
 	}
 
@@ -106,13 +117,12 @@ if((isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] == '404') 
 		$_SERVER["QUERY_STRING"] = $QUERY_STRING = "";
 	}
 
-	$HTTP_GET_VARS = $_GET;
-
 	$uriPath = GetRequestUri();
 	define("POST_FORM_ACTION_URI", htmlspecialcharsbx("/bitrix/urlrewrite.php?SEF_APPLICATION_CUR_PAGE_URL=".urlencode($uriPath)));
 }
 
-if (!CHTTP::isPathTraversalUri($_SERVER["REQUEST_URI"]))
+$uri = new Web\Uri($_SERVER["REQUEST_URI"]);
+if (!$uri->isPathTraversal())
 {
 	foreach($arUrlRewrite as $val)
 	{
@@ -131,8 +141,14 @@ if (!CHTTP::isPathTraversalUri($_SERVER["REQUEST_URI"]))
 
 				$_GET += $vars;
 				$_REQUEST += $vars;
-				$_SERVER["QUERY_STRING"] = $QUERY_STRING = CHTTP::urnEncode($params);
+				$_SERVER["QUERY_STRING"] = $QUERY_STRING = Web\Uri::urnEncode($params);
 				$url = mb_substr($url, 0, $pos);
+
+				// actualize context if it is initialized already
+				if (\Bitrix\Main\Application::hasInstance() && \Bitrix\Main\Application::getInstance()->getContext())
+				{
+					\Bitrix\Main\Context::getCurrent()->getRequest()->modifyByQueryString($_SERVER["QUERY_STRING"]);
+				}
 			}
 
 			$url = _normalizePath($url);
@@ -150,11 +166,19 @@ if (!CHTTP::isPathTraversalUri($_SERVER["REQUEST_URI"]))
 			if (($urlTmp7 == "upload/" || ($urlTmp7 == "bitrix/" && mb_substr($urlTmp, 0, 16) != "bitrix/services/" && mb_substr($urlTmp, 0, 18) != "bitrix/groupdavphp")))
 				continue;
 
-			$ext = mb_strtolower(GetFileExtension($url));
+			$ext = strtolower(GetFileExtension($url));
 			if ($ext != "php")
 				continue;
 
-			CHTTP::SetStatus("200 OK");
+			// D7 response is not available here
+			if(stristr(php_sapi_name(), "cgi") !== false && (!defined("BX_HTTP_STATUS") || BX_HTTP_STATUS == false))
+			{
+				header("Status: 200 OK");
+			}
+			else
+			{
+				header($_SERVER["SERVER_PROTOCOL"]." 200 OK");
+			}
 
 			$_SERVER["REAL_FILE_PATH"] = $url;
 			include_once($io->GetPhysicalName($_SERVER['DOCUMENT_ROOT'].$url));

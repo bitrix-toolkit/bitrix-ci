@@ -59,6 +59,11 @@ abstract class EntityPropertyValue extends CollectableEntity
 		return [];
 	}
 
+	protected static function extractTpLandingIdList(Entity $entity) : array
+	{
+		return [];
+	}
+
 	/**
 	 * @param Entity $entity
 	 * @return array
@@ -114,6 +119,8 @@ abstract class EntityPropertyValue extends CollectableEntity
 				'IS_ZIP',
 				'IS_PHONE',
 				'IS_ADDRESS',
+				'IS_ADDRESS_FROM',
+				'IS_ADDRESS_TO',
 				'ACTIVE',
 				'UTIL',
 				'INPUT_FIELD_LOCATION',
@@ -204,6 +211,26 @@ abstract class EntityPropertyValue extends CollectableEntity
 		return $filter;
 	}
 
+	protected static function hasPresetForLanding(Entity $entity) : bool
+	{
+		$tpLandingList = static::extractTpLandingIdList($entity);
+
+		if ($tpLandingList)
+		{
+			$dbRes = Internals\OrderPropsRelationTable::getList([
+				'filter' => [
+					'@ENTITY_ID' => $tpLandingList,
+					'=ENTITY_TYPE' => 'L'
+				],
+				'limit' => 1
+			]);
+
+			return (bool)$dbRes->fetch();
+		}
+
+		return false;
+	}
+
 	/**
 	 * @param Entity $entity
 	 * @return array
@@ -230,6 +257,29 @@ abstract class EntityPropertyValue extends CollectableEntity
 		}
 
 		$result[] = $dlvFilter;
+
+		if (self::hasPresetForLanding($entity))
+		{
+			$result[] = [
+				'LOGIC' => 'OR',
+				'!RELATION_PS.ENTITY_ID' => null,
+				'!RELATION_DLV.ENTITY_ID' => null,
+			];
+
+			$result = [
+				'LOGIC' => 'OR',
+				'@RELATION_TP_LANDING.ENTITY_ID' => static::extractTpLandingIdList($entity),
+				$result,
+			];
+		}
+		else
+		{
+			$result = [
+				'=RELATION_TP_LANDING.ENTITY_ID' => null,
+				$result,
+			];
+		}
+
 		return $result;
 	}
 
@@ -251,6 +301,15 @@ abstract class EntityPropertyValue extends CollectableEntity
 				[
 					'=this.ID' => 'ref.PROPERTY_ID',
 					'ref.ENTITY_TYPE' => new SqlExpression('?', 'D')
+				],
+				'left_join'
+			),
+			new Main\Entity\ReferenceField(
+				'RELATION_TP_LANDING',
+				'\Bitrix\Sale\Internals\OrderPropsRelation',
+				[
+					'=this.ID' => 'ref.PROPERTY_ID',
+					'ref.ENTITY_TYPE' => new Main\DB\SqlExpression('?', 'L')
 				],
 				'left_join'
 			)
@@ -342,6 +401,29 @@ abstract class EntityPropertyValue extends CollectableEntity
 				'PROPS_GROUP_ID' => 0,
 				'NAME' => $value['NAME'],
 				'CODE' => $value['CODE'],
+				// defaults
+				'PERSON_TYPE_ID' => null,
+				'DESCRIPTION' => null,
+				'REQUIRED' => null,
+				'DEFAULT_VALUE' => null,
+				'SORT' => null,
+				'USER_PROPS' => null,
+				'IS_LOCATION' => 'N',
+				'IS_EMAIL' => 'N',
+				'IS_PROFILE_NAME' => 'N',
+				'IS_PAYER' => 'N',
+				'IS_LOCATION4TAX' => 'N',
+				'IS_FILTERED' => 'N',
+				'IS_ZIP' => 'N',
+				'IS_PHONE' => 'N',
+				'IS_ADDRESS' => 'N',
+				'IS_ADDRESS_FROM' => 'N',
+				'IS_ADDRESS_TO' => 'N',
+				'ACTIVE' => null,
+				'UTIL' => null,
+				'INPUT_FIELD_LOCATION' => null,
+				'MULTIPLE' => null,
+				'ENTITY_TYPE' => null,
 			];
 		}
 
@@ -417,24 +499,20 @@ abstract class EntityPropertyValue extends CollectableEntity
 	/**
 	 * @param $name
 	 * @param $value
-	 * @return Result
-	 * @throws Main\ArgumentOutOfRangeException
-	 * @throws Main\NotImplementedException
-	 * @throws \Exception
+	 * @return mixed
+	 * @throws Main\ArgumentException
+	 * @throws Main\LoaderException
+	 * @throws Main\ObjectPropertyException
+	 * @throws Main\SystemException
 	 */
-	public function setField($name, $value)
+	public function normalizeValue($name, $value)
 	{
-		$result = new Result();
-
-		$value = $this->property->normalizeValue($value);
-
-		$res = parent::setField($name, $value);
-		if (!$res->isSuccess())
+		if ($name === 'VALUE')
 		{
-			$result->addErrors($res->getErrors());
+			$value = $this->property->normalizeValue($value);
 		}
 
-		return $result;
+		return parent::normalizeValue($name, $value);
 	}
 
 	/**

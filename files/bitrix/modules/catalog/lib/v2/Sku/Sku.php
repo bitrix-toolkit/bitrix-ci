@@ -3,6 +3,7 @@
 namespace Bitrix\Catalog\v2\Sku;
 
 use Bitrix\Catalog\ProductTable;
+use Bitrix\Catalog\v2\Barcode\BarcodeRepositoryContract;
 use Bitrix\Catalog\v2\BaseCollection;
 use Bitrix\Catalog\v2\BaseEntity;
 use Bitrix\Catalog\v2\Iblock\IblockInfo;
@@ -12,6 +13,7 @@ use Bitrix\Catalog\v2\Price\PriceRepositoryContract;
 use Bitrix\Catalog\v2\Product\BaseProduct;
 use Bitrix\Catalog\v2\Property\Property;
 use Bitrix\Catalog\v2\Property\PropertyRepositoryContract;
+use Bitrix\Catalog\v2\StoreProduct\StoreProductRepositoryContract;
 use Bitrix\Main\Result;
 
 /**
@@ -30,7 +32,9 @@ class Sku extends BaseSku
 		PropertyRepositoryContract $propertyRepository,
 		ImageRepositoryContract $imageRepository,
 		PriceRepositoryContract $priceRepository,
-		MeasureRatioRepositoryContract $measureRatioRepository
+		MeasureRatioRepositoryContract $measureRatioRepository,
+		BarcodeRepositoryContract $barcodeRepository,
+		StoreProductRepositoryContract $storeProductRepository
 	)
 	{
 		parent::__construct(
@@ -39,7 +43,9 @@ class Sku extends BaseSku
 			$propertyRepository,
 			$imageRepository,
 			$priceRepository,
-			$measureRatioRepository
+			$measureRatioRepository,
+			$barcodeRepository,
+			$storeProductRepository
 		);
 
 		$this->setIblockId($this->iblockInfo->getSkuIblockId());
@@ -64,7 +70,10 @@ class Sku extends BaseSku
 		// ToDo check for correct parent iblock for iblockelemententities!
 		parent::setParentCollection($collection);
 
-		$this->checkProductLink();
+		if ($this->isNew())
+		{
+			$this->checkProductLink();
+		}
 
 		return $this;
 	}
@@ -149,10 +158,21 @@ class Sku extends BaseSku
 
 	public function saveInternalEntity(): Result
 	{
+		$isNeedCheckProductLinkAfterSaving = $this->isNew();
 		$result = parent::saveInternalEntity();
 
-		if ($result->isSuccess())
+		if ($isNeedCheckProductLinkAfterSaving && $result->isSuccess())
 		{
+			$product = $this->getParent();
+			if ($product && $this->iblockInfo->getSkuPropertyId())
+			{
+				\CIBlockElement::SetPropertyValuesEx(
+					$this->getId(),
+					$this->iblockInfo->getSkuIblockId(),
+ 					[$this->iblockInfo->getSkuPropertyId() => $product->getId()]
+				);
+			}
+
 			$this->checkProductLink();
 		}
 

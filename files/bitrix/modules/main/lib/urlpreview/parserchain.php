@@ -23,6 +23,7 @@ class ParserChain
 		'www.facebook.com' => 'Bitrix\Main\UrlPreview\Parser\Facebook',
 		'www.instagram.com' => 'Bitrix\Main\UrlPreview\Parser\Instagram',
 		'maps.apple.com' => 'Bitrix\Main\UrlPreview\Parser\AppleMaps',
+		'rutube.ru' => 'Bitrix\Main\UrlPreview\Parser\RuTube',
 	];
 
 	/**
@@ -55,7 +56,7 @@ class ParserChain
 			if(class_exists($parserClassName))
 			{
 				$parser = new $parserClassName();
-				if(is_a($parser, '\Bitrix\Main\UrlPreview\Parser'))
+				if ($parser instanceof Parser)
 				{
 					$parser->handle($document);
 				}

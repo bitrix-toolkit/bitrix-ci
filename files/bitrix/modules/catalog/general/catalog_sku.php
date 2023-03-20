@@ -1,13 +1,21 @@
-<?
-use Bitrix\Main\Application,
-	Bitrix\Main\Localization\Loc,
-	Bitrix\Main\Type\Collection,
-	Bitrix\Iblock,
-	Bitrix\Catalog;
+<?php
 
-Loc::loadMessages(__FILE__);
+use Bitrix\Main\Application;
+use Bitrix\Main\Localization\Loc;
+use Bitrix\Main\Type\Collection;
+use Bitrix\Iblock;
+use Bitrix\Catalog;
 
+/**
+ * @deprecated
+ * @see CCatalogSku
+ */
 class CAllCatalogSku
+{
+
+}
+
+class CCatalogSku extends CAllCatalogSku
 {
 	const TYPE_CATALOG = 'D';
 	const TYPE_PRODUCT = 'P';
@@ -249,7 +257,8 @@ class CAllCatalogSku
 				else
 				{
 					$result = $arProductIBlock;
-					unset($result['VAT_ID'], $result['YANDEX_EXPORT'], $result['SUBSCRIPTION']);
+					$result['SUBSCRIPTION'] = 'N';
+					unset($result['VAT_ID'], $result['YANDEX_EXPORT']);
 					$result['CATALOG_TYPE'] = self::TYPE_PRODUCT;
 				}
 				$result['CATALOG'] = ($boolIBlock ? 'Y' : 'N');
@@ -262,7 +271,7 @@ class CAllCatalogSku
 		return self::$arIBlockCache[$intIBlockID];
 	}
 
-	/*
+	/**
 	* @deprecated deprecated since catalog 15.0.1
 	* @see CCatalogSKU::getExistOffers()
 	*/
@@ -853,9 +862,4 @@ class CAllCatalogSku
 		self::$arIBlockCache = array();
 		self::$parentCache = array();
 	}
-}
-
-class CCatalogSku extends CAllCatalogSku
-{
-
 }

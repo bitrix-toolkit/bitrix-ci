@@ -17,14 +17,19 @@ abstract class BaseBuilder
 	public const PAGE_ELEMENT_COPY = 'elementCopy';
 	public const PAGE_ELEMENT_SAVE = 'elementSave';
 	public const PAGE_ELEMENT_SEARCH = 'elementSearch';
+	public const PAGE_ELEMENT_SEO = 'elementSeo';
 	public const PAGE_SECTION_LIST = 'sectionList';
 	public const PAGE_SECTION_DETAIL = 'sectionDetail';
 	public const PAGE_SECTION_COPY = 'sectionCopy';
 	public const PAGE_SECTION_SAVE = 'sectionSave';
 	public const PAGE_SECTION_SEARCH = 'sectionSearch';
+	public const PAGE_SECTION_SEO = 'sectionSeo';
+	public const PAGE_CATALOG_SEO = 'catalogSeo';
 
 	public const ENTITY_SECTION = 'section';
 	public const ENTITY_ELEMENT = 'element';
+
+	protected const SLIDER_PATH_VARIABLE = 'slider_path';
 
 	/** @var Main\HttpRequest */
 	protected $request;
@@ -124,6 +129,11 @@ abstract class BaseBuilder
 	{
 		$this->prefix = $prefix;
 		$this->setTemplateVariable('#PATH_PREFIX#', $this->prefix);
+	}
+
+	public function getPrefix(): string
+	{
+		return $this->prefix;
 	}
 
 	public function setUrlParams(array $list): void
@@ -246,6 +256,30 @@ abstract class BaseBuilder
 		);
 	}
 
+	public function getCatalogSeoUrl(array $options = [], string $additional = ''): string
+	{
+		return $this->fillUrlTemplate(
+			$this->getUrlTemplate(self::PAGE_CATALOG_SEO),
+			$this->getExtendedVariables($options, $additional)
+		);
+	}
+
+	public function getElementSeoUrl(int $productId, array $options = [], string $additional = ''): string
+	{
+		return $this->fillUrlTemplate(
+			$this->getUrlTemplate(self::PAGE_ELEMENT_SEO),
+			$this->getDetailSeoVariables($productId, $options, $additional)
+		);
+	}
+
+	public function getSectionSeoUrl(int $sectionId, array $options = [], string $additional = ''): string
+	{
+		return $this->fillUrlTemplate(
+			$this->getUrlTemplate(self::PAGE_SECTION_SEO),
+			$this->getSectionSeoVariables($sectionId, $options, $additional)
+		);
+	}
+
 	public function getContextMenuItems(string $pageType, array $items = [], array $options = []): ?array
 	{
 		return null;
@@ -253,6 +287,11 @@ abstract class BaseBuilder
 
 	public function getBaseParams(): string
 	{
+		if ($this->iblockId === null)
+		{
+			return '';
+		}
+
 		return 'IBLOCK_ID='.$this->iblockId
 			.'&type='.urlencode($this->iblock['IBLOCK_TYPE_ID'])
 			.'&lang='.urlencode($this->languageId);
@@ -268,6 +307,11 @@ abstract class BaseBuilder
 		return 'lang='.urlencode($this->languageId);
 	}
 
+	public function getUrlBuilderIdParam(): string
+	{
+		return 'urlBuilderId='.urlencode($this->id);
+	}
+
 	public function setSliderMode(bool $mode): void
 	{
 		$this->sliderMode = $mode;
@@ -276,6 +320,31 @@ abstract class BaseBuilder
 	public function isSliderMode(): bool
 	{
 		return $this->sliderMode;
+	}
+
+	public function getDetailPageSlider(): string
+	{
+		$path = $this->getSliderPath();
+		if (!$this->checkSliderPath($path))
+		{
+			return '';
+		}
+		$path = \CUtil::JSEscape($path);
+
+		return '<script>'
+			. 'window.history.replaceState({}, \'\', \'' . $path . '\');' . "\n"
+			. 'BX.ready(function () {' . "\n"
+			. '	BX.SidePanel.Instance.open(' . "\n"
+			. '		\'' . $path . '\'' . "\n"
+			. '	);' . "\n"
+			. '});' . "\n"
+			. '</script>'
+		;
+	}
+
+	public function showDetailPageSlider(): void
+	{
+		echo $this->getDetailPageSlider();
 	}
 
 	protected function checkCurrentPage(array $urlList): bool
@@ -334,7 +403,7 @@ abstract class BaseBuilder
 			&& $listMode != Iblock\IblockTable::LIST_MODE_COMBINED
 		)
 		{
-			$listMode = ((string)Main\Config\Option::get('iblock', 'combined_list_mode') === 'Y'
+			$listMode = (Main\Config\Option::get('iblock', 'combined_list_mode') === 'Y'
 				? Iblock\IblockTable::LIST_MODE_COMBINED
 				: Iblock\IblockTable::LIST_MODE_SEPARATE
 			);
@@ -447,10 +516,7 @@ abstract class BaseBuilder
 
 	protected function getUrlTemplate(string $templateId): ?string
 	{
-		return (isset($this->urlTemplates[$templateId])
-			? $this->urlTemplates[$templateId]
-			: null
-		);
+		return ($this->urlTemplates[$templateId] ?? null);
 	}
 
 	protected function fillUrlTemplate(?string $template, array $replaces): string
@@ -499,6 +565,22 @@ abstract class BaseBuilder
 		return $replaces;
 	}
 
+	protected function getDetailSeoVariables(?int $entityId, array $options = [], string $additional = ''): array
+	{
+		$replaces = $this->getExtendedVariables($options, $additional);
+		$replaces['#PRODUCT_ID#'] = (string)$entityId;
+
+		return $replaces;
+	}
+
+	protected function getSectionSeoVariables(?int $sectionId, array $options = [], string $additional = ''): array
+	{
+		$replaces = $this->getExtendedVariables($options, $additional);
+		$replaces['#SECTION_ID#'] = (string)$sectionId;
+
+		return $replaces;
+	}
+
 	protected function getCopyAction(): string
 	{
 		return '&action=copy';
@@ -514,5 +596,79 @@ abstract class BaseBuilder
 			'IFRAME' => 'Y',
 			'IFRAME_TYPE' => 'SIDE_SLIDER',
 		];
+	}
+
+	protected function getSliderPath(): ?string
+	{
+		return $this->request->get(self::SLIDER_PATH_VARIABLE);
+	}
+
+	public function getSliderPathOption(string $path): ?array
+	{
+		if ($path === '')
+		{
+			return null;
+		}
+
+		return [
+			self::SLIDER_PATH_VARIABLE => $path,
+		];
+	}
+
+	public function getSliderPathString(string $path): string
+	{
+		if ($path === '')
+		{
+			return '';
+		}
+
+		return self::SLIDER_PATH_VARIABLE . '=' . $path;
+	}
+
+	protected function checkSliderPath(?string $path): bool
+	{
+		if ($path === null)
+		{
+			$path = $this->getSliderPath();
+		}
+		if ($path === null || $path === '')
+		{
+			return false;
+		}
+
+		$prepared = [];
+		foreach ($this->getSliderPathTemplates() as $mask)
+		{
+			if (preg_match($mask, $path, $prepared))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	protected function getSliderPathTemplates(): array
+	{
+		return [];
+	}
+
+	/**
+	 * Open settings page of IBlock context
+	 *
+	 * <i>Example: for catalog IBlock it should open settings of catalog</i>
+	 * @return void
+	 */
+	public function openSettingsPage(): void
+	{
+	}
+
+	/**
+	 * Subscribe to save settings events depending on the context
+	 *
+	 * @return void
+	 */
+	public function subscribeOnAfterSettingsSave(): void
+	{
 	}
 }

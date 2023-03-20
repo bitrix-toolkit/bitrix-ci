@@ -1,4 +1,4 @@
-<?
+<?php
 $MESS["MAIN_MENU_AGENT"] = "Agents";
 $MESS["MAIN_MENU_AGENT_ALT"] = "Agent Management";
 $MESS["MAIN_MENU_CACHE"] = "Cache Settings";
@@ -86,6 +86,8 @@ $MESS["MAIN_MENU_SMILE_GALLERY_LIST"] = "Galleries and packs";
 $MESS["MAIN_MENU_SMILE_GALLERY_LIST_ALT"] = "Manage emoticon galleries and packs";
 $MESS["MAIN_MENU_SMILE_IMPORT_LIST"] = "Import smileys";
 $MESS["MAIN_MENU_SMILE_IMPORT_LIST_ALT"] = "Import smileys from external files";
+$MESS["MAIN_MENU_SMTP_CONFIG"] = "SMTP settings";
+$MESS["MAIN_MENU_SMTP_CONFIG_TITLE"] = "SMTP settings";
 $MESS["MAIN_MENU_SQL"] = "SQL query";
 $MESS["MAIN_MENU_SQL_ALT"] = "Execute the database SQL query";
 $MESS["MAIN_MENU_SYSTEM_CHECKER"] = "System check";
@@ -118,6 +120,7 @@ $MESS["MAIN_MENU_URLREWRITE_ALT"] = "URLs processing rules settings";
 $MESS["MAIN_MENU_USERS"] = "Users";
 $MESS["MAIN_MENU_USERS_ALT"] = "Manage user profiles";
 $MESS["MAIN_MENU_USER_CONSENT"] = "Consents";
+$MESS["MAIN_MENU_USER_CONSENT_1"] = "Agreements and consents";
 $MESS["MAIN_MENU_USER_FIELD"] = "Custom Fields";
 $MESS["MAIN_MENU_USER_FIELD_TITLE"] = "Custom Fields";
 $MESS["MAIN_MENU_USER_GROUPS_ALT"] = "Users of the group";
@@ -126,6 +129,8 @@ $MESS["MAIN_MENU_USER_IMPORT_ALT"] = "User import";
 $MESS["MAIN_MENU_USER_LIST"] = "User list";
 $MESS["MAIN_MENU_WIZARDS"] = "Wizard list";
 $MESS["MAIN_MENU_WIZARDS_TITLE"] = "Wizards management";
+$MESS["main_admin_menu_devices"] = "User devices";
+$MESS["main_admin_menu_devices_title"] = "User devices";
 $MESS["main_menu_diag"] = "System Administration";
 $MESS["main_menu_diag_title"] = "Administrator's tools";
 $MESS["main_menu_interface"] = "Personal preferences";
@@ -137,4 +142,3 @@ $MESS["main_menu_reg_sett_title"] = "Set data output format, encoding and other 
 $MESS["main_menu_sms_templates"] = "SMS templates";
 $MESS["main_menu_sms_templates_title"] = "SMS templates";
 $MESS["main_menu_urlrewrite_title"] = "Friendly URL settings";
-?>

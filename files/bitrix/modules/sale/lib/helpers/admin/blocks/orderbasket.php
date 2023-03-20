@@ -83,6 +83,11 @@ class OrderBasket
 		}
 	}
 
+	public function setSettingsShowPropsVisible(bool $isVisible): void
+	{
+		$this->settingsDialog->setShowPropsVisible($isVisible);
+	}
+
 	/**
 	 * @param bool|false $defTails
 	 * @return string
@@ -432,10 +437,10 @@ class OrderBasket
 			if(!$defTails)
 			{
 				$result .= '
-					obParams.productsOrder = '.\CUtil::phpToJSObject($data["ITEMS_ORDER"]).';
-					obParams.products = '.\CUtil::phpToJSObject($data["ITEMS"]).';
-					obParams.iblocksSkuParams = '.\CUtil::phpToJSObject($data["IBLOCKS_SKU_PARAMS"]).';
-					obParams.iblocksSkuParamsOrder = '.\CUtil::phpToJSObject($data["IBLOCKS_SKU_PARAMS_ORDER"]).';';
+					obParams.productsOrder = '.\CUtil::phpToJSObject($data["ITEMS_ORDER"] ?? []).';
+					obParams.products = '.\CUtil::phpToJSObject($data["ITEMS"] ?? []).';
+					obParams.iblocksSkuParams = '.\CUtil::phpToJSObject($data["IBLOCKS_SKU_PARAMS"] ?? []).';
+					obParams.iblocksSkuParamsOrder = '.\CUtil::phpToJSObject($data["IBLOCKS_SKU_PARAMS_ORDER"] ?? []).';';
 			}
 
 			$result .=
@@ -454,6 +459,8 @@ class OrderBasket
 		}
 		else
 		{
+			$showProps = OrderBasketSettings::loadIsShowPropsVisible();
+
 			$result .= '
 				BX.ready(function(){
 					var obParams = {
@@ -467,6 +474,7 @@ class OrderBasket
 						discounts: '.\CUtil::phpToJSObject(OrderEdit::getOrderedDiscounts($this->order, false)).',
 						createBasketBottom: true,
 						mode: "view",
+						showProps: '.($showProps ? 'true' : 'false').',
 						formatQuantity: "'.Option::get('sale', 'format_quantity', 'AUTO').'",
 						weightUnit: "'.$this->weightUnit.'",
 						'.$this->getTotalBlockFieldsJs($totalPrices, array("WEIGHT" => $weight)).'
@@ -747,10 +755,15 @@ class OrderBasket
 					);
 				}
 
-				if(self::$productsOffersSkuParams[$params["PRODUCT_ID"]][$params["OFFER_ID"]])
+				if (!empty(self::$productsOffersSkuParams[$params["PRODUCT_ID"]][$params["OFFER_ID"]]))
+				{
 					$params["SKU_PROPS"] = self::$productsOffersSkuParams[$params["PRODUCT_ID"]][$params["OFFER_ID"]];
+				}
 
-				if (is_array($params["SKU_PROPS"]))
+				if (
+					isset($params["SKU_PROPS"])
+					&& is_array($params["SKU_PROPS"])
+				)
 				{
 					foreach ($params["SKU_PROPS"] as $id => $skuProps)
 					{
@@ -1098,7 +1111,11 @@ class OrderBasket
 				}
 			}
 
-			if ($arProp['PROPERTY_TYPE'] == "S" && is_array($arRes[$arProp['ID']]['VALUES']))
+			if (
+				$arProp['PROPERTY_TYPE'] == "S"
+				&& isset($arRes[$arProp['ID']]['VALUES'])
+				&& is_array($arRes[$arProp['ID']]['VALUES'])
+			)
 			{
 				foreach($arRes[$arProp['ID']]['VALUES'] as $id => $value)
 				{
@@ -1188,9 +1205,9 @@ class OrderBasket
 		return $props;
 	}
 
-	protected static function getSkuProps($flagAll = false, $iblockId)
+	protected static function getSkuProps($flagAll, $iblockId)
 	{
-		if (static::$arSkuProps[$iblockId] === null)
+		if (!isset(static::$arSkuProps[$iblockId]))
 		{
 			$arCatalog = static::getOffersCatalog($iblockId);
 			static::$arSkuProps[$iblockId] = $arCatalog? static::getPropsList($arCatalog["IBLOCK_ID"], $arCatalog['SKU_PROPERTY_ID']) : array();
@@ -1987,6 +2004,7 @@ class OrderBasket
 				$params["QUANTITY"] = Sale\BasketItem::formatQuantity($item->getField('QUANTITY'));
 				$params["NOTES"] = $item->getField("NOTES");
 				$params["MODULE"] = $item->getField("MODULE");
+				$params['TYPE'] = (int)$item->getField('TYPE');
 
 				if($params["MODULE"] == 'catalog')
 				{

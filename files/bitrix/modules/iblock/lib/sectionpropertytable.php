@@ -3,7 +3,6 @@ namespace Bitrix\Iblock;
 
 use Bitrix\Main\Entity;
 use Bitrix\Main\Localization\Loc;
-Loc::loadMessages(__FILE__);
 
 /**
  * Class SectionPropertyTable
@@ -23,31 +22,44 @@ Loc::loadMessages(__FILE__);
  * </ul>
  *
  * @package Bitrix\Iblock
- **/
+ *
+ * DO NOT WRITE ANYTHING BELOW THIS
+ *
+ * <<< ORMENTITYANNOTATION
+ * @method static EO_SectionProperty_Query query()
+ * @method static EO_SectionProperty_Result getByPrimary($primary, array $parameters = array())
+ * @method static EO_SectionProperty_Result getById($id)
+ * @method static EO_SectionProperty_Result getList(array $parameters = array())
+ * @method static EO_SectionProperty_Entity getEntity()
+ * @method static \Bitrix\Iblock\EO_SectionProperty createObject($setDefaultValues = true)
+ * @method static \Bitrix\Iblock\EO_SectionProperty_Collection createCollection()
+ * @method static \Bitrix\Iblock\EO_SectionProperty wakeUpObject($row)
+ * @method static \Bitrix\Iblock\EO_SectionProperty_Collection wakeUpCollection($rows)
+ */
 
 class SectionPropertyTable extends Entity\DataManager
 {
 	//ABCDE - for numbers
-	const NUMBERS_WITH_SLIDER = 'A';
-	const NUMBERS = 'B';
+	public const NUMBERS_WITH_SLIDER = 'A';
+	public const NUMBERS = 'B';
 	//FGHIJ - for checkboxes
-	const CHECKBOXES = 'F';
-	const CHECKBOXES_WITH_PICTURES = 'G';
-	const CHECKBOXES_WITH_PICTURES_AND_LABELS = 'H';
+	public const CHECKBOXES = 'F';
+	public const CHECKBOXES_WITH_PICTURES = 'G';
+	public const CHECKBOXES_WITH_PICTURES_AND_LABELS = 'H';
 	//KLMNO - for radio buttons
-	const RADIO_BUTTONS = 'K';
+	public const RADIO_BUTTONS = 'K';
 	//PQRST - for drop down
-	const DROPDOWN = 'P';
-	const DROPDOWN_WITH_PICTURES_AND_LABELS = 'R';
+	public const DROPDOWN = 'P';
+	public const DROPDOWN_WITH_PICTURES_AND_LABELS = 'R';
 	//UWXYZ - reserved
-	const CALENDAR = 'U';
+	public const CALENDAR = 'U';
 
 	/**
 	 * Returns DB table name for entity
 	 *
 	 * @return string
 	 */
-	public static function getTableName()
+	public static function getTableName(): string
 	{
 		return 'b_iblock_section_property';
 	}
@@ -57,7 +69,7 @@ class SectionPropertyTable extends Entity\DataManager
 	 *
 	 * @return array
 	 */
-	public static function getMap()
+	public static function getMap(): array
 	{
 		return array(
 			'IBLOCK_ID' => array(
@@ -125,7 +137,7 @@ class SectionPropertyTable extends Entity\DataManager
 	 *
 	 * @return array
 	 */
-	public static function validateFilterHint()
+	public static function validateFilterHint(): array
 	{
 		return array(
 			new Entity\Validator\Length(null, 255),

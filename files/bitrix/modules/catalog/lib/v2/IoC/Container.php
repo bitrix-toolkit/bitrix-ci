@@ -4,6 +4,7 @@ namespace Bitrix\Catalog\v2\IoC;
 
 use Bitrix\Main\NotSupportedException;
 use Bitrix\Main\ObjectNotFoundException;
+use ReflectionNamedType;
 
 /**
  * Class Container
@@ -68,11 +69,17 @@ final class Container implements ContainerContract
 		if ($this->isLocked())
 		{
 			throw new NotSupportedException(
-				"Dependency {{$dependency}} cannot be injected after resolving container dependencies. Try this before resolving."
+				"Dependency {{$dependency}} cannot be injected after resolving container dependencies.
+				 Try this before resolving."
 			);
 		}
 
 		$this->dependencies[$id] = $dependency;
+
+		if (!isset($this->dependencies[$dependency]) && class_exists($dependency))
+		{
+			$this->dependencies[$dependency] = $dependency;
+		}
 
 		unset($this->entities[$id]);
 
@@ -142,8 +149,8 @@ final class Container implements ContainerContract
 
 	private function resolveParameter(\ReflectionParameter $parameter, array $args = [])
 	{
-		// ToDo check all the interfaces and parent classes?
-		if ($parameter->getClass())
+		$type = $parameter->getType();
+		if (($type instanceof ReflectionNamedType) && !$type->isBuiltin())
 		{
 			return $this->resolveClassParameter($parameter, $args);
 		}
@@ -155,7 +162,15 @@ final class Container implements ContainerContract
 	{
 		try
 		{
-			$className = $parameter->getClass()->getName();
+			$type = $parameter->getType();
+			if (($type instanceof ReflectionNamedType) && !$type->isBuiltin())
+			{
+				$className = $type->getName();
+			}
+			else
+			{
+				throw new ObjectNotFoundException('Not class type');
+			}
 
 			if ($className === static::class || is_subclass_of(static::class, $className))
 			{
@@ -229,6 +244,6 @@ final class Container implements ContainerContract
 			$argString .= "|$key=$argument";
 		}
 
-		return $id.$argString;
+		return $id . $argString;
 	}
 }

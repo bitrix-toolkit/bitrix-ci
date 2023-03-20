@@ -1,6 +1,9 @@
-<?
+<?php
 /** @global CAdminMenu $adminMenu */
+
 use Bitrix\Main\Loader,
+	Bitrix\Catalog\Access\ActionDictionary,
+	Bitrix\Catalog\Access\AccessController,
 	Bitrix\Main\Localization\Loc,
 	Bitrix\Main\Config\Option,
 	Bitrix\Iblock,
@@ -22,7 +25,27 @@ class CCatalogAdmin
 	protected static $catalogExportExec = false;
 	protected static $catalogImportEdit = false;
 	protected static $catalogImportExec = false;
+	protected static $catalogSettings = false;
 	protected static $adminMenuExists;
+
+	private static function initRights(): void
+	{
+		$accessController = AccessController::getCurrent();
+
+		self::$catalogRead = $accessController->check(ActionDictionary::ACTION_CATALOG_READ);
+		self::$catalogGroup = $accessController->check(ActionDictionary::ACTION_PRICE_GROUP_EDIT);
+		self::$catalogPrice = $accessController->check(ActionDictionary::ACTION_PRICE_EDIT);
+		self::$catalogMeasure = $accessController->check(ActionDictionary::ACTION_MEASURE_EDIT);
+		self::$catalogDiscount = $accessController->check(ActionDictionary::ACTION_PRODUCT_DISCOUNT_SET);
+		self::$catalogVat = $accessController->check(ActionDictionary::ACTION_VAT_EDIT);
+		self::$catalogExtra = $accessController->check(ActionDictionary::ACTION_PRODUCT_PRICE_EXTRA_EDIT);
+		self::$catalogStore = $accessController->check(ActionDictionary::ACTION_STORE_VIEW);
+		self::$catalogExportEdit = $accessController->check(ActionDictionary::ACTION_CATALOG_EXPORT_EDIT);
+		self::$catalogExportExec = $accessController->check(ActionDictionary::ACTION_CATALOG_EXPORT_EXECUTION);
+		self::$catalogImportEdit = $accessController->check(ActionDictionary::ACTION_CATALOG_IMPORT_EDIT);
+		self::$catalogImportExec = $accessController->check(ActionDictionary::ACTION_CATALOG_IMPORT_EXECUTION);
+		self::$catalogSettings = $accessController->check(ActionDictionary::ACTION_CATALOG_SETTINGS_ACCESS);
+	}
 
 	public static function get_other_elements_menu($IBLOCK_TYPE_ID, $IBLOCK_ID, $arSection, &$more_url)
 	{
@@ -206,6 +229,8 @@ class CCatalogAdmin
 		if (!Loader::includeModule('iblock'))
 			return;
 
+		self::initRights();
+
 		$publicMenu = isset($_REQUEST["public_menu"]);
 
 		$aMenu = array(
@@ -342,7 +367,11 @@ class CCatalogAdmin
 					] : [])
 				];
 			}
-			if(CIBlockRights::UserHasRightTo($arIBlock["ID"], $arIBlock["ID"], "iblock_edit"))
+
+			if (
+				CIBlockRights::UserHasRightTo($arIBlock["ID"], $arIBlock["ID"], "iblock_edit")
+				|| ($publicMenu && self::$catalogSettings)
+			)
 			{
 				$arItems[] = array(
 					"text" => Loc::getMessage("CAT_MENU_PRODUCT_PROPERTIES"),
@@ -362,7 +391,10 @@ class CCatalogAdmin
 			if (isset($arCatalogSku[$arIBlock["ID"]]))
 			{
 				$intOffersIBlockID = $arCatalogSku[$arIBlock["ID"]];
-				if (CIBlockRights::UserHasRightTo($intOffersIBlockID, $intOffersIBlockID, "iblock_edit"))
+				if (
+					CIBlockRights::UserHasRightTo($intOffersIBlockID, $intOffersIBlockID, "iblock_edit")
+					|| ($publicMenu && self::$catalogSettings)
+				)
 				{
 					$arItems[] = array(
 						"text" => Loc::getMessage("CAT_MENU_SKU_PROPERTIES"),
@@ -380,7 +412,10 @@ class CCatalogAdmin
 				}
 			}
 
-			if(CIBlockRights::UserHasRightTo($arIBlock["ID"], $arIBlock["ID"], "iblock_edit"))
+			if (
+				CIBlockRights::UserHasRightTo($arIBlock["ID"], $arIBlock["ID"], "iblock_edit")
+				|| ($publicMenu && self::$catalogSettings)
+			)
 			{
 				$arItems[] = array(
 					"text" => Loc::getMessage("CAT_MENU_CATALOG_SETTINGS"),
@@ -512,19 +547,7 @@ class CCatalogAdmin
 		if (!defined('BX_SALE_MENU_CATALOG_CLEAR') || BX_SALE_MENU_CATALOG_CLEAR != 'Y')
 			return;
 
-		self::$catalogRead = $USER->CanDoOperation('catalog_read');
-		self::$catalogGroup = $USER->CanDoOperation('catalog_group');
-		self::$catalogPrice = $USER->CanDoOperation('catalog_price');
-		self::$catalogMeasure = $USER->CanDoOperation('catalog_measure');
-		self::$catalogDiscount = $USER->CanDoOperation('catalog_discount');
-		self::$catalogVat = $USER->CanDoOperation('catalog_vat');
-		self::$catalogExtra = $USER->CanDoOperation('catalog_extra');
-		self::$catalogStore = $USER->CanDoOperation('catalog_store');
-		self::$catalogExportEdit = $USER->CanDoOperation('catalog_export_edit');
-		self::$catalogExportExec = $USER->CanDoOperation('catalog_export_exec');
-		self::$catalogImportEdit = $USER->CanDoOperation('catalog_import_edit');
-		self::$catalogImportExec = $USER->CanDoOperation('catalog_import_exec');
-
+		self::initRights();
 		self::$adminMenuExists = isset($adminMenu) && $adminMenu instanceof CAdminMenu;
 
 		static::OnBuildSaleMenuItem($arModuleMenu);
@@ -761,39 +784,69 @@ class CCatalogAdmin
 	{
 		if (self::$catalogRead || self::$catalogStore)
 		{
-			$arResult = array();
-			if (self::$catalogStore && Catalog\Config\State::isUsedInventoryManagement())
+			$result = [];
+			if (self::$catalogStore)
 			{
-				$arResult[] = array(
-					"text" => Loc::getMessage("CM_STORE_DOCS"),
-					"url" => "cat_store_document_list.php?lang=".LANGUAGE_ID,
-					"more_url" => array("cat_store_document_edit.php"),
-					"title" => Loc::getMessage("CM_STORE_DOCS"),
-					"readonly" => !self::$catalogStore,
-					"items_id" => "cat_store_document_list",
-					"sort" => 551,
-				);
+				$allowRows = false;
+				$rows = [
+					[
+						"text" => Loc::getMessage("CM_STORE_DOCS"),
+						"url" => "cat_store_document_list.php?lang=".LANGUAGE_ID,
+						"more_url" => ["cat_store_document_edit.php"],
+						"title" => Loc::getMessage("CM_STORE_DOCS"),
+						"readonly" => !self::$catalogStore,
+						"items_id" => "cat_store_document_list",
+						"sort" => 551,
+					],
+					[
+						"text" => Loc::getMessage("CM_CONTRACTORS"),
+						"url" => "cat_contractor_list.php?lang=".LANGUAGE_ID,
+						"more_url" => ["cat_contractor_edit.php"],
+						"title" => Loc::getMessage("CM_CONTRACTORS"),
+						"readonly" => !self::$catalogStore,
+						"items_id" => "cat_contractor_list",
+						"sort" => 552,
+					],
+				];
+				if (Catalog\Config\Feature::isInventoryManagementEnabled())
+				{
+					if (Catalog\Config\State::isUsedInventoryManagement())
+					{
+						$allowRows = true;
+					}
+				}
+				else
+				{
+					$helpLink = Catalog\Config\Feature::getInventoryManagementHelpLink();
+					if ($helpLink !== null)
+					{
+						$allowRows = true;
+						foreach ($rows as &$item)
+						{
+							unset($item['url'], $item['more_url']);
+							$item['is_locked'] = true;
+							$item['on_click'] = $helpLink['LINK'];
+						}
+						unset($item);
+					}
+				}
 
-				$arResult[] = array(
-					"text" => Loc::getMessage("CM_CONTRACTORS"),
-					"url" => "cat_contractor_list.php?lang=".LANGUAGE_ID,
-					"more_url" => array("cat_contractor_edit.php"),
-					"title" => Loc::getMessage("CM_CONTRACTORS"),
-					"readonly" => !self::$catalogStore,
-					"items_id" => "cat_contractor_list",
-					"sort" => 552,
-				);
+				if ($allowRows)
+				{
+					$result = $rows;
+				}
+				unset($rows, $allowRows);
 			}
-			$arResult[] = array(
+			$result[] = [
 				"text" => Loc::getMessage("CM_STORE"),
 				"url" => "cat_store_list.php?lang=".LANGUAGE_ID,
-				"more_url" => array("cat_store_edit.php"),
+				"more_url" => ["cat_store_edit.php"],
 				"title" => Loc::getMessage("CM_STORE"),
 				"readonly" => !self::$catalogStore,
 				"items_id" => "cat_store_list",
 				"sort" => 553,
-			);
-			$arItems = $arResult;
+			];
+			$arItems = $result;
 		}
 	}
 

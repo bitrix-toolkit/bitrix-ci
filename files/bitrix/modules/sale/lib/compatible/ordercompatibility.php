@@ -287,7 +287,7 @@ class OrderCompatibility extends Internals\EntityCompatibility
 		{
 			$filter = array(
 				'filter' => array(
-					'ACCOUNT_NUMBER' => $fields['ACCOUNT_NUMBER'],
+					'=ACCOUNT_NUMBER' => $fields['ACCOUNT_NUMBER'],
 					'!ID' => $order->getId()
 				),
 				'select' => array('ID')
@@ -363,10 +363,16 @@ class OrderCompatibility extends Internals\EntityCompatibility
 						{
 							/** @var Services\Base $deliveryService */
 							$deliveryService = Sale\Delivery\Services\Manager::getObjectById($deliveryId);
-							if ($deliveryService->isProfile())
-								$fields['DELIVERY_NAME'] = $deliveryService->getNameWithParent();
+							if ($deliveryService)
+							{
+								$fields['DELIVERY_NAME'] = $deliveryService->isProfile()
+									? $deliveryService->getNameWithParent()
+									: $deliveryService->getName();
+							}
 							else
-								$fields['DELIVERY_NAME'] = $deliveryService->getName();
+							{
+								$fields['DELIVERY_NAME'] = 'Not found [' . $deliveryId . ']';
+							}
 						}
 						else
 						{
@@ -1433,7 +1439,11 @@ class OrderCompatibility extends Internals\EntityCompatibility
 				continue;
 			}
 			/** @var Sale\ShipmentItemStoreCollection $shipmentItemStoreCollection */
-			if (!$shipmentItemStoreCollection = $shipmentItem->getShipmentItemStoreCollection())
+			$shipmentItemStoreCollection = $shipmentItem->getShipmentItemStoreCollection();
+			if (
+				!$shipmentItemStoreCollection
+				&& $basketItem->isReservableItem()
+			)
 			{
 				throw new Main\ObjectNotFoundException('Entity "ShipmentItemStoreCollection" not found');
 			}

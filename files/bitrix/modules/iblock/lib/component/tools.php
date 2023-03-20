@@ -1,6 +1,9 @@
 <?php
 
 namespace Bitrix\Iblock\Component;
+
+use Bitrix\Iblock\PropertyTable;
+
 /**
  * Class Tools
  * Provides various useful methods.
@@ -144,23 +147,79 @@ class Tools
 	{
 		$result = '';
 		if (empty($image) || !isset($image['SRC']))
+		{
 			return $result;
+		}
 		$safe = ($safe === true);
 
 		if ($safe)
 		{
 			if (isset($image['SAFE_SRC']))
+			{
 				$result = $image['SAFE_SRC'];
+			}
 			elseif (preg_match('/^(ftp|ftps|http|https):\/\//', $image['SRC']))
+			{
 				$result = $image['SRC'];
+			}
 			else
-				$result = \CHTTP::urnEncode($image['SRC'], 'UTF-8');
+			{
+				$result = \Bitrix\Main\Web\Uri::urnEncode($image['SRC'], 'UTF-8');
+			}
 		}
 		else
 		{
-			$result = (isset($image['UNSAFE_SRC']) ? $image['UNSAFE_SRC'] : $image['SRC']);
+			$result = ($image['UNSAFE_SRC'] ?? $image['SRC']);
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Check if the property is checkbox:
+	 * - PROPERTY_TYPE === 'L';
+	 * - LIST_TYPE === 'C';
+	 * - Variants amount === 1;
+	 * - Value of the variant === 'Y'.
+	 *
+	 * @param array $property			Array of property settings
+	 *
+	 * @return bool
+	 */
+	public static function isCheckboxProperty(array $property): bool
+	{
+		if (!isset($property['PROPERTY_TYPE']) || $property['PROPERTY_TYPE'] !== PropertyTable::TYPE_LIST)
+		{
+			return false;
+		}
+
+		if (!isset($property['LIST_TYPE']) || $property['LIST_TYPE'] !== PropertyTable::CHECKBOX)
+		{
+			return false;
+		}
+
+		$filter = [
+			'=PROPERTY_ID' => $property['ID'],
+		];
+		$cache = ['ttl' => 86400];
+		$variantsCount = \Bitrix\Iblock\PropertyEnumerationTable::getCount($filter, $cache);
+
+		if ($variantsCount !== 1)
+		{
+			return false;
+		}
+
+		$variant = \Bitrix\Iblock\PropertyEnumerationTable::getRow([
+			'select' => ['ID', 'PROPERTY_ID', 'VALUE'],
+			'filter' => $filter,
+			'cache' => $cache,
+		]);
+
+		if (!isset($variant['VALUE']) || $variant['VALUE'] !== 'Y')
+		{
+			return false;
+		}
+
+		return true;
 	}
 }

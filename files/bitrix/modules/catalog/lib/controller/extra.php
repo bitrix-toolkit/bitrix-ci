@@ -4,6 +4,7 @@
 namespace Bitrix\Catalog\Controller;
 
 
+use Bitrix\Catalog\Access\ActionDictionary;
 use Bitrix\Catalog\ExtraTable;
 use Bitrix\Main\Engine\Response\DataType\Page;
 use Bitrix\Main\Error;
@@ -13,19 +14,15 @@ use Bitrix\Main\UI\PageNavigation;
 final class Extra extends Controller
 {
 	//region Actions
-	public function getFieldsAction()
+	public function getFieldsAction(): array
 	{
-		$view = $this->getViewManager()
-			->getView($this);
-
-		return ['EXTRA'=>$view->prepareFieldInfos(
-			$view->getFields()
-		)];
+		return ['EXTRA' => $this->getViewFields()];
 	}
 
-	public function listAction($select=[], $filter=[], $order=[], PageNavigation $pageNavigation)
+	public function listAction(PageNavigation $pageNavigation, array $select = [], array $filter = [], array $order = []): Page
 	{
-		return new Page('EXTRAS',
+		return new Page(
+			'EXTRAS',
 			$this->getList($select, $filter, $order, $pageNavigation),
 			$this->count($filter)
 		);
@@ -62,13 +59,11 @@ final class Extra extends Controller
 
 	protected function checkModifyPermissionEntity()
 	{
-		$r = $this->checkReadPermissionEntity();
-		if($r->isSuccess())
+		$r = new Result();
+
+		if (!$this->accessController->check(ActionDictionary::ACTION_PRODUCT_PRICE_EXTRA_EDIT))
 		{
-			if (!static::getGlobalUser()->CanDoOperation('catalog_extra'))
-			{
-				$r->addError(new Error('Access Denied', 200040300020));
-			}
+			$r->addError(new Error('Access Denied', 200040300020));
 		}
 
 		return $r;
@@ -78,7 +73,13 @@ final class Extra extends Controller
 	{
 		$r = new Result();
 
-		if (!(static::getGlobalUser()->CanDoOperation('catalog_read') || static::getGlobalUser()->CanDoOperation('catalog_price')))
+		if (
+			!(
+				$this->accessController->check(ActionDictionary::ACTION_CATALOG_READ)
+				|| $this->accessController->check(ActionDictionary::ACTION_PRICE_EDIT)
+				|| $this->accessController->check(ActionDictionary::ACTION_PRODUCT_PRICE_EXTRA_EDIT)
+			)
+		)
 		{
 			$r->addError(new Error('Access Denied', 200040300010));
 		}

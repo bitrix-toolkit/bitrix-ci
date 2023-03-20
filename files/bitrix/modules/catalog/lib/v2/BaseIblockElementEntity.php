@@ -11,6 +11,7 @@ use Bitrix\Catalog\v2\Image\ImageRepositoryContract;
 use Bitrix\Catalog\v2\Property\HasPropertyCollection;
 use Bitrix\Catalog\v2\Property\PropertyCollection;
 use Bitrix\Catalog\v2\Property\PropertyRepositoryContract;
+use Bitrix\Main\Engine\CurrentUser;
 use Bitrix\Main\NotSupportedException;
 use Bitrix\Main\Result;
 
@@ -194,7 +195,11 @@ abstract class BaseIblockElementEntity extends BaseEntity implements HasProperty
 		elseif ($name === 'DETAIL_PICTURE' || $name === 'PREVIEW_PICTURE')
 		{
 			$imageCollection = $this->getImageCollection();
-			$image = ($name === 'DETAIL_PICTURE') ? $imageCollection->getDetailImage() : $imageCollection->getPreviewImage();
+			$image =
+				$name === 'DETAIL_PICTURE'
+					? $imageCollection->getDetailImage()
+					: $imageCollection->getPreviewImage();
+
 			if (is_numeric($value))
 			{
 				$value = \CFile::MakeFileArray($value);
@@ -224,7 +229,13 @@ abstract class BaseIblockElementEntity extends BaseEntity implements HasProperty
 
 	public function isSimple(): bool
 	{
-		return $this->getType() === ProductTable::TYPE_PRODUCT;
+		$type = $this->getType();
+
+		return (
+			$type === ProductTable::TYPE_PRODUCT
+			|| $type === ProductTable::TYPE_SERVICE
+			|| $type === ProductTable::TYPE_EMPTY_SKU
+		);
 	}
 
 	public function setActive(bool $active): BaseEntity
@@ -260,6 +271,11 @@ abstract class BaseIblockElementEntity extends BaseEntity implements HasProperty
 	public function saveInternal(): Result
 	{
 		$entityChanged = $this->isChanged();
+		if ($entityChanged && !$this->hasChangedFields())
+		{
+			$this->setField('MODIFIED_BY', CurrentUser::get()->getId());
+		}
+
 		$propertyCollectionChanged = $this->propertyCollection && $this->propertyCollection->isChanged();
 		$imageCollectionChanged = $this->imageCollection && $this->imageCollection->isChanged();
 
@@ -322,7 +338,7 @@ abstract class BaseIblockElementEntity extends BaseEntity implements HasProperty
 			'DETAIL_PAGE_URL' => MapTypeCaster::NOTHING,
 
 			'QUANTITY' => MapTypeCaster::NULLABLE_FLOAT,
-			'WEIGHT' => MapTypeCaster::NULLABLE_INT,
+			'WEIGHT' => MapTypeCaster::NULLABLE_FLOAT,
 			'VAT_ID' => MapTypeCaster::NULLABLE_INT,
 			'VAT_INCLUDED' => MapTypeCaster::Y_OR_N,
 			'PURCHASING_PRICE' => MapTypeCaster::NULLABLE_FLOAT,
@@ -340,6 +356,10 @@ abstract class BaseIblockElementEntity extends BaseEntity implements HasProperty
 			'QUANTITY_TRACE' => MapTypeCaster::Y_OR_N_OR_D,
 			'CAN_BUY_ZERO' => MapTypeCaster::Y_OR_N_OR_D,
 			'SUBSCRIBE' => MapTypeCaster::Y_OR_N_OR_D,
+
+			// TODO: change this horror
+			'UF_PRODUCT_GROUP' => MapTypeCaster::NULLABLE_INT,
+			'UF_PRODUCT_MAPPING' => MapTypeCaster::NULLABLE_MULTI_INT,
 		];
 	}
 }

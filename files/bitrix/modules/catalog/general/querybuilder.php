@@ -1,15 +1,14 @@
 <?php
-use Bitrix\Main,
-	Bitrix\Main\Localization\Loc,
-	Bitrix\Catalog\GroupAccessTable,
-	Bitrix\Catalog\ProductTable,
-	Bitrix\Currency;
 
-Loc::loadMessages(__FILE__);
+use Bitrix\Main;
+use Bitrix\Catalog\GroupAccessTable;
+use Bitrix\Catalog\ProductTable;
+use Bitrix\Currency;
 
 final class CProductQueryBuilder
 {
 	public const ENTITY_PRODUCT = 'PRODUCT';
+	public const ENTITY_PRODUCT_USER_FIELD = 'PRODUCT_USER_FIELD';
 	public const ENTITY_PRICE = 'PRICE';
 	public const ENTITY_WARENHOUSE = 'WARENHOUSE';
 	public const ENTITY_FLAT_PRICE = 'FLAT_PRICES';
@@ -21,10 +20,10 @@ final class CProductQueryBuilder
 	private const ENTITY_CATALOG_IBLOCK = 'CATALOG_IBLOCK';
 	private const ENTITY_VAT = 'VAT';
 
-	private const FIELD_ALLOWED_SELECT = 0x0001;
-	private const FIELD_ALLOWED_FILTER = 0x0002;
-	private const FIELD_ALLOWED_ORDER = 0x0004;
-	private const FIELD_ALLOWED_ALL = self::FIELD_ALLOWED_SELECT|self::FIELD_ALLOWED_FILTER|self::FIELD_ALLOWED_ORDER;
+	public const FIELD_ALLOWED_SELECT = 0x0001;
+	public const FIELD_ALLOWED_FILTER = 0x0002;
+	public const FIELD_ALLOWED_ORDER = 0x0004;
+	public const FIELD_ALLOWED_ALL = self::FIELD_ALLOWED_SELECT|self::FIELD_ALLOWED_FILTER|self::FIELD_ALLOWED_ORDER;
 
 	private const FIELD_PATTERN_OLD_STORE = '/^CATALOG_STORE_AMOUNT_([0-9]+)$/';
 	private const FIELD_PATTERN_OLD_PRICE_ROW = '/^CATALOG_GROUP_([0-9]+)$/';
@@ -32,9 +31,15 @@ final class CProductQueryBuilder
 	private const FIELD_PATTERN_OLD_PRODUCT = '/^CATALOG_([A-Z][A-Z_]+)$/';
 	private const FIELD_PATTERN_FLAT_ENTITY = '/^([A-Z][A-Z_]+)$/';
 	private const FIELD_PATTERN_SEPARATE_ENTITY = '/^([A-Z][A-Z_]+)_([1-9][0-9]*)$/';
+	private const FIELD_PATTERN_PRODUCT_USER_FIELD = '/^PRODUCT_(UF_[A-Z0-9_]+)$/';
 
 	private const ENTITY_TYPE_FLAT = 0x0001;
 	private const ENTITY_TYPE_SEPARATE = 0x0002;
+
+	private const FIELD_TYPE_INT = 'int';
+	private const FIELD_TYPE_FLOAT = 'float';
+	private const FIELD_TYPE_CHAR = 'char';
+	private const FIELD_TYPE_STRING = 'string';
 
 	private static $entityDescription = [];
 
@@ -51,9 +56,13 @@ final class CProductQueryBuilder
 	{
 		$query = self::prepareQuery(['filter' => $filter], $options);
 		if ($query === null)
+		{
 			return null;
+		}
 		if (empty($query['filter']) && empty($query['join']))
+		{
 			return null;
+		}
 
 		return $query;
 	}
@@ -67,9 +76,13 @@ final class CProductQueryBuilder
 	{
 		$query = self::prepareQuery($parameters, $options);
 		if ($query === null)
+		{
 			return null;
+		}
 		if (empty($query['select']) && empty($query['filter']) && empty($query['order']))
+		{
 			return null;
+		}
 
 		return $query;
 	}
@@ -80,9 +93,11 @@ final class CProductQueryBuilder
 	 */
 	public static function isValidField(string $field): bool
 	{
-		$field = mb_strtoupper($field);
+		$field = strtoupper($field);
 		if ($field === '')
+		{
 			return false;
+		}
 
 		self::initEntityDescription();
 		self::initEntityFields();
@@ -90,22 +105,38 @@ final class CProductQueryBuilder
 		$prepared = [];
 
 		if (preg_match(self::FIELD_PATTERN_OLD_STORE, $field, $prepared))
+		{
 			return true;
+		}
 		if (preg_match(self::FIELD_PATTERN_OLD_PRICE_ROW, $field, $prepared))
+		{
 			return true;
+		}
 		if (preg_match(self::FIELD_PATTERN_OLD_PRICE, $field, $prepared))
+		{
 			return true;
+		}
 		if (preg_match(self::FIELD_PATTERN_OLD_PRODUCT, $field, $prepared))
+		{
 			return true;
+		}
 		if (preg_match(self::FIELD_PATTERN_SEPARATE_ENTITY, $field, $prepared))
 		{
 			if (self::searchFieldEntity($prepared[1], self::ENTITY_TYPE_SEPARATE))
+			{
 				return true;
+			}
 		}
 		if (preg_match(self::FIELD_PATTERN_FLAT_ENTITY, $field, $prepared))
 		{
 			if (self::searchFieldEntity($prepared[1], self::ENTITY_TYPE_FLAT))
+			{
 				return true;
+			}
+		}
+		if (preg_match(self::FIELD_PATTERN_PRODUCT_USER_FIELD, $field, $prepared))
+		{
+			return true;
 		}
 
 		return false;
@@ -122,16 +153,24 @@ final class CProductQueryBuilder
 
 		$prepareField = self::parseField($field);
 		if (!self::checkPreparedField($prepareField))
+		{
 			return false;
+		}
 		if (!self::checkAllowedAction($prepareField['ALLOWED'], self::FIELD_ALLOWED_FILTER))
+		{
 			return false;
+		}
 
 		$description = self::getFieldDescription($prepareField['ENTITY'], $prepareField['FIELD']);
 		if (empty($description))
+		{
 			return false;
+		}
 
 		if (isset($description['PHANTOM']))
+		{
 			return false;
+		}
 
 		return true;
 	}
@@ -146,6 +185,7 @@ final class CProductQueryBuilder
 			$field,
 			[
 				self::ENTITY_PRODUCT => true,
+				self::ENTITY_PRODUCT_USER_FIELD => true,
 				self::ENTITY_OLD_PRODUCT => true,
 				self::ENTITY_OLD_PRICE => true,
 				self::ENTITY_PRICE => true,
@@ -153,7 +193,7 @@ final class CProductQueryBuilder
 				self::ENTITY_WARENHOUSE => true,
 				self::ENTITY_FLAT_WAREHNOUSE => true,
 				self::ENTITY_FLAT_BARCODE => true,
-				self::ENTITY_OLD_STORE => true
+				self::ENTITY_OLD_STORE => true,
 			]
 		);
 	}
@@ -168,7 +208,8 @@ final class CProductQueryBuilder
 			$field,
 			[
 				self::ENTITY_PRODUCT => true,
-				self::ENTITY_OLD_PRODUCT => true
+				self::ENTITY_PRODUCT_USER_FIELD => true,
+				self::ENTITY_OLD_PRODUCT => true,
 			]
 		);
 	}
@@ -184,7 +225,7 @@ final class CProductQueryBuilder
 			[
 				self::ENTITY_OLD_PRICE => true,
 				self::ENTITY_PRICE => true,
-				self::ENTITY_FLAT_PRICE => true
+				self::ENTITY_FLAT_PRICE => true,
 			]
 		);
 	}
@@ -200,7 +241,7 @@ final class CProductQueryBuilder
 			[
 				self::ENTITY_WARENHOUSE => true,
 				self::ENTITY_FLAT_WAREHNOUSE => true,
-				self::ENTITY_OLD_STORE => true
+				self::ENTITY_OLD_STORE => true,
 			]
 		);
 	}
@@ -219,20 +260,24 @@ final class CProductQueryBuilder
 		self::initEntityFields();
 
 		if (empty($order) || empty($options['QUANTITY']))
+		{
 			return $result;
+		}
 
 		foreach (array_keys($order) as $field)
 		{
 			$prepareField = self::parseField($field);
 			if (!self::checkPreparedField($prepareField))
+			{
 				continue;
+			}
 			switch ($prepareField['ENTITY'])
 			{
 				case self::ENTITY_OLD_PRICE:
 					if (
-						$prepareField['FIELD'] == 'PRICE'
-						|| $prepareField['FIELD'] == 'PRICE_SCALE'
-						|| $prepareField['FIELD'] == 'CURRENCY'
+						$prepareField['FIELD'] === 'PRICE'
+						|| $prepareField['FIELD'] === 'PRICE_SCALE'
+						|| $prepareField['FIELD'] === 'CURRENCY'
 					)
 					{
 						$filterFieldDescription = [
@@ -245,7 +290,9 @@ final class CProductQueryBuilder
 						{
 							$filterField = $filterField['ALIAS'];
 							if (!isset($result[$filterField]))
+							{
 								$result[$filterField] = $options['QUANTITY'];
+							}
 						}
 						unset($filterField, $filterFieldDescription);
 					}
@@ -253,9 +300,9 @@ final class CProductQueryBuilder
 				case self::ENTITY_PRICE:
 				case self::ENTITY_FLAT_PRICE:
 					if (
-						$prepareField['FIELD'] == 'PRICE'
-						|| $prepareField['FIELD'] == 'SCALED_PRICE'
-						|| $prepareField['FIELD'] == 'CURRENCY'
+						$prepareField['FIELD'] === 'PRICE'
+						|| $prepareField['FIELD'] === 'SCALED_PRICE'
+						|| $prepareField['FIELD'] === 'CURRENCY'
 					)
 					{
 						$filterFieldDescription = [
@@ -268,7 +315,9 @@ final class CProductQueryBuilder
 						{
 							$filterField = $filterField['ALIAS'];
 							if (!isset($result[$filterField]))
+							{
 								$result[$filterField] = $options['QUANTITY'];
+							}
 						}
 						unset($filterField, $filterFieldDescription);
 					}
@@ -286,16 +335,18 @@ final class CProductQueryBuilder
 	 */
 	public static function convertOldField(string $field, int $useMode): ?string
 	{
-		$result = null;
-
 		self::initEntityDescription();
 		self::initEntityFields();
 
 		$prepareField = self::parseField($field);
 		if (!self::checkPreparedField($prepareField))
-			return $result;
+		{
+			return null;
+		}
 		if (!self::checkAllowedAction($prepareField['ALLOWED'], $useMode))
-			return $result;
+		{
+			return null;
+		}
 
 		$newEntity = null;
 		switch ($prepareField['ENTITY'])
@@ -311,37 +362,42 @@ final class CProductQueryBuilder
 				break;
 		}
 		if ($newEntity === null)
-			return $result;
+		{
+			return null;
+		}
 
 		$description = self::getFieldDescription($prepareField['ENTITY'], $prepareField['FIELD']);
 		if (empty($description))
-			return $result;
+		{
+			return null;
+		}
 
-		if ($useMode == self::FIELD_ALLOWED_ORDER)
+		if ($useMode === self::FIELD_ALLOWED_ORDER)
 		{
 			if (isset($description['ORDER_TRANSFORM']))
 			{
 				$description = self::getFieldDescription($prepareField['ENTITY'], $description['ORDER_TRANSFORM']);
 				if (empty($description))
-					return $result;
+				{
+					return null;
+				}
 			}
 		}
 
 		$newField = [
 			'ENTITY' => $newEntity,
 			'ENTITY_ID' => $prepareField['ENTITY_ID'],
-			'FIELD' => (isset($description['NEW_ID']) ? $description['NEW_ID'] : $prepareField['FIELD'])
+			'FIELD' => $description['NEW_ID'] ?? $prepareField['FIELD'],
 		];
 		unset($newEntity, $prepareField);
 
 		$description = self::getFieldDescription($newField['ENTITY'], $newField['FIELD']);
 		if (empty($description))
-			return $result;
+		{
+			return null;
+		}
 
-		$result = str_replace('#ENTITY_ID#', $newField['ENTITY_ID'], $description['ALIAS']);
-		unset($description, $newField);
-
-		return $result;
+		return str_replace('#ENTITY_ID#', $newField['ENTITY_ID'], $description['ALIAS']);
 	}
 
 	/**
@@ -353,15 +409,14 @@ final class CProductQueryBuilder
 		$result = [];
 
 		if (empty($select))
+		{
 			return $result;
+		}
 
 		foreach ($select as $index => $field)
 		{
 			$newField = self::convertOldField($field, self::FIELD_ALLOWED_SELECT);
-			if ($newField === null)
-				$result[$index] = $field;
-			else
-				$result[$index] = $newField;
+			$result[$index] = $newField === null ? $field : $newField;
 		}
 		unset($newField, $index, $field);
 
@@ -439,19 +494,20 @@ final class CProductQueryBuilder
 	 */
 	public static function getEntityFieldAliases(string $entity, array $options = []): ?array
 	{
-		$result = null;
-
-		$entity = (string)$entity;
 		if ($entity === '')
-			return $result;
+		{
+			return null;
+		}
 
-		$entity = mb_strtoupper($entity);
+		$entity = strtoupper($entity);
 
 		self::initEntityDescription();
 		self::initEntityFields();
 
 		if (!isset(self::$entityFields[$entity]))
-			return $result;
+		{
+			return null;
+		}
 
 		$entityId = '';
 		if (
@@ -478,13 +534,19 @@ final class CProductQueryBuilder
 	private static function initEntityDescription()
 	{
 		if (!empty(self::$entityDescription))
+		{
 			return;
+		}
 
 		self::$entityDescription = [
 			self::ENTITY_PRODUCT => [
 				'NAME' => 'b_catalog_product',
 				'ALIAS' => 'PRD',
 				'JOIN' => 'left join #NAME# as #ALIAS# on (#ALIAS#.ID = #ELEMENT#.ID)'
+			],
+			self::ENTITY_PRODUCT_USER_FIELD => [
+				'EXTERNAL' => true,
+				'HANDLER' => [__CLASS__, 'haldleProductUserFields'],
 			],
 			self::ENTITY_PRICE => [
 				'NAME' => 'b_catalog_price',
@@ -536,7 +598,7 @@ final class CProductQueryBuilder
 				'ALIAS' => 'CAT_VAT',
 				'JOIN' => 'left join #NAME# as #ALIAS# on (#ALIAS#.ID = IF((CAT_PR.VAT_ID IS NULL OR CAT_PR.VAT_ID = 0), CAT_IB.VAT_ID, CAT_PR.VAT_ID))',
 				'RELATION' => [self::ENTITY_CATALOG_IBLOCK]
-			]
+			],
 		];
 	}
 
@@ -546,655 +608,799 @@ final class CProductQueryBuilder
 	private static function initEntityFields()
 	{
 		if (!empty(self::$entityFields))
+		{
 			return;
+		}
 
 		self::$entityFields = [
-			self::ENTITY_PRODUCT => [
-				'TYPE' => [
-					'NAME' => 'TYPE',
-					'ALIAS' => 'TYPE',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'AVAILABLE' => [
-					'NAME' => 'AVAILABLE',
-					'ALIAS' => 'AVAILABLE',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL,
-					'ORDER_DEFAULT' => 'DESC'
-				],
-				'BUNDLE' => [
-					'NAME' => 'BUNDLE',
-					'ALIAS' => 'BUNDLE',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'QUANTITY' => [
-					'NAME' => 'QUANTITY',
-					'ALIAS' => 'QUANTITY',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'QUANTITY_RESERVED' => [
-					'NAME' => 'QUANTITY_RESERVED',
-					'ALIAS' => 'QUANTITY_RESERVED',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'QUANTITY_TRACE' => [
-					'NAME' => 'QUANTITY_TRACE',
-					'ALIAS' => 'QUANTITY_TRACE',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL,
-					'SELECT_EXPRESSION' => [__CLASS__, 'selectQuantityTrace'],
-					'FILTER_PREPARE_VALUE_EXPRESSION' => [__CLASS__, 'prepareFilterQuantityTrace']
-				],
-				'QUANTITY_TRACE_RAW' => [
-					'NAME' => 'QUANTITY_TRACE',
-					'ALIAS' => 'QUANTITY_TRACE_RAW',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL,
-				],
-				'CAN_BUY_ZERO' => [
-					'NAME' => 'CAN_BUY_ZERO',
-					'ALIAS' => 'CAN_BUY_ZERO',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL,
-					'SELECT_EXPRESSION' => [__CLASS__, 'selectCanBuyZero'],
-					'FILTER_PREPARE_VALUE_EXPRESSION' => [__CLASS__, 'prepareFilterCanBuyZero']
-				],
-				'CAN_BUY_ZERO_RAW' => [
-					'NAME' => 'CAN_BUY_ZERO',
-					'ALIAS' => 'CAN_BUY_ZERO_RAW',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL,
-				],
-				'SUBSCRIBE' => [
-					'NAME' => 'SUBSCRIBE',
-					'ALIAS' => 'SUBSCRIBE',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL,
-					'SELECT_EXPRESSION' => [__CLASS__, 'selectSubscribe'],
-					'FILTER_PREPARE_VALUE_EXPRESSION' => [__CLASS__, 'prepareFilterSubscribe']
-				],
-				'SUBSCRIBE_RAW' => [
-					'NAME' => 'SUBSCRIBE',
-					'ALIAS' => 'SUBSCRIBE_RAW',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'VAT_ID' => [
-					'NAME' => 'VAT_ID',
-					'ALIAS' => 'VAT_ID',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'VAT_INCLUDED' => [
-					'NAME' => 'VAT_INCLUDED',
-					'ALIAS' => 'VAT_INCLUDED',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'PURCHASING_PRICE' => [
-					'NAME' => 'PURCHASING_PRICE',
-					'ALIAS' => 'PURCHASING_PRICE',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'PURCHASING_CURRENCY' => [
-					'NAME' => 'PURCHASING_CURRENCY',
-					'ALIAS' => 'PURCHASING_CURRENCY',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'BARCODE_MULTI' => [
-					'NAME' => 'BARCODE_MULTI',
-					'ALIAS' => 'BARCODE_MULTI',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'WEIGHT' => [
-					'NAME' => 'WEIGHT',
-					'ALIAS' => 'WEIGHT',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'WIDTH' => [
-					'NAME' => 'WIDTH',
-					'ALIAS' => 'WIDTH',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'LENGTH' => [
-					'NAME' => 'LENGTH',
-					'ALIAS' => 'LENGTH',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'HEIGHT' => [
-					'NAME' => 'HEIGHT',
-					'ALIAS' => 'HEIGHT',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'MEASURE' => [
-					'NAME' => 'MEASURE',
-					'ALIAS' => 'MEASURE',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'PAYMENT_TYPE' => [
-					'NAME' => 'PRICE_TYPE',
-					'ALIAS' => 'PAYMENT_TYPE',
-					'TYPE' => '',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'RECUR_SCHEME_LENGTH' => [
-					'NAME' => 'RECUR_SCHEME_LENGTH',
-					'ALIAS' => 'RECUR_SCHEME_LENGTH',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'RECUR_SCHEME_TYPE' => [
-					'NAME' => 'RECUR_SCHEME_TYPE',
-					'ALIAS' => 'RECUR_SCHEME_TYPE',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'TRIAL_PRICE_ID' => [
-					'NAME' => 'TRIAL_PRICE_ID',
-					'ALIAS' => 'TRIAL_PRICE_ID',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'WITHOUT_ORDER' => [
-					'NAME' => 'WITHOUT_ORDER',
-					'ALIAS' => 'WITHOUT_ORDER',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				]
-			],
-			self::ENTITY_PRICE => [
-				'PRICE' => [
-					'NAME' => 'PRICE',
-					'ALIAS' => 'PRICE_#ENTITY_ID#',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL,
-					'ORDER_NULLABLE' => true,
-				],
-				'CURRENCY' => [
-					'NAME' => 'CURRENCY',
-					'ALIAS' => 'CURRENCY_#ENTITY_ID#',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL,
-					'ORDER_NULLABLE' => true,
-				],
-				'QUANTITY_FROM' => [
-					'NAME' => 'QUANTITY_FROM',
-					'ALIAS' => 'QUANTITY_FROM_#ENTITY_ID#',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL,
-					'ORDER_NULLABLE' => true,
-				],
-				'QUANTITY_TO' => [
-					'NAME' => 'QUANTITY_TO',
-					'ALIAS' => 'QUANTITY_TO_#ENTITY_ID#',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL,
-					'ORDER_NULLABLE' => true,
-				],
-				'SCALED_PRICE' => [
-					'NAME' => 'PRICE_SCALE',
-					'ALIAS' => 'SCALED_PRICE_#ENTITY_ID#',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL,
-					'ORDER_NULLABLE' => true,
-				],
-				'EXTRA_ID' => [
-					'NAME' => 'EXTRA_ID',
-					'ALIAS' => 'EXTRA_ID_#ENTITY_ID#',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'DEFAULT_PRICE_FILTER' => [
-					'PHANTOM' => true,
-					'NAME' => null,
-					'ALIAS' => 'DEFAULT_PRICE_FILTER_#ENTITY_ID#',
-					'TYPE' => null,
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER,
-					'JOIN_MODIFY_EXPRESSION' => [__CLASS__, 'priceParametersFilter']
-				],
-				'QUANTITY_RANGE_FILTER' => [
-					'PHANTOM' => true,
-					'NAME' => null,
-					'ALIAS' => 'QUANTITY_RANGE_FILTER_#ENTITY_ID#',
-					'TYPE' => null,
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER,
-					'JOIN_MODIFY_EXPRESSION' => [__CLASS__, 'priceParametersFilter']
-				],
-				'CURRENCY_FOR_SCALE' => [
-					'PHANTOM' => true,
-					'NAME' => null,
-					'ALIAS' => 'CURRENCY_FOR_SCALE_#ENTITY_ID#',
-					'TYPE' => null,
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER,
-					'FILTER_MODIFY_EXPRESSION' => [__CLASS__, 'filterModifierCurrencyScale']
-				]
-			],
-			self::ENTITY_WARENHOUSE => [
-				'STORE_AMOUNT' => [
-					'NAME' => 'AMOUNT',
-					'ALIAS' => 'STORE_AMOUNT_#ENTITY_ID#',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL,
-					'ORDER_NULLABLE' => true,
-				]
-			],
-			self::ENTITY_FLAT_PRICE => [
-				'PRICE_TYPE' => [
-					'NAME' => 'CATALOG_GROUP_ID',
-					'ALIAS' => 'PRICE_TYPE',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER
-				],
-				'PRICE' => [
-					'NAME' => 'PRICE',
-					'ALIAS' => 'PRICE',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER,
-					'ORDER_NULLABLE' => true,
-				],
-				'CURRENCY' => [
-					'NAME' => 'CURRENCY',
-					'ALIAS' => 'CURRENCY',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER,
-					'ORDER_NULLABLE' => true,
-				],
-				'QUANTITY_FROM' => [
-					'NAME' => 'QUANTITY_FROM',
-					'ALIAS' => 'QUANTITY_FROM',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER,
-					'ORDER_NULLABLE' => true,
-				],
-				'QUANTITY_TO' => [
-					'NAME' => 'QUANTITY_TO',
-					'ALIAS' => 'QUANTITY_TO',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER,
-					'ORDER_NULLABLE' => true,
-				],
-				'SCALED_PRICE' => [
-					'NAME' => 'PRICE_SCALE',
-					'ALIAS' => 'SCALED_PRICE',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER,
-					'ORDER_NULLABLE' => true,
-				],
-				'EXTRA_ID' => [
-					'NAME' => 'EXTRA_ID',
-					'ALIAS' => 'EXTRA_ID',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER
-				],
-				'DEFAULT_PRICE_FILTER' => [
-					'PHANTOM' => true,
-					'NAME' => null,
-					'ALIAS' => 'DEFAULT_PRICE_FILTER',
-					'TYPE' => null,
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER,
-					'JOIN_MODIFY_EXPRESSION' => [__CLASS__, 'priceParametersFilter']
-				],
-				'QUANTITY_RANGE_FILTER' => [
-					'PHANTOM' => true,
-					'NAME' => null,
-					'ALIAS' => 'QUANTITY_RANGE_FILTER',
-					'TYPE' => null,
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER,
-					'JOIN_MODIFY_EXPRESSION' => [__CLASS__, 'priceParametersFilter']
-				],
-				'CURRENCY_FOR_SCALE' => [
-					'PHANTOM' => true,
-					'NAME' => null,
-					'ALIAS' => 'CURRENCY_FOR_SCALE',
-					'TYPE' => null,
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER,
-					'FILTER_MODIFY_EXPRESSION' => [__CLASS__, 'filterModifierCurrencyScale']
-				]
-			],
-			self::ENTITY_FLAT_WAREHNOUSE => [
-				'STORE_NUMBER' => [
-					'NAME' => 'STORE_ID',
-					'ALIAS' => 'STORE_NUMBER',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER
-				],
-				'STORE_AMOUNT' => [
-					'NAME' => 'AMOUNT',
-					'ALIAS' => 'STORE_AMOUNT',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER,
-					'ORDER_NULLABLE' => true,
-				]
-			],
-			self::ENTITY_FLAT_BARCODE => [
-				'PRODUCT_BARCODE' => [
-					'NAME' => 'BARCODE',
-					'ALIAS' => 'PRODUCT_BARCODE',
-					'TYPE' => 'string',
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER
-				],
-				'PRODUCT_BARCODE_STORE' => [
-					'NAME' => 'STORE_ID',
-					'ALIAS' => 'PRODUCT_BARCODE_STORE',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER
-				],
-				'PRODUCT_BARCODE_ORDER' => [
-					'NAME' => 'ORDER_ID',
-					'ALIAS' => 'PRODUCT_BARCODE_ORDER',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER
-				]
-			],
-			self::ENTITY_OLD_PRODUCT => [
-				'QUANTITY' => [
-					'NAME' => 'QUANTITY',
-					'ALIAS' => 'CATALOG_QUANTITY',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'QUANTITY_TRACE' => [
-					'NAME' => 'QUANTITY_TRACE',
-					'ALIAS' => 'CATALOG_QUANTITY_TRACE',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT,
-					'SELECT_EXPRESSION' => [__CLASS__, 'selectQuantityTrace']
-				],
-				'QUANTITY_TRACE_ORIG' => [
-					'NAME' => 'QUANTITY_TRACE',
-					'ALIAS' => 'CATALOG_QUANTITY_TRACE_ORIG',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT,
-					'NEW_ID' => 'QUANTITY_TRACE_RAW'
-				],
-				'WEIGHT' => [
-					'NAME' => 'WEIGHT',
-					'ALIAS' => 'CATALOG_WEIGHT',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'VAT_ID' => [
-					'NAME' => 'VAT_ID',
-					'ALIAS' => 'CATALOG_VAT_ID',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT
-				],
-				'VAT_INCLUDED' => [
-					'NAME' => 'VAT_INCLUDED',
-					'ALIAS' => 'CATALOG_VAT_INCLUDED',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT
-				],
-				'CAN_BUY_ZERO' => [
-					'NAME' => 'CAN_BUY_ZERO',
-					'ALIAS' => 'CATALOG_CAN_BUY_ZERO',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT,
-					'SELECT_EXPRESSION' => [__CLASS__, 'selectCanBuyZero']
-				],
-				'CAN_BUY_ZERO_ORIG' => [
-					'NAME' => 'CAN_BUY_ZERO',
-					'ALIAS' => 'CATALOG_CAN_BUY_ZERO_ORIG',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT,
-					'NEW_ID' => 'CAN_BUY_ZERO_RAW'
-				],
-				'PURCHASING_PRICE' => [
-					'NAME' => 'PURCHASING_PRICE',
-					'ALIAS' => 'CATALOG_PURCHASING_PRICE',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'PURCHASING_CURRENCY' => [
-					'NAME' => 'PURCHASING_CURRENCY',
-					'ALIAS' => 'CATALOG_PURCHASING_CURRENCY',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'QUANTITY_RESERVED' => [
-					'NAME' => 'QUANTITY_RESERVED',
-					'ALIAS' => 'CATALOG_QUANTITY_RESERVED',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT
-				],
-				'SUBSCRIBE' => [
-					'NAME' => 'SUBSCRIBE',
-					'ALIAS' => 'CATALOG_SUBSCRIBE',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT|self::FIELD_ALLOWED_FILTER,
-					'SELECT_EXPRESSION' => [__CLASS__, 'selectSubscribe'],
-					'FILTER_PREPARE_VALUE_EXPRESSION' => [__CLASS__, 'prepareFilterSubscribe']
-				],
-				'SUBSCRIBE_ORIG' => [
-					'NAME' => 'SUBSCRIBE',
-					'ALIAS' => 'CATALOG_SUBSCRIBE_ORIG',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT,
-					'NEW_ID' => 'SUBSCRIBE_RAW'
-				],
-				'WIDTH' => [
-					'NAME' => 'WIDTH',
-					'ALIAS' => 'CATALOG_WIDTH',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT
-				],
-				'LENGTH' => [
-					'NAME' => 'LENGTH',
-					'ALIAS' => 'CATALOG_LENGTH',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT
-				],
-				'HEIGHT' => [
-					'NAME' => 'HEIGHT',
-					'ALIAS' => 'CATALOG_HEIGHT',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT
-				],
-				'MEASURE' => [
-					'NAME' => 'MEASURE',
-					'ALIAS' => 'CATALOG_MEASURE',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT
-				],
-				'TYPE' => [
-					'NAME' => 'TYPE',
-					'ALIAS' => 'CATALOG_TYPE',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'AVAILABLE' => [
-					'NAME' => 'AVAILABLE',
-					'ALIAS' => 'CATALOG_AVAILABLE',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL,
-					'ORDER_DEFAULT' => 'DESC'
-				],
-				'BUNDLE' => [
-					'NAME' => 'BUNDLE',
-					'ALIAS' => 'CATALOG_BUNDLE',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL
-				],
-				'PRICE_TYPE' => [
-					'NAME' => 'PRICE_TYPE',
-					'ALIAS' => 'CATALOG_PRICE_TYPE',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT,
-					'NEW_ID' => 'PAYMENT_TYPE'
-				],
-				'RECUR_SCHEME_LENGTH' => [
-					'NAME' => 'RECUR_SCHEME_LENGTH',
-					'ALIAS' => 'CATALOG_RECUR_SCHEME_LENGTH',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT
-				],
-				'RECUR_SCHEME_TYPE' => [
-					'NAME' => 'RECUR_SCHEME_TYPE',
-					'ALIAS' => 'CATALOG_RECUR_SCHEME_TYPE',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT
-				],
-				'TRIAL_PRICE_ID' => [
-					'NAME' => 'TRIAL_PRICE_ID',
-					'ALIAS' => 'CATALOG_TRIAL_PRICE_ID',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT
-				],
-				'WITHOUT_ORDER' => [
-					'NAME' => 'WITHOUT_ORDER',
-					'ALIAS' => 'CATALOG_WITHOUT_ORDER',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT
-				],
-				'SELECT_BEST_PRICE' => [
-					'NAME' => 'SELECT_BEST_PRICE',
-					'ALIAS' => 'CATALOG_SELECT_BEST_PRICE',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT
-				],
-				'NEGATIVE_AMOUNT_TRACE' => [
-					'NAME' => 'NEGATIVE_AMOUNT_TRACE',
-					'ALIAS' => 'CATALOG_NEGATIVE_AMOUNT_TRACE',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT,
-					'SELECT_EXPRESSION' => [__CLASS__, 'selectNegativeAmountTrace']
-				],
-				'NEGATIVE_AMOUNT_TRACE_ORIG' => [
-					'NAME' => 'NEGATIVE_AMOUNT_TRACE',
-					'ALIAS' => 'CATALOG_NEGATIVE_AMOUNT_TRACE_ORIG',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT
-				]
-			],
-			self::ENTITY_OLD_PRICE => [
-				'ID' => [
-					'NAME' => 'ID',
-					'ALIAS' => 'CATALOG_PRICE_ID_#ENTITY_ID#',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT
-				],
-				'PRODUCT_ID' => [
-					'NAME' => 'PRODUCT_ID',
-					'ALIAS' => null,
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER
-				],
-				'CATALOG_GROUP_ID' => [
-					'NAME' => 'CATALOG_GROUP_ID',
-					'ALIAS' => 'CATALOG_GROUP_ID_#ENTITY_ID#',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT|self::FIELD_ALLOWED_FILTER
-				],
-				'PRICE' => [
-					'NAME' => 'PRICE',
-					'ALIAS' => 'CATALOG_PRICE_#ENTITY_ID#',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL,
-					'ORDER_TRANSFORM' => 'PRICE_SCALE'
-				],
-				'CURRENCY' => [
-					'NAME' => 'CURRENCY',
-					'ALIAS' => 'CATALOG_CURRENCY_#ENTITY_ID#',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL,
-					'ORDER_NULLABLE' => true,
-				],
-				'PRICE_SCALE' => [
-					'NAME' => 'PRICE_SCALE',
-					'ALIAS' => null,
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_ORDER|self::FIELD_ALLOWED_FILTER,
-					'ORDER_NULLABLE' => true,
-					'NEW_ID' => 'SCALED_PRICE'
-				],
-				'QUANTITY_FROM' => [
-					'NAME' => 'QUANTITY_FROM',
-					'ALIAS' => 'CATALOG_QUANTITY_FROM_#ENTITY_ID#',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT
-				],
-				'QUANTITY_TO' => [
-					'NAME' => 'QUANTITY_TO',
-					'ALIAS' => 'CATALOG_QUANTITY_TO_#ENTITY_ID#',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT
-				],
-				'EXTRA_ID' => [
-					'NAME' => 'EXTRA_ID',
-					'ALIAS' => 'CATALOG_EXTRA_ID_#ENTITY_ID#',
-					'TYPE' => 'int',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT
-				],
-				'CATALOG_GROUP_NAME' => [
-					'NAME' => null,
-					'ALIAS' => 'CATALOG_GROUP_NAME_#ENTITY_ID#',
-					'TYPE' => 'string',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT,
-					'SELECT_EXPRESSION' => [__CLASS__, 'selectPriceTypeName']
-				],
-				'CATALOG_CAN_ACCESS' => [
-					'NAME' => null,
-					'ALIAS' => 'CATALOG_CAN_ACCESS_#ENTITY_ID#',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT,
-					'SELECT_EXPRESSION' => [__CLASS__, 'selectPriceTypeAllowedView']
-				],
-				'CATALOG_CAN_BUY' => [
-					'NAME' => null,
-					'ALIAS' => 'CATALOG_CAN_BUY_#ENTITY_ID#',
-					'TYPE' => 'char',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT,
-					'SELECT_EXPRESSION' => [__CLASS__, 'selectPriceTypeAllowedBuy']
-				],
-				'CURRENCY_SCALE' => [
-					'PHANTOM' => true,
-					'NAME' => null,
-					'ALIAS' => 'CATALOG_CURRENCY_SCALE_#ENTITY_ID#',
-					'TYPE' => null,
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER,
-					'FILTER_MODIFY_EXPRESSION' => [__CLASS__, 'filterModifierCurrencyScale'],
-					'NEW_ID' => 'CURRENCY_FOR_SCALE'
-				],
-				'SHOP_QUANTITY' => [
-					'PHANTOM' => true,
-					'NAME' => null,
-					'ALIAS' => 'CATALOG_SHOP_QUANTITY_#ENTITY_ID#',
-					'TYPE' => null,
-					'ALLOWED' => self::FIELD_ALLOWED_FILTER,
-					'JOIN_MODIFY_EXPRESSION' => [__CLASS__, 'priceParametersFilter'],
-					'NEW_ID' => 'DEFAULT_PRICE_FILTER'
-				]
-			],
-			self::ENTITY_OLD_STORE => [
-				'STORE_AMOUNT' => [
-					'NAME' => 'AMOUNT',
-					'ALIAS' => 'CATALOG_STORE_AMOUNT_#ENTITY_ID#',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_ALL,
-					'ORDER_NULLABLE' => true,
-				]
-			],
-			self::ENTITY_VAT => [
-				'RATE' => [
-					'NAME' => 'RATE',
-					'ALIAS' => 'CATALOG_VAT',
-					'TYPE' => 'float',
-					'ALLOWED' => self::FIELD_ALLOWED_SELECT
-				]
-			]
+			self::ENTITY_PRODUCT => self::getProductFields(),
+			self::ENTITY_PRODUCT_USER_FIELD => self::getProductUserFields(),
+			self::ENTITY_PRICE => self::getPriceFields(),
+			self::ENTITY_WARENHOUSE => self::getWarenhouseFields(),
+			self::ENTITY_FLAT_PRICE => self::getFlatPriceFields(),
+			self::ENTITY_FLAT_WAREHNOUSE => self::getFlatWarenhouseFields(),
+			self::ENTITY_FLAT_BARCODE => self::getFlatBarcodeFields(),
+			self::ENTITY_OLD_PRODUCT => self::getOldProductFields(),
+			self::ENTITY_OLD_PRICE => self::getOldPriceFields(),
+			self::ENTITY_OLD_STORE => self::getOldStoreFields(),
+			self::ENTITY_VAT => self::getVatFields(),
 		];
+	}
+
+	/**
+	 * @return array[]
+	 */
+	private static function getProductFields(): array
+	{
+		return [
+			'TYPE' => [
+				'NAME' => 'TYPE',
+				'ALIAS' => 'TYPE',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'AVAILABLE' => [
+				'NAME' => 'AVAILABLE',
+				'ALIAS' => 'AVAILABLE',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+				'ORDER_DEFAULT' => 'DESC',
+			],
+			'BUNDLE' => [
+				'NAME' => 'BUNDLE',
+				'ALIAS' => 'BUNDLE',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'QUANTITY' => [
+				'NAME' => 'QUANTITY',
+				'ALIAS' => 'QUANTITY',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'QUANTITY_RESERVED' => [
+				'NAME' => 'QUANTITY_RESERVED',
+				'ALIAS' => 'QUANTITY_RESERVED',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'QUANTITY_TRACE' => [
+				'NAME' => 'QUANTITY_TRACE',
+				'ALIAS' => 'QUANTITY_TRACE',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+				'SELECT_EXPRESSION' => [__CLASS__, 'selectQuantityTrace'],
+				'FILTER_PREPARE_VALUE_EXPRESSION' => [__CLASS__, 'prepareFilterQuantityTrace'],
+			],
+			'QUANTITY_TRACE_RAW' => [
+				'NAME' => 'QUANTITY_TRACE',
+				'ALIAS' => 'QUANTITY_TRACE_RAW',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'CAN_BUY_ZERO' => [
+				'NAME' => 'CAN_BUY_ZERO',
+				'ALIAS' => 'CAN_BUY_ZERO',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+				'SELECT_EXPRESSION' => [__CLASS__, 'selectCanBuyZero'],
+				'FILTER_PREPARE_VALUE_EXPRESSION' => [__CLASS__, 'prepareFilterCanBuyZero'],
+			],
+			'CAN_BUY_ZERO_RAW' => [
+				'NAME' => 'CAN_BUY_ZERO',
+				'ALIAS' => 'CAN_BUY_ZERO_RAW',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'SUBSCRIBE' => [
+				'NAME' => 'SUBSCRIBE',
+				'ALIAS' => 'SUBSCRIBE',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+				'SELECT_EXPRESSION' => [__CLASS__, 'selectSubscribe'],
+				'FILTER_PREPARE_VALUE_EXPRESSION' => [__CLASS__, 'prepareFilterSubscribe'],
+			],
+			'SUBSCRIBE_RAW' => [
+				'NAME' => 'SUBSCRIBE',
+				'ALIAS' => 'SUBSCRIBE_RAW',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'VAT_ID' => [
+				'NAME' => 'VAT_ID',
+				'ALIAS' => 'VAT_ID',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'VAT_INCLUDED' => [
+				'NAME' => 'VAT_INCLUDED',
+				'ALIAS' => 'VAT_INCLUDED',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'PURCHASING_PRICE' => [
+				'NAME' => 'PURCHASING_PRICE',
+				'ALIAS' => 'PURCHASING_PRICE',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'PURCHASING_CURRENCY' => [
+				'NAME' => 'PURCHASING_CURRENCY',
+				'ALIAS' => 'PURCHASING_CURRENCY',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'BARCODE_MULTI' => [
+				'NAME' => 'BARCODE_MULTI',
+				'ALIAS' => 'BARCODE_MULTI',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'WEIGHT' => [
+				'NAME' => 'WEIGHT',
+				'ALIAS' => 'WEIGHT',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'WIDTH' => [
+				'NAME' => 'WIDTH',
+				'ALIAS' => 'WIDTH',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'LENGTH' => [
+				'NAME' => 'LENGTH',
+				'ALIAS' => 'LENGTH',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'HEIGHT' => [
+				'NAME' => 'HEIGHT',
+				'ALIAS' => 'HEIGHT',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'MEASURE' => [
+				'NAME' => 'MEASURE',
+				'ALIAS' => 'MEASURE',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'PAYMENT_TYPE' => [
+				'NAME' => 'PRICE_TYPE',
+				'ALIAS' => 'PAYMENT_TYPE',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'RECUR_SCHEME_LENGTH' => [
+				'NAME' => 'RECUR_SCHEME_LENGTH',
+				'ALIAS' => 'RECUR_SCHEME_LENGTH',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'RECUR_SCHEME_TYPE' => [
+				'NAME' => 'RECUR_SCHEME_TYPE',
+				'ALIAS' => 'RECUR_SCHEME_TYPE',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'TRIAL_PRICE_ID' => [
+				'NAME' => 'TRIAL_PRICE_ID',
+				'ALIAS' => 'TRIAL_PRICE_ID',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'WITHOUT_ORDER' => [
+				'NAME' => 'WITHOUT_ORDER',
+				'ALIAS' => 'WITHOUT_ORDER',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+		];
+	}
+
+	/**
+	 * @return array[]
+	 * @throws Main\ArgumentException
+	 * @throws Main\ObjectPropertyException
+	 * @throws Main\SystemException
+	 */
+	private static function getProductUserFields(): array
+	{
+		$result = [];
+
+		$iterator = Main\UserFieldTable::getList([
+			'select' => [
+				'ID',
+				'ENTITY_ID',
+				'FIELD_NAME',
+				'USER_TYPE_ID',
+				'XML_ID',
+				'SORT',
+				'MULTIPLE',
+			],
+			'filter' => [
+				'=ENTITY_ID' => Bitrix\Catalog\ProductTable::getUfId(),
+			],
+			'order' => [
+				'SORT' => 'ASC',
+				'ID' => 'ASC',
+			]
+		]);
+		while ($row = $iterator->fetch())
+		{
+			if (!self::isValidProductUserField($row))
+			{
+				continue;
+			}
+			$item = [
+				'NAME' => $row['FIELD_NAME'],
+				'ALIAS' => 'PRODUCT_'.$row['FIELD_NAME'],
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+			];
+
+			$result[$row['FIELD_NAME']] = $item;
+		}
+		unset($row, $iterator);
+
+		return $result;
+	}
+
+	/**
+	 * @return array[]
+	 */
+	private static function getPriceFields(): array
+	{
+		return [
+			'PRICE' => [
+				'NAME' => 'PRICE',
+				'ALIAS' => 'PRICE_#ENTITY_ID#',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+				'ORDER_NULLABLE' => true,
+			],
+			'CURRENCY' => [
+				'NAME' => 'CURRENCY',
+				'ALIAS' => 'CURRENCY_#ENTITY_ID#',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+				'ORDER_NULLABLE' => true,
+			],
+			'QUANTITY_FROM' => [
+				'NAME' => 'QUANTITY_FROM',
+				'ALIAS' => 'QUANTITY_FROM_#ENTITY_ID#',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+				'ORDER_NULLABLE' => true,
+			],
+			'QUANTITY_TO' => [
+				'NAME' => 'QUANTITY_TO',
+				'ALIAS' => 'QUANTITY_TO_#ENTITY_ID#',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+				'ORDER_NULLABLE' => true,
+			],
+			'SCALED_PRICE' => [
+				'NAME' => 'PRICE_SCALE',
+				'ALIAS' => 'SCALED_PRICE_#ENTITY_ID#',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+				'ORDER_NULLABLE' => true,
+			],
+			'EXTRA_ID' => [
+				'NAME' => 'EXTRA_ID',
+				'ALIAS' => 'EXTRA_ID_#ENTITY_ID#',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'DEFAULT_PRICE_FILTER' => [
+				'PHANTOM' => true,
+				'NAME' => null,
+				'ALIAS' => 'DEFAULT_PRICE_FILTER_#ENTITY_ID#',
+				'TYPE' => null,
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+				'JOIN_MODIFY_EXPRESSION' => [__CLASS__, 'priceParametersFilter'],
+			],
+			'QUANTITY_RANGE_FILTER' => [
+				'PHANTOM' => true,
+				'NAME' => null,
+				'ALIAS' => 'QUANTITY_RANGE_FILTER_#ENTITY_ID#',
+				'TYPE' => null,
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+				'JOIN_MODIFY_EXPRESSION' => [__CLASS__, 'priceParametersFilter'],
+			],
+			'CURRENCY_FOR_SCALE' => [
+				'PHANTOM' => true,
+				'NAME' => null,
+				'ALIAS' => 'CURRENCY_FOR_SCALE_#ENTITY_ID#',
+				'TYPE' => null,
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+				'FILTER_MODIFY_EXPRESSION' => [__CLASS__, 'filterModifierCurrencyScale'],
+			],
+		];
+	}
+
+	/**
+	 * @return array[]
+	 */
+	private static function getFlatPriceFields(): array
+	{
+		return [
+			'PRICE_TYPE' => [
+				'NAME' => 'CATALOG_GROUP_ID',
+				'ALIAS' => 'PRICE_TYPE',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+			],
+			'PRICE' => [
+				'NAME' => 'PRICE',
+				'ALIAS' => 'PRICE',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+				'ORDER_NULLABLE' => true,
+			],
+			'CURRENCY' => [
+				'NAME' => 'CURRENCY',
+				'ALIAS' => 'CURRENCY',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+				'ORDER_NULLABLE' => true,
+			],
+			'QUANTITY_FROM' => [
+				'NAME' => 'QUANTITY_FROM',
+				'ALIAS' => 'QUANTITY_FROM',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+				'ORDER_NULLABLE' => true,
+			],
+			'QUANTITY_TO' => [
+				'NAME' => 'QUANTITY_TO',
+				'ALIAS' => 'QUANTITY_TO',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+				'ORDER_NULLABLE' => true,
+			],
+			'SCALED_PRICE' => [
+				'NAME' => 'PRICE_SCALE',
+				'ALIAS' => 'SCALED_PRICE',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+				'ORDER_NULLABLE' => true,
+			],
+			'EXTRA_ID' => [
+				'NAME' => 'EXTRA_ID',
+				'ALIAS' => 'EXTRA_ID',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+			],
+			'DEFAULT_PRICE_FILTER' => [
+				'PHANTOM' => true,
+				'NAME' => null,
+				'ALIAS' => 'DEFAULT_PRICE_FILTER',
+				'TYPE' => null,
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+				'JOIN_MODIFY_EXPRESSION' => [__CLASS__, 'priceParametersFilter'],
+			],
+			'QUANTITY_RANGE_FILTER' => [
+				'PHANTOM' => true,
+				'NAME' => null,
+				'ALIAS' => 'QUANTITY_RANGE_FILTER',
+				'TYPE' => null,
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+				'JOIN_MODIFY_EXPRESSION' => [__CLASS__, 'priceParametersFilter'],
+			],
+			'CURRENCY_FOR_SCALE' => [
+				'PHANTOM' => true,
+				'NAME' => null,
+				'ALIAS' => 'CURRENCY_FOR_SCALE',
+				'TYPE' => null,
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+				'FILTER_MODIFY_EXPRESSION' => [__CLASS__, 'filterModifierCurrencyScale'],
+			],
+		];
+	}
+
+	/**
+	 * @return array[]
+	 */
+	private static function getWarenhouseFields(): array
+	{
+		return [
+			'STORE_AMOUNT' => [
+				'NAME' => 'AMOUNT',
+				'ALIAS' => 'STORE_AMOUNT_#ENTITY_ID#',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+				'ORDER_NULLABLE' => true,
+			],
+		];
+	}
+
+	/**
+	 * @return array[]
+	 */
+	private static function getFlatWarenhouseFields(): array
+	{
+		return [
+			'STORE_NUMBER' => [
+				'NAME' => 'STORE_ID',
+				'ALIAS' => 'STORE_NUMBER',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+			],
+			'STORE_AMOUNT' => [
+				'NAME' => 'AMOUNT',
+				'ALIAS' => 'STORE_AMOUNT',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+				'ORDER_NULLABLE' => true,
+			],
+		];
+	}
+
+	/**
+	 * @return array[]
+	 */
+	private static function getFlatBarcodeFields(): array
+	{
+		return [
+			'PRODUCT_BARCODE' => [
+				'NAME' => 'BARCODE',
+				'ALIAS' => 'PRODUCT_BARCODE',
+				'TYPE' => self::FIELD_TYPE_STRING,
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+			],
+			'PRODUCT_BARCODE_STORE' => [
+				'NAME' => 'STORE_ID',
+				'ALIAS' => 'PRODUCT_BARCODE_STORE',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+			],
+			'PRODUCT_BARCODE_ORDER' => [
+				'NAME' => 'ORDER_ID',
+				'ALIAS' => 'PRODUCT_BARCODE_ORDER',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+			],
+		];
+	}
+
+	/**
+	 * @return array[]
+	 */
+	private static function getOldProductFields(): array
+	{
+		return [
+			'QUANTITY' => [
+				'NAME' => 'QUANTITY',
+				'ALIAS' => 'CATALOG_QUANTITY',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'QUANTITY_TRACE' => [
+				'NAME' => 'QUANTITY_TRACE',
+				'ALIAS' => 'CATALOG_QUANTITY_TRACE',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+				'SELECT_EXPRESSION' => [__CLASS__, 'selectQuantityTrace'],
+			],
+			'QUANTITY_TRACE_ORIG' => [
+				'NAME' => 'QUANTITY_TRACE',
+				'ALIAS' => 'CATALOG_QUANTITY_TRACE_ORIG',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+				'NEW_ID' => 'QUANTITY_TRACE_RAW',
+			],
+			'WEIGHT' => [
+				'NAME' => 'WEIGHT',
+				'ALIAS' => 'CATALOG_WEIGHT',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'VAT_ID' => [
+				'NAME' => 'VAT_ID',
+				'ALIAS' => 'CATALOG_VAT_ID',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+			],
+			'VAT_INCLUDED' => [
+				'NAME' => 'VAT_INCLUDED',
+				'ALIAS' => 'CATALOG_VAT_INCLUDED',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+			],
+			'CAN_BUY_ZERO' => [
+				'NAME' => 'CAN_BUY_ZERO',
+				'ALIAS' => 'CATALOG_CAN_BUY_ZERO',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+				'SELECT_EXPRESSION' => [__CLASS__, 'selectCanBuyZero'],
+			],
+			'CAN_BUY_ZERO_ORIG' => [
+				'NAME' => 'CAN_BUY_ZERO',
+				'ALIAS' => 'CATALOG_CAN_BUY_ZERO_ORIG',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+				'NEW_ID' => 'CAN_BUY_ZERO_RAW',
+			],
+			'PURCHASING_PRICE' => [
+				'NAME' => 'PURCHASING_PRICE',
+				'ALIAS' => 'CATALOG_PURCHASING_PRICE',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'PURCHASING_CURRENCY' => [
+				'NAME' => 'PURCHASING_CURRENCY',
+				'ALIAS' => 'CATALOG_PURCHASING_CURRENCY',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'QUANTITY_RESERVED' => [
+				'NAME' => 'QUANTITY_RESERVED',
+				'ALIAS' => 'CATALOG_QUANTITY_RESERVED',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+			],
+			'SUBSCRIBE' => [
+				'NAME' => 'SUBSCRIBE',
+				'ALIAS' => 'CATALOG_SUBSCRIBE',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT|self::FIELD_ALLOWED_FILTER,
+				'SELECT_EXPRESSION' => [__CLASS__, 'selectSubscribe'],
+				'FILTER_PREPARE_VALUE_EXPRESSION' => [__CLASS__, 'prepareFilterSubscribe'],
+			],
+			'SUBSCRIBE_ORIG' => [
+				'NAME' => 'SUBSCRIBE',
+				'ALIAS' => 'CATALOG_SUBSCRIBE_ORIG',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+				'NEW_ID' => 'SUBSCRIBE_RAW',
+			],
+			'WIDTH' => [
+				'NAME' => 'WIDTH',
+				'ALIAS' => 'CATALOG_WIDTH',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+			],
+			'LENGTH' => [
+				'NAME' => 'LENGTH',
+				'ALIAS' => 'CATALOG_LENGTH',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+			],
+			'HEIGHT' => [
+				'NAME' => 'HEIGHT',
+				'ALIAS' => 'CATALOG_HEIGHT',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+			],
+			'MEASURE' => [
+				'NAME' => 'MEASURE',
+				'ALIAS' => 'CATALOG_MEASURE',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+			],
+			'TYPE' => [
+				'NAME' => 'TYPE',
+				'ALIAS' => 'CATALOG_TYPE',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'AVAILABLE' => [
+				'NAME' => 'AVAILABLE',
+				'ALIAS' => 'CATALOG_AVAILABLE',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+				'ORDER_DEFAULT' => 'DESC',
+			],
+			'BUNDLE' => [
+				'NAME' => 'BUNDLE',
+				'ALIAS' => 'CATALOG_BUNDLE',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+			],
+			'PRICE_TYPE' => [
+				'NAME' => 'PRICE_TYPE',
+				'ALIAS' => 'CATALOG_PRICE_TYPE',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+				'NEW_ID' => 'PAYMENT_TYPE',
+			],
+			'RECUR_SCHEME_LENGTH' => [
+				'NAME' => 'RECUR_SCHEME_LENGTH',
+				'ALIAS' => 'CATALOG_RECUR_SCHEME_LENGTH',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+			],
+			'RECUR_SCHEME_TYPE' => [
+				'NAME' => 'RECUR_SCHEME_TYPE',
+				'ALIAS' => 'CATALOG_RECUR_SCHEME_TYPE',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+			],
+			'TRIAL_PRICE_ID' => [
+				'NAME' => 'TRIAL_PRICE_ID',
+				'ALIAS' => 'CATALOG_TRIAL_PRICE_ID',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+			],
+			'WITHOUT_ORDER' => [
+				'NAME' => 'WITHOUT_ORDER',
+				'ALIAS' => 'CATALOG_WITHOUT_ORDER',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+			],
+			'SELECT_BEST_PRICE' => [
+				'NAME' => 'SELECT_BEST_PRICE',
+				'ALIAS' => 'CATALOG_SELECT_BEST_PRICE',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+			],
+			'NEGATIVE_AMOUNT_TRACE' => [
+				'NAME' => 'NEGATIVE_AMOUNT_TRACE',
+				'ALIAS' => 'CATALOG_NEGATIVE_AMOUNT_TRACE',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+				'SELECT_EXPRESSION' => [__CLASS__, 'selectNegativeAmountTrace'],
+			],
+			'NEGATIVE_AMOUNT_TRACE_ORIG' => [
+				'NAME' => 'NEGATIVE_AMOUNT_TRACE',
+				'ALIAS' => 'CATALOG_NEGATIVE_AMOUNT_TRACE_ORIG',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+			],
+		];
+	}
+
+	/**
+	 * @return array[]
+	 */
+	private static function getOldPriceFields(): array
+	{
+		return [
+			'ID' => [
+				'NAME' => 'ID',
+				'ALIAS' => 'CATALOG_PRICE_ID_#ENTITY_ID#',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+			],
+			'PRODUCT_ID' => [
+				'NAME' => 'PRODUCT_ID',
+				'ALIAS' => null,
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+			],
+			'CATALOG_GROUP_ID' => [
+				'NAME' => 'CATALOG_GROUP_ID',
+				'ALIAS' => 'CATALOG_GROUP_ID_#ENTITY_ID#',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT|self::FIELD_ALLOWED_FILTER,
+			],
+			'PRICE' => [
+				'NAME' => 'PRICE',
+				'ALIAS' => 'CATALOG_PRICE_#ENTITY_ID#',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+				'ORDER_TRANSFORM' => 'PRICE_SCALE',
+			],
+			'CURRENCY' => [
+				'NAME' => 'CURRENCY',
+				'ALIAS' => 'CATALOG_CURRENCY_#ENTITY_ID#',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+				'ORDER_NULLABLE' => true,
+			],
+			'PRICE_SCALE' => [
+				'NAME' => 'PRICE_SCALE',
+				'ALIAS' => null,
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_ORDER|self::FIELD_ALLOWED_FILTER,
+				'ORDER_NULLABLE' => true,
+				'NEW_ID' => 'SCALED_PRICE',
+			],
+			'QUANTITY_FROM' => [
+				'NAME' => 'QUANTITY_FROM',
+				'ALIAS' => 'CATALOG_QUANTITY_FROM_#ENTITY_ID#',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+			],
+			'QUANTITY_TO' => [
+				'NAME' => 'QUANTITY_TO',
+				'ALIAS' => 'CATALOG_QUANTITY_TO_#ENTITY_ID#',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+			],
+			'EXTRA_ID' => [
+				'NAME' => 'EXTRA_ID',
+				'ALIAS' => 'CATALOG_EXTRA_ID_#ENTITY_ID#',
+				'TYPE' => self::FIELD_TYPE_INT,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+			],
+			'CATALOG_GROUP_NAME' => [
+				'NAME' => null,
+				'ALIAS' => 'CATALOG_GROUP_NAME_#ENTITY_ID#',
+				'TYPE' => self::FIELD_TYPE_STRING,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+				'SELECT_EXPRESSION' => [__CLASS__, 'selectPriceTypeName'],
+			],
+			'CATALOG_CAN_ACCESS' => [
+				'NAME' => null,
+				'ALIAS' => 'CATALOG_CAN_ACCESS_#ENTITY_ID#',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+				'SELECT_EXPRESSION' => [__CLASS__, 'selectPriceTypeAllowedView'],
+			],
+			'CATALOG_CAN_BUY' => [
+				'NAME' => null,
+				'ALIAS' => 'CATALOG_CAN_BUY_#ENTITY_ID#',
+				'TYPE' => self::FIELD_TYPE_CHAR,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+				'SELECT_EXPRESSION' => [__CLASS__, 'selectPriceTypeAllowedBuy'],
+			],
+			'CURRENCY_SCALE' => [
+				'PHANTOM' => true,
+				'NAME' => null,
+				'ALIAS' => 'CATALOG_CURRENCY_SCALE_#ENTITY_ID#',
+				'TYPE' => null,
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+				'FILTER_MODIFY_EXPRESSION' => [__CLASS__, 'filterModifierCurrencyScale'],
+				'NEW_ID' => 'CURRENCY_FOR_SCALE',
+			],
+			'SHOP_QUANTITY' => [
+				'PHANTOM' => true,
+				'NAME' => null,
+				'ALIAS' => 'CATALOG_SHOP_QUANTITY_#ENTITY_ID#',
+				'TYPE' => null,
+				'ALLOWED' => self::FIELD_ALLOWED_FILTER,
+				'JOIN_MODIFY_EXPRESSION' => [__CLASS__, 'priceParametersFilter'],
+				'NEW_ID' => 'DEFAULT_PRICE_FILTER',
+			],
+		];
+	}
+
+	/**
+	 * @return array[]
+	 */
+	private static function getOldStoreFields(): array
+	{
+		return [
+			'STORE_AMOUNT' => [
+				'NAME' => 'AMOUNT',
+				'ALIAS' => 'CATALOG_STORE_AMOUNT_#ENTITY_ID#',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_ALL,
+				'ORDER_NULLABLE' => true,
+			],
+		];
+	}
+
+	/**
+	 * @return array[]
+	 */
+	private static function getVatFields(): array
+	{
+		return [
+			'RATE' => [
+				'NAME' => 'RATE',
+				'ALIAS' => 'CATALOG_VAT',
+				'TYPE' => self::FIELD_TYPE_FLOAT,
+				'ALLOWED' => self::FIELD_ALLOWED_SELECT,
+			],
+		];
+	}
+
+	/**
+	 * @param array $userField
+	 * @return bool
+	 */
+	public static function isValidProductUserField(array $userField): bool
+	{
+		if ($userField['USER_TYPE_ID'] === Main\UserField\Types\FileType::USER_TYPE_ID)
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -1233,11 +1439,12 @@ final class CProductQueryBuilder
 	 */
 	private static function parseField(string $field): ?array
 	{
-		$field = (string)$field;
 		if ($field === '')
+		{
 			return null;
+		}
 
-		$field = mb_strtoupper($field);
+		$field = strtoupper($field);
 
 		$entity = '';
 		$entityId = 0;
@@ -1278,6 +1485,13 @@ final class CProductQueryBuilder
 			$entityId = 0;
 			$checked = true;
 		}
+		elseif (preg_match(self::FIELD_PATTERN_PRODUCT_USER_FIELD, $field, $prepared))
+		{
+			$entity = self::ENTITY_PRODUCT_USER_FIELD;
+			$field = $prepared[1];
+			$entityId = 0;
+			$checked = true;
+		}
 		elseif (preg_match(self::FIELD_PATTERN_SEPARATE_ENTITY, $field, $prepared))
 		{
 			$entity = self::searchFieldEntity($prepared[1], self::ENTITY_TYPE_SEPARATE);
@@ -1303,11 +1517,15 @@ final class CProductQueryBuilder
 		{
 			$allowed = self::getFieldAllowed($entity, $field);
 			if (empty($allowed))
+			{
 				$checked = false;
+			}
 		}
 
 		if (!$checked)
+		{
 			return null;
+		}
 
 		return [
 			'ENTITY' => $entity,
@@ -1336,6 +1554,8 @@ final class CProductQueryBuilder
 					$result = self::ENTITY_FLAT_PRICE;
 				elseif (isset(self::$entityFields[self::ENTITY_FLAT_WAREHNOUSE][$field]))
 					$result = self::ENTITY_FLAT_WAREHNOUSE;
+				elseif (isset(self::$entityFields[self::ENTITY_FLAT_BARCODE][$field]))
+					$result = self::ENTITY_FLAT_BARCODE;
 				break;
 			case self::ENTITY_TYPE_SEPARATE:
 				if (isset(self::$entityFields[self::ENTITY_WARENHOUSE][$field]))
@@ -1400,6 +1620,29 @@ final class CProductQueryBuilder
 	}
 
 	/**
+	 * @param string $entity
+	 * @return array|null
+	 */
+	private static function getEntityRow(string $entity): ?array
+	{
+		if (!isset(self::$entityDescription[$entity]))
+		{
+			return null;
+		}
+
+		return self::$entityDescription[$entity];
+	}
+
+	/**
+	 * @param string $entity
+	 * @return bool
+	 */
+	private static function isExternalEntity(string $entity): bool
+	{
+		return isset(self::$entityDescription[$entity]['EXTERNAL']);
+	}
+
+	/**
 	 * Returns entity data for sql query.
 	 *
 	 * @param array $entity
@@ -1407,9 +1650,16 @@ final class CProductQueryBuilder
 	 */
 	private static function getEntityDescription(array $entity): ?array
 	{
-		if (!isset(self::$entityDescription[$entity['ENTITY']]))
+		$row = self::getEntityRow($entity['ENTITY']);
+		if ($row === null)
+		{
 			return null;
-		$row = self::$entityDescription[$entity['ENTITY']];
+		}
+		if (self::isExternalEntity($entity['ENTITY']))
+		{
+			return $row;
+		}
+
 		$row['ALIAS'] = str_replace('#ENTITY_ID#', $entity['ENTITY_ID'], $row['ALIAS']);
 
 		$joinTemplates = [
@@ -1489,7 +1739,7 @@ final class CProductQueryBuilder
 		$field['ALIAS'] = str_replace('#ENTITY_ID#', $queryItem['ENTITY_ID'], $field['ALIAS']);
 		if (!$fantomField)
 		{
-			$field['FULL_NAME'] = $entity['ALIAS'].'.'.(string)$field['NAME'];
+			$field['FULL_NAME'] = $entity['ALIAS'].'.'.$field['NAME'];
 		}
 
 		if (
@@ -1526,20 +1776,13 @@ final class CProductQueryBuilder
 
 			if (!$fantomField)
 			{
-				$valueType = 'string';
-				if ($field['TYPE'] == 'int' || $field['TYPE'] == 'float')
-					$valueType = 'number';
-				elseif ($field['TYPE'] == 'char')
-					$valueType = 'string_equal';
-
 				$field['FILTER'] = \CIBlock::FilterCreate(
 					'#FULL_NAME#',
 					$queryItem['VALUES'],
-					$valueType,
+					self::getFilterType($field['TYPE']),
 					$queryItem['OPERATION']
 				);
 				$field['FILTER'] = str_replace('#FULL_NAME#', $field['FULL_NAME'], $field['FILTER']);
-				unset($valueType);
 			}
 		}
 
@@ -1553,7 +1796,7 @@ final class CProductQueryBuilder
 				$field['ORDER'] = \CIBlock::_Order(
 					'#FULL_NAME#',
 					$queryItem['ORDER'],
-					isset($field['ORDER_DEFAULT']) ? $field['ORDER_DEFAULT'] : 'ASC',
+					$field['ORDER_DEFAULT'] ?? 'ASC',
 					isset($field['ORDER_NULLABLE'])
 				);
 				$field['ORDER'] = str_replace('#FULL_NAME#', $field['FULL_NAME'], $field['ORDER']);
@@ -1585,23 +1828,53 @@ final class CProductQueryBuilder
 	}
 
 	/**
+	 * @param string $fieldType
+	 * @return string
+	 */
+	private static function getFilterType(string $fieldType): string
+	{
+		switch ($fieldType)
+		{
+			case self::FIELD_TYPE_INT:
+			case self::FIELD_TYPE_FLOAT:
+				$result = 'number';
+				break;
+			case self::FIELD_TYPE_CHAR:
+				$result = 'string_equal';
+				break;
+			default:
+				$result = 'string';
+				break;
+		}
+
+		return $result;
+	}
+
+	/**
 	 * @param array|null $field
 	 * @return bool
 	 */
-	private static function checkPreparedField($field): bool
+	private static function checkPreparedField(?array $field): bool
 	{
 		if (empty($field))
+		{
 			return false;
-		if ($field['ENTITY_ID'] == 0)
+		}
+		if ($field['ENTITY_ID'] === 0)
 		{
 			if (
 				$field['ENTITY'] != self::ENTITY_PRODUCT
+				&& $field['ENTITY'] != self::ENTITY_PRODUCT_USER_FIELD
 				&& $field['ENTITY'] != self::ENTITY_FLAT_PRICE
 				&& $field['ENTITY'] != self::ENTITY_FLAT_WAREHNOUSE
+				&& $field['ENTITY'] != self::ENTITY_FLAT_BARCODE
 				&& $field['ENTITY'] != self::ENTITY_OLD_PRODUCT
 			)
+			{
 				return false;
+			}
 		}
+
 		return true;
 	}
 
@@ -1693,7 +1966,7 @@ final class CProductQueryBuilder
 			'compatible_entities' => [],
 			'select' => [],
 			'filter' => [],
-			'order' => []
+			'order' => [],
 		];
 
 		if (!empty($parameters['select']) && is_array($parameters['select']))
@@ -1702,9 +1975,13 @@ final class CProductQueryBuilder
 			{
 				$prepareField = self::parseField($field);
 				if (!self::checkPreparedField($prepareField))
+				{
 					continue;
+				}
 				if (!self::checkAllowedAction($prepareField['ALLOWED'], self::FIELD_ALLOWED_SELECT))
+				{
 					continue;
+				}
 
 				self::fillCompatibleEntities($result, $prepareField);
 				$result['select'][self::getFieldIndex($prepareField)] = self::getFieldSignature($prepareField);
@@ -1718,14 +1995,20 @@ final class CProductQueryBuilder
 			{
 				$filter = \CIBlock::MkOperationFilter($key);
 				$prepareField = self::parseField($filter['FIELD']);
+
 				if (!self::checkPreparedField($prepareField))
+				{
 					continue;
+				}
 				if (!self::checkAllowedAction($prepareField['ALLOWED'], self::FIELD_ALLOWED_FILTER))
+				{
 					continue;
+				}
 
 				self::fillCompatibleEntities($result, $prepareField);
 				$prepareField = self::getFieldSignature($prepareField);
 				$prepareField['OPERATION'] = $filter['OPERATION'];
+				$prepareField['PREFIX'] = $filter['PREFIX'];
 				$prepareField['VALUES'] = $parameters['filter'][$key];
 				$result['filter'][] = $prepareField;
 			}
@@ -1737,16 +2020,22 @@ final class CProductQueryBuilder
 			foreach ($parameters['order'] as $index => $value)
 			{
 				if (empty($value) || !is_array($value))
+				{
 					continue;
+				}
 
 				$order = reset($value);
 				$field = key($value);
 
 				$prepareField = self::parseField($field);
 				if (!self::checkPreparedField($prepareField))
+				{
 					continue;
+				}
 				if (!self::checkAllowedAction($prepareField['ALLOWED'], self::FIELD_ALLOWED_ORDER))
+				{
 					continue;
+				}
 
 				self::orderTransformField($prepareField);
 
@@ -1787,14 +2076,26 @@ final class CProductQueryBuilder
 		global $USER;
 
 		if (!isset($options['ALIASES']))
+		{
 			$options['ALIASES'] = [];
+		}
 		if (!isset($options['ALIASES']['#ELEMENT#']))
+		{
 			$options['ALIASES']['#ELEMENT#'] = 'BE';
+		}
+		if (!isset($options['ALIASES']['#ELEMENT_JOIN#']))
+		{
+			$options['ALIASES']['#ELEMENT_JOIN#'] = 'BE.ID';
+		}
 
 		if (!isset($options['USER']))
+		{
 			$options['USER'] = [];
+		}
 		if (!isset($options['USER']['ID']))
+		{
 			$options['USER']['ID'] = (\CCatalog::IsUserExists() ? $USER->GetID() : 0);
+		}
 		$options['USER']['ID'] = (int)$options['USER']['ID'];
 
 		self::$options = $options;
@@ -1823,30 +2124,38 @@ final class CProductQueryBuilder
 			'filter' => [],
 			'order' => [],
 			'join' => [],
-			'join_modify' => []
+			'join_modify' => [],
 		];
 
 		if (!empty($parameters['select']))
 		{
 			self::buildSelect($result, $parameters['select']);
 			if (!empty($result['select']))
+			{
 				$founded = true;
+			}
 		}
 		if (!empty($parameters['filter']))
 		{
 			self::buildFilter($result, $parameters['filter']);
 			if (!empty($result['filter']) || !empty($result['join']))
+			{
 				$founded = true;
+			}
 		}
 		if (!empty($parameters['order']))
 		{
 			self::buildOrder($result, $parameters['order']);
 			if (!empty($result['order']))
+			{
 				$founded = true;
+			}
 		}
 
 		if (!$founded)
+		{
 			return null;
+		}
 
 		self::buildJoin($result);
 
@@ -1886,19 +2195,11 @@ final class CProductQueryBuilder
 	private static function buildFilter(array &$result, array $list)
 	{
 		self::filterModify($list);
-		foreach ($list as $item)
-		{
-			$field = self::getField($item, ['filter' => true]);
-			if (empty($field))
-				continue;
 
-			if (isset($field['FILTER']))
-				$result['filter'][] = $field['FILTER'];
+		$packedFilter = self::getPackedFilter($list);
 
-			$item['ENTITY_DESCRIPTION'] = $field['ENTITY_DESCRIPTION'];
-			self::addJoin($result, $item);
-		}
-		unset($item);
+		self::buildInternalFilter($result, $packedFilter['INTERNAL']);
+		self::buildExternalFilter($result, $packedFilter['EXTERNAL']);
 	}
 
 	/**
@@ -1944,18 +2245,22 @@ final class CProductQueryBuilder
 	 * @param array &$list
 	 * @return void
 	 */
-	private static function filterModify(array &$list)
+	private static function filterModify(array &$list): void
 	{
 		foreach (array_keys($list) as $index)
 		{
 			$item = $list[$index];
 			$field = self::getFieldDescription($item['ENTITY'], $item['FIELD']);
 			if (empty($field))
+			{
 				continue;
+			}
 
 			$entity = self::getEntityDescription($item);
 			if (empty($entity))
+			{
 				continue;
+			}
 
 			if (isset($field['FILTER_MODIFY_EXPRESSION']) && is_callable($field['FILTER_MODIFY_EXPRESSION']))
 			{
@@ -1966,6 +2271,63 @@ final class CProductQueryBuilder
 			}
 		}
 		unset($field, $entity, $item, $index);
+	}
+
+	private static function getPackedFilter(array $filter): array
+	{
+		$result = [
+			'INTERNAL' => [],
+			'EXTERNAL' => [],
+		];
+
+		foreach ($filter as $item)
+		{
+			$entity = $item['ENTITY'];
+			if (self::isExternalEntity($entity))
+			{
+				if (!isset($result['EXTERNAL'][$entity]))
+				{
+					$result['EXTERNAL'][$entity] = [];
+				}
+				$index = self::getEntityIndex($item);
+				if (!isset($result['EXTERNAL'][$entity][$index]))
+				{
+					$result['EXTERNAL'][$entity][$index] = [];
+				}
+				$result['EXTERNAL'][$entity][$index][] = $item;
+			}
+			else
+			{
+				$result['INTERNAL'][] = $item;
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * @param array &$result
+	 * @param array $list
+	 */
+	private static function buildInternalFilter(array &$result, array $list): void
+	{
+		foreach ($list as $item)
+		{
+			$field = self::getField($item, ['filter' => true]);
+			if (empty($field))
+			{
+				continue;
+			}
+
+			if (isset($field['FILTER']))
+			{
+				$result['filter'][] = $field['FILTER'];
+			}
+
+			$item['ENTITY_DESCRIPTION'] = $field['ENTITY_DESCRIPTION'];
+			self::addJoin($result, $item);
+		}
+		unset($item);
 	}
 
 	/**
@@ -2013,6 +2375,31 @@ final class CProductQueryBuilder
 	}
 
 	/**
+	 * @param array $result
+	 * @param array $filter
+	 */
+	private static function buildExternalFilter(array &$result, array $filter): void
+	{
+		foreach (array_keys($filter) as $entity)
+		{
+			$row = self::getEntityRow($entity);
+			if (isset($row['HANDLER']) && is_callable($row['HANDLER']))
+			{
+				call_user_func_array(
+					$row['HANDLER'],
+					[
+						&$result,
+						$row,
+						[
+							'filter' => $filter[$entity],
+						]
+					]
+				);
+			}
+		}
+	}
+
+	/**
 	 * @param array &$item
 	 * @return void
 	 */
@@ -2034,7 +2421,6 @@ final class CProductQueryBuilder
 	 * @param array &$field
 	 * @return void
 	 *
-	 * @noinspection PhpUnusedPrivateMethodInspection
 	 * @noinspection PhpUnusedParameterInspection
 	 */
 	private static function selectQuantityTrace(array &$parameters, array &$entity, array &$field)
@@ -2050,7 +2436,6 @@ final class CProductQueryBuilder
 	 * @param array &$field
 	 * @return void
 	 *
-	 * @noinspection PhpUnusedPrivateMethodInspection
 	 * @noinspection PhpUnusedParameterInspection
 	 */
 	private static function selectCanBuyZero(array &$parameters, array &$entity, array &$field)
@@ -2066,7 +2451,6 @@ final class CProductQueryBuilder
 	 * @param array &$field
 	 * @return void
 	 *
-	 * @noinspection PhpUnusedPrivateMethodInspection
 	 * @noinspection PhpUnusedParameterInspection
 	 */
 	private static function selectNegativeAmountTrace(array &$parameters, array &$entity, array &$field)
@@ -2082,7 +2466,6 @@ final class CProductQueryBuilder
 	 * @param array &$field
 	 * @return void
 	 *
-	 * @noinspection PhpUnusedPrivateMethodInspection
 	 * @noinspection PhpUnusedParameterInspection
 	 */
 	private static function selectSubscribe(array &$parameters, array &$entity, array &$field)
@@ -2096,7 +2479,7 @@ final class CProductQueryBuilder
 	 * @param string $defaultValue
 	 * @return string
 	 */
-	private static function getReplaceSqlFunction($defaultValue)
+	private static function getReplaceSqlFunction(string $defaultValue): string
 	{
 		return 'IF (#FULL_NAME# = \''.ProductTable::STATUS_DEFAULT.'\', \''.$defaultValue.'\', #FULL_NAME#)';
 	}
@@ -2107,7 +2490,6 @@ final class CProductQueryBuilder
 	 * @param array &$field
 	 * @return void
 	 *
-	 * @noinspection PhpUnusedPrivateMethodInspection
 	 * @noinspection PhpUnusedParameterInspection
 	 */
 	private static function selectPriceTypeName(array &$parameters, array &$entity, array &$field)
@@ -2137,7 +2519,6 @@ final class CProductQueryBuilder
 	 * @param array &$field
 	 * @return void
 	 *
-	 * @noinspection PhpUnusedPrivateMethodInspection
 	 * @noinspection PhpUnusedParameterInspection
 	 */
 	private static function selectPriceTypeAllowedView(array &$parameters, array &$entity, array &$field)
@@ -2152,7 +2533,6 @@ final class CProductQueryBuilder
 	 * @param array &$field
 	 * @return void
 	 *
-	 * @noinspection PhpUnusedPrivateMethodInspection
 	 * @noinspection PhpUnusedParameterInspection
 	 */
 	private static function selectPriceTypeAllowedBuy(array &$parameters, array &$entity, array &$field)
@@ -2165,7 +2545,7 @@ final class CProductQueryBuilder
 	 * @param array $parameters
 	 * @return string
 	 */
-	private static function getPriceTypeAccess(array $parameters)
+	private static function getPriceTypeAccess(array $parameters): string
 	{
 		$result = 'N';
 
@@ -2199,7 +2579,6 @@ final class CProductQueryBuilder
 	 * @param array &$field
 	 * @return void
 	 *
-	 * @noinspection PhpUnusedPrivateMethodInspection
 	 * @noinspection PhpUnusedParameterInspection
 	 */
 	private static function prepareFilterQuantityTrace(array &$parameters, array &$entity, array &$field)
@@ -2216,7 +2595,6 @@ final class CProductQueryBuilder
 	 * @param array &$field
 	 * @return void
 	 *
-	 * @noinspection PhpUnusedPrivateMethodInspection
 	 * @noinspection PhpUnusedParameterInspection
 	 */
 	private static function prepareFilterCanBuyZero(array &$parameters, array &$entity, array &$field)
@@ -2233,7 +2611,6 @@ final class CProductQueryBuilder
 	 * @param array &$field
 	 * @return void
 	 *
-	 * @noinspection PhpUnusedPrivateMethodInspection
 	 * @noinspection PhpUnusedParameterInspection
 	 */
 	private static function prepareFilterSubscribe(array &$parameters, array &$entity, array &$field)
@@ -2251,11 +2628,11 @@ final class CProductQueryBuilder
 	 * @param string $defaultValue
 	 * @return mixed
 	 */
-	private static function addDefaultValue($values, $defaultValue)
+	private static function addDefaultValue($values, string $defaultValue)
 	{
 		if (!is_array($values))
 		{
-			if ($values == $defaultValue)
+			if ($values === $defaultValue)
 			{
 				$values = [$values, ProductTable::STATUS_DEFAULT];
 			}
@@ -2277,7 +2654,6 @@ final class CProductQueryBuilder
 	 * @param array &$field
 	 * @return void
 	 *
-	 * @noinspection PhpUnusedPrivateMethodInspection
 	 * @noinspection PhpUnusedParameterInspection
 	 */
 	private static function priceParametersFilter(array &$parameters, array &$entity, array &$field)
@@ -2297,55 +2673,74 @@ final class CProductQueryBuilder
 
 	/**
 	 * @param array &$filter
-	 * @param int $filterKey
+	 * @param int|string $filterKey
 	 * @param array $entity
 	 * @param array $field
 	 * @return void
 	 *
-	 * @noinspection PhpUnusedPrivateMethodInspection
 	 * @noinspection PhpUnusedParameterInspection
 	 */
-	private static function filterModifierCurrencyScale(array &$filter, $filterKey, array $entity, array $field)
+	private static function filterModifierCurrencyScale(array &$filter, $filterKey, array $entity, array $field): void
 	{
 		$activeItem = $filter[$filterKey];
 
-		if ($activeItem['FIELD'] != 'CURRENCY_FOR_SCALE')
+		if ($activeItem['FIELD'] !== 'CURRENCY_FOR_SCALE' && $activeItem['FIELD'] !== 'CURRENCY_SCALE')
+		{
 			return;
-		if ($activeItem['OPERATION'] != 'E' && $activeItem['OPERATION'] != 'I')
+		}
+		if ($activeItem['OPERATION'] !== 'E' && $activeItem['OPERATION'] !== 'I')
+		{
 			return;
+		}
 
 		$value = $activeItem['VALUES'];
 		if (!is_string($value))
+		{
 			return;
+		}
 
 		$currencyId = Currency\CurrencyManager::checkCurrencyID($value);
 		if ($currencyId === false)
+		{
 			return;
+		}
 
 		$currency = \CCurrency::GetByID($currencyId);
 		if (empty($currency))
+		{
 			return;
+		}
 		$currency['CURRENT_BASE_RATE'] = (float)$currency['CURRENT_BASE_RATE'];
 		if ($currency['CURRENT_BASE_RATE'] <= 0)
+		{
 			return;
+		}
 
 		foreach (array_keys($filter) as $index)
 		{
 			if ($index == $filterKey)
+			{
 				continue;
+			}
 			$filterItem = $filter[$index];
 			if (
 				$filterItem['ENTITY'] != $activeItem['ENTITY']
 				|| $filterItem['ENTITY_ID'] != $activeItem['ENTITY_ID']
 			)
+			{
 				continue;
+			}
 			if ($filterItem['FIELD'] != 'PRICE')
+			{
 				continue;
+			}
 			if (is_array($filter[$index]['VALUES']))
 			{
 				$newPrices = [];
 				foreach ($filter[$index]['VALUES'] as $oldPrice)
-					$newPrices[] = (float)$oldPrice*$currency['CURRENT_BASE_RATE'];
+				{
+					$newPrices[] = (float)$oldPrice * $currency['CURRENT_BASE_RATE'];
+				}
 				$filter[$index]['VALUES'] = $newPrices;
 				unset($oldPrice, $newPrices);
 			}
@@ -2353,7 +2748,10 @@ final class CProductQueryBuilder
 			{
 				$filter[$index]['VALUES'] = (float)$filter[$index]['VALUES']*$currency['CURRENT_BASE_RATE'];
 			}
-			$filter[$index]['FIELD'] = 'SCALED_PRICE';
+			$filter[$index]['FIELD'] = $activeItem['FIELD'] === 'CURRENCY_FOR_SCALE'
+				? 'SCALED_PRICE'
+				: 'PRICE_SCALE'
+			;
 		}
 		unset($index);
 	}
@@ -2365,5 +2763,51 @@ final class CProductQueryBuilder
 	private static function getUserGroups(int $userId): array
 	{
 		return Main\UserTable::getUserGroupIds($userId);
+	}
+
+	/**
+	 * @param array &$result
+	 * @param array $entity
+	 * @param array $data
+	 */
+	private static function haldleProductUserFields(array &$result, array $entity, array $data): void
+	{
+		if (empty($data['filter']))
+		{
+			return;
+		}
+		$aliases = self::getOption('ALIASES');
+		if (empty($aliases['#ELEMENT_JOIN#']))
+		{
+			return;
+		}
+
+		$userFieldManager = new CUserTypeSQL;
+
+		foreach ($data['filter'] as $entityIndex => $rows)
+		{
+			$userFieldManager->SetEntity(ProductTable::getUfId(), $aliases['#ELEMENT_JOIN#']);
+			$userFieldManager->SetSelect([]);
+			$rawFilter = [];
+			foreach ($rows as $row)
+			{
+				$rawFilter[$row['PREFIX'].$row['FIELD']] = $row['VALUES'];
+			}
+			$userFieldManager->SetFilter($rawFilter);
+			$userFieldManager->SetOrder([]);
+
+			$filter = $userFieldManager->GetFilter();
+			if (!empty($filter))
+			{
+				$result['filter'][] = $filter;
+				$join = $userFieldManager->GetJoin($aliases['#ELEMENT_JOIN#']);
+				if (!empty($join))
+				{
+					$result['join'][$entityIndex] = $join;
+				}
+			}
+		}
+
+		unset($userFieldManager);
 	}
 }

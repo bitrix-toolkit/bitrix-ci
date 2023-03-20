@@ -3,7 +3,6 @@
 namespace Bitrix\Sale\Cashbox;
 
 use Bitrix\Main;
-use Bitrix\Sale\Basket;
 use Bitrix\Sale\BasketItem;
 use Bitrix\Sale\Cashbox\Internals\CheckRelatedEntitiesTable;
 use Bitrix\Sale\Order;
@@ -39,6 +38,18 @@ abstract class Check extends AbstractCheck
 	public const PAYMENT_OBJECT_NON_OPERATING_GAIN = 'non-operating_gain';
 	public const PAYMENT_OBJECT_SALES_TAX = 'sales_tax';
 	public const PAYMENT_OBJECT_RESORT_FEE = 'resort_fee';
+	public const PAYMENT_OBJECT_DEPOSIT = 'deposit';
+	public const PAYMENT_OBJECT_EXPENSE = 'expense';
+	public const PAYMENT_OBJECT_PENSION_INSURANCE_IP = 'pension_insurance_ip';
+	public const PAYMENT_OBJECT_PENSION_INSURANCE = 'pension_insurance';
+	public const PAYMENT_OBJECT_MEDICAL_INSURANCE_IP = 'medical_insurance_ip';
+	public const PAYMENT_OBJECT_MEDICAL_INSURANCE = 'medical_insurance';
+	public const PAYMENT_OBJECT_SOCIAL_INSURANCE = 'social_insurance';
+	public const PAYMENT_OBJECT_CASINO_PAYMENT = 'casino_payment';
+	public const PAYMENT_OBJECT_COMMODITY_MARKING_NO_MARKING_EXCISE = 'commodity_marking_no_marking_excise';
+	public const PAYMENT_OBJECT_COMMODITY_MARKING_EXCISE = 'commodity_marking_excise';
+	public const PAYMENT_OBJECT_COMMODITY_MARKING_NO_MARKING = 'commodity_marking_no_marking';
+	public const PAYMENT_OBJECT_COMMODITY_MARKING = 'commodity_marking';
 
 	private const MARKING_TYPE_CODE = '444D';
 
@@ -267,6 +278,7 @@ abstract class Check extends AbstractCheck
 						'price' => $product['PRICE'],
 						'sum' => $product['SUM'],
 						'quantity' => $product['QUANTITY'],
+						'measure_code' => $product['MEASURE_CODE'],
 						'vat' => $product['VAT'] ?? 0,
 						'vat_sum' => $product['VAT_SUM'] ?? 0,
 						'payment_object' => $product['PAYMENT_OBJECT'],
@@ -276,6 +288,11 @@ abstract class Check extends AbstractCheck
 					if (isset($product['NOMENCLATURE_CODE']))
 					{
 						$item['nomenclature_code'] = $product['NOMENCLATURE_CODE'];
+					}
+
+					if (isset($product['MARKING_CODE']))
+					{
+						$item['marking_code'] = $product['MARKING_CODE'];
 					}
 
 					if (isset($product['BARCODE']))
@@ -451,26 +468,31 @@ abstract class Check extends AbstractCheck
 						$item['QUANTITY'] = 1;
 						$item['SUM'] = $basketItem->getPriceWithVat();
 
-						$collection = $shipmentItem->getShipmentItemStoreCollection();
-						foreach ($collection as $itemStore)
+						$shipmentItemStoreCollection = $shipmentItem->getShipmentItemStoreCollection();
+						if ($shipmentItemStoreCollection)
 						{
-							$item['NOMENCLATURE_CODE'] = $this->buildTag1162(
-								$itemStore->getMarkingCode(),
-								$basketItem->getMarkingCodeGroup()
-							);
-							$item['BARCODE'] = $itemStore->getBarcode();
-
-							$result['PRODUCTS'][] = $item;
-						}
-
-						$diff = $shipmentItem->getQuantity() - $collection->count();
-						if ($diff)
-						{
-							for ($i = 0; $i < $diff; $i++)
+							foreach ($shipmentItemStoreCollection as $itemStore)
 							{
-								$item['NOMENCLATURE_CODE'] = '';
+								$item['NOMENCLATURE_CODE'] = $this->buildTag1162(
+									$itemStore->getMarkingCode(),
+									$basketItem->getMarkingCodeGroup()
+								);
+								$item['BARCODE'] = $itemStore->getBarcode();
+								$item['MARKING_CODE'] = $itemStore->getMarkingCode();
 
 								$result['PRODUCTS'][] = $item;
+							}
+
+							$diff = $shipmentItem->getQuantity() - $shipmentItemStoreCollection->count();
+							if ($diff)
+							{
+								for ($i = 0; $i < $diff; $i++)
+								{
+									$item['NOMENCLATURE_CODE'] = '';
+									$item['MARKING_CODE'] = '';
+
+									$result['PRODUCTS'][] = $item;
+								}
 							}
 						}
 					}
@@ -625,8 +647,9 @@ abstract class Check extends AbstractCheck
 			'PRICE' => $basketItem->getPriceWithVat(),
 			'SUM' => $basketItem->getFinalPrice(),
 			'QUANTITY' => (float)$basketItem->getQuantity(),
+			'MEASURE_CODE' => $basketItem->getField('MEASURE_CODE'),
 			'VAT' => $this->getProductVatId($basketItem),
-			'PAYMENT_OBJECT' => static::PAYMENT_OBJECT_COMMODITY
+			'PAYMENT_OBJECT' => $this->getPaymentObject($basketItem),
 		];
 
 		if ($order)
@@ -844,9 +867,8 @@ abstract class Check extends AbstractCheck
 	protected function getDeliveryVatId(Shipment $shipment)
 	{
 		$calcDeliveryTax = Main\Config\Option::get("sale", "COUNT_DELIVERY_TAX", "N");
-		if ($calcDeliveryTax === 'Y')
+		if ($calcDeliveryTax === 'Y' && $service = $shipment->getDelivery())
 		{
-			$service = $shipment->getDelivery();
 			return $service->getVatId();
 		}
 
@@ -870,7 +892,7 @@ abstract class Check extends AbstractCheck
 			$vatId = $this->getVatIdByProductId($basketItem->getProductId());
 			if ($vatId === 0)
 			{
-				$vatRate = (int)($basketItem->getVatRate() * 100);
+				$vatRate = (int)((float)$basketItem->getVatRate() * 100);
 				if ($vatRate > 0)
 				{
 					$vatId = $this->getVatIdByVatRate($vatRate);
@@ -923,7 +945,7 @@ abstract class Check extends AbstractCheck
 
 			foreach ($data['PRODUCTS'] as $product)
 			{
-				if (isset($product['NOMENCLATURE_CODE']) && $product['NOMENCLATURE_CODE'] === '')
+				if (isset($product['MARKING_CODE']) && $product['MARKING_CODE'] === '')
 				{
 					if (isset($errors[$product['PRODUCT_ID']]))
 					{
@@ -1043,5 +1065,18 @@ abstract class Check extends AbstractCheck
 		}
 
 		return $result;
+	}
+
+	protected function getPaymentObject(BasketItem $basketItem): string
+	{
+		if ($basketItem->isService())
+		{
+			return static::PAYMENT_OBJECT_SERVICE;
+		}
+
+		return $this->needPrintMarkingCode($basketItem)
+			? static::PAYMENT_OBJECT_COMMODITY_MARKING
+			: static::PAYMENT_OBJECT_COMMODITY
+		;
 	}
 }

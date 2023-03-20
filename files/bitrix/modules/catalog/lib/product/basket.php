@@ -244,6 +244,14 @@ class Basket
 			unset($fields['MODULE']);
 		}
 
+		if (
+			$module === 'catalog'
+			&& !isset($fields['PRODUCT_PROVIDER_CLASS'])
+		)
+		{
+			$fields['PRODUCT_PROVIDER_CLASS'] = self::getDefaultProviderName();
+		}
+
 		$transferFields = [
 			'PRODUCT_PROVIDER_CLASS' => true,
 			'CALLBACK_FUNC' => true,
@@ -492,21 +500,21 @@ class Basket
 				}
 			}
 
-			$fields = $fields +
-				[
-					'DETAIL_PAGE_URL' => $elementFields['~DETAIL_PAGE_URL'],
-					'BARCODE_MULTI' => $productFields['BARCODE_MULTI'],
-					'WEIGHT' => (float)$productFields['WEIGHT'],
-					'DIMENSIONS' => [
-						'WIDTH' => $productFields['WIDTH'],
-						'HEIGHT' => $productFields['HEIGHT'],
-						'LENGTH' => $productFields['LENGTH']
-					],
-					'TYPE' => ($productFields['TYPE'] == Catalog\ProductTable::TYPE_SET ? \CCatalogProductSet::TYPE_SET : null),
-					'MEASURE_ID' => $productFields['MEASURE'],
-					'MEASURE_NAME' => $productFields['MEASURE_NAME'],
-					'MEASURE_CODE' => $productFields['MEASURE_CODE']
-				];
+			$fields['TYPE'] = Sale\Internals\Catalog\ProductTypeMapper::getType((int)$productFields['TYPE']);
+
+			$fields += [
+				'DETAIL_PAGE_URL' => $elementFields['~DETAIL_PAGE_URL'],
+				'BARCODE_MULTI' => $productFields['BARCODE_MULTI'],
+				'WEIGHT' => (float)$productFields['WEIGHT'],
+				'DIMENSIONS' => [
+					'WIDTH' => $productFields['WIDTH'],
+					'HEIGHT' => $productFields['HEIGHT'],
+					'LENGTH' => $productFields['LENGTH']
+				],
+				'MEASURE_ID' => $productFields['MEASURE'],
+				'MEASURE_NAME' => $productFields['MEASURE_NAME'],
+				'MEASURE_CODE' => $productFields['MEASURE_CODE']
+			];
 
 			unset($productFields);
 		}
@@ -656,25 +664,30 @@ class Basket
 		{
 			$properties[$iblockId] = [];
 			$iterator = Iblock\PropertyTable::getList([
-				'select' => ['ID'],
+				'select' => [
+					'ID',
+					'CODE',
+				],
 				'filter' => [
 					'=IBLOCK_ID' => $iblockId,
 					'=ACTIVE' => 'Y',
-					'=PROPERTY_TYPE' => [
+					'@PROPERTY_TYPE' => [
 						Iblock\PropertyTable::TYPE_ELEMENT,
 						Iblock\PropertyTable::TYPE_LIST,
-						Iblock\PropertyTable::TYPE_STRING
+						Iblock\PropertyTable::TYPE_STRING,
 					],
-					'=MULTIPLE' => 'N'
+					'=MULTIPLE' => 'N',
 				],
-				'order' => ['ID' => 'ASC']
+				'order' => [
+					'ID' => 'ASC',
+				]
 			]);
 			while ($row = $iterator->fetch())
 			{
 				$row['ID'] = (int)$row['ID'];
 				if ($row['ID'] == $skuPropertyId)
 					continue;
-				$properties[$iblockId][] = $row['ID'];
+				$properties[$iblockId][] = $row['CODE'] ?? $row['ID'];
 			}
 			unset($row, $iterator);
 		}

@@ -1,6 +1,6 @@
 <?php
 define("BX_USE_MYSQLI", true);
-$DBDebug = boolval(getenv('DEBUG', true) ?: getenv('DEBUG'));
+$DBDebug = false;
 $DBDebugToFile = false;
 
 define("CACHED_b_file", 3600);

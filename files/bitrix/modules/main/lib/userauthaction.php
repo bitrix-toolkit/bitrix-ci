@@ -8,9 +8,28 @@
 namespace Bitrix\Main;
 
 use Bitrix\Main\Entity;
+use Bitrix\Main\ORM\Data;
 
+/**
+ * Class UserAuthActionTable
+ *
+ * DO NOT WRITE ANYTHING BELOW THIS
+ *
+ * <<< ORMENTITYANNOTATION
+ * @method static EO_UserAuthAction_Query query()
+ * @method static EO_UserAuthAction_Result getByPrimary($primary, array $parameters = [])
+ * @method static EO_UserAuthAction_Result getById($id)
+ * @method static EO_UserAuthAction_Result getList(array $parameters = [])
+ * @method static EO_UserAuthAction_Entity getEntity()
+ * @method static \Bitrix\Main\EO_UserAuthAction createObject($setDefaultValues = true)
+ * @method static \Bitrix\Main\EO_UserAuthAction_Collection createCollection()
+ * @method static \Bitrix\Main\EO_UserAuthAction wakeUpObject($row)
+ * @method static \Bitrix\Main\EO_UserAuthAction_Collection wakeUpCollection($rows)
+ */
 class UserAuthActionTable extends Entity\DataManager
 {
+	use Data\Internal\DeleteByFilterTrait;
+
 	const PRIORITY_HIGH = 100;
 	const PRIORITY_LOW = 200;
 
@@ -46,25 +65,6 @@ class UserAuthActionTable extends Entity\DataManager
 				'data_type' => 'string'
 			),
 		);
-	}
-
-	/**
-	 * @param array $filter
-	 */
-	public static function deleteByFilter(array $filter)
-	{
-		$entity = static::getEntity();
-		$conn = $entity->getConnection();
-
-		$where = Entity\Query::buildFilterSql($entity, $filter);
-
-		if($where <> '')
-		{
-			$where = " WHERE ".$where;
-		}
-
-		$conn->queryExecute("delete from b_user_auth_action".$where);
-		$entity->cleanCache();
 	}
 
 	/**

@@ -26,6 +26,11 @@ class Result
 		$this->errors = new ErrorCollection();
 	}
 
+	public function __clone()
+	{
+		$this->errors = clone $this->errors;
+	}
+
 	/**
 	 * Returns the result status.
 	 *
@@ -92,8 +97,11 @@ class Result
 	 */
 	public function addErrors(array $errors)
 	{
-		$this->isSuccess = false;
-		$this->errors->add($errors);
+		if ($errors)
+		{
+			$this->isSuccess = false;
+			$this->errors->add($errors);
+		}
 		return $this;
 	}
 

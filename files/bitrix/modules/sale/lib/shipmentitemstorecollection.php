@@ -8,10 +8,6 @@ use Bitrix\Main\Localization\Loc;
 
 Loc::loadMessages(__FILE__);
 
-/**
- * Class ShipmentItemStoreCollection
- * @package Bitrix\Sale
- */
 class ShipmentItemStoreCollection extends Internals\EntityCollection
 {
 	/** @var  ShipmentItem */
@@ -88,6 +84,8 @@ class ShipmentItemStoreCollection extends Internals\EntityCollection
 	public function createItem(BasketItem $basketItem)
 	{
 		$registry = Registry::getInstance(static::getRegistryType());
+
+		/** @var ShipmentItemStore $itemClassName */
 		$itemClassName =  $registry->getShipmentItemStoreClassName();
 
 		$item = $itemClassName::create($this, $basketItem);
@@ -245,9 +243,15 @@ class ShipmentItemStoreCollection extends Internals\EntityCollection
 	 */
 	public function onItemModify(Internals\CollectableEntity $item, $name = null, $oldValue = null, $value = null)
 	{
+		$result = new Result();
+
 		if ($name == "QUANTITY")
 		{
-			return $this->checkAvailableQuantity($item);
+			$r = $this->checkAvailableQuantity($item);
+			if (!$r->isSuccess())
+			{
+				return $result->addErrors($r->getErrors());
+			}
 		}
 
 		return new Result();
@@ -274,9 +278,9 @@ class ShipmentItemStoreCollection extends Internals\EntityCollection
 		$itemStoreQuantity = (float)$this->getQuantityByBasketCode($shipmentItem->getBasketCode());
 
 		if (
-			(float)$item->getQuantity() > (float)$shipmentItem->getQuantity()
+			(float)$item->getQuantity() > $shipmentItem->getQuantity()
 			||
-			$itemStoreQuantity > (float)$shipmentItem->getQuantity()
+			$itemStoreQuantity > $shipmentItem->getQuantity()
 		)
 		{
 			$result->addError(new Main\Error(
@@ -531,6 +535,16 @@ class ShipmentItemStoreCollection extends Internals\EntityCollection
 		}
 
 		return null;
+	}
+
+	public function getItemsByStoreId(int $storeId) : Internals\CollectionFilterIterator
+	{
+		$callback = function (ShipmentItemStore $itemStore) use ($storeId)
+		{
+			return $itemStore->getStoreId() === $storeId;
+		};
+
+		return new Internals\CollectionFilterIterator($this->getIterator(), $callback);
 	}
 
 	/**

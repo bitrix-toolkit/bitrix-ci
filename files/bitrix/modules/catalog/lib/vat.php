@@ -1,9 +1,9 @@
 <?php
 namespace Bitrix\Catalog;
 
-use Bitrix\Main;
 use Bitrix\Main\Localization\Loc;
-Loc::loadMessages(__FILE__);
+use Bitrix\Main\ORM;
+use Bitrix\Main\Type;
 
 /**
  * Class VatTable
@@ -24,9 +24,9 @@ Loc::loadMessages(__FILE__);
  *
  * <<< ORMENTITYANNOTATION
  * @method static EO_Vat_Query query()
- * @method static EO_Vat_Result getByPrimary($primary, array $parameters = array())
+ * @method static EO_Vat_Result getByPrimary($primary, array $parameters = [])
  * @method static EO_Vat_Result getById($id)
- * @method static EO_Vat_Result getList(array $parameters = array())
+ * @method static EO_Vat_Result getList(array $parameters = [])
  * @method static EO_Vat_Entity getEntity()
  * @method static \Bitrix\Catalog\EO_Vat createObject($setDefaultValues = true)
  * @method static \Bitrix\Catalog\EO_Vat_Collection createCollection()
@@ -34,14 +34,14 @@ Loc::loadMessages(__FILE__);
  * @method static \Bitrix\Catalog\EO_Vat_Collection wakeUpCollection($rows)
  */
 
-class VatTable extends Main\Entity\DataManager
+class VatTable extends ORM\Data\DataManager
 {
 	/**
 	 * Returns DB table name for entity.
 	 *
 	 * @return string
 	 */
-	public static function getTableName()
+	public static function getTableName(): string
 	{
 		return 'b_catalog_vat';
 	}
@@ -51,50 +51,156 @@ class VatTable extends Main\Entity\DataManager
 	 *
 	 * @return array
 	 */
-	public static function getMap()
+	public static function getMap(): array
 	{
-		return array(
-			'ID' => new Main\Entity\IntegerField('ID', array(
-				'primary' => true,
-				'autocomplete' => true,
-				'title' => Loc::getMessage('VAT_ENTITY_ID_FIELD'),
-			)),
-			'TIMESTAMP_X' => new Main\Entity\DatetimeField('TIMESTAMP_X', array(
-				'required' => true,
-				'default_value' => function(){ return new Main\Type\DateTime(); },
-				'title' => Loc::getMessage('VAT_ENTITY_TIMESTAMP_X_FIELD'),
-			)),
-			'ACTIVE' => new Main\Entity\BooleanField('ACTIVE', array(
-				'values' => array('N', 'Y'),
-				'default_value' => 'Y',
-				'title' => Loc::getMessage('VAT_ENTITY_ACTIVE_FIELD'),
-			)),
-			'SORT' => new Main\Entity\IntegerField('SORT', array(
-				'column_name' => 'C_SORT',
-				'default_value' => 100,
-				'title' => Loc::getMessage('VAT_ENTITY_SORT_FIELD'),
-			)),
-			'NAME' => new Main\Entity\StringField('NAME',  array(
-				'required' => true,
-				'validation' => array(__CLASS__, 'validateName'),
-				'title' => Loc::getMessage('VAT_ENTITY_NAME_FIELD'),
-			)),
-			'RATE' => new Main\Entity\FloatField('RATE', array(
-				'required' => true,
-				'title' => Loc::getMessage('VAT_ENTITY_RATE_FIELD'),
-			)),
-		);
+		return [
+			'ID' => new ORM\Fields\IntegerField(
+				'ID',
+				[
+					'primary' => true,
+					'autocomplete' => true,
+					'title' => Loc::getMessage('VAT_ENTITY_ID_FIELD'),
+				]
+			),
+			'TIMESTAMP_X' => new ORM\Fields\DatetimeField(
+				'TIMESTAMP_X',
+				[
+					'required' => true,
+					'default_value' => function()
+					{
+						return new Type\DateTime();
+					},
+					'title' => Loc::getMessage('VAT_ENTITY_TIMESTAMP_X_FIELD'),
+				]
+			),
+			'ACTIVE' => new ORM\Fields\BooleanField(
+				'ACTIVE',
+				[
+					'values' => [
+						'N',
+						'Y',
+					],
+					'default_value' => 'Y',
+					'title' => Loc::getMessage('VAT_ENTITY_ACTIVE_FIELD'),
+				]
+			),
+			'SORT' => new ORM\Fields\IntegerField(
+				'SORT',
+				[
+					'column_name' => 'C_SORT',
+					'default_value' => 100,
+					'title' => Loc::getMessage('VAT_ENTITY_SORT_FIELD'),
+				]
+			),
+			'NAME' => new ORM\Fields\StringField(
+				'NAME',
+				[
+					'required' => true,
+					'validation' => function()
+					{
+						return [
+							new ORM\Fields\Validators\LengthValidator(null, 50),
+						];
+					},
+					'title' => Loc::getMessage('VAT_ENTITY_NAME_FIELD'),
+				]
+			),
+			'RATE' => new ORM\Fields\FloatField(
+				'RATE',
+				[
+					'nullable' => true,
+					'title' => Loc::getMessage('VAT_ENTITY_RATE_FIELD'),
+				]
+			),
+			'EXCLUDE_VAT' => new ORM\Fields\BooleanField(
+				'EXCLUDE_VAT',
+				[
+					'values' => [
+						'N',
+						'Y',
+					],
+					'default_value' => 'N',
+					'title' => Loc::getMessage('VAT_ENTITY_ACTIVE_FIELD'),
+				]
+			),
+			'XML_ID' => new ORM\Fields\StringField(
+				'XML_ID',
+				[
+					'required' => false,
+					'validation' => function()
+					{
+						return [
+							new ORM\Fields\Validators\LengthValidator(null, 255),
+						];
+					},
+					'title' => Loc::getMessage('VAT_ENTITY_XML_ID_FIELD'),
+				]
+			),
+		];
 	}
+
 	/**
-	 * Returns validators for NAME field.
+	 * Default onBeforeAdd handler. Absolutely necessary.
 	 *
-	 * @return array
+	 * @param ORM\Event $event Current data for add.
+	 * @return ORM\EventResult
 	 */
-	public static function validateName()
+	public static function onBeforeAdd(ORM\Event $event): ORM\EventResult
 	{
-		return array(
-			new Main\Entity\Validator\Length(null, 50),
-		);
+		$result = new ORM\EventResult;
+		$fields = $event->getParameter('fields');
+
+		if (isset($fields['EXCLUDE_VAT']) && $fields['EXCLUDE_VAT'] === 'Y')
+		{
+			if (static::isExistsExcludeVat())
+			{
+				$result->addError(
+					new ORM\EntityError(Loc::getMessage('VAT_ENTITY_ERR_EXCLUDE_VAT_ALREADY_EXISTS'))
+				);
+
+				return $result;
+			}
+
+			$result->modifyFields([
+				'RATE' => null,
+			]);
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Default onBeforeUpdate handler. Absolutely necessary.
+	 *
+	 * @param ORM\Event $event Current data for update.
+	 * @return ORM\EventResult
+	 */
+	public static function onBeforeUpdate(ORM\Event $event): ORM\EventResult
+	{
+		$result = new ORM\EventResult;
+		$fields = $event->getParameter('fields');
+
+		if (isset($fields['EXCLUDE_VAT']) && $fields['EXCLUDE_VAT'] === 'Y')
+		{
+			$id = (int)$event->getParameter('primary')['ID'];
+
+			$excludeId = static::getExcludeVatId();
+
+			if ($excludeId !== null && $excludeId !== $id)
+			{
+				$result->addError(
+					new ORM\EntityError(Loc::getMessage('VAT_ENTITY_ERR_EXCLUDE_VAT_ALREADY_EXISTS'))
+				);
+
+				return $result;
+			}
+
+			$result->modifyFields([
+				'RATE' => null,
+			]);
+		}
+
+		return $result;
 	}
 
 	/**
@@ -111,11 +217,13 @@ class VatTable extends Main\Entity\DataManager
 			return null;
 		}
 		$row = static::getList([
-			'select' => ['ID'],
+			'select' => [
+				'ID',
+			],
 			'filter' => [
 				'=ACTIVE' => 'Y',
 				'=RATE' => $rate,
-			]
+			],
 		])->fetch();
 		if (!empty($row))
 		{
@@ -134,5 +242,37 @@ class VatTable extends Main\Entity\DataManager
 		}
 
 		return null;
+	}
+
+	/**
+	 * Returns true, if system vat exists.
+	 *
+	 * @return bool
+	 */
+	public static function isExistsExcludeVat(): bool
+	{
+		return (static::getExcludeVatId() !== null);
+	}
+
+	/**
+	 * Returns excluded vat id, if exists.
+	 *
+	 * @return int|null
+	 */
+	public static function getExcludeVatId(): ?int
+	{
+		$iterator = static::getList([
+			'select' => [
+				'ID',
+			],
+			'filter' => [
+				'=EXCLUDE_VAT' => 'Y',
+			],
+			'limit' => 1,
+		]);
+		$row = $iterator->fetch();
+		unset($iterator);
+
+		return (!empty($row) ? (int)$row['ID'] : null);
 	}
 }

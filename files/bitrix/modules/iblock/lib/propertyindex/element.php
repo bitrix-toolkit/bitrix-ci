@@ -110,10 +110,13 @@ class Element
 			));
 			while ($property = $properties->fetch())
 			{
-				self::$filterPropertyID[$iblockId][] = $property['PROPERTY_ID'];
+				self::$filterPropertyID[$iblockId][$property['PROPERTY_ID']] = $property['PROPERTY_ID'];
 			}
 			unset($property);
 			unset($properties);
+
+			self::$filterPropertyID[$iblockId] = array_values(self::$filterPropertyID[$iblockId]);
+			sort(self::$filterPropertyID[$iblockId]);
 		}
 
 		$elementList = \CIBlockElement::getPropertyValues(
@@ -206,10 +209,7 @@ class Element
 	 */
 	public function getPropertyValues($propertyId)
 	{
-		if (!$this->elementPropertyValues[$propertyId])
-			return array();
-		else
-			return $this->elementPropertyValues[$propertyId];
+		return $this->elementPropertyValues[$propertyId] ?? [];
 	}
 
 	/**
@@ -221,7 +221,7 @@ class Element
 	 */
 	public function getPriceValues($priceId)
 	{
-		return $this->elementPrices[$priceId];
+		return $this->elementPrices[$priceId] ?? [];
 	}
 
 	/**

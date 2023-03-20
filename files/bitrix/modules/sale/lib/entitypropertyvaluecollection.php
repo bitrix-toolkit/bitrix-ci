@@ -131,7 +131,7 @@ abstract class EntityPropertyValueCollection extends EntityCollection
 			$propertyClass = static::getPropertyClassName();
 			/** @var EntityProperty $property */
 			$property = $propertyClass::getObjectById($value['ORDER_PROPS_ID']);
-			if ($property)
+			if ($property && isset($value['VALUE']))
 			{
 				$property->onValueDelete($value['VALUE']);
 			}
@@ -245,6 +245,22 @@ abstract class EntityPropertyValueCollection extends EntityCollection
 	public function getAddress()
 	{
 		return $this->getAttribute('IS_ADDRESS');
+	}
+
+	/**
+	 * @return EntityPropertyValue
+	 */
+	public function getAddressFrom()
+	{
+		return $this->getAttribute('IS_ADDRESS_FROM');
+	}
+
+	/**
+	 * @return EntityPropertyValue
+	 */
+	public function getAddressTo()
+	{
+		return $this->getAttribute('IS_ADDRESS_TO');
 	}
 
 	/**

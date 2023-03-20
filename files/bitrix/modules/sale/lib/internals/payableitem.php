@@ -3,14 +3,15 @@
 namespace Bitrix\Sale\Internals;
 
 use Bitrix\Main;
+use Bitrix\Main\ORM\Fields\Relations\Reference;
+use Bitrix\Main\ORM\Query\Join;
 use Bitrix\Sale;
 
 /**
  * Class PayableItemTable
  * @package Bitrix\Sale\Internals
  */
-
-class PayableItemTable extends Main\Entity\DataManager
+class PayableItemTable extends Main\ORM\Data\DataManager
 {
 	/**
 	 * @return string
@@ -65,6 +66,22 @@ class PayableItemTable extends Main\Entity\DataManager
 			'XML_ID' => [
 				'data_type' => 'string'
 			],
+			//
+			'PAYMENT' => new Reference(
+				'PAYMENT',
+				PaymentTable::class,
+				Join::on('this.PAYMENT_ID', 'ref.ID')
+			),
+			'BASKET' => new Reference(
+				'BASKET',
+				BasketTable::class,
+				Join::on('this.ENTITY_ID', 'ref.ID')->where('this.ENTITY_TYPE', Sale\Registry::ENTITY_BASKET_ITEM)
+			),
+			'SHIPMENT' => new Reference(
+				'SHIPMENT',
+				ShipmentTable::class,
+				Join::on('this.ENTITY_ID', 'ref.ID')->where('this.ENTITY_TYPE', Sale\Registry::ENTITY_SHIPMENT)
+			),
 		];
 	}
 }

@@ -166,7 +166,9 @@ final class Manager
 		static $cashboxObjects = array();
 
 		if ((int)$id <= 0)
+		{
 			return null;
+		}
 
 		if (!isset($cashboxObjects[$id]))
 		{
@@ -175,13 +177,15 @@ final class Manager
 			{
 				$cashbox = Cashbox::create($data);
 				if ($cashbox === null)
+				{
 					return null;
+				}
 
 				$cashboxObjects[$id] = $cashbox;
 			}
 		}
 
-		return $cashboxObjects[$id];
+		return $cashboxObjects[$id] ?? null;
 	}
 
 	/**
@@ -334,7 +338,10 @@ final class Manager
 
 		if (
 			is_subclass_of($data['HANDLER'], ICheckable::class)
-			|| is_subclass_of($data['HANDLER'], ICorrection::class)
+			|| (
+				is_subclass_of($data['HANDLER'], ICorrection::class)
+				&& $data['HANDLER']::isCorrectionOn()
+			)
 		)
 		{
 			static::addCheckStatusAgent();
@@ -504,7 +511,7 @@ final class Manager
 			$cashbox = Cashbox::create($item);
 			if (
 				$cashbox instanceof ICheckable
-				|| $cashbox instanceof ICorrection
+				|| $cashbox->isCorrection()
 			)
 			{
 				$availableCashboxList[$item['ID']] = $cashbox;

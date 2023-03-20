@@ -4,13 +4,15 @@ namespace Bitrix\Sale\Controller\Action\Entity;
 
 use Bitrix\Main;
 use Bitrix\Sale;
+use Bitrix\Catalog;
 
 /**
  * Class UpdateBasketItemAction
  * @package Bitrix\Sale\Controller\Action\Entity
  * @example BX.ajax.runAction("sale.entity.updateBasketItem", { data: { id: 1, fields: { quantity: 2 }}});
+ * @internal
  */
-class UpdateBasketItemAction extends BaseAction
+final class UpdateBasketItemAction extends BaseAction
 {
 	public function run(int $id, array $fields)
 	{
@@ -44,6 +46,9 @@ class UpdateBasketItemAction extends BaseAction
 				'=ID' => $id
 			]
 		]);
+
+		$fields = $this->prepareBasketFields($fields);
+
 		if ($basketItemData = $basketIterator->fetch())
 		{
 			if (empty($basketItemData['ORDER_ID']))
@@ -60,8 +65,12 @@ class UpdateBasketItemAction extends BaseAction
 							/** @var Main\Error $error */
 							foreach ($setFieldResult->getErrors() as $error)
 							{
-								// set field error
-								$result->addError(new Main\Error($error->getMessage(), 202150010000));
+								$result->addError(
+									new Main\Error(
+										$error->getMessage(),
+										Sale\Controller\ErrorEnumeration::UPDATE_BASKET_ITEM_ACTION_SET_FIELD
+									)
+								);
 							}
 						}
 					}
@@ -71,8 +80,12 @@ class UpdateBasketItemAction extends BaseAction
 					{
 						foreach ($checkQuantityResult->getErrors() as $error)
 						{
-							// check quantity error
-							$result->addError(new Main\Error($error->getMessage(), 202150030000));
+							$result->addError(
+								new Main\Error(
+									$error->getMessage(),
+									Sale\Controller\ErrorEnumeration::UPDATE_BASKET_ITEM_ACTION_CHECK_QUANTITY
+								)
+							);
 						}
 					}
 
@@ -91,25 +104,44 @@ class UpdateBasketItemAction extends BaseAction
 							/** @var Main\Error $error */
 							foreach ($saveResult->getErrors() as $error)
 							{
-								// save basket error
-								$result->addError(new Main\Error($error->getMessage(), 202150020000));
+								$result->addError(
+									new Main\Error(
+										$error->getMessage(),
+										Sale\Controller\ErrorEnumeration::UPDATE_BASKET_ITEM_ACTION_SAVE_BASKET
+									)
+								);
 							}
 						}
 					}
 				}
 				else
 				{
-					$result->addError(new Main\Error('basket item load error', 202150000002));
+					$result->addError(
+						new Main\Error(
+							'basket item load error',
+							Sale\Controller\ErrorEnumeration::UPDATE_BASKET_ITEM_ACTION_BASKET_LOAD
+						)
+					);
 				}
 			}
 			else
 			{
-				$result->addError(new Main\Error('there is order with this basket item', 202150000001));
+				$result->addError(
+					new Main\Error(
+						'there is order with this basket item',
+						Sale\Controller\ErrorEnumeration::UPDATE_BASKET_ITEM_ACTION_ORDER_EXIST
+					)
+				);
 			}
 		}
 		else
 		{
-			$result->addError(new Main\Error('basket item with id '.$id.' is not exists', 202140400001));
+			$result->addError(
+				new Main\Error(
+					'basket item with id '.$id.' is not exists',
+					Sale\Controller\ErrorEnumeration::UPDATE_BASKET_ITEM_ACTION_BASKET_ITEM_NOT_EXIST
+				)
+			);
 		}
 
 		return $result;
@@ -158,5 +190,21 @@ class UpdateBasketItemAction extends BaseAction
 		}
 
 		return $quantityList;
+	}
+
+	private function prepareBasketFields(array $fields): array
+	{
+		$fields = $this->filterBasketFieldsOnUpdate($fields);
+
+		$fields['PRODUCT_PROVIDER_CLASS'] = Catalog\Product\Basket::getDefaultProviderName();
+
+		$settableFields = Sale\BasketItemBase::getSettableFields();
+		return array_filter(
+			$fields,
+			static function ($field) use ($settableFields) {
+				return in_array($field, $settableFields, true);
+			},
+			ARRAY_FILTER_USE_KEY
+		);
 	}
 }

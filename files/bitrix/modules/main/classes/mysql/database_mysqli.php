@@ -6,6 +6,8 @@
  * @copyright 2001-2014 Bitrix
  */
 
+use Bitrix\Main;
+
 /********************************************************************
 *	MySQLi database classes
 ********************************************************************/
@@ -46,6 +48,9 @@ class CDatabase extends CDatabaseMysql
 
 	protected function QueryInternal($strSql)
 	{
+		// back to default before PHP 8.1
+		mysqli_report(MYSQLI_REPORT_OFF);
+
 		return mysqli_query($this->db_Conn, $strSql, MYSQLI_STORE_RESULT);
 	}
 
@@ -221,8 +226,7 @@ class CDBResult extends CDBResultMysql
 			$this->NavPageCount++;
 
 		//page number to display. start with 1
-		$session = \Bitrix\Main\Application::getInstance()->getSession();
-		$this->NavPageNomer = ($this->PAGEN < 1 || $this->PAGEN > $this->NavPageCount? ($session[$this->SESS_PAGEN] < 1 || $session[$this->SESS_PAGEN] > $this->NavPageCount? 1: $session[$this->SESS_PAGEN]):$this->PAGEN);
+		$this->calculatePageNumber();
 
 		//rows to skip
 		$NavFirstRecordShow = $this->NavPageSize * ($this->NavPageNomer-1);

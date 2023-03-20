@@ -51,7 +51,7 @@ class CUndo
 			}
 			$CACHE_MANAGER->Set($cacheId, $arUndoCache);
 		}
-		$arUndo = $arUndoCache[$ID][$USER->GetId()];
+		$arUndo = $arUndoCache[$ID][$USER->GetId()] ?? false;
 
 		if (!$arUndo)
 			return false;
@@ -407,15 +407,15 @@ class CAutoSave
 		$arParams = array();
 		foreach ($_GET as $param => $value)
 		{
-			$param = ToUpper($param);
+			$param = strtoupper($param);
 
-			if (mb_substr($param, -2) == 'ID' || array_key_exists($param, self::$arImportantParams))
+			if (substr($param, -2) == 'ID' || array_key_exists($param, self::$arImportantParams))
 				$arParams[$param] = $value;
 		}
 
 		ksort($arParams);
 
-		$url = ToLower($APPLICATION->GetCurPage()).'?';
+		$url = mb_strtolower($APPLICATION->GetCurPage()).'?';
 		foreach ($arParams as $param => $value)
 		{
 			if (is_array($value))
@@ -444,8 +444,8 @@ class CAutoSave
 
 		if (self::$bAllowed == null)
 		{
-			$arOpt = CUserOptions::GetOption('global', 'settings');
-			self::$bAllowed = $arOpt['autosave'] != 'N' && $APPLICATION->GetCurPage() != '/bitrix/admin/update_system.php';
+			$arOpt = CUserOptions::GetOption('global', 'settings', []);
+			self::$bAllowed = (!isset($arOpt['autosave']) || $arOpt['autosave'] != 'N') && $APPLICATION->GetCurPage() != '/bitrix/admin/update_system.php';
 		}
 
 		return self::$bAllowed;

@@ -38,7 +38,7 @@ abstract class EntityProperty
 	 */
 	public function getField($name)
 	{
-		return $this->fields[$name];
+		return $this->fields[$name] ?? null;
 	}
 
 	/**
@@ -136,7 +136,7 @@ abstract class EntityProperty
 	 */
 	public function __construct(array $property, array $relation = null)
 	{
-		if (is_array($property['SETTINGS']))
+		if (isset($property['SETTINGS']) && is_array($property['SETTINGS']))
 		{
 			$property += $property['SETTINGS'];
 			unset ($property['SETTINGS']);
@@ -212,8 +212,6 @@ abstract class EntityProperty
 				}
 				catch (\Exception $exception)
 				{
-					trigger_error($exception->getMessage() . ' Data: "'.$value.'"', E_USER_WARNING);
-
 					$result = (new Address(LANGUAGE_ID))
 						->setFieldValue(Address\FieldType::ADDRESS_LINE_2, $value)
 						->toArray();
@@ -298,9 +296,17 @@ abstract class EntityProperty
 
 		$dbRes = static::getList([
 			'select' => [
-				'ID', 'IS_LOCATION', 'IS_EMAIL', 'IS_PROFILE_NAME',
-				'IS_PAYER', 'IS_LOCATION4TAX', 'IS_ZIP', 'IS_PHONE',
+				'ID',
+				'IS_LOCATION',
+				'IS_EMAIL',
+				'IS_PROFILE_NAME',
+				'IS_PAYER',
+				'IS_LOCATION4TAX',
+				'IS_ZIP',
+				'IS_PHONE',
 				'IS_ADDRESS',
+				'IS_ADDRESS_FROM',
+				'IS_ADDRESS_TO',
 			],
 			'filter' => [
 				'=ACTIVE' => 'Y',
@@ -377,11 +383,11 @@ abstract class EntityProperty
 			}
 		}
 
-		if (!is_array($value) && trim($value) !== '')
+		if (!is_array($value) && isset($value))
 		{
-			$value = trim($value);
+			$value = trim((string)$value);
 
-			if ($this->getField('IS_EMAIL') === 'Y')
+			if ($value !== '' && $this->getField('IS_EMAIL') === 'Y')
 			{
 				if (!check_email($value, true))
 				{
@@ -391,7 +397,7 @@ abstract class EntityProperty
 						)
 					);
 				}
-			}	
+			}
 		}
 
 		return $result;
@@ -486,18 +492,19 @@ abstract class EntityProperty
 		}
 		elseif ($this->getType() === 'ADDRESS'  && Main\Loader::includeModule('location'))
 		{
-			if (is_array($value))
+			if (!is_array($value))
 			{
-				$address = Address::fromArray($value);
-
-				$result = $address->save();
-				if (!$result->isSuccess())
-				{
-					return null;
-				}
-
-				return (int)$result->getId();
+				return null;
 			}
+
+			$address = Address::fromArray($value);
+			$result = $address->save();
+			if (!$result->isSuccess())
+			{
+				return null;
+			}
+
+			return (int)$result->getId();
 		}
 
 		return $value;

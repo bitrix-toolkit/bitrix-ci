@@ -56,26 +56,6 @@ abstract class BasketBase extends BasketItemCollection
 	}
 
 	/**
-	 * @param BasketItemBase $item
-	 * @return BasketItemBase|null
-	 * @throws Main\ArgumentException
-	 * @throws Main\ArgumentNullException
-	 * @throws Main\NotImplementedException
-	 */
-	public function getExistsItemByItem(BasketItemBase $item)
-	{
-		$propertyList = [];
-		$propertyCollection = $item->getPropertyCollection();
-		if ($propertyCollection)
-		{
-			$propertyList = $propertyCollection->getPropertyValues();
-		}
-
-		return $this->getExistsItem($item->getField('MODULE'), $item->getField('PRODUCT_ID'), $propertyList);
-	}
-
-
-	/**
 	 * @return OrderBase
 	 */
 	protected function getEntityParent()
@@ -115,7 +95,7 @@ abstract class BasketBase extends BasketItemCollection
 
 		/** @var BasketBase $collection */
 		return $basket->loadFromDb([
-			"FUSER_ID" => $fUserId,
+			"=FUSER_ID" => $fUserId,
 			"=LID" => $siteId,
 			"ORDER_ID" => null
 		]);
@@ -414,9 +394,9 @@ abstract class BasketBase extends BasketItemCollection
 			if ($this->isLoadForFUserId)
 			{
 				$filter = array(
-					'FUSER_ID' => $this->getFUserId(),
+					'=FUSER_ID' => $this->getFUserId(),
 					'ORDER_ID' => null,
-					'LID' => $this->getSiteId()
+					'=LID' => $this->getSiteId()
 				);
 			}
 
@@ -476,6 +456,8 @@ abstract class BasketBase extends BasketItemCollection
 	 */
 	public function save()
 	{
+		$this->checkCallingContext();
+
 		$result = new Result();
 
 		$this->isSaveExecuting = true;
@@ -518,7 +500,7 @@ abstract class BasketBase extends BasketItemCollection
 
 		if ($originalItemsValues)
 		{
-			foreach ($originalItemsValues as $id => $itemValues)
+			foreach ($originalItemsValues as $itemValues)
 			{
 				$this->callEventOnBeforeSaleBasketItemDeleted($itemValues);
 
@@ -545,6 +527,22 @@ abstract class BasketBase extends BasketItemCollection
 	}
 
 	/**
+	 * @return void
+	 */
+	private function checkCallingContext() : void
+	{
+		$order = $this->getOrder();
+
+		if (
+			$order
+			&& !$order->isSaveRunning()
+		)
+		{
+			trigger_error("Incorrect call to the save process. Use method save() on \Bitrix\Sale\Order entity.", E_USER_WARNING);
+		}
+	}
+
+	/**
 	 * @param $itemValues
 	 * @return void
 	 */
@@ -552,7 +550,6 @@ abstract class BasketBase extends BasketItemCollection
 	{
 		$itemValues['ENTITY_REGISTRY_TYPE'] = static::getRegistryType();
 
-		/** @var Main\Event $event */
 		$event = new Main\Event('sale', "OnBeforeSaleBasketItemDeleted", array('VALUES' => $itemValues));
 		$event->send();
 	}
@@ -565,7 +562,6 @@ abstract class BasketBase extends BasketItemCollection
 	{
 		$itemValues['ENTITY_REGISTRY_TYPE'] = static::getRegistryType();
 
-		/** @var Main\Event $event */
 		$event = new Main\Event('sale', "OnSaleBasketItemDeleted", array('VALUES' => $itemValues));
 		$event->send();
 	}
@@ -1069,7 +1065,7 @@ abstract class BasketBase extends BasketItemCollection
 		$basket->setOrder($order);
 		$basket->setSiteId($order->getSiteId());
 
-		return $basket->loadFromDb(array("ORDER_ID" => $order->getId()));
+		return $basket->loadFromDb(array("=ORDER_ID" => $order->getId()));
 	}
 
 	/**
@@ -1122,5 +1118,26 @@ abstract class BasketBase extends BasketItemCollection
 		}
 
 		return $this->refresh($strategy);
+	}
+	
+	/**
+	 * @deprecated the basket can contain duplicate items
+	 * 
+	 * @param BasketItemBase $item
+	 * @return BasketItemBase|null
+	 * @throws Main\ArgumentException
+	 * @throws Main\ArgumentNullException
+	 * @throws Main\NotImplementedException
+	 */
+	public function getExistsItemByItem(BasketItemBase $item)
+	{
+		$propertyList = [];
+		$propertyCollection = $item->getPropertyCollection();
+		if ($propertyCollection)
+		{
+			$propertyList = $propertyCollection->getPropertyValues();
+		}
+
+		return $this->getExistsItem($item->getField('MODULE'), $item->getField('PRODUCT_ID'), $propertyList);
 	}
 }

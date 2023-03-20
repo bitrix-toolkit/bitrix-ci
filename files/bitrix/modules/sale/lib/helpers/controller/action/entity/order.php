@@ -2,6 +2,7 @@
 
 namespace Bitrix\Sale\Helpers\Controller\Action\Entity;
 
+use Bitrix\Main;
 use Bitrix\Main\Config;
 use Bitrix\Main\Loader;
 use Bitrix\Sale;
@@ -12,8 +13,9 @@ use Bitrix\Iblock;
 /**
  * Class Order
  * @package Bitrix\Sale\Helpers\Controller\Action\Entity
+ * @internal
  */
-class Order
+final class Order
 {
 	/**
 	 * @param Sale\Order $order
@@ -23,25 +25,28 @@ class Order
 	 */
 	public static function getAggregateOrder(Sale\Order $order)
 	{
-		$profile = static::getProfileList([
+		$profile = self::getProfileList([
 			'USER_ID' => $order->getUserId(),
 			'PERSON_TYPE_ID' => $order->getPersonTypeId()
 		]);
 
 		return [
 			'ORDER' => $order->toArray(),
-			'PERSON_TYPE' => static::getPersonTypeList([
+			'PERSON_TYPE' => self::getPersonTypeList([
 				'ID'=>$order->getPersonTypeId()
 			]),
 			'USER_PROFILE' => $profile,
-			'USER_PROFILE_VALUES' => static::getProfileListValues([
+			'USER_PROFILE_VALUES' => self::getProfileListValues([
 				'USER_PROPS_ID' => ($profile['ID'] ?? 0),
 			]),
-			'BASKET_ITEMS' => static::getOrderProducts($order),
-			'ORDER_PRICE_TOTAL' => static::getTotal($order),
-			'PAY_SYSTEMS' => static::getPaySystemListWithRestrictions($order),
-			'DELIVERY_SERVICES' => static::getDeliveryServiceListWithRestrictions($order),
-			'PROPERTIES' => static::getOrderProperties($order),
+			'BASKET_ITEMS' => self::getOrderProducts($order),
+			'ORDER_PRICE_TOTAL' => self::getTotal($order),
+			'PAY_SYSTEMS' => self::getPaySystemListWithRestrictions($order),
+			'DELIVERY_SERVICES' => self::getDeliveryServiceListWithRestrictions($order),
+			'PROPERTIES' => self::getOrderProperties($order),
+			'VARIANTS' => self::getVariants($order),
+			'PAYMENTS' => self::getPayments($order),
+			'CHECKS' => self::getChecks($order),
 		];
 	}
 
@@ -156,24 +161,51 @@ class Order
 	public static function getTotal(Sale\Order $order)
 	{
 		/** @var Sale\Basket $basket */
-		$basket = $order->getBasket();
+		//$basket = $order->getBasket();
+
+		$calculateBasket = $order->getBasket()->createClone();
+
+		$discounts = $order->getDiscount();
+		$showPrices = $discounts->getShowPrices();
+		if (!empty($showPrices['BASKET']))
+		{
+			foreach ($showPrices['BASKET'] as $basketCode => $data)
+			{
+				$basketItem = $calculateBasket->getItemByBasketCode($basketCode);
+				if ($basketItem instanceof Sale\BasketItemBase)
+				{
+					$basketItem->setFieldNoDemand('BASE_PRICE', $data['SHOW_BASE_PRICE']);
+					$basketItem->setFieldNoDemand('PRICE', $data['SHOW_PRICE']);
+					$basketItem->setFieldNoDemand('DISCOUNT_PRICE', $data['SHOW_DISCOUNT']);
+				}
+			}
+		}
+		unset($showPrices);
 
 		$result = [
-			'ORDER_PRICE' => 0,
-			'ORDER_WEIGHT' => 0,
 			'WEIGHT_UNIT' => Config\Option::get('sale', 'weight_unit', false, $order->getSiteId()),
 			'WEIGHT_KOEF' => Config\Option::get('sale', 'weight_koef', 1, $order->getSiteId()),
-			'DISCOUNT_PRICE' => 0,
-			'DELIVERY_PRICE' => 0,
 		];
 
-		$result['BASKET_POSITIONS'] = $basket->count();
+/*		$result['BASKET_POSITIONS'] = $basket->count();
 		$result['ORDER_PRICE'] = PriceMaths::roundPrecision($basket->getPrice());
 		$result['ORDER_WEIGHT'] = $basket->getWeight();
 
 		$result['PRICE_WITHOUT_DISCOUNT_VALUE'] = $basket->getBasePrice();
 		$result['BASKET_PRICE_DISCOUNT_DIFF_VALUE'] = PriceMaths::roundPrecision(
 			$basket->getBasePrice() - $basket->getPrice()
+		);
+		$result['DISCOUNT_PRICE'] = PriceMaths::roundPrecision(
+			$order->getDiscountPrice() + ($result['PRICE_WITHOUT_DISCOUNT_VALUE'] - $result['ORDER_PRICE'])
+		); */
+
+		$result['BASKET_POSITIONS'] = $calculateBasket->count();
+		$result['ORDER_PRICE'] = PriceMaths::roundPrecision($calculateBasket->getPrice());
+		$result['ORDER_WEIGHT'] = $calculateBasket->getWeight();
+
+		$result['PRICE_WITHOUT_DISCOUNT_VALUE'] = $calculateBasket->getBasePrice();
+		$result['BASKET_PRICE_DISCOUNT_DIFF_VALUE'] = PriceMaths::roundPrecision(
+			$calculateBasket->getBasePrice() - $calculateBasket->getPrice()
 		);
 		$result['DISCOUNT_PRICE'] = PriceMaths::roundPrecision(
 			$order->getDiscountPrice() + ($result['PRICE_WITHOUT_DISCOUNT_VALUE'] - $result['ORDER_PRICE'])
@@ -297,6 +329,9 @@ class Order
 		if ($product)
 		{
 			$result = $product->getFields();
+
+			$result['TYPE'] = ($result['TYPE'] === Catalog\ProductTable::TYPE_SERVICE) ? 'service' : 'product';
+
 			if ((int)$result['PREVIEW_PICTURE'] > 0)
 			{
 				$result['PREVIEW_PICTURE_SRC'] = \CFile::GetPath($result['PREVIEW_PICTURE']);
@@ -309,6 +344,15 @@ class Order
 
 			$result['AVAILABLE_QUANTITY'] = $result['QUANTITY'];
 			unset($result['QUANTITY']);
+
+			if ($result['QUANTITY_TRACE'] === Catalog\ProductTable::STATUS_DEFAULT)
+			{
+				$result['QUANTITY_TRACE'] = (Main\Config\Option::get('catalog', 'default_quantity_trace') === 'Y') ? 'Y' : 'N';
+			}
+			if ($result['CAN_BUY_ZERO'] === Catalog\ProductTable::STATUS_DEFAULT)
+			{
+				$result['CAN_BUY_ZERO'] = (Main\Config\Option::get('catalog', 'default_can_buy_zero') === 'Y') ? 'Y' : 'N';
+			}
 
 			$checkMaxQuantity = ($result['QUANTITY_TRACE'] === 'Y' && $result['CAN_BUY_ZERO'] === 'N') ? 'Y' : 'N';
 			$result['CHECK_MAX_QUANTITY'] = $checkMaxQuantity;
@@ -416,6 +460,42 @@ class Order
 			foreach ($imageCollection as $imageItem)
 			{
 				$result['IMAGE_COLLECTION'][] = $imageItem->getFields();
+			}
+
+			$result['SKU'] = self::getSkuTree($product->getIblockId(), $product->getId());
+		}
+
+		return $result;
+	}
+
+	private static function getSkuTree(int $iblockId, int $productId): array
+	{
+		$result = [];
+
+		$skuRepository = Catalog\v2\IoC\ServiceContainer::getSkuRepository($iblockId);
+		if ($skuRepository)
+		{
+			$sku = $skuRepository->getEntityById($productId);
+			if ($sku)
+			{
+				$parentProduct = $sku->getParent();
+				if ($parentProduct)
+				{
+					/** @var Catalog\Component\SkuTree $skuTree */
+					$skuTree = Catalog\v2\IoC\ServiceContainer::make('sku.tree', ['iblockId' => $iblockId]);
+
+					$parentProductId = $parentProduct->getId();
+					$skuId = $sku->getId();
+
+					$tree = $skuTree->loadJsonOffers([$parentProductId => $skuId]);
+					if (isset($tree[$parentProductId][$skuId]))
+					{
+						$result = [
+							'TREE' => $tree[$parentProductId][$skuId],
+							'PARENT_PRODUCT_ID' => $parentProductId,
+						];
+					}
+				}
 			}
 		}
 
@@ -530,5 +610,65 @@ class Order
 		}
 
 		return $result;
+	}
+
+	private static function getVariants(Sale\Order $order): array
+	{
+		$propertyCollection = $order->getPropertyCollection();
+		if (!$propertyCollection)
+		{
+			return [];
+		}
+
+		$propertyCollectionData = $propertyCollection->getArray();
+		$propertyEnumIds = [];
+		foreach ($propertyCollectionData['properties'] as $property)
+		{
+			if ($property['TYPE'] === 'ENUM')
+			{
+				$propertyEnumIds[] = $property['ID'];
+			}
+		}
+
+		if (empty($propertyEnumIds))
+		{
+			return [];
+		}
+
+		$variants = Sale\Internals\OrderPropsVariantTable::getList([
+			'filter' => [
+				'=ORDER_PROPS_ID' => $propertyEnumIds,
+			],
+			'order' => ['SORT' => 'ASC'],
+		])->fetchAll();
+
+		return $variants;
+	}
+
+	private static function getPayments(Sale\Order $order): array
+	{
+		/** @var sale\Order $orderClone */
+		$orderClone = $order->createClone();
+		return $orderClone->getPaymentCollection()->toArray();
+	}
+
+	private static function getChecks(Sale\Order $order): array
+	{
+		$checks = [];
+
+		/** @var sale\Order $orderClone */
+		$orderClone = $order->createClone();
+
+		/** @var Sale\Payment $payment */
+		foreach ($orderClone->getPaymentCollection() as $payment)
+		{
+			$checkList = Sale\Cashbox\CheckManager::getCheckInfo($payment);
+			foreach ($checkList as $check)
+			{
+				$checks[] = $check;
+			}
+		}
+
+		return $checks;
 	}
 }

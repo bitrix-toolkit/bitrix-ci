@@ -6,11 +6,13 @@ namespace Bitrix\Sale\Controller;
 
 use Bitrix\Main\Engine\AutoWire\ExactParameter;
 use Bitrix\Main\Engine\Response\DataType\Page;
+use Bitrix\Main\Entity\ExpressionField;
 use Bitrix\Main\Error;
 use Bitrix\Sale;
 use Bitrix\Main\UI\PageNavigation;
+use Bitrix\Sale\Result;
 
-class PropertyValue extends Controller
+class PropertyValue extends ControllerBase
 {
 
 	public function getPrimaryAutoWiredParameter()
@@ -54,9 +56,11 @@ class PropertyValue extends Controller
 	//region Actions
 	public function getFieldsAction()
 	{
-		$entity = new \Bitrix\Sale\Rest\Entity\PropertyValue();
-		return ['PROPERTY_VALUE'=>$entity->prepareFieldInfos(
-			$entity->getFields()
+		$view = $this->getViewManager()
+			->getView($this);
+
+		return ['PROPERTY_VALUE'=>$view->prepareFieldInfos(
+			$view->getFields()
 		)];
 	}
 
@@ -83,7 +87,7 @@ class PropertyValue extends Controller
 		return ['PROPERTY_VALUES'=>$this->toArray($order)['ORDER']['PROPERTY_VALUES']];
 	}
 
-	public function deleteAction(\Bitrix\Sale\PropertyValue $propertyValue)
+	public function deleteAction(Sale\PropertyValue $propertyValue)
 	{
 		$r = $propertyValue->delete();
 		if($r->isSuccess())
@@ -100,15 +104,15 @@ class PropertyValue extends Controller
 		return $r->isSuccess();
 	}
 
-	public function getAction(\Bitrix\Sale\PropertyValue $propertyValue)
+	public function getAction(Sale\PropertyValue $propertyValue)
 	{
-		return ['PROPERTY_VALUE'=>$this->get($propertyValue)];
+		return ['PROPERTY_VALUE'=>$this->getItem($propertyValue)];
 	}
 
-	public function listAction($select=[], $filter=[], $order=[], PageNavigation $pageNavigation)
+	public function listAction(PageNavigation $pageNavigation, array $select = [], array $filter = [], array $order = []): Page
 	{
-		$select = empty($select)? ['*']:$select;
-		$order = empty($order)? ['ID'=>'ASC']:$order;
+		$select = empty($select) ? ['*'] : $select;
+		$order = empty($order) ? ['ID'=>'ASC'] : $order;
 		$runtime = [
 			new \Bitrix\Main\Entity\ReferenceField(
 				'ORDER_PROPS',
@@ -119,38 +123,41 @@ class PropertyValue extends Controller
 
 		$payments = \Bitrix\Sale\PropertyValue::getList(
 			[
-				'select'=>$select,
-				'filter'=>$filter,
-				'order'=>$order,
+				'select' => $select,
+				'filter' => $filter,
+				'order' => $order,
 				'offset' => $pageNavigation->getOffset(),
 				'limit' => $pageNavigation->getLimit(),
-				'runtime' => $runtime
+				'runtime' => $runtime,
 			]
 		)->fetchAll();
 
 		return new Page('PROPERTY_VALUES', $payments, function() use ($select, $filter, $runtime)
 		{
-			return count(
-				\Bitrix\Sale\PropertyValue::getList(['select'=>$select, 'filter'=>$filter, 'runtime'=>$runtime])->fetchAll()
-			);
+			return (int) \Bitrix\Sale\PropertyValue::getList([
+				'select' => ['CNT'],
+				'filter' => $filter,
+				'runtime' => [new ExpressionField('CNT', 'COUNT(ID)')]
+			])->fetch()['CNT'];
 		});
 	}
 	//end region
 
-	protected function get(\Bitrix\Sale\PropertyValue $propertyValue, array $fields=[])
+	protected function getItem(Sale\PropertyValue $propertyValue, array $fields=[])
 	{
-		$properties = $this->toArray($propertyValue
-			->getCollection()
-			->getOrder(),
-			$fields)['ORDER']['PROPERTY_VALUES'];
-		foreach ($properties as $property)
-		{
-			if($property['ID']==$propertyValue->getId())
-			{
-				return $property;
-			}
-		}
-		return [];
+		return current(
+			array_filter(
+				$propertyValue
+					->getCollection()
+					->toArray(),
+				function ($item) use ($propertyValue){
+					if($propertyValue->getPropertyId() == $item['ORDER_PROPS_ID'])
+					{
+						return $item;
+					}
+				}
+			)
+		);
 	}
 
 	static public function prepareFields($fields)
@@ -165,5 +172,44 @@ class PropertyValue extends Controller
 			}
 		}
 		return is_array($data)?['PROPERTIES'=>$data]:[];
+	}
+
+	protected function checkModifyPermissionEntity()
+	{
+		$r = new Result();
+
+		$saleModulePermissions = self::getApplication()->GetGroupRight("sale");
+		if ($saleModulePermissions  < "W")
+		{
+			$r->addError(new Error('Access Denied', 200040300020));
+		}
+		return $r;
+	}
+
+	protected function checkReadPermissionEntity()
+	{
+		$r = new Result();
+
+		$saleModulePermissions = self::getApplication()->GetGroupRight("sale");
+		if ($saleModulePermissions  == "D")
+		{
+			$r->addError(new Error('Access Denied', 200040300010));
+		}
+		return $r;
+	}
+
+	protected function checkPermissionEntity($name, $arguments=[])
+	{
+		$name = mb_strtolower($name);
+
+		if($name == 'modify')
+		{
+			$r = $this->checkModifyPermissionEntity();
+		}
+		else
+		{
+			$r = parent::checkPermissionEntity($name);
+		}
+		return $r;
 	}
 }

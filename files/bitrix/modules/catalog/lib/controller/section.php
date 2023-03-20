@@ -4,6 +4,7 @@
 namespace Bitrix\Catalog\Controller;
 
 
+use Bitrix\Catalog\Access\ActionDictionary;
 use Bitrix\Main\Engine\Response\DataType\Page;
 use Bitrix\Main\Error;
 use Bitrix\Main\Result;
@@ -12,17 +13,19 @@ use Bitrix\Main\UI\PageNavigation;
 final class Section extends Controller
 {
 	//region Actions
-	public function getFieldsAction()
+	public function getFieldsAction(): array
 	{
-		$view = $this->getViewManager()
-			->getView($this);
-
-		return ['SECTION'=>$view->prepareFieldInfos(
-			$view->getFields()
-		)];
+		return ['SECTION' => $this->getViewFields()];
 	}
 
-	public function listAction($select=[], $filter=[], $order=[], PageNavigation $pageNavigation)
+	/**
+	 * @param $select
+	 * @param $filter
+	 * @param $order
+	 * @param PageNavigation $pageNavigation
+	 * @return Page|null
+	 */
+	public function listAction(PageNavigation $pageNavigation, array $select = [], array $filter = [], array $order = []): ?Page
 	{
 		$r = $this->checkPermissionIBlockSectionList($filter['IBLOCK_ID']);
 		if($r->isSuccess())
@@ -32,18 +35,19 @@ final class Section extends Controller
 			$select = empty($select)? ['*']:$select;
 			$order = empty($order)? ['ID'=>'ASC']:$order;
 
+			if (isset($filter['IBLOCK_SECTION_ID']))
+			{
+				$filter['SECTION_ID'] = $filter['IBLOCK_SECTION_ID'];
+				unset($filter['IBLOCK_SECTION_ID']);
+			}
+
 			$r = \CIBlockSection::GetList($order, $filter, false, $select, self::getNavData($pageNavigation->getOffset()));
 			while ($l = $r->fetch())
 				$result[] = $l;
 
 			return new Page('SECTIONS', $result, function() use ($filter)
 			{
-				$list = [];
-				$r = \CIBlockSection::GetList([], $filter);
-				while ($l = $r->fetch())
-					$list[] = $l;
-
-				return count($list);
+				return (int)\CIBlockSection::GetList([], $filter, []);
 			});
 		}
 		else
@@ -220,7 +224,10 @@ final class Section extends Controller
 	{
 		$r = new Result();
 
-		if (!static::getGlobalUser()->CanDoOperation('catalog_read') && !static::getGlobalUser()->CanDoOperation('catalog_view'))
+		if (
+			!$this->accessController->check(ActionDictionary::ACTION_CATALOG_READ)
+			&& !$this->accessController->check(ActionDictionary::ACTION_CATALOG_VIEW)
+		)
 		{
 			$r->addError(new Error('Access Denied', 200040300010));
 		}

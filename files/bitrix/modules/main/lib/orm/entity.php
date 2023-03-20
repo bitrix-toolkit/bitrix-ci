@@ -53,8 +53,11 @@ class Entity
 
 	protected $references;
 
-	/** @var static[] */
+	/** @var static[] dataClass => entity */
 	protected static $instances;
+
+	/** @var array ufId => dataClass */
+	protected static $ufIdIndex = [];
 
 	/** @var bool */
 	protected $isClone = false;
@@ -236,6 +239,23 @@ class Entity
 	}
 
 	/**
+	 * Reinitializing entity object for another Table class.
+	 * Can be useful for complex inheritance with cloning.
+	 *
+	 * @param $className
+	 *
+	 * @throws Main\SystemException
+	 */
+	public function reinitialize($className)
+	{
+		// reset class
+		$this->className = static::normalizeEntityClass($className);
+
+		$classPath = explode('\\', ltrim($this->className, '\\'));
+		$this->name = substr(end($classPath), 0, -5);
+	}
+
+	/**
 	 * @throws Main\ArgumentException
 	 * @throws Main\SystemException
 	 */
@@ -299,7 +319,7 @@ class Entity
 		{
 			// try to find ENTITY_ID by map
 			$userTypeManager = Main\Application::getUserTypeManager();
-			if($userTypeManager)
+			if($userTypeManager instanceof \CUserTypeManager)
 			{
 				$entityList = $userTypeManager->getEntityList();
 				$ufId = is_array($entityList) ? array_search($this->className, $entityList) : false;
@@ -312,7 +332,11 @@ class Entity
 
 		if (!empty($this->uf_id))
 		{
+			// attach uf fields and create uts/utm entities
 			Main\UserFieldTable::attachFields($this, $this->uf_id);
+
+			// save index
+			static::$ufIdIndex[$this->uf_id] = $this->className;
 		}
 	}
 
@@ -668,7 +692,7 @@ class Entity
 	}
 
 	/**
-	 * @return DataManager
+	 * @return DataManager|string
 	 */
 	public function getDataClass()
 	{
@@ -867,6 +891,13 @@ class Entity
 	public function __clone()
 	{
 		$this->isClone = true;
+
+		// reset entity in fields
+		foreach ($this->fields as $field)
+		{
+			$field->resetEntity();
+			$field->setEntity($this);
+		}
 	}
 
 	/**
@@ -1233,6 +1264,40 @@ class Entity
 		}
 
 		return false;
+	}
+
+	public static function onUserTypeChange($userfield, $id = null)
+	{
+		// resolve UF ENTITY_ID
+		if (!empty($userfield['ENTITY_ID']))
+		{
+			$ufEntityId = $userfield['ENTITY_ID'];
+		}
+		elseif (!empty($id))
+		{
+			$usertype = new \CUserTypeEntity();
+			$userfield =  $usertype->GetList([], ["ID" => $id])->Fetch();
+
+			if ($userfield)
+			{
+				$ufEntityId = $userfield['ENTITY_ID'];
+			}
+		}
+
+		if (empty($ufEntityId))
+		{
+			throw new Main\ArgumentException('Invalid ENTITY_ID');
+		}
+
+		// find orm entity with uf ENTITY_ID
+		if (!empty(static::$ufIdIndex[$ufEntityId]))
+		{
+			if (!empty(static::$instances[static::$ufIdIndex[$ufEntityId]]))
+			{
+				// clear for further reinitialization
+				static::destroy(static::$instances[static::$ufIdIndex[$ufEntityId]]);
+			}
+		}
 	}
 
 	/**

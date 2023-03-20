@@ -2,28 +2,26 @@
 namespace Bitrix\Sale\Helpers;
 
 use Bitrix\Main\Config\Option;
+use Bitrix\Main;
 use Bitrix\Main\ORM;
 use Bitrix\Main\Type\DateTime;
 use Bitrix\Main\Update\Stepper;
 use Bitrix\Sale;
+use Bitrix\Sale\ReserveQuantityCollection;
 
 class ReservedProductCleaner extends Stepper
 {
+	private const RECORD_LIMIT = 100;
+
 	protected static $moduleId = "sale";
 
 	public function execute(array &$result)
 	{
-		$className = get_class($this);
-		$option = Option::get("sale", $className, 0);
-		$result["steps"] = $option;
+		$processedRecords = 0;
 
 		$registry = Sale\Registry::getInstance(Sale\Registry::REGISTRY_TYPE_ORDER);
 		/** @var Sale\Order $orderClass */
 		$orderClass = $registry->getOrderClassName();
-
-		$limit = 100;
-		$result["steps"] = isset($result["steps"]) ? $result["steps"] : 0;
-		$selectedRowsCount = 0;
 
 		$days_ago = (int) Option::get("sale", "product_reserve_clear_period");
 
@@ -32,87 +30,121 @@ class ReservedProductCleaner extends Stepper
 			global $USER;
 
 			if (!is_object($USER))
+			{
 				$USER = new \CUser;
+			}
 
 			$date = new DateTime();
 			$parameters = [
-				'select' => array(
-					"ORDER_ID" => "DELIVERY.ORDER.ID",
-				),
-				'filter' => [
-					"<=DELIVERY.ORDER.DATE_INSERT" => $date->add('-'.$days_ago.' day'),
-					'>RESERVED_QUANTITY' => 0,
-					"=DELIVERY.DEDUCTED" => "N",
-					"=DELIVERY.MARKED" => "N",
-					"=DELIVERY.ALLOW_DELIVERY" => "N",
-					"=DELIVERY.ORDER.PAYED" => "N",
-					"=DELIVERY.ORDER.CANCELED" => "N",
+				'select' => [
+					'ORDER_ID' => 'ORDER.ID',
+					'ID',
+					'BASKET_ID'
 				],
-				'group' => ['ORDER_ID'],
-				'count_total' => true,
-				'limit' => $limit,
-				'offset' => $result["steps"]
+				'filter' => [
+					'>QUANTITY' => 0,
+					'<=DATE_RESERVE_END' => $date,
+					'=ORDER.PAYED' => 'N',
+					'=ORDER.CANCELED' => 'N',
+				],
+				'runtime' => [
+					new Main\Entity\ReferenceField(
+						'BASKET',
+						Sale\Internals\BasketTable::class,
+						[
+							'=this.BASKET_ID' => 'ref.ID',
+						],
+						['join_type' => 'inner']
+					),
+					new Main\Entity\ReferenceField(
+						'ORDER',
+						Sale\Internals\OrderTable::class,
+						[
+							'=this.BASKET.ORDER_ID' => 'ref.ID',
+						],
+						['join_type' => 'inner']
+					),
+				],
+				'limit' => self::RECORD_LIMIT,
 			];
 
-			$res = Sale\ShipmentItem::getList($parameters);
-			$selectedRowsCount = $res->getCount();
-			while($data = $res->fetch())
+			$orderList = [];
+			$res = Sale\ReserveQuantityCollection::getList($parameters);
+			while ($data = $res->fetch())
 			{
-				/** @var Sale\Order $order */
-				$order = $orderClass::load($data['ORDER_ID']);
-				$orderSaved = false;
-				$errors = array();
-
-				try
+				if (!isset($orderList[$data['ORDER_ID']]))
 				{
-					/** @var Sale\ShipmentCollection $shipmentCollection */
-					if ($shipmentCollection = $order->getShipmentCollection())
+					$orderList[$data['ORDER_ID']] = [];
+				}
+
+				if (!isset($orderList[$data['ORDER_ID']][$data['BASKET_ID']]))
+				{
+					$orderList[$data['ORDER_ID']][$data['BASKET_ID']] = [];
+				}
+
+				$orderList[$data['ORDER_ID']][$data['BASKET_ID']][] = $data['ID'];
+			}
+
+			foreach ($orderList as $orderId => $basketItemIds)
+			{
+				$order = $orderClass::load($orderId);
+				if (!$order)
+				{
+					continue;
+				}
+
+				$basket = $order->getBasket();
+				foreach ($basketItemIds as $basketItemId => $reserveIds)
+				{
+					/** @var Sale\BasketItem $basketItem */
+					$basketItem = $basket->getItemById($basketItemId);
+					if (!$basketItem)
 					{
-						/** @var Sale\Shipment $shipment */
-						foreach ($shipmentCollection as $shipment)
+						continue;
+					}
+
+					foreach ($reserveIds as $reserveId)
+					{
+						/** @var ReserveQuantityCollection $reserveCollection */
+						$reserveCollection = $basketItem->getReserveQuantityCollection();
+						if (!$reserveCollection)
 						{
-							$r = $shipment->tryUnreserve();
-							if (!$r->isSuccess())
-							{
-								Sale\EntityMarker::addMarker($order, $shipment, $r);
-								if (!$shipment->isSystem())
-								{
-									$shipment->setField('MARKED', 'Y');
-								}
-							}
+							continue;
+						}
+
+						$reserve = $reserveCollection->getItemById($reserveId);
+						if (!$reserve)
+						{
+							continue;
+						}
+
+						$reserve->delete();
+
+						$processedRecords++;
+					}
+				}
+
+				$r = $order->save();
+				if (!$r->isSuccess())
+				{
+					$errorText = (string)$order->getField('REASON_MARKED');
+					if ($errorText !== '')
+					{
+						$errorText .= "\n";
+					}
+
+					foreach($r->getErrorMessages() as $error)
+					{
+						if ((string)$error !== '')
+						{
+							$errorText .= $error."\n";
 						}
 					}
 
-					$r = $order->save();
-					if ($r->isSuccess())
-					{
-						$orderSaved = true;
-					}
-					else
-					{
-						$errors = $r->getErrorMessages();
-					}
-				}
-				catch(\Exception $e)
-				{
-					$errors[] = $e->getMessage();
-				}
-
-				if (!$orderSaved)
-				{
-					if (!empty($errors))
-					{
-						$oldErrorText = $order->getField('REASON_MARKED');
-						foreach($errors as $error)
-						{
-							$oldErrorText .= (strval($oldErrorText) != '' ? "\n" : ""). $error;
-						}
-
-						Sale\Internals\OrderTable::update($order->getId(), array(
-							"MARKED" => "Y",
-							"REASON_MARKED" => $oldErrorText
-						));
-					}
+					Sale\Internals\OrderTable::update($order->getId(), [
+						"MARKED" => "Y",
+						"REASON_MARKED" => $errorText
+					]);
 				}
 			}
 
@@ -123,17 +155,11 @@ class ReservedProductCleaner extends Stepper
 			}
 		}
 
-		if($selectedRowsCount < $limit)
+		if ($processedRecords < self::RECORD_LIMIT)
 		{
-			Option::delete("sale", array("name" => $className));
-			return false;
+			return self::FINISH_EXECUTION;
 		}
-		else
-		{
-			$result["steps"] = $result["steps"] + $selectedRowsCount;
-			$option = $result["steps"];
-			Option::set("sale", $className, $option);
-			return true;
-		}
+
+		return self::CONTINUE_EXECUTION;
 	}
 }

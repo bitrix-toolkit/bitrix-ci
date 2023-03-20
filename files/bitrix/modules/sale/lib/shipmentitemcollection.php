@@ -329,17 +329,15 @@ class ShipmentItemCollection
 	}
 
 	/**
+	 * Returns shippable items
+	 *
 	 * @return Internals\CollectionFilterIterator
 	 */
 	public function getShippableItems()
 	{
 		$callback = function (ShipmentItem $shipmentItem)
 		{
-			$basketItem = $shipmentItem->getBasketItem();
-			if ($basketItem)
-				return !$basketItem->isBundleParent();
-
-			return true;
+			return $shipmentItem->isShippable();
 		};
 
 		return new Internals\CollectionFilterIterator($this->getIterator(), $callback);
@@ -774,7 +772,11 @@ class ShipmentItemCollection
 				$shipmentItem = $this->createItem($basketItem);
 			}
 
-			$shipmentItem->setField('QUANTITY', $value);
+			$r = $shipmentItem->setField('QUANTITY', $value);
+			if (!$r->isSuccess())
+			{
+				return $result->addErrors($r->getErrors());
+			}
 		}
 
 		return $result;

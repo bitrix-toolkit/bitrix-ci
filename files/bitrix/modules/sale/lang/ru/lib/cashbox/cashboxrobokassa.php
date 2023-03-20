@@ -1,5 +1,5 @@
 <?php
-$MESS['SALE_CASHBOX_ROBOKASSA_TITLE'] = 'Robokassa';
+$MESS['SALE_CASHBOX_ROBOKASSA_TITLE'] = 'Робочеки';
 $MESS['SALE_CASHBOX_ROBOKASSA_SETTINGS_VAT'] = 'Настройки ставок НДС';
 $MESS['SALE_CASHBOX_ROBOKASSA_SETTINGS_VAT_LABEL_NOT_VAT'] = 'Без НДС [по умолчанию]';
 $MESS['SALE_CASHBOX_ROBOKASSA_SETTINGS_SNO'] = 'Налогообложение';
@@ -11,6 +11,7 @@ $MESS['SALE_CASHBOX_ROBOKASSA_SNO_ENVD'] = 'единый налог на вме�
 $MESS['SALE_CASHBOX_ROBOKASSA_SNO_ESN'] = 'единый сельскохозяйственный налог';
 $MESS['SALE_CASHBOX_ROBOKASSA_SNO_PATENT'] = 'патентная';
 $MESS['SALE_CASHBOX_ROBOKASSA_ERROR_EMPTY_RESPONSE'] = 'Получен пустой ответ от сервера';
+$MESS['SALE_CASHBOX_ROBOKASSA_ERROR_DECODE_RESPONSE'] = 'Ошибка декодирования строки JSON';
 $MESS['SALE_CASHBOX_ROBOKASSA_PRINT_ERROR_FORMAT'] = 'Неверный формат данных чека';
 $MESS['SALE_CASHBOX_ROBOKASSA_PRINT_ERROR_NOT_ENOUGH_MONEY'] = 'Недостаточно средств на счете магазина';
 $MESS['SALE_CASHBOX_ROBOKASSA_PRINT_ERROR_INTERNAL'] = 'Внутренняя ошибка сервиса Robokassa';

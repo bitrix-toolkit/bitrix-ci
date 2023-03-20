@@ -1,4 +1,5 @@
-<?
+<?php
+
 namespace Bitrix\Main\Service\GeoIp;
 
 use Bitrix\Main;
@@ -6,8 +7,6 @@ use Bitrix\Main\Error;
 use Bitrix\Main\Text\Encoding;
 use Bitrix\Main\Web\HttpClient;
 use Bitrix\Main\Localization\Loc;
-
-Loc::loadMessages(__FILE__);
 
 /**
  * Class SypexGeo
@@ -122,8 +121,8 @@ final class SypexGeo extends Base
 		$dataResult = new Result;
 		$geoData = new Data();
 
-		$geoData->ip = $ip;
 		$geoData->lang = $lang = $lang <> '' ? $lang : 'en';
+
 		$key = !empty($this->config['KEY']) ? $this->config['KEY'] : '';
 		$res = $this->sendRequest($ip, $key);
 
@@ -134,11 +133,23 @@ final class SypexGeo extends Base
 			$geoData->countryName = $data['country']['name_'.$lang];
 			$geoData->countryCode = $data['country']['iso'];
 			$geoData->regionName = $data['region']['name_'.$lang];
+			$geoData->regionGeonameId = $data['region']['id'];
 			$geoData->regionCode = $data['region']['iso'];
 			$geoData->cityName = $data['city']['name_'.$lang];
+			$geoData->cityGeonameId = $data['city']['id'];
 			$geoData->latitude = $data['city']['lat'];
 			$geoData->longitude = $data['city']['lon'];
 			$geoData->timezone = $data['region']['timezone'];
+
+			if ($geoData->regionGeonameId && $geoData->regionName)
+			{
+				$geoData->geonames[$geoData->regionGeonameId][$lang] = $geoData->regionName;
+			}
+
+			if ($geoData->cityGeonameId && $geoData->cityName)
+			{
+				$geoData->geonames[$geoData->cityGeonameId][$lang] = $geoData->cityName;
+			}
 		}
 		else
 		{
@@ -184,8 +195,10 @@ final class SypexGeo extends Base
 		$result->countryName = true;
 		$result->countryCode = true;
 		$result->regionName = true;
+		$result->regionGeonameId = true;
 		$result->regionCode = true;
 		$result->cityName = true;
+		$result->cityGeonameId = true;
 		$result->latitude = true;
 		$result->longitude = true;
 		$result->timezone = true;

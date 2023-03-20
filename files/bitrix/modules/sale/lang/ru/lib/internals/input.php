@@ -40,6 +40,7 @@ $MESS['INPUT_ENUM_SIZE'] = 'Количество видимых элементо
 $MESS['INPUT_ENUM_MULTIELEMENT'] = 'Показывать как список элементов';
 $MESS['INPUT_ENUM_OPTIONS_ERROR'] = 'Не заданы варианты перечисления';
 $MESS['INPUT_ENUM_EMPTY_OPTION'] = 'Не выбрано';
+$MESS['INPUT_ENUM_NOT_UNIQUE_CODES'] = 'У каждого элемента списка должен быть уникальный код';
 
 $MESS['INPUT_FILE'] = 'Файл';
 $MESS['INPUT_FILE_MAXSIZE'] = 'Максимальный размер файла в байтах';
@@ -57,3 +58,11 @@ $MESS['INPUT_DATE_SELECT'] = 'Выбрать дату';
 $MESS['INPUT_LOCATION'] = 'Местоположение';
 $MESS['INPUT_LOCATION_TEMPLATE'] = 'Шаблон';
 $MESS['INPUT_ADDRESS'] = 'Адрес';
+
+$MESS['SALE_PRODUCT_CATEGORY_INP'] = 'Разделы товаров';
+$MESS['SALE_PRODUCT_CATEGORY_INP_DELETE'] = 'Удалить';
+$MESS['SALE_PRODUCT_CATEGORY_INP_ADD'] = 'Добавить';
+
+$MESS['SALE_CONCRETE_PRODUCT_INP'] = 'Отдельный товар';
+$MESS['SALE_CONCRETE_PRODUCT_INP_DELETE'] = 'Удалить';
+$MESS['SALE_CONCRETE_PRODUCT_INP_ADD'] = 'Добавить';

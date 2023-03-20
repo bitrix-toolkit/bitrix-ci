@@ -515,7 +515,7 @@ class CIBlockPropertyElementList
 	public static function GetUIEntityEditorProperty($settings, $value)
 	{
 		$items = [];
-		foreach (CIBlockPropertyElementList::GetElements($settings['IBLOCK_ID']) as $element)
+		foreach (CIBlockPropertyElementList::GetElements($settings['LINK_IBLOCK_ID']) as $element)
 		{
 			$items[] = [
 				'NAME' => $element['NAME'],
@@ -528,8 +528,9 @@ class CIBlockPropertyElementList
 			'data' => [
 				'isProductProperty' => true,
 				'enableEmptyItem' => true,
-				'items' => $items
-			]
+				'items' => $items,
+				'isConfigurable' => false,
+			],
 		];
 	}
 }

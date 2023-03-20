@@ -14,22 +14,22 @@ use Bitrix\Iblock\ORM\Fields\PropertyReference;
 use Bitrix\Iblock\PropertyIndex\Manager;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\ORM\Data\DataManager;
-use Bitrix\Main\ORM\EntityError;
+use Bitrix\Main\ORM\Entity;
 use Bitrix\Main\ORM\Event;
 use Bitrix\Main\ORM\EventResult;
 use Bitrix\Main\ORM\Fields\FieldError;
-use Bitrix\Main\ORM\Fields\Relations\Relation;
 use CIBlock;
 use CIBlockProperty;
 
 /**
  * @package    bitrix
  * @subpackage iblock
- *
- * @method static ElementEntity getEntity()
  */
 abstract class CommonElementTable extends DataManager
 {
+	/**
+	 * @return Entity|string
+	 */
 	public static function getEntityClass()
 	{
 		return ElementEntity::class;
@@ -53,6 +53,66 @@ abstract class CommonElementTable extends DataManager
 	public static function getMap()
 	{
 		return ElementTable::getMap();
+	}
+
+	/**
+	 * Clones specific Element entity for inherited Tables
+	 *
+	 * @return Entity
+	 * @throws \Bitrix\Main\ArgumentException
+	 * @throws \Bitrix\Main\SystemException
+	 */
+	public static function getEntity()
+	{
+		$class = static::getEntityClass()::normalizeEntityClass(get_called_class());
+
+		if (!isset(static::$entity[$class]))
+		{
+			/** @var DataManager $parentClass */
+			$parentClass = get_parent_class(get_called_class());
+
+			if (!in_array(
+				$parentClass,
+				[ElementV1Table::class, ElementV2Table::class]
+			))
+			{
+				static::$entity[$class] = clone $parentClass::getEntity();
+				static::$entity[$class]->reinitialize($class);
+			}
+			else
+			{
+				static::$entity[$class] = parent::getEntity();
+			}
+		}
+
+		return static::$entity[$class];
+	}
+
+	/**
+	 * Iblock elements doesn't support group adding
+	 *
+	 * @param $rows
+	 * @param false $ignoreEvents
+	 * @return \Bitrix\Main\ORM\Data\AddResult|null
+	 * @throws \Exception
+	 */
+	public static function addMulti($rows, $ignoreEvents = false)
+	{
+		$result = null;
+
+		foreach ($rows as $row)
+		{
+			if (!empty($row['__object']))
+			{
+				$result = $row['__object']->save();
+			}
+			else
+			{
+				$result = static::add($row);
+			}
+		}
+
+		return $result;
 	}
 
 	public static function onBeforeAdd(Event $event)

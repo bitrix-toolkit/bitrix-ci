@@ -2,11 +2,9 @@
 namespace Bitrix\Catalog\Config;
 
 use Bitrix\Bitrix24;
+use Bitrix\Main;
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Loader;
-use Bitrix\Main\Localization\Loc;
-
-Loc::loadMessages(__FILE__);
 
 /**
  * Class Feature
@@ -24,15 +22,16 @@ final class Feature
 	private const INVENTORY_MANAGEMENT = 'catalog_inventory_management';
 	private const COMMON_PRODUCT_PROCESSING = 'catalog_common_product_processing';
 	private const PRODUCT_LIMIT = 'catalog_product_limit';
+	private const CATALOG_PERMISSIONS = 'catalog_permissions';
+	private const CATALOG_SERVICES = 'catalog_services';
+
+	private const LANDING_PRODUCT_LIMIT_VARIABLE = 'landing_product_limit';
 
 	/** @var null|bool sign of the presence of Bitrix24 */
-	private static $bitrix24Included = null;
-
-	/** @var array features hit cache */
-	private static $featureList = [];
+	private static ?bool $bitrix24Included = null;
 
 	/** @var array map of compliance with tariff and edition restrictions */
-	private static $tranferList = [
+	private static array $tranferList = [
 		self::PRODUCT_SETS => 'CatCompleteSet',
 		self::MULTI_PRICE_TYPES => 'CatMultiPrice',
 		self::CUMULATIVE_DISCOUNTS => 'CatDiscountSave',
@@ -40,7 +39,7 @@ final class Feature
 	];
 
 	/** @var array edition restrictions */
-	private static $retailExist = [
+	private static array $retailExist = [
 		self::PRODUCT_SETS => true,
 		self::MULTI_PRICE_TYPES => true,
 		self::CUMULATIVE_DISCOUNTS => true,
@@ -48,27 +47,45 @@ final class Feature
 	];
 
 	/** @var array bitrix24 restrictions */
-	private static $bitrix24exist = [
+	private static array $bitrix24exist = [
 		self::PRODUCT_SETS => true,
 		self::EXTENDED_PRICES => true,
 		self::MULTI_PRICE_TYPES => true,
 		self::MULTI_WARENHOUSES => true,
 		self::INVENTORY_MANAGEMENT => true,
 		self::COMMON_PRODUCT_PROCESSING => true,
+		self::CATALOG_PERMISSIONS => true,
+		self::CATALOG_SERVICES => true,
 	];
 
 	/** @var array bitrix24 articles about tarif features */
-	private static $bitrix24helpCodes = [
+	private static array $bitrix24helpCodes = [
 		self::PRODUCT_SETS => 'limit_shop_bundles',
 		self::MULTI_PRICE_TYPES => 'limit_shop_variable_prices',
 		self::EXTENDED_PRICES => 'limit_shop_variable_prices',
 		self::MULTI_WARENHOUSES => 'limit_shop_stocks',
-		self::INVENTORY_MANAGEMENT => 'limit_shop_inventory_management',
-		self::PRODUCT_LIMIT => 'limit_shop_products'
+		self::INVENTORY_MANAGEMENT => 'limit_store_inventory_management',
+		self::PRODUCT_LIMIT => 'limit_shop_products',
+		self::CATALOG_PERMISSIONS => 'limit_crm_catalog_access_permissions',
+		self::CATALOG_SERVICES => 'limit_crm_catalog_services',
 	];
 
-	private static $helpCodesCounter = 0;
-	private static $initUi = false;
+	private static int $helpCodesCounter = 0;
+	private static bool $initUi = false;
+
+	/**
+	 * @return int
+	 */
+	public static function getLandingProductLimit(): int
+	{
+		$result = 0;
+		if (self::isBitrix24())
+		{
+			$result = (int)Bitrix24\Feature::getVariable(self::LANDING_PRODUCT_LIMIT_VARIABLE);
+		}
+
+		return $result;
+	}
 
 	/**
 	 * Returns true if product sets are allowed.
@@ -139,10 +156,55 @@ final class Feature
 	{
 		if (!self::isBitrix24())
 		{
-			return Option::get('catalog', 'catalog_common_product_processing', 'N') === 'Y';
+			return Option::get('catalog', 'catalog_common_product_processing') === 'Y';
 		}
 
 		return self::isFeatureEnabled(self::COMMON_PRODUCT_PROCESSING);
+	}
+
+	/**
+	 * Returns true if catalog rights editor is enabled.
+	 *
+	 * @return bool
+	 */
+	public static function isAccessControllerCheckingEnabled(): bool
+	{
+		return self::isFeatureEnabled(self::CATALOG_PERMISSIONS);
+	}
+
+	/**
+	 * Returns true if can exporting to Yandex.Market.
+	 *
+	 * @return bool
+	 */
+	public static function isCanUseYandexExport(): bool
+	{
+		$lang = LANGUAGE_ID;
+
+		if (self::isBitrix24())
+		{
+			$lang = \CBitrix24::getLicensePrefix();
+		}
+		elseif (Loader::includeModule('intranet'))
+		{
+			$lang = \CIntranetUtils::getPortalZone();
+		}
+		elseif (Option::get('main', 'vendor') === '1c_bitrix')
+		{
+			$lang = 'ru';
+		}
+
+		return in_array($lang, ['ru', 'by', 'kz'], true);
+	}
+
+	/**
+	 * Returns true if can use services.
+	 *
+	 * @return bool
+	 */
+	public static function isCatalogServicesEnabled(): bool
+	{
+		return self::isFeatureEnabled(self::CATALOG_SERVICES);
 	}
 
 	/**
@@ -206,13 +268,32 @@ final class Feature
 	}
 
 	/**
+	 * Returns url description for help article about catalog right editor.
+	 *
+	 * @return array|null
+	 */
+	public static function getAccessControllerHelpLink(): ?array
+	{
+		return self::getHelpLink(self::CATALOG_PERMISSIONS);
+	}
+
+	/**
+	 * Returns url description for help article about services in catalog.
+	 *
+	 * @return array|null
+	 */
+	public static function getCatalogServicesHelpLink(): ?array
+	{
+		return self::getHelpLink(self::CATALOG_SERVICES);
+	}
+
+	/**
 	 * Init ui scope for show help links on internal pages.
 	 *
 	 * @return void
 	 */
 	public static function initUiHelpScope(): void
 	{
-		global $APPLICATION;
 		if (!self::isBitrix24())
 		{
 			return;
@@ -221,12 +302,11 @@ final class Feature
 		{
 			return;
 		}
-		self::$initUi = true;
-		$APPLICATION->IncludeComponent(
-			'bitrix:ui.info.helper',
-			'',
-			[]
-		);
+		if (Loader::includeModule('ui'))
+		{
+			self::$initUi = true;
+			Main\UI\Extension::load('ui.info-helper');
+		}
 	}
 
 	/**
@@ -238,25 +318,27 @@ final class Feature
 	private static function isFeatureEnabled(string $featureId): bool
 	{
 		if ($featureId === '')
-			return false;
-		if (!isset(self::$featureList[$featureId]))
 		{
-			if (self::isBitrix24())
+			return false;
+		}
+
+		$result = true;
+		if (self::isBitrix24())
+		{
+			if (isset(self::$bitrix24exist[$featureId]))
 			{
-				if (isset(self::$bitrix24exist[$featureId]))
-					self::$featureList[$featureId] = Bitrix24\Feature::isFeatureEnabled($featureId);
-				else
-					self::$featureList[$featureId] = true;
-			}
-			else
-			{
-				if (isset(self::$retailExist[$featureId]))
-					self::$featureList[$featureId] = \CBXFeatures::IsFeatureEnabled(self::$tranferList[$featureId]);
-				else
-					self::$featureList[$featureId] = true;
+				$result = Bitrix24\Feature::isFeatureEnabled($featureId);
 			}
 		}
-		return self::$featureList[$featureId];
+		else
+		{
+			if (isset(self::$retailExist[$featureId]))
+			{
+				$result = \CBXFeatures::IsFeatureEnabled(self::$tranferList[$featureId]);
+			}
+		}
+
+		return $result;
 	}
 
 	/**
@@ -278,7 +360,8 @@ final class Feature
 		self::$helpCodesCounter++;
 		return [
 			'TYPE' => 'ONCLICK',
-			'LINK' => 'BX.UI.InfoHelper.show(\''.self::$bitrix24helpCodes[$featureId].'\');'
+			'LINK' => 'top.BX.UI.InfoHelper.show(\''.self::$bitrix24helpCodes[$featureId].'\');',
+			'FEATURE_CODE' => self::$bitrix24helpCodes[$featureId],
 		];
 	}
 

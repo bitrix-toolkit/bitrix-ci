@@ -47,32 +47,33 @@ class CComponentAjax
 
 		if ($USER->IsAdmin())
 		{
-			if ($_GET['bitrix_disable_ajax'] == 'N')
+			$disableAjaxInGetParameter = $_GET['bitrix_disable_ajax'] ?? null;
+			if ($disableAjaxInGetParameter === 'N')
 			{
 				unset(\Bitrix\Main\Application::getInstance()->getSession()['bitrix_disable_ajax']);
 			}
 
-			if ($_GET['bitrix_disable_ajax'] == 'Y' || \Bitrix\Main\Application::getInstance()->getSession()['bitrix_disable_ajax'] == 'Y')
+			if ($disableAjaxInGetParameter === 'Y' || \Bitrix\Main\Application::getInstance()->getSession()['bitrix_disable_ajax'] == 'Y')
 			{
 				\Bitrix\Main\Application::getInstance()->getSession()['bitrix_disable_ajax'] = 'Y';
-				return null;
+				return;
 			}
 		}
 
 		if ($parentComponent && $this->_checkParent($parentComponent))
-			return false;
+			return;
 
 		$this->componentName = $componentName;
 		$this->componentTemplate = $componentTemplate;
 		$this->arParams = $arParams;
 
-		$this->bShadow = $this->arParams['AJAX_OPTION_SHADOW'] != 'N';
-		$this->bJump = $this->arParams['AJAX_OPTION_JUMP'] != 'N';
-		$this->bStyle = $this->arParams['AJAX_OPTION_STYLE'] != 'N';
-		$this->bHistory = $this->arParams['AJAX_OPTION_HISTORY'] != 'N';
+		$this->bShadow = !isset($this->arParams['AJAX_OPTION_SHADOW']) || $this->arParams['AJAX_OPTION_SHADOW'] != 'N';
+		$this->bJump = !isset($this->arParams['AJAX_OPTION_JUMP']) || $this->arParams['AJAX_OPTION_JUMP'] != 'N';
+		$this->bStyle = !isset($this->arParams['AJAX_OPTION_STYLE']) || $this->arParams['AJAX_OPTION_STYLE'] != 'N';
+		$this->bHistory = !isset($this->arParams['AJAX_OPTION_HISTORY']) || $this->arParams['AJAX_OPTION_HISTORY'] != 'N';
 
 		if (!$this->CheckSession())
-			return false;
+			return;
 
 		CJSCore::Init(array('ajax'));
 
@@ -93,7 +94,7 @@ class CComponentAjax
 
 			define('PUBLIC_AJAX_MODE', 1);
 
-			if (is_set($_REQUEST, 'AJAX_CALL'))
+			if (isset($_REQUEST['AJAX_CALL']))
 			{
 				$this->bIFrameMode = true;
 			}
@@ -111,8 +112,6 @@ class CComponentAjax
 
 		$this->LocalRedirectHandlerId = AddEventHandler('main', 'OnBeforeLocalRedirect', array($this, "LocalRedirectHandler"));
 		$this->RestartBufferHandlerId = AddEventHandler('main', 'OnBeforeRestartBuffer', array($this, 'RestartBufferHandler'));
-
-		return null;
 	}
 
 	/**
@@ -121,7 +120,7 @@ class CComponentAjax
 	 */
 	function _checkParent($parent)
 	{
-		if ('Y' == $parent->arParams['AJAX_MODE'])
+		if (($parent->arParams['AJAX_MODE'] ?? null) === 'Y')
 			return true;
 		elseif (($parentComponent = $parent->GetParent()))
 			return $this->_checkParent($parentComponent);
@@ -186,7 +185,7 @@ class CComponentAjax
 
 	function CheckSession()
 	{
-		if ($this->componentID = CAjax::GetComponentID($this->componentName, $this->componentTemplate, $this->arParams['AJAX_OPTION_ADDITIONAL']))
+		if ($this->componentID = CAjax::GetComponentID($this->componentName, $this->componentTemplate, $this->arParams['AJAX_OPTION_ADDITIONAL'] ?? null))
 		{
 			if ($current_session = CAjax::GetSession())
 			{
@@ -228,7 +227,7 @@ class CComponentAjax
 
 		$url = preg_replace('/#.*/', '', $url);
 
-		if ($this->arParams['SEF_MODE'] == 'Y')
+		if (($this->arParams['SEF_MODE'] ?? null) === 'Y')
 		{
 			if ($url == POST_FORM_ACTION_URI)
 				return true;
@@ -262,7 +261,7 @@ class CComponentAjax
 		{
 			$currentUrl = $APPLICATION->GetCurPage();
 
-			if ($this->arParams['SEF_MODE'] == 'Y')
+			if (($this->arParams['SEF_MODE'] ?? null) === 'Y')
 				$currentUrl = $this->__getSEFRealUrl($currentUrl);
 
 			if (mb_strpos($currentUrl, '?') !== false)
@@ -322,6 +321,11 @@ class CComponentAjax
 
 		$this->_checkPcreLimit($data);
 		$arData = preg_split($regexp_links, $data, -1, PREG_SPLIT_DELIM_CAPTURE);
+
+		if (!is_array($arData))
+		{
+			return;
+		}
 
 		$cData = count($arData);
 		if($cData < 2)
@@ -402,47 +406,52 @@ class CComponentAjax
 		$arData = preg_split('/(<form([^>]*)>)/i'.BX_UTF_PCRE_MODIFIER, $data, -1, PREG_SPLIT_DELIM_CAPTURE);
 
 		$bDataChanged = false;
-		for ($key = 0, $l = count($arData); $key < $l; $key++)
+		if (is_array($arData))
 		{
-			if ($key % 3 != 0)
+			for ($key = 0, $l = count($arData); $key < $l; $key++)
 			{
-				$arIgnoreAttributes = array('target');
-				$bIgnore = false;
-				foreach ($arIgnoreAttributes as $attr)
+				if ($key % 3 != 0)
 				{
-					if (mb_strpos($arData[$key], $attr.'="') !== false)
+					$arIgnoreAttributes = array('target');
+					$bIgnore = false;
+					foreach ($arIgnoreAttributes as $attr)
 					{
-						$bIgnore = true;
-						break;
+						if (mb_strpos($arData[$key], $attr.'="') !== false)
+						{
+							$bIgnore = true;
+							break;
+						}
 					}
+
+					if (!$bIgnore)
+					{
+						preg_match_all('/action=(["\']{1})(.*?)\1/i', $arData[$key], $arAction);
+						$url = $arAction[2][0];
+
+						if ($url === '' || $this->__isAjaxURL($url) || $this->__isAjaxURL(urldecode($url)))
+						{
+							$arData[$key] = CAjax::GetForm($arData[$key+1], 'comp_'.$this->componentID, $this->componentID, true, $this->bShadow);
+						}
+						else
+						{
+							$new_url = str_replace(CAjax::GetSessionParam($this->componentID), '', $url);
+							$arData[$key] = str_replace($url, $new_url, $arData[$key]);
+						}
+
+						$bDataChanged = true;
+					}
+
+					unset($arData[$key+1]);
+					$key++;
 				}
 
-				if (!$bIgnore)
-				{
-					preg_match_all('/action=(["\']{1})(.*?)\1/i', $arData[$key], $arAction);
-					$url = $arAction[2][0];
-
-					if ($url === '' || $this->__isAjaxURL($url) || $this->__isAjaxURL(urldecode($url)))
-					{
-						$arData[$key] = CAjax::GetForm($arData[$key+1], 'comp_'.$this->componentID, $this->componentID, true, $this->bShadow);
-					}
-					else
-					{
-						$new_url = str_replace(CAjax::GetSessionParam($this->componentID), '', $url);
-						$arData[$key] = str_replace($url, $new_url, $arData[$key]);
-					}
-
-					$bDataChanged = true;
-				}
-
-				unset($arData[$key+1]);
-				$key++;
 			}
-
 		}
 
 		if ($bDataChanged)
+		{
 			$data = implode('', $arData);
+		}
 	}
 
 	function __prepareScripts(&$data)
@@ -588,10 +597,11 @@ parent.bxcompajaxframeonload = function() {
 
 		if ($this->bJump)
 		{
-			if ($this->bIFrameMode)
-				$additional_data .= 'top.setTimeout(\'BX.scrollToNode("comp_'.$this->componentID.'")\', 100)'.";\r\n";
-			else
-				$additional_data .= 'top.BX.scrollToNode(\'comp_'.$this->componentID.'\')'.";\r\n";
+			$additional_data .= (
+				$this->bIFrameMode
+					? 'setTimeout(\'BX.scrollToNode("comp_' . $this->componentID . '")\', 100)' . ";\r\n"
+					: 'top.BX.scrollToNode(\'comp_' . $this->componentID . '\')' . ";\r\n"
+			);
 		}
 
 		$additional_data .= '</script>';

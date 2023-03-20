@@ -10,8 +10,6 @@ class CAgent extends CAllAgent
 {
 	public static function CheckAgents()
 	{
-		global $CACHE_MANAGER;
-
 		define("START_EXEC_AGENTS_1", microtime(true));
 
 		define("BX_CHECK_AGENT_START", true);
@@ -20,33 +18,27 @@ class CAgent extends CAllAgent
 		if((defined("NO_AGENT_CHECK") && NO_AGENT_CHECK===true) || (defined("BX_CLUSTER_GROUP") && BX_CLUSTER_GROUP !== 1))
 			return null;
 
-		$agents_use_crontab = COption::GetOptionString("main", "agents_use_crontab", "N");
-		$str_crontab = "";
-		if($agents_use_crontab=="Y" || (defined("BX_CRONTAB_SUPPORT") && BX_CRONTAB_SUPPORT===true))
-		{
-			if(defined("BX_CRONTAB") && BX_CRONTAB===true)
-				$str_crontab = " AND IS_PERIOD='N' ";
-			else
-				$str_crontab = " AND IS_PERIOD='Y' ";
-		}
-
-		if(CACHED_b_agent !== false && $CACHE_MANAGER->Read(CACHED_b_agent, ($cache_id = "agents".$str_crontab), "agents"))
-		{
-			$saved_time = $CACHE_MANAGER->Get($cache_id);
-			if(time() < $saved_time)
-				return "";
-		}
-
-		$res = CAgent::ExecuteAgents($str_crontab);
+		$res = CAgent::ExecuteAgents();
 
 		define("START_EXEC_AGENTS_2", microtime(true));
 
 		return $res;
 	}
 
-	public static function ExecuteAgents($str_crontab)
+	public static function ExecuteAgents()
 	{
 		global $DB, $CACHE_MANAGER, $pPERIOD;
+
+		$cron = static::OnCron();
+
+		if ($cron !== null)
+		{
+			$str_crontab = ($cron ? " AND IS_PERIOD='N' " : " AND IS_PERIOD='Y' ");
+		}
+		else
+		{
+			$str_crontab = "";
+		}
 
 		$saved_time = 0;
 		$cache_id = "agents".$str_crontab;
@@ -54,7 +46,9 @@ class CAgent extends CAllAgent
 		{
 			$saved_time = $CACHE_MANAGER->Get($cache_id);
 			if (time() < $saved_time)
+			{
 				return "";
+			}
 		}
 
 		$strSql = "
@@ -72,14 +66,17 @@ class CAgent extends CAllAgent
 		if ($db_result_agents->Fetch())
 		{
 			if(!\Bitrix\Main\Application::getConnection()->lock('agent'))
+			{
 				return "";
+			}
 		}
 		else
 		{
 			if (CACHED_b_agent !== false)
 			{
-				$rs = $DB->Query("SELECT UNIX_TIMESTAMP(NEXT_EXEC)-UNIX_TIMESTAMP(NOW()) DATE_DIFF FROM b_agent WHERE ACTIVE = 'Y' ".$str_crontab." ORDER BY NEXT_EXEC ASC LIMIT 1");
+				$rs = $DB->Query("SELECT UNIX_TIMESTAMP(NEXT_EXEC)-UNIX_TIMESTAMP(NOW()) DATE_DIFF FROM b_agent WHERE ACTIVE = 'Y' ".$str_crontab." ORDER BY NEXT_EXEC LIMIT 1");
 				$ar = $rs->Fetch();
+
 				if (!$ar || $ar["DATE_DIFF"] < 0)
 					$date_diff = 0;
 				elseif ($ar["DATE_DIFF"] > CACHED_b_agent)
@@ -98,14 +95,23 @@ class CAgent extends CAllAgent
 			return "";
 		}
 
-		$strSql=
+		$strSql =
 			"SELECT ID, NAME, AGENT_INTERVAL, IS_PERIOD, MODULE_ID, RETRY_COUNT ".
 			"FROM b_agent ".
 			"WHERE ACTIVE = 'Y' ".
 			"	AND NEXT_EXEC <= now() ".
 			"	AND (DATE_CHECK IS NULL OR DATE_CHECK <= now()) ".
 			$str_crontab.
-			" ORDER BY RUNNING ASC, SORT desc";
+			" ORDER BY RUNNING ASC, SORT desc ";
+
+		if ($cron !== true)
+		{
+			$limit = (int)COption::GetOptionString("main", "agents_limit", 100);
+			if ($limit > 0)
+			{
+				$strSql .= 'LIMIT ' . $limit;
+			}
+		}
 
 		$db_result_agents = $DB->Query($strSql);
 		$ids = '';
@@ -117,7 +123,7 @@ class CAgent extends CAllAgent
 		}
 		if ($ids <> '')
 		{
-			$strSql = "UPDATE b_agent SET DATE_CHECK = DATE_ADD(now(), INTERVAL 600 SECOND) WHERE ID IN (".$ids.")";
+			$strSql = "UPDATE b_agent SET DATE_CHECK = DATE_ADD(now(), INTERVAL " . self::LOCK_TIME. " SECOND) WHERE ID IN (".$ids.")";
 			$DB->Query($strSql);
 		}
 
@@ -127,13 +133,20 @@ class CAgent extends CAllAgent
 		$logFunction = (defined("BX_AGENTS_LOG_FUNCTION") && function_exists(BX_AGENTS_LOG_FUNCTION)? BX_AGENTS_LOG_FUNCTION : false);
 
 		ignore_user_abort(true);
+		$startTime = time();
 
-		for ($i = 0, $n = count($agents_array); $i < $n; $i++)
+		foreach ($agents_array as $arAgent)
 		{
-			$arAgent = $agents_array[$i];
+			if (time() - $startTime > self::LOCK_TIME - 30)
+			{
+				// locking time control; 30 seconds delta is for the possibly last agent
+				break;
+			}
 
 			if ($logFunction)
+			{
 				$logFunction($arAgent, "start");
+			}
 
 			if ($arAgent["MODULE_ID"] <> '' && $arAgent["MODULE_ID"]!="main")
 			{
@@ -141,7 +154,10 @@ class CAgent extends CAllAgent
 					continue;
 			}
 
-			if ($arAgent["RETRY_COUNT"] >= 3)
+			if (
+				defined('BX_AGENTS_MAX_RETRY_COUNT')
+				&& $arAgent["RETRY_COUNT"] >= BX_AGENTS_MAX_RETRY_COUNT
+			)
 			{
 				$DB->Query("UPDATE b_agent SET ACTIVE='N' WHERE ID = ".$arAgent["ID"]);
 				continue;
@@ -161,7 +177,7 @@ class CAgent extends CAllAgent
 				$eval_result = "";
 				$e = eval("\$eval_result=".$arAgent["NAME"]);
 			}
-			catch (Exception $e)
+			catch (Throwable $e)
 			{
 				CTimeZone::Enable();
 
@@ -175,7 +191,9 @@ class CAgent extends CAllAgent
 			CTimeZone::Enable();
 
 			if ($logFunction)
+			{
 				$logFunction($arAgent, "finish", $eval_result, $e);
+			}
 
 			if ($e === false)
 			{
@@ -208,6 +226,7 @@ class CAgent extends CAllAgent
 			}
 			$DB->Query($strSql);
 		}
+
 		return null;
 	}
 }

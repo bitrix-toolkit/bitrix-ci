@@ -1,8 +1,18 @@
 <?php
 
+use Bitrix\Catalog\Component\SkuTree;
 use Bitrix\Catalog\v2\Converter\ProductConverter;
 use Bitrix\Catalog\v2\Facade\Repository;
 use Bitrix\Catalog\v2\Iblock\IblockInfo;
+use Bitrix\Catalog\v2\Image\DetailImage;
+use Bitrix\Catalog\v2\Image\ImageCollection;
+use Bitrix\Catalog\v2\Image\ImageFactory;
+use Bitrix\Catalog\v2\Image\ImageRepository;
+use Bitrix\Catalog\v2\Image\MorePhotoImage;
+use Bitrix\Catalog\v2\Image\PreviewImage;
+use Bitrix\Catalog\v2\Integration\Seo\Facebook\FacebookFacade;
+use Bitrix\Catalog\v2\Integration\Seo\Facebook\FacebookProductProcessor;
+use Bitrix\Catalog\v2\Integration\Seo\Facebook\FacebookProductRepository;
 use Bitrix\Catalog\v2\IoC\Container;
 use Bitrix\Catalog\v2\IoC\Dependency;
 use Bitrix\Catalog\v2\MeasureRatio\MeasureRatioCollection;
@@ -14,12 +24,6 @@ use Bitrix\Catalog\v2\Price\PriceFactory;
 use Bitrix\Catalog\v2\Price\PriceRepository;
 use Bitrix\Catalog\v2\Price\QuantityDependentPrice;
 use Bitrix\Catalog\v2\Price\SimplePrice;
-use Bitrix\Catalog\v2\Image\ImageCollection;
-use Bitrix\Catalog\v2\Image\ImageFactory;
-use Bitrix\Catalog\v2\Image\ImageRepository;
-use Bitrix\Catalog\v2\Image\DetailImage;
-use Bitrix\Catalog\v2\Image\PreviewImage;
-use Bitrix\Catalog\v2\Image\MorePhotoImage;
 use Bitrix\Catalog\v2\Product\Product;
 use Bitrix\Catalog\v2\Product\ProductFactory;
 use Bitrix\Catalog\v2\Product\ProductRepository;
@@ -43,6 +47,14 @@ use Bitrix\Catalog\v2\Sku\Sku;
 use Bitrix\Catalog\v2\Sku\SkuCollection;
 use Bitrix\Catalog\v2\Sku\SkuFactory;
 use Bitrix\Catalog\v2\Sku\SkuRepository;
+use Bitrix\Catalog\v2\Barcode\Barcode;
+use Bitrix\Catalog\v2\Barcode\BarcodeCollection;
+use Bitrix\Catalog\v2\Barcode\BarcodeFactory;
+use Bitrix\Catalog\v2\Barcode\BarcodeRepository;
+use Bitrix\Catalog\v2\StoreProduct\StoreProduct;
+use Bitrix\Catalog\v2\StoreProduct\StoreProductCollection;
+use Bitrix\Catalog\v2\StoreProduct\StoreProductFactory;
+use Bitrix\Catalog\v2\StoreProduct\StoreProductRepository;
 
 return [
 	Dependency::CONTAINER => Container::class,
@@ -107,5 +119,21 @@ return [
 	MeasureRatioFactory::SIMPLE_MEASURE_RATIO => SimpleMeasureRatio::class,
 	MeasureRatioFactory::MEASURE_RATIO_COLLECTION => MeasureRatioCollection::class,
 
-	'sku.tree' => \Bitrix\Catalog\Component\SkuTree::class,
+	Dependency::BARCODE_FACTORY => BarcodeFactory::class,
+	Dependency::BARCODE_REPOSITORY => BarcodeRepository::class,
+
+	BarcodeFactory::BARCODE => Barcode::class,
+	BarcodeFactory::BARCODE_COLLECTION => BarcodeCollection::class,
+
+	Dependency::STORE_PRODUCT_FACTORY => StoreProductFactory::class,
+	Dependency::STORE_PRODUCT_REPOSITORY => StoreProductRepository::class,
+
+	StoreProductFactory::STORE_PRODUCT => StoreProduct::class,
+	StoreProductFactory::STORE_PRODUCT_COLLECTION => StoreProductCollection::class,
+
+	'sku.tree' => SkuTree::class,
+
+	'integration.seo.facebook.facade' => FacebookFacade::class,
+	'integration.seo.facebook.product.processor' => FacebookProductProcessor::class,
+	'integration.seo.facebook.product.repository' => FacebookProductRepository::class,
 ];

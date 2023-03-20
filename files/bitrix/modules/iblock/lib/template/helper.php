@@ -58,16 +58,23 @@ class Helper
 	{
 		$TEMPLATE = $template["TEMPLATE"];
 		$modifiers = "";
-		if ($template["LOWER"] === "Y")
+		if (isset($template["LOWER"]) && $template["LOWER"] === "Y")
+		{
 			$modifiers .= "l";
-		if ($template["TRANSLIT"] === "Y")
+		}
+		if (isset($template["TRANSLIT"]) && $template["TRANSLIT"] === "Y")
 		{
 			$modifiers .= "t";
-			if ($template["SPACE"] != "")
+			if (isset($template["SPACE"]) && is_string($template["SPACE"]) && $template["SPACE"] !== "")
+			{
 				$modifiers .= $template["SPACE"];
+			}
 		}
-		if ($modifiers != "")
-			$modifiers = "/".$modifiers;
+		if ($modifiers !== "")
+		{
+			$modifiers = "/" . $modifiers;
+		}
+
 		return $TEMPLATE.$modifiers;
 	}
 
@@ -94,7 +101,7 @@ class Helper
 		$TRANSLIT = "N";
 		$SPACE = "";
 
-		list($TEMPLATE, $modifiers) = self::splitTemplate($TEMPLATE);
+		[$TEMPLATE, $modifiers] = self::splitTemplate($TEMPLATE);
 		foreach(self::splitModifiers($modifiers) as $mod)
 		{
 			if ($mod == "l")
@@ -128,17 +135,22 @@ class Helper
 	 */
 	public static function makeFileName(
 		\Bitrix\Iblock\InheritedProperty\BaseTemplate $ipropTemplates,
-		$templateName,
+		string $templateName,
 		array $fields,
 		array $file
-	)
+	): string
 	{
+		if (!isset($file['name']))
+		{
+			return '';
+		}
+
 		if (preg_match("/^(.+)(\\.[a-zA-Z0-9]+)\$/", $file["name"], $fileName))
 		{
 			if (!isset($fields["IPROPERTY_TEMPLATES"]) || $fields["IPROPERTY_TEMPLATES"][$templateName] == "")
 			{
 				$templates = $ipropTemplates->findTemplates();
-				$TEMPLATE = $templates[$templateName]["TEMPLATE"];
+				$TEMPLATE = ($templates[$templateName]["TEMPLATE"] ?? '');
 			}
 			else
 			{
@@ -147,7 +159,7 @@ class Helper
 
 			if ($TEMPLATE != "")
 			{
-				list($template, $modifiers) = Helper::splitTemplate($TEMPLATE);
+				[$template, $modifiers] = Helper::splitTemplate($TEMPLATE);
 				if ($template != "")
 				{
 					$values = $ipropTemplates->getValuesEntity();
@@ -165,6 +177,7 @@ class Helper
 				}
 			}
 		}
+
 		return $file["name"];
 	}
 }

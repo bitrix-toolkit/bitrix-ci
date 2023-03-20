@@ -3,7 +3,7 @@
  * Bitrix Framework
  * @package bitrix
  * @subpackage main
- * @copyright 2001-2013 Bitrix
+ * @copyright 2001-2022 Bitrix
  */
 
 /**
@@ -73,6 +73,12 @@ if($USER->CanDoOperation('edit_php') || $USER->CanDoOperation('view_all_users') 
 			"text" => GetMessage("MAIN_MENU_PROFILE_HISTORY"),
 			"url" => "profile_history.php?lang=".LANGUAGE_ID,
 			"title" => GetMessage("MAIN_MENU_PROFILE_HISTORY_TITLE"),
+		);
+		$array_user_items[] = array(
+			"text" => GetMessage('main_admin_menu_devices'),
+			"url" => "user_devices.php?lang=".LANGUAGE_ID,
+			"more_url" => array("user_devices_history.php"),
+			"title" => GetMessage('main_admin_menu_devices_title'),
 		);
 	}
 
@@ -199,6 +205,14 @@ if($USER->CanDoOperation('view_other_settings') || $USER->CanDoOperation('manage
 						"message_theme_edit.php"
 					),
 				),
+				array(
+					"text" => GetMessage("MAIN_MENU_SMTP_CONFIG"),
+					"title" => GetMessage("MAIN_MENU_SMTP_CONFIG_TITLE"),
+					"url" => "smtp_admin.php?lang=".LANGUAGE_ID,
+					"more_url" => array(
+						"smtp_edit.php"
+					),
+				),
 			),
 		);
 		$settingsItems[] = array(
@@ -211,7 +225,7 @@ if($USER->CanDoOperation('view_other_settings') || $USER->CanDoOperation('manage
 		$aModuleItems = array();
 		if(method_exists($adminMenu, "IsSectionActive"))
 		{
-			if($adminMenu->IsSectionActive("menu_module_settings") || ($APPLICATION->GetCurPage() == "/bitrix/admin/settings.php" && $_REQUEST["mid_menu"]<>"") || defined('BX_SEARCH_ADMIN') && BX_SEARCH_ADMIN === true)
+			if($adminMenu->IsSectionActive("menu_module_settings") || ($APPLICATION->GetCurPage() == "/bitrix/admin/settings.php" && isset($_REQUEST["mid_menu"]) && $_REQUEST["mid_menu"] != '') || defined('BX_SEARCH_ADMIN') && BX_SEARCH_ADMIN === true)
 			{
 				$adminPage->Init();
 				foreach($adminPage->aModules as $module)
@@ -372,10 +386,10 @@ if($USER->CanDoOperation('view_other_settings') || $USER->CanDoOperation('manage
 			"title" => GetMessage('MAIN_MENU_GEOIP_HANDLERS'),
 		);
 		$settingsItems[] = array(
-			"text" => GetMessage('MAIN_MENU_USER_CONSENT'),
+			"text" => GetMessage('MAIN_MENU_USER_CONSENT_1'),
 			"url" => "agreement_admin.php?lang=".LANGUAGE_ID,
 			"more_url" => array("agreement_edit.php", "agreement_consents.php"),
-			"title" => GetMessage('MAIN_MENU_USER_CONSENT'),
+			"title" => GetMessage('MAIN_MENU_USER_CONSENT_1'),
 		);
 	}
 

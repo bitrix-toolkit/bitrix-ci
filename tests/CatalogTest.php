@@ -15,7 +15,7 @@ use CPrice;
 
 class CatalogTest extends TestCase
 {
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         CIBlockType::Delete('bitrix_ci_test');
 
@@ -143,7 +143,7 @@ class CatalogTest extends TestCase
             'TITLE' => 'VAULT13',
             'XML_ID' => 'VAULT13',
             'ACTIVE' => 'Y',
-            'ADDRESS' => '',
+            'ADDRESS' => 'Адрес',
             'DESCRIPTION' => ''
         ]);
 

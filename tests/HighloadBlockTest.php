@@ -14,7 +14,7 @@ use Exception;
 
 class HighloadBlockTest extends TestCase
 {
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         $exist = HighloadBlockTable::getList(['filter' => ['TABLE_NAME' => 'test_data']])->fetch();
         if (!empty($exist['ID'])) {

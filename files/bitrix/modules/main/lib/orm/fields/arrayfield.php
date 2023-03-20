@@ -8,6 +8,7 @@
 
 namespace Bitrix\Main\ORM\Fields;
 
+use Bitrix\Main\DB\SqlExpression;
 use Bitrix\Main\Web\Json;
 
 /**
@@ -165,10 +166,20 @@ class ArrayField extends ScalarField
 	/**
 	 * @param mixed $value
 	 *
-	 * @return array
+	 * @return array|SqlExpression
 	 */
 	public function cast($value)
 	{
+		if ($this->is_nullable && $value === null)
+		{
+			return $value;
+		}
+
+		if ($value instanceof SqlExpression)
+		{
+			return $value;
+		}
+
 		return (array) $value;
 	}
 
@@ -191,7 +202,14 @@ class ArrayField extends ScalarField
 	 */
 	public function convertValueToDb($value)
 	{
-		return $this->getConnection()->getSqlHelper()->convertToDbString($value);
+		if ($value instanceof SqlExpression)
+		{
+			return $value;
+		}
+
+		return $value === null && $this->is_nullable
+			? $value
+			: $this->getConnection()->getSqlHelper()->convertToDbString($value);
 	}
 
 	/**

@@ -6,6 +6,7 @@ namespace Bitrix\Sale\Controller;
 
 use Bitrix\Main\Engine\AutoWire\ExactParameter;
 use Bitrix\Main\Engine\Response\DataType\Page;
+use Bitrix\Main\Entity\ExpressionField;
 use Bitrix\Main\Error;
 use Bitrix\Main\UI\PageNavigation;
 use Bitrix\Sale\BasketItem;
@@ -80,26 +81,30 @@ class ShipmentItem extends Controller
 		return ['SHIPMENT_ITEM'=>$this->get($shipmentItem)];
 	}
 
-	public function listAction($select=[], $filter=[], $order=[], PageNavigation $pageNavigation)
+	public function listAction(PageNavigation $pageNavigation, array $select = [], array $filter = [], array $order = []): Page
 	{
-		$select = empty($select)? ['*']:$select;
-		$order = empty($order)? ['ID'=>'ASC']:$order;
+		$select = empty($select) ? ['*'] : $select;
+		$order = empty($order) ? ['ID' => 'ASC'] : $order;
 
 		$shipmentItems = \Bitrix\Sale\ShipmentItem::getList(
 			[
-				'select'=>$select,
-				'filter'=>$filter,
-				'order'=>$order,
+				'select' => $select,
+				'filter' => $filter,
+				'order' => $order,
 				'offset' => $pageNavigation->getOffset(),
-				'limit' => $pageNavigation->getLimit()
+				'limit' => $pageNavigation->getLimit(),
 			]
 		)->fetchAll();
 
-		return new Page('SHIPMENT_ITEMS', $shipmentItems, function() use ($select, $filter)
+		return new Page('SHIPMENT_ITEMS', $shipmentItems, function() use ($filter)
 		{
-			return count(
-				\Bitrix\Sale\ShipmentItem::getList(['select'=>$select, 'filter'=>$filter])->fetchAll()
-			);
+			return (int) \Bitrix\Sale\ShipmentItem::getList([
+				'select' => ['CNT'],
+				'filter'=>$filter,
+				'runtime' => [
+					new ExpressionField('CNT', 'COUNT(ID)')
+				]
+			])->fetch()['CNT'];
 		});
 	}
 

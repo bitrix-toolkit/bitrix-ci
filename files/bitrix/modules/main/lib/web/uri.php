@@ -7,6 +7,9 @@
  */
 namespace Bitrix\Main\Web;
 
+use Bitrix\Main;
+use Bitrix\Main\Text\Encoding;
+
 class Uri implements \JsonSerializable
 {
 	protected $scheme;
@@ -23,7 +26,7 @@ class Uri implements \JsonSerializable
 	 */
 	public function __construct($url)
 	{
-		if(mb_strpos($url, "/") === 0)
+		if (strpos($url, "/") === 0)
 		{
 			//we don't support "current scheme" e.g. "//host/path"
 			$url = "/".ltrim($url, "/");
@@ -33,21 +36,14 @@ class Uri implements \JsonSerializable
 
 		if($parsedUrl !== false)
 		{
-			$this->scheme = (isset($parsedUrl["scheme"])? mb_strtolower($parsedUrl["scheme"]) : "http");
-			$this->host = (isset($parsedUrl["host"])? $parsedUrl["host"] : "");
-			if(isset($parsedUrl["port"]))
-			{
-				$this->port = $parsedUrl["port"];
-			}
-			else
-			{
-				$this->port = ($this->scheme == "https"? 443 : 80);
-			}
-			$this->user = (isset($parsedUrl["user"])? $parsedUrl["user"] : "");
-			$this->pass = (isset($parsedUrl["pass"])? $parsedUrl["pass"] : "");
-			$this->path = (isset($parsedUrl["path"])? $parsedUrl["path"] : "/");
-			$this->query = (isset($parsedUrl["query"])? $parsedUrl["query"] : "");
-			$this->fragment = (isset($parsedUrl["fragment"])? $parsedUrl["fragment"] : "");
+			$this->scheme = (isset($parsedUrl["scheme"])? strtolower($parsedUrl["scheme"]) : "http");
+			$this->host = $parsedUrl["host"] ?? '';
+			$this->port = $parsedUrl["port"] ?? null;
+			$this->user = $parsedUrl["user"] ?? '';
+			$this->pass = $parsedUrl["pass"] ?? '';
+			$this->path = $parsedUrl["path"] ?? '/';
+			$this->query = $parsedUrl["query"] ?? '';
+			$this->fragment = $parsedUrl["fragment"] ?? '';
 		}
 	}
 
@@ -70,9 +66,10 @@ class Uri implements \JsonSerializable
 		{
 			$url .= $this->scheme."://".$this->host;
 
-			if(($this->scheme == "http" && $this->port <> 80) || ($this->scheme == "https" && $this->port <> 443))
+			$port = $this->getPort();
+			if (($this->scheme == 'http' && $port != 80) || ($this->scheme == 'https' && $port != 443))
 			{
-				$url .= ":".$this->port;
+				$url .= ':' . $port;
 			}
 		}
 
@@ -182,11 +179,15 @@ class Uri implements \JsonSerializable
 
 	/**
 	 * Returns the port number.
-	 * @return string
+	 * @return int
 	 */
 	public function getPort()
 	{
-		return $this->port;
+		if ($this->port === null)
+		{
+			return ($this->getScheme() == 'https' ? 443 : 80);
+		}
+		return (int)$this->port;
 	}
 
 	/**
@@ -273,7 +274,7 @@ class Uri implements \JsonSerializable
 				unset($currentParams[$param]);
 			}
 
-			$this->query = http_build_query($currentParams, "", "&");
+			$this->query = http_build_query($currentParams, "", "&", PHP_QUERY_RFC3986);
 		}
 		return $this;
 	}
@@ -301,7 +302,7 @@ class Uri implements \JsonSerializable
 
 		$currentParams = array_replace($currentParams, $params);
 
-		$this->query = http_build_query($currentParams, "", "&");
+		$this->query = http_build_query($currentParams, "", "&", PHP_QUERY_RFC3986);
 
 		return $this;
 	}
@@ -318,6 +319,7 @@ class Uri implements \JsonSerializable
 	 * which is a value of any type other than a resource.
 	 * @since 5.4.0
 	 */
+	#[\ReturnTypeWillChange]
 	public function jsonSerialize()
 	{
 		return $this->getUri();
@@ -339,5 +341,96 @@ class Uri implements \JsonSerializable
 		$this->setHost($host);
 
 		return $host;
+	}
+
+	/**
+	 * Searches for /../ and ulrencoded /../
+	 */
+	public function isPathTraversal(): bool
+	{
+		return (bool)preg_match("#(?:/|2f|^|\\\\|5c)(?:(?:%0*(25)*2e)|\\.){2,}(?:/|%0*(25)*2f|\\\\|%0*(25)*5c|$)#i", $this->path);
+	}
+
+	/**
+	 * Encodes the URI string without parsing it.
+	 * @param $str
+	 * @param $charset
+	 * @return string
+	 */
+	public static function urnEncode($str, $charset = false)
+	{
+		$result = '';
+		$arParts = preg_split("#(://|:\\d+/|/|\\?|=|&)#", $str, -1, PREG_SPLIT_DELIM_CAPTURE);
+
+		if ($charset === false)
+		{
+			foreach ($arParts as $i => $part)
+			{
+				$result .= ($i % 2) ? $part : rawurlencode($part);
+			}
+		}
+		else
+		{
+			$currentCharset = Main\Context::getCurrent()->getCulture()->getCharset();
+			foreach ($arParts as $i => $part)
+			{
+				$result .= ($i % 2)	? $part	: rawurlencode(Encoding::convertEncoding($part, $currentCharset, $charset));
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Deccodes the URI string without parsing it.
+	 * @param $str
+	 * @param $charset
+	 * @return string
+	 */
+	public static function urnDecode($str, $charset = false)
+	{
+		$result = '';
+		$arParts = preg_split("#(://|:\\d+/|/|\\?|=|&)#", $str, -1, PREG_SPLIT_DELIM_CAPTURE);
+
+		if ($charset === false)
+		{
+			foreach ($arParts as $i => $part)
+			{
+				$result .= ($i % 2) ? $part : rawurldecode($part);
+			}
+		}
+		else
+		{
+			$currentCharset = Main\Context::getCurrent()->getCulture()->getCharset();
+			foreach ($arParts as $i => $part)
+			{
+				$result .= ($i % 2) ? $part : rawurldecode(Encoding::convertEncoding($part, $charset, $currentCharset));
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Converts a relative uri to the absolute one using given host name or the host from the current context server object.
+	 * @param string | null $host
+	 * @return $this
+	 */
+	public function toAbsolute(string $host = null): Uri
+	{
+		if ($this->host == '')
+		{
+			$request = Main\HttpContext::getCurrent()->getRequest();
+
+			$this->scheme = $request->isHttps() ? 'https' : 'http';
+
+			if ($host !== null)
+			{
+				$this->host = preg_replace('/:(443|80)$/', '', $host);
+			}
+			else
+			{
+				$this->host = $request->getHttpHost();
+			}
+		}
+		return $this;
 	}
 }

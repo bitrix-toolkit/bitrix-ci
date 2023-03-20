@@ -12,7 +12,6 @@ use Bitrix\Catalog\v2\Sku\BaseSku;
  * @package Bitrix\Catalog\v2\Iblock
  *
  * * !!! This API is in alpha stage and is not stable. This is subject to change at any time without notice.
-
  * @internal
  */
 final class PropertyValue
@@ -86,15 +85,20 @@ final class PropertyValue
 		\CIBlockElement::GetPropertyValuesArray(
 			$propertyValues,
 			$skuIblockId,
-			[
-				'ID' => $skuIds
-			],
-			[
-				'ID' => PropertyCatalogFeature::getOfferTreePropertyCodes($skuIblockId),
-			]
+			['ID' => $skuIds],
+			['ID' => PropertyCatalogFeature::getOfferTreePropertyCodes($skuIblockId)]
 		);
 
 		return $propertyValues;
+	}
+
+	/**
+	 * @param BaseSku $sku
+	 * @return array
+	 */
+	public static function getPropertyValuesBySku(BaseSku $sku): array
+	{
+		return self::getPropertyValues($sku->getIblockId(), [$sku->getId()])[$sku->getId()];
 	}
 
 	/**
@@ -123,7 +127,7 @@ final class PropertyValue
 	 * @param array $propertyValue
 	 * @return string
 	 */
-	private static function getPropertyDisplayValue(array $propertyValue): string
+	public static function getPropertyDisplayValue(array $propertyValue): string
 	{
 		if (!empty($propertyValue['USER_TYPE']))
 		{

@@ -38,6 +38,9 @@ class ConditionTree
 	 */
 	protected $logic;
 
+	/** @var RandomSequence For temporary identifiers (field names) */
+	protected static RandomSequence $randomSequence;
+
 	const LOGIC_OR = 'or';
 
 	const LOGIC_AND = 'and';
@@ -272,7 +275,10 @@ class ConditionTree
 	 */
 	public function whereIn($column, $values)
 	{
-		$this->conditions[] = new Condition($column, 'in', $values);
+		if (!empty($values))
+		{
+			$this->conditions[] = new Condition($column, 'in', $values);
+		}
 
 		return $this;
 	}
@@ -443,7 +449,7 @@ class ConditionTree
 	public function whereExpr($expr, $arguments)
 	{
 		// get random field name
-		$randomSequence = new RandomSequence('orm.filter.expr');
+		$randomSequence = static::getRandomSequence();
 		$tmpName = 'TMP_'.$randomSequence->randString(10);
 
 		// set boolean expression
@@ -619,7 +625,7 @@ class ConditionTree
 	{
 		foreach ($this->conditions as $k => $_condition)
 		{
-			if ($condition === $_condition)
+			if ($condition == $_condition)
 			{
 				unset($this->conditions[$k]);
 				return true;
@@ -714,6 +720,19 @@ class ConditionTree
 		}
 
 		$this->conditions = $newConditions;
+	}
+
+	/**
+	 * @return RandomSequence
+	 */
+	protected static function getRandomSequence(): RandomSequence
+	{
+		if (!isset(static::$randomSequence))
+		{
+			static::$randomSequence = new RandomSequence('orm.filter.expr');
+		}
+
+		return static::$randomSequence;
 	}
 
 	/**

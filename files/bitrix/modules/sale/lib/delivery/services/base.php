@@ -3,12 +3,10 @@ namespace Bitrix\Sale\Delivery\Services;
 
 use Bitrix\Main\Error;
 use Bitrix\Main\Event;
-use Bitrix\Main\Loader;
 use Bitrix\Sale\Result;
 use Bitrix\Sale\Delivery;
 use Bitrix\Sale\Shipment;
 use Bitrix\Main\EventResult;
-use \Bitrix\Main\ModuleManager;
 use Bitrix\Main\SystemException;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Sale\Delivery\Requests;
@@ -25,6 +23,8 @@ require_once __DIR__.'/../inputs.php';
  */
 abstract class Base
 {
+	protected $handlerCode = 'UNDEFINED';
+
 	protected $id = 0;
 	protected $name = "";
 	protected $code = "";
@@ -51,6 +51,8 @@ abstract class Base
 	protected static $whetherAdminExtraServicesShow = false;
 
 	const EVENT_ON_CALCULATE = "onSaleDeliveryServiceCalculate";
+
+	public const TAG_PROFITABLE = 'profitable';
 
 	/** @var bool  */
 	protected $isClone = false;
@@ -113,7 +115,11 @@ abstract class Base
 		if(isset($initParams["RESTRICTED"]))
 			$this->restricted = $initParams["RESTRICTED"];
 
-		$this->trackingParams = is_array($initParams["TRACKING_PARAMS"]) ? $initParams["TRACKING_PARAMS"] : array();
+		$this->trackingParams =
+			isset($initParams["TRACKING_PARAMS"]) && is_array($initParams["TRACKING_PARAMS"])
+				? $initParams["TRACKING_PARAMS"]
+				: []
+		;
 
 		if(isset($initParams["EXTRA_SERVICES"]))
 			$this->extraServices = new \Bitrix\Sale\Delivery\ExtraServices\Manager($initParams["EXTRA_SERVICES"], $this->currency);
@@ -124,40 +130,72 @@ abstract class Base
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getHandlerCode(): string
+	{
+		return (string)$this->handlerCode;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getServiceCode(): string
+	{
+		if (
+			static::isProfile()
+			&& ($parentService = $this->getParentService())
+			&& ($parentServiceHandlerCode = $parentService->getHandlerCode())
+			&& ($profileType = $this->getProfileType())
+		)
+		{
+			return $parentServiceHandlerCode . '_' . $profileType;
+		}
+
+		return $this->getHandlerCode();
+	}
+
+	/**
 	 * Calculates delivery price
-	 * @param \Bitrix\Sale\Shipment $shipment.
-	 * @param array $extraServices.
+	 *
+	 * @param Shipment|null $shipment .
+	 * @param array $extraServices .
 	 * @return \Bitrix\Sale\Delivery\CalculationResult
 	 */
 	public function calculate(\Bitrix\Sale\Shipment $shipment = null, $extraServices = array()) // null for compability with old configurable services api
 	{
-		if($shipment && !$shipment->getCollection())
+		$result = new Delivery\CalculationResult();
+
+		if ($shipment && !$shipment->getCollection())
 		{
-			$result = new Delivery\CalculationResult();
 			$result->addError(new Error('\Bitrix\Sale\Delivery\Services\Base::calculate() can\'t calculate empty shipment!'));
 			return $result;
 		}
 
-		$result = $this->calculateConcrete($shipment);
-
-		if($shipment)
+		if ($shipment)
 		{
-			if(empty($extraServices))
+			$result = $this->calculateConcrete($shipment);
+
+			if (empty($extraServices))
+			{
 				$extraServices = $shipment->getExtraServices();
+			}
 
 			$this->extraServices->setValues($extraServices);
 			$this->extraServices->setOperationCurrency($shipment->getCurrency());
 			$extraServicePrice = $this->extraServices->getTotalCostShipment($shipment);
 
-			if(floatval($extraServicePrice) > 0)
+			if ((float)$extraServicePrice > 0)
+			{
 				$result->setExtraServicesPrice($extraServicePrice);
+			}
 		}
 
-		$eventParams = array(
-			"RESULT" => $result,
-			"SHIPMENT" => $shipment,
-			"DELIVERY_ID" => $this->id
-		);
+		$eventParams = [
+			'RESULT' => $result,
+			'SHIPMENT' => $shipment,
+			'DELIVERY_ID' => $this->id,
+		];
 
 		$event = new Event('sale', self::EVENT_ON_CALCULATE, $eventParams);
 		$event->send();
@@ -168,12 +206,16 @@ abstract class Base
 			foreach ($resultList as &$eventResult)
 			{
 				if ($eventResult->getType() != EventResult::SUCCESS)
+				{
 					continue;
+				}
 
 				$params = $eventResult->getParameters();
 
-				if(isset($params["RESULT"]))
-					$result = $params["RESULT"];
+				if (isset($params['RESULT']))
+				{
+					$result = $params['RESULT'];
+				}
 			}
 		}
 
@@ -569,6 +611,16 @@ abstract class Base
 	 * @param array $fields
 	 * @return bool
 	 */
+	public static function onBeforeUpdate($serviceId, array &$fields = array())
+	{
+		return true;
+	}
+
+	/**
+	 * @param int $serviceId
+	 * @param array $fields
+	 * @return bool
+	 */
 	public static function onAfterUpdate($serviceId, array $fields = array())
 	{
 		return true;
@@ -618,6 +670,14 @@ abstract class Base
 	public static function isProfile()
 	{
 		return self::$isProfile;
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getProfileType(): string
+	{
+		return '';
 	}
 
 	/**
@@ -801,7 +861,7 @@ abstract class Base
 				$deliveryServiceClone->extraServices = $cloneEntity[$extraServices];
 			}
 		}
-		
+
 		return $deliveryServiceClone;
 	}
 
@@ -872,5 +932,13 @@ abstract class Base
 			['', 'ru', 'kz', 'by', 'ua'],
 			true
 		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getTags(): array
+	{
+		return [];
 	}
 }

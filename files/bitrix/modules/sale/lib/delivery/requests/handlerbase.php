@@ -15,8 +15,10 @@ Loc::loadMessages(__FILE__);
  */
 abstract class HandlerBase
 {
+	public const CANCEL_ACTION_CODE = 'CANCEL';
+
 	/** @var Delivery\Services\Base */
-	protected $deliveryService = null;
+	protected $deliveryService;
 
 	/**
 	 * Base constructor.
@@ -33,7 +35,7 @@ abstract class HandlerBase
 	 * @param array $additional
 	 * @return Result
 	 */
-	public function create(array $shipmentIds, array $additional = array())
+	public function create(array $shipmentIds, array $additional = [])
 	{
 		$result = new Result();
 		$result->addError(new Main\Error(Loc::getMessage('SALE_DLVR_REQ_BASE_CREATE_NOT_SUPPORT')));
@@ -47,7 +49,23 @@ abstract class HandlerBase
 	 */
 	public function getActions($requestId)
 	{
-		return array();
+		return [];
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCancelActionCode(): string
+	{
+		return self::CANCEL_ACTION_CODE;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCancelActionName(): string
+	{
+		return Loc::getMessage('SALE_DLVR_REQ_BASE_CANCEL_REQUEST');
 	}
 
 	/**
@@ -57,7 +75,7 @@ abstract class HandlerBase
 	 */
 	public function getShipmentActions(Shipment $shipment)
 	{
-		return array();
+		return [];
 	}
 
 	/**
@@ -93,9 +111,10 @@ abstract class HandlerBase
 	 * Add shipments to delivery request
 	 * @param int $requestId
 	 * @param int[] $shipmentIds
+	 * @param array $additional
 	 * @return Result
 	 */
-	public function addShipments($requestId, $shipmentIds)
+	public function addShipments($requestId, $shipmentIds, array $additional = [])
 	{
 		$result = new Result();
 		$result->addError(new Main\Error(Loc::getMessage('SALE_DLVR_REQ_BASE_SHIPMENT_ADD_NOT_SUPPORT')));
@@ -120,7 +139,7 @@ abstract class HandlerBase
 	 * @param int[] $shipmentIds
 	 * @return Result
 	 */
-	public function deleteShipments($requestId, array $shipmentIds = array())
+	public function deleteShipments($requestId, array $shipmentIds = [])
 	{
 		$result = new Result();
 		$result->addError(new Main\Error(Loc::getMessage('SALE_DLVR_REQ_BASE_SHIPMENT_DELETE_NOT_SUPPORT')));
@@ -133,7 +152,7 @@ abstract class HandlerBase
 	 * @param int[] $shipmentIds
 	 * @return Result
 	 */
-	public function updateShipments($requestId, array $shipmentIds = array())
+	public function updateShipments($requestId, array $shipmentIds = [])
 	{
 		$result = new Result();
 		$result->addError(new Main\Error(Loc::getMessage('SALE_DLVR_REQ_BASE_SHIPMENT_UPDATE_NOT_SUPPORTED')));
@@ -148,9 +167,9 @@ abstract class HandlerBase
 	 * @param array $additional
 	 * @return array
 	 */
-	public function getFormFields($formFieldsType, array $shipmentIds, array $additional = array())
+	public function getFormFields($formFieldsType, array $shipmentIds, array $additional = [])
 	{
-		return array();
+		return [];
 	}
 
 	/**
@@ -185,5 +204,13 @@ abstract class HandlerBase
 	public function getHandlingDeliveryServiceId()
 	{
 		return $this->deliveryService->getId();
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function hasCallbackTrackingSupport(): bool
+	{
+		return false;
 	}
 }

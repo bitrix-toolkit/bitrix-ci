@@ -22,13 +22,14 @@ class SaleTest extends TestCase
 
         $result = \CSaleBasket::Add([
             'LID' => 's1',
-            'PRODUCT_ID' => 1,
+            'PRODUCT_ID' => 4, // первый товар из каталога в актуальном дампе
             'NAME' => 'Тестовый товар',
             'QUANTITY' => 2,
             'CUSTOM_PRICE' => 'Y',
             'PRICE' => 999.99,
             'CURRENCY' => 'RUB',
             'CAN_BUY' => 'Y',
+            'MODULE' => 'sale'
         ]);
 
         $this->assertNotEmpty($result, $APPLICATION->LAST_ERROR);

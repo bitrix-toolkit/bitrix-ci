@@ -1,6 +1,7 @@
 <?php
 
 use Bitrix\Main\Localization\CultureTable;
+use Bitrix\Main\Localization;
 
 IncludeModuleLangFile(__FILE__);
 
@@ -39,6 +40,9 @@ class CAllLanguage
 						case "LID":
 							$arSqlSearch[] = "L.LID='".$DB->ForSql($val)."'";
 							break;
+						case "CODE":
+							$arSqlSearch[] = "L.CODE='".$DB->ForSql($val)."'";
+							break;
 					}
 				}
 			}
@@ -60,6 +64,7 @@ class CAllLanguage
 		if($by == "lid" || $by=="id") $strSqlOrder = " ORDER BY L.LID ";
 		elseif($by == "active") $strSqlOrder = " ORDER BY L.ACTIVE ";
 		elseif($by == "name") $strSqlOrder = " ORDER BY L.NAME ";
+		elseif($by == "code") $strSqlOrder = " ORDER BY L.CODE ";
 		elseif($by == "def") $strSqlOrder = " ORDER BY L.DEF ";
 		else
 		{
@@ -73,7 +78,7 @@ class CAllLanguage
 
 		$strSql .= $strSqlOrder;
 
-		$res = $DB->Query($strSql, false, "FILE: ".__FILE__."<br> LINE: ".__LINE__);
+		$res = $DB->Query($strSql);
 
 		return $res;
 	}
@@ -167,10 +172,12 @@ class CAllLanguage
 		$strSql =
 			"INSERT INTO b_language(".$arInsert[0].") ".
 			"VALUES(".$arInsert[1].")";
-		$DB->Query($strSql, false, "FILE: ".__FILE__."<br> LINE: ".__LINE__);
+		$DB->Query($strSql);
+
+		Localization\LanguageTable::cleanCache();
+
 		return $arFields["LID"];
 	}
-
 
 	public function Update($ID, $arFields)
 	{
@@ -195,7 +202,9 @@ class CAllLanguage
 
 		$strUpdate = $DB->PrepareUpdate("b_language", $arFields);
 		$strSql = "UPDATE b_language SET ".$strUpdate." WHERE LID='".$DB->ForSql($ID, 2)."'";
-		$DB->Query($strSql, false, "FILE: ".__FILE__."<br> LINE: ".__LINE__);
+		$DB->Query($strSql);
+
+		Localization\LanguageTable::cleanCache();
 
 		return true;
 	}
@@ -224,7 +233,11 @@ class CAllLanguage
 		foreach(GetModuleEvents("main", "OnLanguageDelete", true) as $arEvent)
 			ExecuteModuleEventEx($arEvent, array($ID));
 
-		return $DB->Query("DELETE FROM b_language WHERE LID='".$DB->ForSQL($ID, 2)."'", true);
+		$res = $DB->Query("DELETE FROM b_language WHERE LID='".$DB->ForSQL($ID, 2)."'", true);
+
+		Localization\LanguageTable::cleanCache();
+
+		return $res;
 	}
 
 	public static function SelectBox($sFieldName, $sValue, $sDefaultValue="", $sFuncName="", $field="class=\"typeselect\"")
@@ -251,7 +264,11 @@ class CAllLanguage
 		global $APPLICATION;
 
 		$result = array();
-		$db_res = \Bitrix\Main\Localization\LanguageTable::getList(array('filter'=>array('ACTIVE'=>'Y'), 'order'=>array('SORT'=>'ASC')));
+		$db_res = Localization\LanguageTable::getList([
+			'filter' => ['=ACTIVE'=>'Y'],
+			'order' => ['SORT'=>'ASC'],
+			'cache' => ['ttl' => 86400],
+		]);
 		while($ar = $db_res->fetch())
 		{
 			$ar["NAME"] = htmlspecialcharsbx($ar["NAME"]);

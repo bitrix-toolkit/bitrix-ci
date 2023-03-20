@@ -81,11 +81,18 @@ final class CheckManager
 		$validateResult = $check->validate();
 		if (!$validateResult->isSuccess())
 		{
-			if (class_exists('\Bitrix\Crm\Order\Order') && $order instanceof \Bitrix\Crm\Order\Order)
+			if (Main\Loader::includeModule('crm'))
 			{
-				$order->addTimelineCheckEntryOnFailure([
-					'ERROR_TEXT' => Loc::getMessage('SALE_CASHBOX_ERROR_CHECK_NOT_CREATED'),
-				]);
+				\Bitrix\Crm\Timeline\OrderCheckController::getInstance()->onCheckFailure(
+					[
+						'ORDER_FIELDS' => $order->getFieldValues(),
+						'SETTINGS' => [
+							'FAILURE' => 'Y',
+							'PRINTED' => 'N',
+						],
+						'BINDINGS' => \Bitrix\Crm\Order\BindingsMaker\TimelineBindingsMaker::makeByOrder($order),
+					]
+				);
 			}
 
 			$notifyClassName = $registry->getNotifyClassName();
@@ -188,7 +195,7 @@ final class CheckManager
 			}
 
 			$cashbox = Manager::getObjectById($item['ID']);
-			if ($cashbox instanceof ICorrection)
+			if ($cashbox->isCorrection())
 			{
 				return true;
 			}
@@ -231,7 +238,7 @@ final class CheckManager
 			$result->setId($check->getField('ID'));
 
 			$cashbox = Manager::getObjectById($cashboxId);
-			if ($cashbox instanceof ICorrection)
+			if ($cashbox->isCorrection())
 			{
 				CashboxCheckTable::update(
 					$check->getField('ID'),
@@ -445,7 +452,6 @@ final class CheckManager
 			{
 				self::addStatisticOnSuccessCheckPrint($checkId);
 
-				/** @ToDO Will be removed after OrderCheckCollection is realized */
 				self::addTimelineCheckEntryOnCreateToOrder($order, $checkId, ['PRINTED' => 'Y']);
 
 				$isSend = false;
@@ -502,9 +508,16 @@ final class CheckManager
 
 	private static function addTimelineCheckEntryOnCreateToOrder($order, $checkId, $params)
 	{
-		if (class_exists('\Bitrix\Crm\Order\Order') && $order instanceof \Bitrix\Crm\Order\Order)
+		if ($order && Main\Loader::includeModule('crm'))
 		{
-			$order->addTimelineCheckEntryOnCreate($checkId, $params);
+			\Bitrix\Crm\Timeline\OrderCheckController::getInstance()->onPrintCheck(
+				$checkId,
+				[
+					'ORDER_FIELDS' => $order->getFieldValues(),
+					'SETTINGS' => $params,
+					'BINDINGS' => \Bitrix\Crm\Order\BindingsMaker\TimelineBindingsMaker::makeByOrder($order),
+				]
+			);
 		}
 	}
 
@@ -983,16 +996,6 @@ final class CheckManager
 				if ($paymentCollection->isExistsInnerPayment())
 				{
 					$relatedEntities[Check::PAYMENT_TYPE_ADVANCE][] = $paymentCollection->getInnerPayment();
-				}
-
-				$shipmentCollection = $order->getShipmentCollection();
-				/** @var Sale\Shipment $shipment */
-				foreach ($shipmentCollection as $shipment)
-				{
-					if (!$shipment->isSystem())
-					{
-						$relatedEntities[Check::SHIPMENT_TYPE_NONE][] = $shipment;
-					}
 				}
 
 				$map[] = array("TYPE" => CreditPaymentCheck::getType(), "ENTITIES" => $entities, "RELATED_ENTITIES" => $relatedEntities);

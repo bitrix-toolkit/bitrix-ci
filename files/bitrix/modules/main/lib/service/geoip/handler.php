@@ -1,9 +1,9 @@
 <?php
+
 namespace Bitrix\Main\Service\GeoIp;
 
 use Bitrix\Main\Entity;
 use Bitrix\Main\Localization\Loc;
-Loc::loadMessages(__FILE__);
 
 /**
  * Class HandlerTable
@@ -18,7 +18,20 @@ Loc::loadMessages(__FILE__);
  * </ul>
  *
  * @package Bitrix\Main\Service\GeoIp
- **/
+ *
+ * DO NOT WRITE ANYTHING BELOW THIS
+ *
+ * <<< ORMENTITYANNOTATION
+ * @method static EO_Handler_Query query()
+ * @method static EO_Handler_Result getByPrimary($primary, array $parameters = [])
+ * @method static EO_Handler_Result getById($id)
+ * @method static EO_Handler_Result getList(array $parameters = [])
+ * @method static EO_Handler_Entity getEntity()
+ * @method static \Bitrix\Main\Service\GeoIp\EO_Handler createObject($setDefaultValues = true)
+ * @method static \Bitrix\Main\Service\GeoIp\EO_Handler_Collection createCollection()
+ * @method static \Bitrix\Main\Service\GeoIp\EO_Handler wakeUpObject($row)
+ * @method static \Bitrix\Main\Service\GeoIp\EO_Handler_Collection wakeUpCollection($rows)
+ */
 
 class HandlerTable extends Entity\DataManager
 {
@@ -79,5 +92,11 @@ class HandlerTable extends Entity\DataManager
 		return array(
 			new Entity\Validator\Length(null, 255),
 		);
+	}
+
+	public static function cleanCache(): void
+	{
+		parent::cleanCache();
+		Manager::cleanCache();
 	}
 }

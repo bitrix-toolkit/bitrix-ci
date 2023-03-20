@@ -17,6 +17,7 @@ use Bitrix\Sale\BusinessValue;
 use Bitrix\Sale\Internals\PaySystemActionTable;
 use Bitrix\Sale\Internals\PaySystemRestHandlersTable;
 use Bitrix\Sale\Internals\ServiceRestrictionTable;
+use Bitrix\Sale\Internals\BusinessValueTable;
 use Bitrix\Sale\Order;
 use Bitrix\Sale\Payment;
 use Bitrix\Sale\Registry;
@@ -34,10 +35,9 @@ final class Manager
 	const HANDLER_AVAILABLE_TRUE = true;
 	const HANDLER_AVAILABLE_FALSE = false;
 
-	const HANDLER_INDEPENDENT_TRUE = true;
-	const HANDLER_INDEPENDENT_FALSE = false;
-
 	const EVENT_ON_GET_HANDLER_DESC = 'OnSaleGetHandlerDescription';
+	const EVENT_ON_PAYSYSTEM_UPDATE = 'OnSalePaySystemUpdate';
+
 	const CACHE_ID = "BITRIX_SALE_INNER_PS_ID";
 	const TTL = 31536000;
 	/**
@@ -47,6 +47,12 @@ final class Manager
 		'CUSTOM' => '',
 		'LOCAL' => '/local/php_interface/include/sale_payment/',
 		'SYSTEM' => '/bitrix/modules/sale/handlers/paysystem/',
+
+		/**
+		 * @deprecated
+		 * The directory /bitrix/modules/sale/payment/ is not supported since version 22.200.0
+		 * Key SYSTEM_OLD is left for compatibility
+		 */
 		'SYSTEM_OLD' => '/bitrix/modules/sale/payment/'
 	);
 
@@ -119,7 +125,27 @@ final class Manager
 	 */
 	public static function update($primary, array $data): \Bitrix\Main\ORM\Data\UpdateResult
 	{
-		return PaySystemActionTable::update($primary, $data);
+		$oldFields = PaySystemActionTable::getByPrimary($primary)->fetch();
+		if ($oldFields)
+		{
+			$newFields = array_merge($oldFields, $data);
+			$data['PS_CLIENT_TYPE'] = (new Service($newFields))->getClientTypeFromHandler();
+		}
+
+		$updateResult = PaySystemActionTable::update($primary, $data);
+		if ($oldFields && $updateResult->isSuccess())
+		{
+			$oldFields = array_intersect_key($oldFields, $data);
+			$eventParams = [
+				'PAY_SYSTEM_ID' => $primary,
+				'OLD_FIELDS' => $oldFields,
+				'NEW_FIELDS' => $data,
+			];
+			$event = new Event('sale', self::EVENT_ON_PAYSYSTEM_UPDATE, $eventParams);
+			$event->send();
+		}
+
+		return $updateResult;
 	}
 
 	/**
@@ -129,6 +155,8 @@ final class Manager
 	 */
 	public static function add(array $data): \Bitrix\Main\ORM\Data\AddResult
 	{
+		$data['PS_CLIENT_TYPE'] = (new Service($data))->getClientTypeFromHandler();
+		
 		return PaySystemActionTable::add($data);
 	}
 
@@ -169,7 +197,7 @@ final class Manager
 				$className = '';
 				if (File::isFileExists($documentRoot.$path.$name.'/handler.php'))
 				{
-					list($className) = self::includeHandler($item['ACTION_FILE']);
+					[$className] = self::includeHandler($item['ACTION_FILE']);
 				}
 
 				if (class_exists($className) && is_callable(array($className, 'isMyResponse')))
@@ -334,27 +362,53 @@ final class Manager
 	{
 		$result = array();
 
-		$dbRes = self::getList(array(
-			'filter' => array('ACTIVE' => 'Y', 'ENTITY_REGISTRY_TYPE' => $payment::getRegistryType()),
-			'order' => array('SORT' => 'ASC', 'NAME' => 'ASC')
-		));
+		$filter = [
+			'=ACTIVE' => 'Y',
+			'=ENTITY_REGISTRY_TYPE' => $payment::getRegistryType(),
+		];
+		
+		$bindingPaySystemIds = [];
+		if ($mode == Restrictions\Manager::MODE_CLIENT)
+		{
+			$bindingPaySystemIds = PaymentAvailablesPaySystems::getAvailablePaySystemIdsByPaymentId($payment->getId());
+			if ($bindingPaySystemIds)
+			{
+				$filter['=ID'] = $bindingPaySystemIds;
+			}
+		}
+
+		$dbRes = self::getList([
+			'filter' => $filter,
+			'order' => [
+				'SORT' => 'ASC',
+				'NAME' => 'ASC',
+			],
+		]);
 
 		while ($paySystem = $dbRes->fetch())
 		{
-			if ($mode == Restrictions\Manager::MODE_MANAGER)
+			if ($bindingPaySystemIds)
+			{
+				$result[$paySystem['ID']] = $paySystem;
+			}
+			elseif ($mode == Restrictions\Manager::MODE_MANAGER)
 			{
 				$checkServiceResult = Restrictions\Manager::checkService($paySystem['ID'], $payment, $mode);
 				if ($checkServiceResult != Restrictions\Manager::SEVERITY_STRICT)
 				{
 					if ($checkServiceResult == Restrictions\Manager::SEVERITY_SOFT)
+					{
 						$paySystem['RESTRICTED'] = $checkServiceResult;
+					}
 					$result[$paySystem['ID']] = $paySystem;
 				}
 			}
-			else if ($mode == Restrictions\Manager::MODE_CLIENT)
+			elseif ($mode == Restrictions\Manager::MODE_CLIENT)
 			{
 				if (Restrictions\Manager::checkService($paySystem['ID'], $payment, $mode) === Restrictions\Manager::SEVERITY_NONE)
+				{
 					$result[$paySystem['ID']] = $paySystem;
+				}
 			}
 		}
 
@@ -399,7 +453,6 @@ final class Manager
 						$data = array();
 						$psTitle = '';
 						$isAvailable = null;
-						$isIndependent = null;
 
 						if (mb_strpos($item->getName(), '.description') !== false)
 						{
@@ -413,11 +466,6 @@ final class Manager
 								if (isset($data['IS_AVAILABLE']))
 								{
 									$isAvailable = $data['IS_AVAILABLE'];
-								}
-
-								if (isset($data['IS_INDEPENDENT']))
-								{
-									$isIndependent = $data['IS_INDEPENDENT'];
 								}
 							}
 							else
@@ -439,13 +487,6 @@ final class Manager
 							{
 								if ($isAvailable !== null
 									&& $isAvailable === static::HANDLER_AVAILABLE_FALSE
-								)
-								{
-									continue(2);
-								}
-
-								if ($isIndependent !== null
-									&& $isIndependent === static::HANDLER_INDEPENDENT_FALSE
 								)
 								{
 									continue(2);
@@ -515,7 +556,18 @@ final class Manager
 		}
 
 		if (isset($data['CODES']) && is_array($data['CODES']))
-			uasort($data['CODES'], function ($a, $b) { return ($a['SORT'] < $b['SORT']) ? -1 : 1;});
+		{
+			uasort(
+				$data['CODES'],
+				function ($a, $b)
+				{
+					$sortA = $a['SORT'] ?? 0;
+					$sortB = $b['SORT'] ?? 0;
+
+					return ($sortA < $sortB) ? -1 : 1;
+				}
+			);
+		}
 
 		return $data;
 	}
@@ -750,25 +802,13 @@ final class Manager
 			\CFile::Delete($paySystemInfo['LOGOTIP']);
 		}
 
-		$restrictionList =  Restrictions\Manager::getRestrictionsList($primary);
-		if ($restrictionList)
-		{
-			Restrictions\Manager::getClassesList();
-
-			foreach ($restrictionList as $restriction)
-			{
-				/** @var Restriction $className */
-				$className = $restriction["CLASS_NAME"];
-				if (is_subclass_of($className, '\Bitrix\Sale\Services\Base\Restriction'))
-				{
-					$className::delete($restriction['ID'], $primary);
-				}
-			}
-		}
-
-		BusinessValue::delete(Service::PAY_SYSTEM_PREFIX.$primary);
+		self::deleteRestrictions($primary);
 
 		$service = Manager::getObjectById($primary);
+		if ($service)
+		{
+			self::deleteBusinessValues($service);
+		}
 
 		$deleteResult = PaySystemActionTable::delete($primary);
 		if ($deleteResult->isSuccess())
@@ -784,6 +824,60 @@ final class Manager
 		}
 
 		return $deleteResult;
+	}
+
+	/**
+	 * Deletes restrictions
+	 *
+	 * @param int $paySystemId
+	 * @return void
+	 */
+	private static function deleteRestrictions(int $paySystemId): void
+	{
+		$restrictionList =  Restrictions\Manager::getRestrictionsList($paySystemId);
+		if ($restrictionList)
+		{
+			Restrictions\Manager::getClassesList();
+
+			foreach ($restrictionList as $restriction)
+			{
+				/** @var Restriction $className */
+				$className = $restriction['CLASS_NAME'];
+				if (is_subclass_of($className, Restriction::class))
+				{
+					$className::delete($restriction['ID'], $paySystemId);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Deletes business value with prefix
+	 * Also if there is only 1 paysystem (before delete), deletes all business value including COMMON
+	 *
+	 * @param Service $service
+	 * @return void
+	 */
+	private static function deleteBusinessValues(Service $service): void
+	{
+		BusinessValue::delete(Service::PAY_SYSTEM_PREFIX . $service->getField('ID'));
+
+		$paySystemCount = PaySystemActionTable::getList([
+			'select' => ['ID'],
+			'filter' => [
+				'ACTION_FILE' => $service->getField('ACTION_FILE'),
+			],
+			'count_total' => true,
+		])->getCount();
+		if ($paySystemCount === 1)
+		{
+			$handlerDescription = $service->getHandlerDescription();
+			$handlerDescriptionCodes = array_keys($handlerDescription['CODES'] ?? []);
+			foreach ($handlerDescriptionCodes as $code)
+			{
+				BusinessValueTable::deleteByCodeKey($code);
+			}
+		}
 	}
 
 	/**
@@ -902,8 +996,20 @@ final class Manager
 	 */
 	public static function isRestHandler($handler)
 	{
-		$dbRes = PaySystemRestHandlersTable::getList(array('filter' => array('CODE' => $handler)));
-		return (bool)$dbRes->fetch();
+		static $result = [];
+
+		if (isset($result[$handler]))
+		{
+			return $result[$handler];
+		}
+
+		$handlerData = PaySystemRestHandlersTable::getList([
+			'filter' => ['=CODE' => $handler],
+			'limit' => 1,
+		])->fetch();
+		$result[$handler] = (bool)$handlerData;
+
+		return $result[$handler] ?? false;
 	}
 
 	/**

@@ -13,8 +13,26 @@ use Bitrix\Main\ORM\Query\Join;
 use Bitrix\Main\ORM\Data;
 use Bitrix\Main\ORM\Fields;
 
+/**
+ * Class UserAuthCodeTable
+ *
+ * DO NOT WRITE ANYTHING BELOW THIS
+ *
+ * <<< ORMENTITYANNOTATION
+ * @method static EO_UserAuthCode_Query query()
+ * @method static EO_UserAuthCode_Result getByPrimary($primary, array $parameters = [])
+ * @method static EO_UserAuthCode_Result getById($id)
+ * @method static EO_UserAuthCode_Result getList(array $parameters = [])
+ * @method static EO_UserAuthCode_Entity getEntity()
+ * @method static \Bitrix\Main\Authentication\Internal\EO_UserAuthCode createObject($setDefaultValues = true)
+ * @method static \Bitrix\Main\Authentication\Internal\EO_UserAuthCode_Collection createCollection()
+ * @method static \Bitrix\Main\Authentication\Internal\EO_UserAuthCode wakeUpObject($row)
+ * @method static \Bitrix\Main\Authentication\Internal\EO_UserAuthCode_Collection wakeUpCollection($rows)
+ */
 class UserAuthCodeTable extends Data\DataManager
 {
+	use Data\Internal\DeleteByFilterTrait;
+
 	const TYPE_EMAIL = 'email';
 
 	public static function getTableName()
@@ -58,21 +76,5 @@ class UserAuthCodeTable extends Data\DataManager
 				Join::on('this.USER_ID', 'ref.ID')
 			))->configureJoinType('inner'),
 		);
-	}
-
-	public static function deleteByFilter(array $filter)
-	{
-		$entity = static::getEntity();
-		$conn = $entity->getConnection();
-
-		$where = Main\ORM\Query\Query::buildFilterSql($entity, $filter);
-
-		if($where <> '')
-		{
-			$where = " WHERE ".$where;
-		}
-
-		$conn->queryExecute("delete from b_user_auth_code".$where);
-		$entity->cleanCache();
 	}
 }

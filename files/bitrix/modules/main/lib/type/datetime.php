@@ -1,4 +1,5 @@
 <?php
+
 namespace Bitrix\Main\Type;
 
 use Bitrix\Main;
@@ -6,10 +7,13 @@ use Bitrix\Main\Context;
 
 class DateTime extends Date
 {
+	/** @var bool */
+	protected $userTimeEnabled = true;
+
 	/**
-	 * @param string $time String representation of datetime.
-	 * @param string $format PHP datetime format. If not specified, the format is got from the current culture.
-	 * @param \DateTimeZone $timezone Optional timezone object.
+	 * @param string | null $time String representation of datetime.
+	 * @param string | null $format PHP datetime format. If not specified, the format is got from the current culture.
+	 * @param \DateTimeZone | null $timezone Optional timezone object.
 	 *
 	 * @throws Main\ObjectException
 	 */
@@ -46,7 +50,7 @@ class DateTime extends Date
 			{
 				if(isset($parsedValue["zone_type"]) && $parsedValue["zone_type"] == 1)
 				{
-					if(isset($parsedValue["zone"]) && $parsedValue["zone"] <> 0)
+					if(isset($parsedValue["zone"]))
 					{
 						$this->setTimeZone(new \DateTimeZone(static::secondsToOffset($parsedValue["zone"])));
 					}
@@ -64,35 +68,34 @@ class DateTime extends Date
 		}
 	}
 
-	public static function secondsToOffset($seconds)
+	public static function secondsToOffset($seconds, $delimiter = '')
 	{
 		$absSeconds = abs($seconds);
 		$hours = sprintf("%02d", floor($absSeconds / 3600));
 		$minutes = gmdate("i", $absSeconds % 3600);
-		return ($seconds < 0? "-" : "+").$hours.$minutes;
+		return ($seconds < 0 ? "-" : "+") . $hours . $delimiter . $minutes;
 	}
 
 	/**
 	 * Converts date to string, using Culture and global timezone settings.
 	 *
-	 * @param Context\Culture $culture Culture contains datetime format.
+	 * @param Context\Culture | null $culture Culture contains datetime format.
 	 *
 	 * @return string
 	 */
 	public function toString(Context\Culture $culture = null)
 	{
-		if(\CTimeZone::Enabled())
+		if ($this->userTimeEnabled && \CTimeZone::Enabled())
 		{
 			$userTime = clone $this;
 			$userTime->toUserTime();
 
 			$format = static::getFormat($culture);
+
 			return $userTime->format($format);
 		}
-		else
-		{
-			return parent::toString($culture);
-		}
+
+		return parent::toString($culture);
 	}
 
 	/**
@@ -176,7 +179,6 @@ class DateTime extends Date
 	 */
 	public static function createFromUserTime($timeString)
 	{
-		/** @var DateTime $time */
 		try
 		{
 			//try full datetime format
@@ -186,7 +188,7 @@ class DateTime extends Date
 		{
 			//try short date format
 			$time = new static($timeString, Date::getFormat());
-			$time->setTime(0, 0, 0);
+			$time->setTime(0, 0);
 		}
 
 		if(\CTimeZone::Enabled())
@@ -207,7 +209,7 @@ class DateTime extends Date
 	/**
 	 * Returns long (including time) date culture format.
 	 *
-	 * @param Context\Culture $culture Culture.
+	 * @param Context\Culture | null $culture Culture.
 	 *
 	 * @return string
 	 */
@@ -262,19 +264,42 @@ class DateTime extends Date
 			return null;
 		}
 
-		if ($format === null)
-		{
-			$format = static::getFormat();
-		}
-
 		try
 		{
-			$time = new DateTime($timeString, $format);
+			$time = new static($timeString, $format);
 		}
 		catch(Main\ObjectException $e)
 		{
 			$time = null;
 		}
 		return $time;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isUserTimeEnabled()
+	{
+		return $this->userTimeEnabled;
+	}
+
+	/**
+	 * @return $this
+	 */
+	public function disableUserTime()
+	{
+		$this->userTimeEnabled = false;
+
+		return $this;
+	}
+
+	/**
+	 * @return $this
+	 */
+	public function enableUserTime()
+	{
+		$this->userTimeEnabled = true;
+
+		return $this;
 	}
 }

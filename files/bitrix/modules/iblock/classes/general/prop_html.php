@@ -200,26 +200,53 @@ class CIBlockPropertyHTML
 			&& array_key_exists("VALUE", $value)
 		)
 		{
-			$text = trim($value["VALUE"]["TEXT"]);
-			$len = mb_strlen($text);
+			if (
+				isset($value['VALUE']['TEXT'])
+				&& !is_scalar($value['VALUE']['TEXT'])
+			)
+			{
+				$value['VALUE']['TEXT'] =
+					is_object($value['VALUE']['TEXT']) && method_exists($value['VALUE']['TEXT'], '__toString')
+						? (string)$value['VALUE']['TEXT']
+						: ''
+				;
+			}
+			$value['VALUE']['TEXT'] ??= '';
+			$value['VALUE']['TEXT'] = trim($value['VALUE']['TEXT']);
+			if (Loader::includeModule('bitrix24'))
+			{
+				$sanitizer = new \CBXSanitizer();
+				$sanitizer->setLevel(\CBXSanitizer::SECURE_LEVEL_LOW);
+				$sanitizer->ApplyDoubleEncode(false);
+				$value['VALUE']['TEXT'] = $sanitizer->SanitizeHtml($value['VALUE']['TEXT']);
+			}
+			$len = mb_strlen($value['VALUE']['TEXT']);
 			if ($len > 0 || $defaultValue)
 			{
-				if ($DB->type === "MYSQL")
+				if ($DB->type === 'MYSQL')
 					$limit = 63200;
 				else
 					$limit = 1950;
 
 				if ($len > $limit)
-					$value["VALUE"]["TEXT"] = mb_substr($text, 0, $limit);
+				{
+					$value['VALUE']['TEXT'] = mb_substr($value['VALUE']['TEXT'], 0, $limit);
+				}
 
-				$val = static::CheckArray($value["VALUE"], $defaultValue);
+				$val = static::CheckArray($value['VALUE'], $defaultValue);
 				if (is_array($val))
 				{
 					$return = array(
-						"VALUE" => serialize($val),
+						'VALUE' => serialize($val),
 					);
-					if (trim($value["DESCRIPTION"]) != '')
-						$return["DESCRIPTION"] = trim($value["DESCRIPTION"]);
+					if (isset($value['DESCRIPTION']) && is_string($value['DESCRIPTION']))
+					{
+						$value['DESCRIPTION'] = trim($value['DESCRIPTION']);
+						if ($value['DESCRIPTION'] !== '')
+						{
+							$return['DESCRIPTION'] = $value['DESCRIPTION'];
+						}
+					}
 				}
 			}
 		}
@@ -232,20 +259,51 @@ class CIBlockPropertyHTML
 		$return = false;
 		if (!is_array($value["VALUE"]))
 		{
-			$return = array(
-				"VALUE" => unserialize($value["VALUE"]),
-			);
-			if ($return['VALUE'] === false && $value['VALUE'] <> '')
+			$value['VALUE'] = (string)$value['VALUE'];
+			if ($value['VALUE'] === '')
 			{
-				$return = array(
-					"VALUE" => array(
+				$return = [
+					"VALUE" => [
 						'TEXT' => $value["VALUE"],
-						'TYPE' => 'TEXT'
-					)
-				);
+						'TYPE' => 'TEXT',
+					]
+				];
 			}
-			if($value["DESCRIPTION"])
-				$return["DESCRIPTION"] = trim($value["DESCRIPTION"]);
+			else
+			{
+				if (CheckSerializedData($value["VALUE"]))
+				{
+					$return = [
+						"VALUE" => unserialize($value["VALUE"], ['allowed_classes' => false]),
+					];
+					if ($return['VALUE'] === false)
+					{
+						$return = [
+							"VALUE" => [
+								'TEXT' => $value["VALUE"],
+								'TYPE' => 'TEXT',
+							]
+						];
+					}
+				}
+				else
+				{
+					$return = [
+						"VALUE" => [
+							'TEXT' => $value["VALUE"],
+							'TYPE' => 'TEXT',
+						]
+					];
+				}
+			}
+			if (isset($value['DESCRIPTION']))
+			{
+				$value['DESCRIPTION'] = (string)$value['DESCRIPTION'];
+				if ($value['DESCRIPTION'] !== '')
+				{
+					$return["DESCRIPTION"] = trim($value["DESCRIPTION"]);
+				}
+			}
 		}
 		return $return;
 	}
@@ -264,7 +322,7 @@ class CIBlockPropertyHTML
 		{
 			$return = false;
 			if (CheckSerializedData($arFields))
-				$return = unserialize($arFields);
+				$return = unserialize($arFields, ['allowed_classes' => false]);
 		}
 		else
 		{
@@ -311,7 +369,7 @@ class CIBlockPropertyHTML
 	public static function GetSettingsHTML($arProperty, $strHTMLControlName, &$arPropertyFields)
 	{
 		$arPropertyFields = array(
-			"HIDE" => array("ROW_COUNT", "COL_COUNT"),
+			"HIDE" => array("ROW_COUNT", "COL_COUNT", "MULTIPLE"),
 		);
 
 		$height = 0;

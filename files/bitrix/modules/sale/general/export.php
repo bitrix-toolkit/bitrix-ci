@@ -1285,6 +1285,65 @@ class CSaleExport
 		return self::$arResultStat;
 	}
 
+	public static function safetyUnZip($file_name, $last_inx = null, $interval = 0)
+	{
+		$start_time = time();
+		$dir_name = mb_substr($file_name, 0, mb_strrpos($file_name, '/') + 1);
+
+		if (mb_strlen($dir_name) <= mb_strlen($_SERVER['DOCUMENT_ROOT']))
+		{
+			return false;
+		}
+
+		/** @var CZip $oArchiver */
+		$oArchiver = CBXArchive::GetArchive($file_name, 'ZIP');
+		if ($oArchiver instanceof IBXArchive)
+		{
+			$entries = $oArchiver->GetProperties()['nb'];
+
+			for ($inx = 0; $inx < $entries; $inx++)
+			{
+				//Skip from last step
+				if (is_null($last_inx) === false)
+				{
+					if ((int)$last_inx >= $inx)
+					{
+						continue;
+					}
+				}
+
+				$oArchiver->SetOptions([
+					'RULE' => [
+						'by_index' => [
+							[
+								'start' => $inx,
+								'end' => $inx,
+							]
+						]
+					]
+				]);
+
+				$rArchiver = $oArchiver->Unpack($dir_name);
+				if (!$rArchiver)
+				{
+					return false;
+				}
+
+				//Jump to next step
+				if($interval > 0 && (time() - $start_time) > ($interval))
+				{
+					return $inx;
+				}
+			}
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	public static function UnZip($file_name, $last_zip_entry = "", $interval = 0)
 	{
 		global $APPLICATION;
@@ -1544,30 +1603,31 @@ class CSaleExport
 
 					$shipmentItemCollection = $shipment->getShipmentItemCollection();
 
-					/** @var ShipmentItem $shipmentItem */
+					/** @var \Bitrix\Sale\ShipmentItem $shipmentItem */
 					foreach ($shipmentItemCollection as $shipmentItem)
 					{
-						if($shipmentItem->getId() == $shipmentItemId)
+						if ($shipmentItem->getId() == $shipmentItemId)
 						{
 							$basketItem = $shipmentItem->getBasketItem();
 							if ($basketItem->isSupportedMarkingCode())
-							{								
+							{
 								$storeCollection = $shipmentItem->getShipmentItemStoreCollection();
-								
+
 								for ($i = $shipmentItem->getQuantity(); $i > 0; $i--)
 								{
-									$markingCode = '';
-
-									/** @var ShipmentItemStore $itemStore */
-									if ($itemStore = $storeCollection->current())
+									if ($storeCollection)
 									{
-										$code = $itemStore->getMarkingCode();
-										if($code <> '')
+										/** @var \Bitrix\Sale\ShipmentItemStore $itemStore */
+										if ($itemStore = $storeCollection->current())
 										{
-											$list[] = $code;
-										}											
-										
-										$storeCollection->next();
+											$code = $itemStore->getMarkingCode();
+											if($code <> '')
+											{
+												$list[] = $code;
+											}
+
+											$storeCollection->next();
+										}
 									}
 								}
 							}
@@ -3213,7 +3273,6 @@ class CSaleExport
 	/** @deprecated */
 	private static function setMap($personTypeId, array $map1C, $itemId)
 	{
-		BusinessValue::INDIVIDUAL_DOMAIN; // make sure BusinessValueCode1CTable loaded since it in the same file as BusinessValue
 		BusinessValueConsumer1C::getConsumers(); // initialize 1C codes
 
 		$personTypes = BusinessValue::getPersonTypes();

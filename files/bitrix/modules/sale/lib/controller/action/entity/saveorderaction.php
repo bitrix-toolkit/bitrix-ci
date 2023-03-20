@@ -2,18 +2,20 @@
 namespace Bitrix\Sale\Controller\Action\Entity;
 
 use Bitrix\Main;
-use Bitrix\Main\ORM\EntityError;
-use Bitrix\Main\ORM\Fields\FieldError;
 use Bitrix\Sale;
 use Bitrix\Crm;
+use Bitrix\Crm\Order\Manager;
 
 /**
  * Class SaveOrderAction
  * @package Bitrix\Sale\Controller\Action\Entity
  * @example BX.ajax.runAction("sale.entity.saveOrder", { data: { fields: { siteId:'s1', [userId:1, personTypeId:1] properties: {...}}}});
+ * @internal
  */
-class SaveOrderAction extends BaseAction
+final class SaveOrderAction extends BaseAction
 {
+	private ?int $compilationDealId;
+
 	/**
 	 * @param array $fields
 	 * @return array|null
@@ -72,7 +74,11 @@ class SaveOrderAction extends BaseAction
 			}
 			else
 			{
-				$this->fillErrorCollection($result, $setUserResult->getErrors(), 202250005000);
+				$this->fillErrorCollection(
+					$result,
+					$setUserResult->getErrors(),
+					Sale\Controller\ErrorEnumeration::SAVE_ORDER_ACTION_SET_USER
+				);
 				return $result;
 			}
 
@@ -80,22 +86,48 @@ class SaveOrderAction extends BaseAction
 			$setProfileResult = $this->setProfile($order, $userProfileData);
 			if (!$setProfileResult->isSuccess())
 			{
-				$this->fillErrorCollection($result, $setProfileResult->getErrors(), 202250006000);
+				$this->fillErrorCollection(
+					$result,
+					$setProfileResult->getErrors(),
+					Sale\Controller\ErrorEnumeration::SAVE_ORDER_ACTION_SET_PROFILE
+				);
 				return $result;
 			}
 
 			$doFinalActionsResult = $this->doFinalActions($order);
 			if (!$doFinalActionsResult->isSuccess())
 			{
-				$this->fillErrorCollection($result, $doFinalActionsResult->getErrors(), 202250007000);
+				$this->fillErrorCollection(
+					$result,
+					$doFinalActionsResult->getErrors(),
+					Sale\Controller\ErrorEnumeration::SAVE_ORDER_ACTION_FINAL_ACTIONS
+				);
 				return $result;
 			}
 
 			$saveResult = $order->save();
 			if (!$saveResult->isSuccess())
 			{
-				$this->fillErrorCollection($result, $saveResult->getErrors(), 202250008000);
+				$this->fillErrorCollection(
+					$result,
+					$saveResult->getErrors(),
+					Sale\Controller\ErrorEnumeration::SAVE_ORDER_ACTION_SAVE
+				);
 				return $result;
+			}
+
+			if (
+				Main\Loader::includeModule('crm')
+				&& class_exists(Crm\Integration\CompilationManager::class)
+			)
+			{
+				if (isset($this->compilationDealId))
+				{
+					Manager::copyOrderProductsToDeal($order, $this->compilationDealId);
+				}
+
+				Crm\Integration\CompilationManager::sendOrderBoundEvent($order);
+				Crm\Integration\CompilationManager::sendToCompilationDealTimeline($order);
 			}
 
 			$resultData['ORDER'] = $order;
@@ -115,17 +147,32 @@ class SaveOrderAction extends BaseAction
 
 		if (empty($fields['SITE_ID']))
 		{
-			$result->addError(new Main\Error('siteId not found', 202240400001));
+			$result->addError(
+				new Main\Error(
+					'siteId not found',
+					Sale\Controller\ErrorEnumeration::SAVE_ORDER_ACTION_SITE_ID_NOT_FOUND
+				)
+			);
 		}
 
 		if (empty($fields['FUSER_ID']) || (int)$fields['FUSER_ID'] <= 0)
 		{
-			$result->addError(new Main\Error('fuserId not found', 202240400002));
+			$result->addError(
+				new Main\Error(
+					'fuserId not found',
+					Sale\Controller\ErrorEnumeration::SAVE_ORDER_ACTION_FUSER_ID_NOT_FOUND
+				)
+			);
 		}
 
 		if (empty($fields['PERSON_TYPE_ID']))
 		{
-			$result->addError(new Main\Error('personTypeId not found', 202240400003));
+			$result->addError(
+				new Main\Error(
+					'personTypeId not found',
+					Sale\Controller\ErrorEnumeration::SAVE_ORDER_ACTION_PERSON_TYPE_ID_NOT_FOUND
+				)
+			);
 		}
 
 		return $result;
@@ -141,7 +188,11 @@ class SaveOrderAction extends BaseAction
 		$setPersonTypeIdResult = $this->setPersonTypeId($order, $personTypeId);
 		if (!$setPersonTypeIdResult->isSuccess())
 		{
-			$this->fillErrorCollection($result, $setPersonTypeIdResult->getErrors(), 202250001000);
+			$this->fillErrorCollection(
+				$result,
+				$setPersonTypeIdResult->getErrors(),
+				Sale\Controller\ErrorEnumeration::SAVE_ORDER_ACTION_SET_PERSON_TYPE_ID
+			);
 			return $result;
 		}
 
@@ -151,7 +202,11 @@ class SaveOrderAction extends BaseAction
 			$setTradeBindingResult = $this->setTradeBinding($order, $tradingPlatformId);
 			if (!$setTradeBindingResult->isSuccess())
 			{
-				$this->fillErrorCollection($result, $setTradeBindingResult->getErrors(), 202250004000);
+				$this->fillErrorCollection(
+					$result,
+					$setTradeBindingResult->getErrors(),
+					Sale\Controller\ErrorEnumeration::SAVE_ORDER_ACTION_SET_TRADE_BINDINGS
+				);
 				return $result;
 			}
 		}
@@ -162,7 +217,11 @@ class SaveOrderAction extends BaseAction
 			$setPropertiesResult = $this->setProperties($order, $properties);
 			if (!$setPropertiesResult->isSuccess())
 			{
-				$this->fillErrorCollection($result, $setPropertiesResult->getErrors(), 202250003000);
+				$this->fillErrorCollection(
+					$result,
+					$setPropertiesResult->getErrors(),
+					Sale\Controller\ErrorEnumeration::SAVE_ORDER_ACTION_SET_PROPERTIES
+				);
 				return $result;
 			}
 		}
@@ -170,8 +229,20 @@ class SaveOrderAction extends BaseAction
 		$setBasketResult = $this->setBasket($order, $fields['FUSER_ID']);
 		if (!$setBasketResult->isSuccess())
 		{
-			$this->fillErrorCollection($result, $setBasketResult->getErrors(), 202250002000);
+			$this->fillErrorCollection(
+				$result,
+				$setBasketResult->getErrors(),
+				Sale\Controller\ErrorEnumeration::SAVE_ORDER_ACTION_SET_BASKET
+			);
 			return $result;
+		}
+
+		if (
+			Main\Loader::includeModule('crm')
+			&& class_exists(Crm\Integration\CompilationManager::class)
+		)
+		{
+			$this->compilationDealId = Crm\Integration\CompilationManager::processOrderForCompilation($order);
 		}
 
 		$result->setData(['order' => $order]);
@@ -307,6 +378,11 @@ class SaveOrderAction extends BaseAction
 		if ((int)$fields['USER_ID'] > 0)
 		{
 			$userId = (int)$fields['USER_ID'];
+
+			if ($this->isLandingShop($order) && Main\Loader::includeModule('crm'))
+			{
+				Crm\Service\Sale\Order\BuyerService::getInstance()->attachUserToBuyers($userId);
+			}
 		}
 		else
 		{
@@ -456,7 +532,7 @@ class SaveOrderAction extends BaseAction
 		if ((int)$addResult <= 0)
 		{
 			$errors = explode('<br>', $user->LAST_ERROR);
-			TrimArr($errors);
+			TrimArr($errors, true);
 			foreach ($errors as $error)
 			{
 				$result->addError(new Main\Error($error));
@@ -470,7 +546,7 @@ class SaveOrderAction extends BaseAction
 		return $result;
 	}
 
-	public function generateUserData(array $userProps = []): array
+	private function generateUserData(array $userProps = []): array
 	{
 		$userEmail = isset($userProps['EMAIL']) ? trim((string)$userProps['EMAIL']) : '';
 		$newLogin = $userEmail;

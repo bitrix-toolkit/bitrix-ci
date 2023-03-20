@@ -7,6 +7,7 @@
  */
 
 use Bitrix\Main;
+use Bitrix\Main\Authentication\Internal\ModuleGroupTable;
 
 /**
  * @deprecated Use CTask
@@ -137,18 +138,21 @@ class CAllTask
 			false, "FILE: ".__FILE__."<br> LINE: ".__LINE__
 		);
 
-		if ($letter == '')
-			return false;
+		if ($letter != '')
+		{
+			$letter = $DB->ForSQL($letter);
+			$DB->Query(
+				"INSERT INTO b_module_group (MODULE_ID, GROUP_ID, G_ACCESS, SITE_ID) ".
+				"SELECT '".$moduleId."', G.ID, '".$letter."', ".($site_id ? "'".$site_id."'" : "NULL")." ".
+				"FROM b_group G ".
+				"WHERE G.ID IN (".$str_groups.")"
+				, false, "File: ".__FILE__."<br>Line: ".__LINE__
+			);
+		}
 
-		$letter = $DB->ForSQL($letter);
-		$DB->Query(
-			"INSERT INTO b_module_group (MODULE_ID, GROUP_ID, G_ACCESS, SITE_ID) ".
-			"SELECT '".$moduleId."', G.ID, '".$letter."', ".($site_id ? "'".$site_id."'" : "NULL")." ".
-			"FROM b_group G ".
-			"WHERE G.ID IN (".$str_groups.")"
-			, false, "File: ".__FILE__."<br>Line: ".__LINE__
-		);
-		return true;
+		ModuleGroupTable::cleanCache();
+
+		return ($letter != '');
 	}
 
 	public static function Delete($ID, $protect = true)
@@ -409,8 +413,10 @@ class CAllTask
 		{
 			while($r = $z->Fetch())
 			{
-				if (!is_array($arr[$r['MODULE_ID']]))
+				if (!isset($arr[$r['MODULE_ID']]) || !is_array($arr[$r['MODULE_ID']]))
+				{
 					$arr[$r['MODULE_ID']] = array('reference_id'=>array(),'reference'=>array());
+				}
 
 				$arr[$r['MODULE_ID']]['reference_id'][] = $r['ID'];
 				$arr[$r['MODULE_ID']]['reference'][] = '['.($r['LETTER'] ? $r['LETTER'] : '..').'] '.static::GetLangTitle($r['NAME'], $r['MODULE_ID']);
