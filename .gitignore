@@ -6,3 +6,4 @@
 /files/bitrix/managed_cache/
 *.php~
 /.idea/
+.phpunit.result.cache
