@@ -15,7 +15,7 @@ use CPrice;
 
 class CatalogTest extends TestCase
 {
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         CIBlockType::Delete('bitrix_ci_test');
 
