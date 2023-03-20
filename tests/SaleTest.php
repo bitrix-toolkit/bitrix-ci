@@ -29,6 +29,7 @@ class SaleTest extends TestCase
             'PRICE' => 999.99,
             'CURRENCY' => 'RUB',
             'CAN_BUY' => 'Y',
+            'MODULE' => 'sale'
         ]);
 
         $this->assertNotEmpty($result, $APPLICATION->LAST_ERROR);

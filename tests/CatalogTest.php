@@ -143,7 +143,7 @@ class CatalogTest extends TestCase
             'TITLE' => 'VAULT13',
             'XML_ID' => 'VAULT13',
             'ACTIVE' => 'Y',
-            'ADDRESS' => '',
+            'ADDRESS' => 'Адрес',
             'DESCRIPTION' => ''
         ]);
 
