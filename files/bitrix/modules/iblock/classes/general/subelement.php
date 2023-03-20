@@ -1,4 +1,5 @@
-<?
+<?php
+
 /** @global \CMain $APPLICATION */
 use Bitrix\Main;
 
@@ -72,15 +73,14 @@ class CAdminSubList extends CAdminList
 		'BX.CAdminDialog.btnSave', 'BX.CAdminDialog.btnCancel'
 	);
 
-
 	/**
 	 * @param string $table_id
 	 * @param bool|CAdminSubSorting $sort
-	 * @param string $list_url
+	 * @param string|array $list_url
 	 * @param bool|array $arHideHeaders
 	 */
 
-	public function __construct($table_id, $sort = false, $list_url, $arHideHeaders = false)
+	public function __construct($table_id, $sort = false, $list_url = '', $arHideHeaders = false)
 	{
 		global $APPLICATION;
 
@@ -229,14 +229,22 @@ class CAdminSubList extends CAdminList
 	//id, name, content, sort, default
 	public function AddHeaders($aParams)
 	{
-		if (isset($_REQUEST['showallcol']) && $_REQUEST['showallcol'])
-			$_SESSION['SHALL'] = ($_REQUEST['showallcol'] == 'Y');
+		$showAll = $this->request->get('showallcol');
+		if ($showAll !== null && $showAll !== '')
+		{
+			$this->session['SHALL'] = $showAll === 'Y';
+		}
+		$showAll = isset($this->session['SHALL']) && $this->session['SHALL'];
 
 		$hiddenColumns = (!empty($this->arHideHeaders) ? array_fill_keys($this->arHideHeaders, true) : array());
 
 		$aOptions = CUserOptions::GetOption("list", $this->table_id, array());
+		if (!is_array($aOptions))
+		{
+			$aOptions = [];
+		}
 
-		$aColsTmp = explode(",", $aOptions["columns"]);
+		$aColsTmp = explode(",", $aOptions["columns"] ?? '');
 		$aCols = array();
 		$userColumns = array();
 
@@ -255,12 +263,13 @@ class CAdminSubList extends CAdminList
 		foreach ($aParams as $param)
 		{
 			$param["__sort"] = -1;
+			$param['default'] = $param['default'] ?? false;
 			if (!isset($hiddenColumns[$param["id"]]))
 			{
 				$this->aHeaders[$param["id"]] = $param;
 				if (
-					(isset($_SESSION['SHALL']) && $_SESSION['SHALL'])
-					|| ($bEmptyCols && $param["default"] == true)
+					$showAll
+					|| ($bEmptyCols && ($param["default"] === true))
 					|| isset($userColumns[$param["id"]])
 				)
 				{
@@ -489,13 +498,22 @@ echo '<table class="adm-list-table" id="'.$this->table_id.'">
 			if(!in_array($column_id, $this->arVisibleColumns))
 				continue;
 
+			$header['title'] = (string)($header['title'] ?? '');
 			$bSort = $this->sort && !empty($header["sort"]);
 
 			if ($bSort)
-				//$attrs = $this->sort->Show($header["content"], $header["sort"], $header["title"], "adm-list-table-cell");
-				$attrs = $this->sort->Show($header["content"], $header["sort"], $header["title"], "adm-list-table-cell");
+			{
+				$attrs = $this->sort->Show(
+					$header["content"],
+					$header["sort"],
+					$header["title"],
+					"adm-list-table-cell"
+				);
+			}
 			else
+			{
 				$attrs = 'class="adm-list-table-cell"';
+			}
 
 
 			echo '<td '.$attrs.'>
@@ -673,16 +691,21 @@ echo '<table class="adm-list-table" id="'.$this->table_id.'">
 <?
 	}
 
-	public function DisplayList($boolFlag = true)
+	public function DisplayList($arParams = array())
 	{
 		$menu = new CAdminPopup($this->table_id."_menu", $this->table_id."_menu",false,array('zIndex' => 4000));
 		$menu->Show();
 
 		$tbl = CUtil::JSEscape($this->table_id);
 		$aUserOpt = CUserOptions::GetOption("global", "settings");
+		if (!is_array($aUserOpt))
+		{
+			$aUserOpt = [];
+		}
+		$aUserOpt['context_ctrl'] = (string)($aUserOpt['context_ctrl'] ?? 'N');
 		echo '
 <script type="text/javascript">
-var '.$this->table_id.'= new BX.adminSubList("'.$tbl.'", {context_ctrl: '.($aUserOpt["context_ctrl"] == "Y"? "true":"false").'}, "'.$this->GetListUrl(true).'");
+var '.$this->table_id.'= new BX.adminSubList("'.$tbl.'", {context_ctrl: '.($aUserOpt["context_ctrl"] === "Y"? "true":"false").'}, "'.$this->GetListUrl(true).'");
 function ReloadSubList()
 {
 	'.$this->ActionAjaxReload($this->GetListUrl(true)).'
@@ -702,17 +725,19 @@ function ReloadOffers()
 	{
 		global $APPLICATION;
 
-		if (!isset($_REQUEST["mode"]))
+		if ($this->isPageMode())
+		{
 			return;
+		}
 
-		if ($_REQUEST["mode"]=='list' || $_REQUEST["mode"]=='frame')
+		if ($this->isAjaxMode())
 		{
 			ob_start();
 			$this->Display();
 			$string = ob_get_contents();
 			ob_end_clean();
 
-			if($_REQUEST["mode"]=='frame')
+			if ($this->isActionMode())
 			{
 				echo '<html><head></head><body>
 <div id="'.$this->table_id.'_result_frame_div">'.$string.'</div>
@@ -737,10 +762,15 @@ function ReloadOffers()
 			require($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/main/include/epilog_admin_after.php");
 			die();
 		}
-		elseif ($_REQUEST["mode"]=='excel')
+		elseif ($this->isExportMode())
 		{
+			$fname = basename($APPLICATION->GetCurPage(), ".php");
+			// http response splitting defence
+			$fname = str_replace(array("\r", "\n"), "", $fname);
+
 			header("Content-Type: application/vnd.ms-excel");
-			header("Content-Disposition: filename=".basename($APPLICATION->GetCurPage(), ".php").".xls");
+			header("Content-Disposition: filename=".$fname.".xls");
+			$APPLICATION->EndBufferContentMan();
 			$this->DisplayExcel();
 			require($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/main/include/epilog_admin_after.php");
 			die();
@@ -829,6 +859,11 @@ function ReloadOffers()
 		if (!is_array($buttons))
 			return;
 		$this->dialogButtons = $buttons;
+	}
+
+	public function setReadDialogButtons(): void
+	{
+		$this->setDialogButtons(['BX.CAdminDialog.btnCancel']);
 	}
 
 	public function getDialogButtons($jsFormat = false)
@@ -1110,15 +1145,19 @@ class CAdminSubListRow extends CAdminListRow
 		$bVarsFromForm = ($this->bEditMode && is_array($this->pList->arUpdateErrorIDs) && in_array($this->id, $this->pList->arUpdateErrorIDs));
 		foreach($this->pList->aVisibleHeaders as $id=>$header_props)
 		{
-			$field = $this->aFields[$id];
-			if($this->bEditMode && isset($field["edit"]))
+			$field = $this->aFields[$id] ?? [];
+			if ($this->bEditMode && isset($field["edit"]))
 			{
-				if($bVarsFromForm && $_REQUEST["FIELDS"])
-					$val = $_REQUEST["FIELDS"][$this->id][$id];
+				if ($bVarsFromForm && isset($_REQUEST["FIELDS"]))
+				{
+					$val = $_REQUEST["FIELDS"][$this->id][$id] ?? '';
+				}
 				else
-					$val = $this->arRes[$id];
+				{
+					$val = $this->arRes[$id] ?? '';
+				}
 
-				$val_old = $this->arRes[$id];
+				$val_old = $this->arRes[$id] ?? '';
 
 				echo '<td class="adm-list-table-cell',
 					(isset($header_props['align']) && $header_props['align']? ' align-'.$header_props['align']: ''),
@@ -1178,10 +1217,14 @@ class CAdminSubListRow extends CAdminListRow
 			}
 			else
 			{
-				if(is_string($this->arRes[$id]))
-					$val = trim($this->arRes[$id]);
-				else
-					$val = $this->arRes[$id];
+				$val = '';
+				if (isset($this->arRes[$id]))
+				{
+					if(is_string($this->arRes[$id]))
+						$val = trim($this->arRes[$id]);
+					else
+						$val = $this->arRes[$id];
+				}
 
 				if(isset($field["view"]))
 				{
@@ -1394,6 +1437,14 @@ class CAdminSubForm extends CAdminForm
 		CJSCore::RegisterExt('subelementdet', $arJSDescr);
 
 		CUtil::InitJSCore(array("subelementdet"));
+
+		if (is_array($tabs))
+		{
+			foreach (array_keys($tabs) as $index)
+			{
+				$tabs[$index]['ONSELECT'] = (string)($tabs[$index]['ONSELECT'] ?? '');
+			}
+		}
 
 		parent::__construct($name, $tabs, $bCanExpand, $bDenyAutosave);
 
@@ -1608,9 +1659,13 @@ class CAdminSubForm extends CAdminForm
 				"ICON"=>"btn_settings",
 			);
 
+			$nameExists = isset($this->session["ADMIN_CUSTOM_FIELDS"])
+				&& is_array($this->session["ADMIN_CUSTOM_FIELDS"])
+				&& array_key_exists($this->name, $this->session["ADMIN_CUSTOM_FIELDS"])
+			;
 			if($this->bCustomFields)
 			{
-				if(is_array($_SESSION["ADMIN_CUSTOM_FIELDS"]) && array_key_exists($this->name, $_SESSION["ADMIN_CUSTOM_FIELDS"]))
+				if ($nameExists)
 				{
 					$aAdditionalMenu[] = array(
 						"TEXT" => GetMessage("admin_lib_sett_sett_enable_text"),
@@ -1633,9 +1688,7 @@ class CAdminSubForm extends CAdminForm
 			if (count($aAdditionalMenu) > 1)
 			{
 				$sMenuUrl = "BX.adminShowMenu(this, ".htmlspecialcharsbx(CAdminPopupEx::PhpToJavaScript($aAdditionalMenu)).", {active_class: 'bx-settings-btn-active'});";
-				$bCustomFieldsOff = is_array($_SESSION["ADMIN_CUSTOM_FIELDS"]) && array_key_exists($this->name, $_SESSION["ADMIN_CUSTOM_FIELDS"]);
-
-				$s .= '<span id="'.$this->name.'_settings_btn" class="adm-detail-subsettings adm-detail-subsettings-arrow'.($bCustomFieldsOff ? '' : ' adm-detail-subsettings-active').'" onclick="'.$sMenuUrl.'"></span>';
+				$s .= '<span id="'.$this->name.'_settings_btn" class="adm-detail-subsettings adm-detail-subsettings-arrow'.($nameExists ? '' : ' adm-detail-subsettings-active').'" onclick="'.$sMenuUrl.'"></span>';
 			}
 			else
 			{
@@ -1783,8 +1836,10 @@ class CAdminSubResult extends CAdminResult
 			$nPageSize = array();
 
 		$nPageSize["nPageSize"] = $nSize;
-		if($_REQUEST["mode"] == "excel")
+		if (isset($_REQUEST["mode"]) && $_REQUEST["mode"] === "excel")
+		{
 			$nPageSize["NavShowAll"] = true;
+		}
 
 		$this->nInitialSize = $nPageSize["nPageSize"];
 

@@ -12,7 +12,10 @@
  * @global CMain $APPLICATION
  * @global CDatabase $DB
  */
+
 use Bitrix\Main\ModuleManager;
+use Bitrix\Main\Authentication\Policy;
+use Bitrix\Main\Authentication\Device;
 
 IncludeModuleLangFile(__FILE__);
 
@@ -34,7 +37,7 @@ while($zr = $z->Fetch())
 	$groups[$zr["ID"]] = $zr["NAME"]." [".$zr["ID"]."]";
 }
 
-if($_SERVER["REQUEST_METHOD"] == "GET" && $USER->IsAdmin() && $_REQUEST["RestoreDefaults"] <> '' && check_bitrix_sessid())
+if($_SERVER["REQUEST_METHOD"] == "GET" && $USER->IsAdmin() && isset($_REQUEST["RestoreDefaults"]) && $_REQUEST["RestoreDefaults"] <> '' && check_bitrix_sessid())
 {
 	$aSaveVal = array(
 		array("NAME"=>"admin_passwordh", "DEF"=>""),
@@ -42,7 +45,6 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && $USER->IsAdmin() && $_REQUEST["Restore
 		array("NAME"=>"PARAM_MAX_USERS", "DEF"=>"0"),
 		array("NAME"=>"crc_code", "DEF"=>""),
 		array("NAME"=>"vendor", "DEF"=>"1c_bitrix"),
-		array("NAME"=>"distributive6", "DEF"=>"N"),
 	);
 	foreach($aSaveVal as $i=>$aParam)
 		$aSaveVal[$i]["VALUE"] = COption::GetOptionString("main", $aParam["NAME"], $aParam["DEF"]);
@@ -56,7 +58,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && $USER->IsAdmin() && $_REQUEST["Restore
 		$APPLICATION->DelGroupRight("main", array($value["ID"]));
 }
 
-if($_SERVER["REQUEST_METHOD"] == "GET" && $USER->CanDoOperation('edit_other_settings') && $_REQUEST["GenKey"] <> '' && check_bitrix_sessid())
+if($_SERVER["REQUEST_METHOD"] == "GET" && $USER->CanDoOperation('edit_other_settings') && isset($_REQUEST["GenKey"]) && $_REQUEST["GenKey"] <> '' && check_bitrix_sessid())
 {
 	$sec = new CRsaSecurity();
 	$arKeys = $sec->Keygen();
@@ -68,6 +70,27 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && $USER->CanDoOperation('edit_other_sett
 	else
 	{
 		CAdminMessage::ShowMessage(GetMessage("MAIN_OPT_SECURE_KEY_ERROR"));
+	}
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save_passwords']) && $USER->CanDoOperation('edit_php') && check_bitrix_sessid())
+{
+	$customWeakPasswords = (isset($_POST['custom_weak_passwords']) && $_POST['custom_weak_passwords'] === 'Y' ? 'Y' : 'N');
+	COption::SetOptionString('main', 'custom_weak_passwords', $customWeakPasswords);
+
+	if (isset($_FILES['passwords']['tmp_name']) && $_FILES['passwords']['tmp_name'] != '')
+	{
+		$uploadDir = COption::GetOptionString('main', 'upload_dir', 'upload');
+		$path = "{$_SERVER['DOCUMENT_ROOT']}/{$uploadDir}/main/weak_passwords";
+
+		if (Policy\WeakPassword::createIndex($_FILES['passwords']['tmp_name'], $path))
+		{
+			CAdminMessage::ShowNote(GetMessage("main_options_upload_success"));
+		}
+		else
+		{
+			CAdminMessage::ShowMessage(GetMessage("main_options_upload_error"));
+		}
 	}
 }
 
@@ -126,11 +149,15 @@ $arAllOptions = array(
 	"main" => Array(
 		Array("site_name", GetMessage("MAIN_OPTION_SITENAME"), $SERVER_NAME, Array("text", 30)),
 		Array("server_name", GetMessage("MAIN_OPTION_SERVERNAME"), $SERVER_NAME, Array("text", 30)),
-		Array("cookie_name", GetMessage("MAIN_PREFIX"), "BITRIX_SM", Array("text", 30)),
-		Array("ALLOW_SPREAD_COOKIE", GetMessage("MAIN_OPTION_ALLOW_SPREAD_COOKIE"), "Y", Array("checkbox", "Y")),
 		Array("error_reporting", GetMessage("MAIN_ERROR_REPORTING"), E_COMPILE_ERROR|E_ERROR|E_CORE_ERROR|E_PARSE, Array("selectbox", Array(E_COMPILE_ERROR|E_ERROR|E_CORE_ERROR|E_PARSE=>GetMessage("MAIN_OPTION_ERROR1"), E_ALL^E_NOTICE=>GetMessage("MAIN_OPTION_ERROR2"), 0=>GetMessage("MAIN_OPTION_ERROR3")))),
 		Array("use_hot_keys", GetMessage("main_options_use_hot_keys"), "Y", Array("checkbox", "Y")),
 		Array("smile_gallery_id", GetMessage("MAIN_OPTIONS_SMILE_GALLERY_ID"), 0, Array("selectbox", $arSmileGallery)),
+
+		GetMessage("MAIN_OPTIONS_COOKIES"),
+		Array("cookie_name", GetMessage("MAIN_PREFIX"), "BITRIX_SM", Array("text", 30)),
+		Array("ALLOW_SPREAD_COOKIE", GetMessage("MAIN_OPTION_ALLOW_SPREAD_COOKIE1"), "Y", Array("checkbox", "Y")),
+		Array("use_secure_password_cookies", GetMessage("MAIN_OPTION_USE_SECURE_PASSWORD_COOKIE1"), "N", Array("checkbox", "Y")),
+		Array("auth_multisite", GetMessage("MAIN_OPTION_AUTH_TO_ALL_DOM1"), "N", Array("checkbox", "Y")),
 
 		GetMessage("main_options_files"),
 		Array("disk_space", GetMessage("MAIN_DISK_SPACE"), "", Array("text", 30)),
@@ -160,13 +187,16 @@ $arAllOptions = array(
 
 		GetMessage("MAIN_OPTIMIZE_TRANSLATE_SETTINGS"),
 		Array("translate_key_yandex", GetMessage("MAIN_TRANSLATE_KEY_YANDEX"), "", Array("text", 30)),
-		Array("note" => GetMessage("MAIN_TRANSLATE_KEY_YANDEX_HINT")),
+		Array("note" => GetMessage("MAIN_TRANSLATE_KEY_YANDEX_HINT1")),
 
 		GetMessage("MAIN_OPT_TIME_ZONES"),
 		array("curr_time", GetMessage("MAIN_OPT_TIME_ZONES_LOCAL"), GetMessage("MAIN_OPT_TIME_ZONES_DIFF")." ".date('O')." (".date('Z').")<br>".GetMessage("MAIN_OPT_TIME_ZONES_DIFF_STD")." ".(date('I')? GetMessage("MAIN_OPT_TIME_ZONES_DIFF_STD_S") : GetMessage("MAIN_OPT_TIME_ZONES_DIFF_STD_ST"))."<br>".GetMessage("MAIN_OPT_TIME_ZONES_DIFF_DATE")." ".date('r'), array("statichtml")),
 		array("use_time_zones", GetMessage("MAIN_OPT_USE_TIMEZONES"), "N", array("checkbox", "Y", 'onclick="this.form.default_time_zone.disabled = this.form.auto_time_zone.disabled = !this.checked;"')),
 		array("default_time_zone", GetMessage("MAIN_OPT_TIME_ZONE_DEF"), "", array("selectbox", $aZones)),
 		array("auto_time_zone", GetMessage("MAIN_OPT_TIME_ZONE_AUTO"), "N", array("checkbox", "Y")),
+
+		GetMessage('main_options_geo'),
+		array("collect_geonames", GetMessage('main_options_geo_collect_names'), "N", array("checkbox", "Y")),
 	),
 	"mail" => array(
 		GetMessage("main_options_mail"),
@@ -197,9 +227,8 @@ $arAllOptions = array(
 	"auth" => Array(
 		GetMessage("MAIN_OPTION_CTRL_LOC"),
 		Array("store_password", GetMessage("MAIN_REMEMBER"), "Y", Array("checkbox", "Y")),
-		Array("use_secure_password_cookies", GetMessage("MAIN_OPTION_USE_SECURE_PASSWORD_COOKIE"), "N", Array("checkbox", "Y")),
-		Array("auth_multisite", GetMessage("MAIN_OPTION_AUTH_TO_ALL_DOM"), "N", Array("checkbox", "Y")),
 		Array("allow_socserv_authorization", GetMessage("MAIN_OPTION_SOCSERV_AUTH"), "Y", Array("checkbox", "Y")),
+		Array("allow_qrcode_auth", GetMessage('main_option_qrcode_auth'), "N", Array("checkbox", "Y")),
 		Array("use_digest_auth", GetMessage("MAIN_OPT_HTTP_DIGEST"), "N", Array("checkbox", "Y")),
 		Array("note"=>GetMessage("MAIN_OPT_DIGEST_NOTE")),
 		Array("custom_register_page", GetMessage("MAIN_OPT_REGISTER_PAGE"), "", Array("text", 40)),
@@ -234,6 +263,13 @@ $arAllOptions = array(
 		GetMessage("MAIN_OPT_PROFILE"),
 		Array("user_profile_history", GetMessage("MAIN_OPT_PROFILE_HYSTORY"), "N", Array("checkbox", "Y")),
 		Array("profile_history_cleanup_days", GetMessage("MAIN_OPT_HISTORY_DAYS"), "0", Array("text", 5)),
+
+		GetMessage('main_options_device_history_title'),
+		Array('user_device_history', GetMessage('main_options_device_history'), 'N', ['checkbox', 'Y']),
+		Array('device_history_cleanup_days', GetMessage('main_options_device_history_days'), '180', ['text', 5]),
+		Array('user_device_geodata', GetMessage('main_options_device_geoip'), 'N', ['checkbox', 'Y']),
+		Array('user_device_notify', GetMessage('main_options_device_history_notify', ['#EMAIL_TEMPLATES_URL#' => '/bitrix/admin/message_admin.php?lang=' . LANGUAGE_ID . '&amp;set_filter=Y&amp;find_type_id=' . Device::EMAIL_EVENT]), 'N', ['checkbox', 'Y']),
+		Array('note' => GetMessage('main_options_device_history_note')),
 	),
 	"update" => Array(
 		Array("update_devsrv", GetMessage("MAIN_OPTIONS_UPDATE_DEVSRV"), "N", Array("checkbox", "Y")),
@@ -526,7 +562,7 @@ $arAllOptions["auth"][] = Array("new_user_registration_email_confirmation", GetM
 $arAllOptions["auth"][] = Array("new_user_email_uniq_check", GetMessage("MAIN_REGISTER_EMAIL_UNIQ_CHECK"), "N", Array("checkbox", "Y"));
 $arAllOptions["auth"][] = Array("new_user_registration_cleanup_days", GetMessage("MAIN_REGISTER_CLEANUP_DAYS"), "7", Array("text", 5));
 $arAllOptions["auth"][] = array("note" => $intl->getDataValue('DESCRIPTION'));
-$arAllOptions["auth"][] = array("new_user_agreement", GetMessage("MAIN_REGISTER_AGREEMENT_TITLE", array("#AGGREMENT_CREATE_URL#" => BX_ROOT.'/admin/agreement_edit.php?ID=0&lang='.LANGUAGE_ID)), "", array("selectbox", $listAgreement), "", "", "Y");
+$arAllOptions["auth"][] = array("new_user_agreement", GetMessage("MAIN_REGISTER_AGREEMENT_TITLE_1", array("#AGGREMENT_CREATE_URL#" => BX_ROOT.'/admin/agreement_edit.php?ID=0&lang='.LANGUAGE_ID)), "", array("selectbox", $listAgreement), "", "", "Y");
 
 $arAllOptions["auth"][] = GetMessage("main_options_restrictions");
 $arAllOptions["auth"][] = Array("inactive_users_block_days", GetMessage("main_options_block_inactive"), "0", Array("text", 5));
@@ -783,7 +819,7 @@ if(count($arGROUPS) > count($arUsedGroups)):
 		<option value=""><?echo GetMessage("group_rights_select")?></option>
 <?
 foreach($arGROUPS as $group):
-	if($arUsedGroups[$group["ID"]] == true)
+	if(isset($arUsedGroups[$group["ID"]]) && $arUsedGroups[$group["ID"]])
 		continue;
 ?>
 		<option value="<?=$group["ID"]?>"><?=$group["NAME"]." [".$group["ID"]."]"?></option>
@@ -1007,7 +1043,6 @@ if($message)
 ?>
 <h2><?=GetMessage("MAIN_SUB2")?></h2>
 <?
-$aTabs = Array();
 $aTabs = array(
 	array("DIV" => "fedit2", "TAB" => GetMessage("MAIN_TAB_4"), "ICON" => "main_settings", "TITLE" => GetMessage("MAIN_OPTION_PUBL"))
 );
@@ -1020,6 +1055,8 @@ if ($diskSpace > 0)
 {
 	$aTabs[] = array("DIV" => "fedit3", "TAB" => GetMessage("MAIN_TAB_7"), "ICON" => "main_settings", "TITLE" => GetMessage("MAIN_OPTION_DISC_SPACE"));
 }
+
+$aTabs[] = array("DIV" => "fedit5", "TAB" => GetMessage("main_options_weak_pass"), "ICON" => "main_settings", "TITLE" => GetMessage("main_options_weak_pass_title"));
 
 $tabControl = new CAdminTabControl("tabControl2", $aTabs, true, true);
 
@@ -1171,10 +1208,7 @@ if(COption::GetOptionString("main", "controller_member", "N")!="Y"):
 </form>
 <?endif; //if(IsModuleInstalled("controller"))?>
 
-<?if ($diskSpace <= 0):?>
-<?$tabControl->End();?>
-<?else: ?>
-<?$tabControl->EndTab();?>
+<?if ($diskSpace > 0):?>
 <?$tabControl->BeginNextTab();?>
 <tr>
 <td align="left">
@@ -1222,7 +1256,7 @@ if(COption::GetOptionString("main", "controller_member", "N")!="Y"):
 	<input type="button" id="butt_stop" value="<?=GetMessage("MAIN_OPTION_SIZE_STOP")?>" disabled="disabled" <?=((!$USER->CanDoOperation('edit_other_settings')) ? "disabled": "onclick=\"StopReCount()\"")?> />
 	</td>
 </tr>
-<?$tabControl->End();?>
+
 <?if ($USER->CanDoOperation('edit_other_settings')):?>
 <script language="JavaScript">
 var result = {'stop':false, 'done':true, 'error':false, 'db':{'size': <?=intval($arParam["db"]["size"])?>}, 'files':{'size':<?=intval($arParam["files"]["size"])?>}};
@@ -1357,4 +1391,47 @@ function DoNext(name, id, recount)
 CheckButtons();
 </script>
 <?endif;?>
+
+<?$tabControl->EndTab();?>
 <?endif;?>
+
+<form method="POST" action="<?echo $APPLICATION->GetCurPage()?>?mid=<?=htmlspecialcharsbx($mid)?>&amp;lang=<?echo LANG?>" enctype="multipart/form-data">
+<?=bitrix_sessid_post()?>
+<input type="hidden" name="tabControl2_active_tab" value="fedit5">
+
+<?$tabControl->BeginNextTab();?>
+<?
+$customWeakPasswords = COption::GetOptionString('main', 'custom_weak_passwords', 'N');
+?>
+<tr>
+	<td>
+		<label><input type="radio" name="custom_weak_passwords" value="N"<?= ($customWeakPasswords !== 'Y' ? ' checked' : '')?>><?echo GetMessage("main_options_weak_pass_use_default")?></label>
+	</td>
+</tr>
+<tr>
+	<td>
+		<label><input type="radio" name="custom_weak_passwords" value="Y"<?= ($customWeakPasswords === 'Y' ? ' checked' : '')?>><?echo GetMessage("main_options_weak_pass_use_custom")?></label>
+	</td>
+</tr>
+<tr>
+	<td>
+		<br>
+		<input type="file" name="passwords">
+	</td>
+</tr>
+<tr>
+	<td>
+		<?= BeginNote()?>
+		<?echo GetMessage("main_options_weak_pass_note")?>
+		<?= EndNote()?>
+	</td>
+</tr>
+<tr>
+	<td>
+		<input type="submit" <?if (!$USER->CanDoOperation('edit_php')) echo "disabled" ?> name="save_passwords" value="<?echo GetMessage("MAIN_SAVE")?>" class="adm-btn-save">
+	</td>
+</tr>
+<?$tabControl->EndTab();?>
+</form>
+
+<?$tabControl->End();?>

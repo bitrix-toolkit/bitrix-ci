@@ -3,7 +3,7 @@
  * Bitrix Framework
  * @package bitrix
  * @subpackage main
- * @copyright 2001-2012 Bitrix
+ * @copyright 2001-2022 Bitrix
  */
 namespace Bitrix\Main;
 
@@ -16,19 +16,14 @@ use Bitrix\Main\Engine\Response\AjaxJson;
 use Bitrix\Main\Engine\Router;
 use Bitrix\Main\Engine\JsonPayload;
 use Bitrix\Main\UI\PageNavigation;
+use Bitrix\Main\Web;
 
 /**
  * Http application extends application. Contains http specific methods.
  */
 class HttpApplication extends Application
 {
-	/**
-	 * Creates new instance of http application.
-	 */
-	protected function __construct()
-	{
-		parent::__construct();
-	}
+	public const EXCEPTION_UNKNOWN_CONTROLLER = 221001;
 
 	/**
 	 * Initializes context of the current request.
@@ -39,19 +34,19 @@ class HttpApplication extends Application
 	{
 		$context = new HttpContext($this);
 
-		$server = new Server($params["server"]);
+		$server = new Server($params['server']);
 
 		$request = new HttpRequest(
 			$server,
-			$params["get"],
-			$params["post"],
-			$params["files"],
-			$params["cookie"]
+			$params['get'],
+			$params['post'],
+			$params['files'],
+			$params['cookie']
 		);
 
 		$response = new HttpResponse();
 
-		$context->initialize($request, $response, $server, array('env' => $params["env"]));
+		$context->initialize($request, $response, $server, ['env' => $params['env']]);
 
 		$this->setContext($context);
 	}
@@ -66,11 +61,11 @@ class HttpApplication extends Application
 	 */
 	public function start()
 	{
+		$this->context->getRequest()->decodeJson();
 	}
 
 	/**
 	 * Finishes request execution.
-	 * It is registered in start() and called automatically on script shutdown.
 	 */
 	public function finish()
 	{
@@ -107,7 +102,7 @@ class HttpApplication extends Application
 			[$controller, $actionName] = $router->getControllerAndAction();
 			if (!$controller)
 			{
-				throw new SystemException('Could not find controller for the request');
+				throw new SystemException('Could not find controller for the request', self::EXCEPTION_UNKNOWN_CONTROLLER);
 			}
 
 			$this->runController($controller, $actionName);
@@ -173,26 +168,54 @@ class HttpApplication extends Application
 
 		$this->context->setResponse($response);
 
-		$response->send();
-
 		//todo exit code in Response?
-		$this->terminate(0);
+		$this->end(0, $response);
+	}
+
+	private function shouldWriteToLogException(\Throwable $e): bool
+	{
+		if ($e instanceof AutoWire\BinderArgumentException)
+		{
+			return false;
+		}
+
+		$unnecessaryCodes = [
+			self::EXCEPTION_UNKNOWN_CONTROLLER,
+			Router::EXCEPTION_INVALID_COMPONENT_INTERFACE,
+			Router::EXCEPTION_INVALID_COMPONENT,
+			Router::EXCEPTION_INVALID_AJAX_MODE,
+			Router::EXCEPTION_NO_MODULE,
+			Router::EXCEPTION_INVALID_MODULE_NAME,
+			Router::EXCEPTION_INVALID_COMPONENT_NAME,
+			Router::EXCEPTION_NO_COMPONENT,
+			Router::EXCEPTION_NO_COMPONENT_AJAX_CLASS,
+		];
+
+		if ($e instanceof SystemException && in_array($e->getCode(), $unnecessaryCodes, true))
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	private function processRunError(\Throwable $e, ErrorCollection $errorCollection): void
 	{
-		$exceptionHandler = $this->getExceptionHandler();
-		$exceptionHandler->writeToLog($e);
-
 		$errorCollection[] = new Error($e->getMessage(), $e->getCode());
 		$exceptionHandling = Configuration::getValue('exception_handling');
-		if (!empty($exceptionHandling['debug']))
+		$debugMode = !empty($exceptionHandling['debug']);
+		if ($debugMode)
 		{
 			$errorCollection[] = new Error(Diag\ExceptionHandlerFormatter::format($e));
 			if ($e->getPrevious())
 			{
 				$errorCollection[] = new Error(Diag\ExceptionHandlerFormatter::format($e->getPrevious()));
 			}
+		}
+
+		if ($debugMode || $this->shouldWriteToLogException($e))
+		{
+			$this->getExceptionHandler()->writeToLog($e);
 		}
 	}
 

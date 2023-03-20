@@ -21,6 +21,19 @@ Loc::loadMessages(__FILE__);
  * </ul>
  *
  * @package Bitrix\Iblock
+ *
+ * DO NOT WRITE ANYTHING BELOW THIS
+ *
+ * <<< ORMENTITYANNOTATION
+ * @method static EO_Type_Query query()
+ * @method static EO_Type_Result getByPrimary($primary, array $parameters = array())
+ * @method static EO_Type_Result getById($id)
+ * @method static EO_Type_Result getList(array $parameters = array())
+ * @method static EO_Type_Entity getEntity()
+ * @method static \Bitrix\Iblock\EO_Type createObject($setDefaultValues = true)
+ * @method static \Bitrix\Iblock\EO_Type_Collection createCollection()
+ * @method static \Bitrix\Iblock\EO_Type wakeUpObject($row)
+ * @method static \Bitrix\Iblock\EO_Type_Collection wakeUpCollection($rows)
  */
 class TypeTable extends ORM\Data\DataManager
 {
@@ -118,16 +131,6 @@ class TypeTable extends ORM\Data\DataManager
 		);
 	}
 
-	public static function onAfterAdd(ORM\Event $event)
-	{
-		self::cleanCache();
-	}
-
-	public static function onAfterUpdate(ORM\Event $event)
-	{
-		self::cleanCache();
-	}
-
 	/**
 	 * Deletes information blocks of given type
 	 * and language messages from TypeLanguageTable
@@ -139,7 +142,6 @@ class TypeTable extends ORM\Data\DataManager
 	public static function onDelete(ORM\Event $event)
 	{
 		//TODO: need refactoring
-		self::cleanCache();
 
 		$id = $event->getParameter("id");
 
@@ -167,8 +169,10 @@ class TypeTable extends ORM\Data\DataManager
 		$result = TypeLanguageTable::deleteByIblockTypeId($id["ID"]);
 	}
 
-	private static function cleanCache(): void
+	public static function cleanCache(): void
 	{
+		parent::cleanCache();
+
 		$application = Main\Application::getInstance();
 		$managedCache = $application->getManagedCache();
 		$managedCache->cleanDir(self::getTableName());

@@ -31,4 +31,8 @@ interface SessionInterface
 	public function clear();
 
 	public function isStarted();
+
+	public function isAccessible();
+
+	public function getSessionHandler(): ?\SessionHandlerInterface;
 }

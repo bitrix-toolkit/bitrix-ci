@@ -1,10 +1,9 @@
-<?
-use Bitrix\Main,
-	Bitrix\Main\Localization\Loc,
-	Bitrix\Catalog;
+<?php
+use Bitrix\Main;
 use Bitrix\Main\Loader;
-
-Loc::loadMessages(__FILE__);
+use Bitrix\Main\Localization\Loc;
+use Bitrix\Catalog;
+use Bitrix\Iblock;
 
 class CAllCatalog
 {
@@ -20,8 +19,23 @@ class CAllCatalog
 		$arMsg = array();
 		$boolResult = true;
 
+		if (!is_array($arFields))
+		{
+			return false;
+		}
 		if (array_key_exists('OFFERS', $arFields))
+		{
 			unset($arFields['OFFERS']);
+		}
+
+		$defaultFields = [
+			'YANDEX_EXPORT' => 'N',
+			'SUBSCRIPTION' => 'N',
+			'VAT_ID' => 0,
+			'PRODUCT_IBLOCK_ID' => 0,
+			'SKU_PROPERTY_ID' => 0,
+		];
+
 		$ID = (int)$ID;
 		$arCatalog = false;
 		if (0 < $ID)
@@ -37,6 +51,10 @@ class CAllCatalog
 
 		if ($boolResult)
 		{
+			if ($ACTION === 'ADD')
+			{
+				$arFields = array_merge($defaultFields, $arFields);
+			}
 			if ('ADD' == $ACTION || is_set($arFields,'IBLOCK_ID'))
 			{
 				if (!is_set($arFields,'IBLOCK_ID'))
@@ -442,9 +460,11 @@ class CAllCatalog
 				$arSelectFields = $arClearFields;
 			}
 
-			if (!isset($arSelectFields)
-				|| empty($arSelectFields)
-				|| in_array("*", $arSelectFields))
+			if (
+				empty($arSelectFields)
+				|| !is_array($arSelectFields)
+				|| in_array("*", $arSelectFields)
+			)
 			{
 				foreach ($arFields as $fieldKey => $fieldDescr)
 				{
@@ -866,8 +886,7 @@ class CAllCatalog
 				$arSelectFields = array($arSelectFields);
 			}
 
-			if (!isset($arSelectFields)
-				|| empty($arSelectFields)
+			if (empty($arSelectFields)
 				|| !is_array($arSelectFields)
 				|| in_array("*", $arSelectFields))
 			{
@@ -1200,6 +1219,7 @@ class CAllCatalog
 		$DB->Query($strSql, false, "File: ".__FILE__."<br>Line: ".__LINE__);
 
 		CCatalogSku::ClearCache();
+		Catalog\CatalogIblockTable::cleanCache();
 
 		return true;
 	}
@@ -1231,6 +1251,8 @@ class CAllCatalog
 				unset(self::$catalogVatCache[$ID]);
 		}
 		CCatalogSku::ClearCache();
+		Catalog\CatalogIblockTable::cleanCache();
+
 		return true;
 	}
 
@@ -1261,7 +1283,9 @@ class CAllCatalog
 			unset(self::$catalogVatCache[$ID]);
 
 		CCatalogSku::ClearCache();
+		Catalog\CatalogIblockTable::cleanCache();
 		CCatalogProduct::ClearCache();
+
 		return $DB->Query("DELETE FROM b_catalog_iblock WHERE IBLOCK_ID = ".$ID, true);
 	}
 
@@ -1270,7 +1294,7 @@ class CAllCatalog
 		return CCatalog::Delete($ID);
 	}
 
-	public static function PreGenerateXML($xml_type = 'yandex')
+	public static function PreGenerateXML($xml_type = 'yandex'): string
 	{
 		if ($xml_type == 'yandex')
 		{
@@ -1322,7 +1346,7 @@ class CAllCatalog
 		return CCatalogSku::GetInfoByLinkProperty($ID);
 	}
 
-	public static function OnBeforeIBlockElementDelete($ID)
+	public static function OnBeforeIBlockElementDelete($ID): bool
 	{
 		global $APPLICATION;
 
@@ -1366,7 +1390,7 @@ class CAllCatalog
 		return true;
 	}
 
-	public static function OnBeforeCatalogDelete($ID)
+	public static function OnBeforeCatalogDelete($ID): bool
 	{
 		global $APPLICATION;
 
@@ -1416,68 +1440,111 @@ class CAllCatalog
 	 * @param array &$fields
 	 * @return bool
 	 */
-	public static function OnBeforeIBlockPropertyUpdate(array &$fields)
+	public static function OnBeforeIBlockPropertyUpdate(array &$fields): bool
 	{
 		global $APPLICATION;
 
-		$result = true;
+		$messages = [];
 		$id = (int)$fields['ID'];
 		if ($id > 0)
 		{
+			$changeActive = isset($fields['ACTIVE']) && $fields['ACTIVE'] !== 'Y';
+			$changeMultiple = isset($fields['MULTIPLE']) && $fields['MULTIPLE'] !== 'N';
+			$changeType = isset($fields['TYPE']) || array_key_exists('USER_TYPE', $fields);
 			if (
-				isset($fields['ID'])
-				&& isset($fields['ACTIVE'])
-				&& $fields['ACTIVE'] != 'Y'
+				$changeActive
+				|| $changeMultiple
+				|| $changeType
 			)
 			{
-				$iterator = Catalog\CatalogIblockTable::getList(array(
-					'select' => array('IBLOCK_ID', 'PRODUCT_IBLOCK_ID', 'SKU_PROPERTY_ID'),
-					'filter' => array('=SKU_PROPERTY_ID' => $id)
-				));
+				$iterator = Catalog\CatalogIblockTable::getList([
+					'select' => [
+						'IBLOCK_ID',
+						'PRODUCT_IBLOCK_ID',
+						'SKU_PROPERTY_ID',
+					],
+					'filter' => ['=SKU_PROPERTY_ID' => $id],
+				]);
 				$row = $iterator->fetch();
 				unset($iterator);
 				if (!empty($row))
 				{
-					$APPLICATION->ThrowException(Loc::getMessage(
-						'BT_MOD_CATALOG_ERR_CANNOT_DEACTIVE_SKU_PROPERTY',
-						array(
-							'#SKU_PROPERTY_ID#' => $row['SKU_PROPERTY_ID'],
-							'#PRODUCT_IBLOCK_ID#' => $row['PRODUCT_IBLOCK_ID'],
-							'#IBLOCK_ID#' => $row['IBLOCK_ID'],
+					if ($changeActive)
+					{
+						$messages[] = Loc::getMessage(
+							'BT_MOD_CATALOG_ERR_CANNOT_DEACTIVE_SKU_PROPERTY',
+							[
+								'#SKU_PROPERTY_ID#' => $row['SKU_PROPERTY_ID'],
+								'#PRODUCT_IBLOCK_ID#' => $row['PRODUCT_IBLOCK_ID'],
+								'#IBLOCK_ID#' => $row['IBLOCK_ID'],
+							]
+						);
+					}
+					if ($changeMultiple)
+					{
+						$messages[] = Loc::getMessage(
+							'BT_MOD_CATALOG_ERR_CANNOT_SET_MULTIPLE_SKU_PROPERTY',
+							[
+								'#SKU_PROPERTY_ID#' => $row['SKU_PROPERTY_ID'],
+								'#PRODUCT_IBLOCK_ID#' => $row['PRODUCT_IBLOCK_ID'],
+								'#IBLOCK_ID#' => $row['IBLOCK_ID'],
+							]
+						);
+					}
+					if ($changeType)
+					{
+						if (
+							(isset($fields['TYPE']) && $fields['TYPE'] !== Iblock\PropertyTable::TYPE_ELEMENT)
+							|| (array_key_exists('USER_TYPE', $fields) && $fields['USER_TYPE'] !== \CIBlockPropertySKU::USER_TYPE)
 						)
-					));
-					$result = false;
+						{
+							$messages[] = Loc::getMessage(
+								'BT_MOD_CATALOG_ERR_CANNOT_CHANGE_TYPE_SKU_PROPERTY',
+								[
+									'#SKU_PROPERTY_ID#' => $row['SKU_PROPERTY_ID'],
+									'#PRODUCT_IBLOCK_ID#' => $row['PRODUCT_IBLOCK_ID'],
+									'#IBLOCK_ID#' => $row['IBLOCK_ID'],
+								]
+							);
+						}
+					}
 				}
 				unset($row);
 			}
-			elseif (self::isCrmCatalogBrandProperty($id))
+			if (self::isCrmCatalogBrandProperty($id))
 			{
 				$property = \CIBlockProperty::GetByID($id)->Fetch();
 
-				if ($fields['NAME'] !== $property['NAME']) {
-					$APPLICATION->throwException(GetMessage("BT_MOD_CATALOG_ERR_CANNOT_CHANGE_BRAND_PROPERTY_NAME"));
-					$result = false;
+				if (isset($fields['NAME']) && $fields['NAME'] !== $property['NAME'])
+				{
+					$messages[] = Loc::getMessage('BT_MOD_CATALOG_ERR_CANNOT_CHANGE_BRAND_PROPERTY_NAME');
 				}
-				elseif ($fields['CODE'] !== 'BRAND') {
-					$APPLICATION->throwException(GetMessage("BT_MOD_CATALOG_ERR_CANNOT_CHANGE_BRAND_PROPERTY_CODE"));
-					$result = false;
+				elseif (isset($fields['CODE']) && $fields['CODE'] !== 'BRAND_FOR_FACEBOOK')
+				{
+					$messages[] = Loc::getMessage('BT_MOD_CATALOG_ERR_CANNOT_CHANGE_BRAND_PROPERTY_CODE');
 				}
-				elseif ($fields['MULTIPLE'] !== 'Y') {
-					$APPLICATION->throwException(GetMessage("BT_MOD_CATALOG_ERR_CANNOT_CHANGE_BRAND_PROPERTY_MULTIPLE"));
-					$result = false;
+				elseif (isset($fields['MULTIPLE']) && $fields['MULTIPLE'] !== 'Y')
+				{
+					$messages[] = Loc::getMessage('BT_MOD_CATALOG_ERR_CANNOT_CHANGE_BRAND_PROPERTY_MULTIPLE');
 				}
 			}
 			unset($id);
 		}
 
-		return $result;
+		if (!empty($messages))
+		{
+			$APPLICATION->ThrowException(implode('. ', $messages));
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
 	 * @param int $intPropertyID
 	 * @return bool
 	 */
-	public static function OnBeforeIBlockPropertyDelete($intPropertyID)
+	public static function OnBeforeIBlockPropertyDelete($intPropertyID): bool
 	{
 		global $APPLICATION;
 
@@ -1509,6 +1576,7 @@ class CAllCatalog
 			$result = false;
 		}
 		unset($property);
+
 		return $result;
 	}
 
@@ -1525,10 +1593,10 @@ class CAllCatalog
 		$crmCatalogId = \CCrmCatalog::GetDefaultID();
 		$property = \CIBlockProperty::GetByID($propertyId)->Fetch();
 
-		return $property['CODE'] === 'BRAND' && (int)$property['IBLOCK_ID'] === $crmCatalogId;
+		return $property['CODE'] === 'BRAND_FOR_FACEBOOK' && (int)$property['IBLOCK_ID'] === $crmCatalogId;
 	}
 
-	public static function OnIBlockModuleUnInstall()
+	public static function OnIBlockModuleUnInstall(): bool
 	{
 		global $APPLICATION;
 
@@ -1536,7 +1604,7 @@ class CAllCatalog
 		return false;
 	}
 
-	public static function OnBeforeIBlockUpdate(array &$fields)
+	public static function OnBeforeIBlockUpdate(array &$fields): bool
 	{
 		if (!self::isEnabledHandler())
 			return true;
@@ -1556,10 +1624,10 @@ class CAllCatalog
 		return true;
 	}
 
-	public static function OnAfterIBlockUpdate(array &$fields)
+	public static function OnAfterIBlockUpdate(array &$fields): void
 	{
 		if (!self::isEnabledHandler())
-			return true;
+			return;
 		if (!$fields['RESULT'])
 			return;
 		if (!isset($fields['ID']) || !isset($fields['ACTIVE']))
@@ -1616,7 +1684,7 @@ class CAllCatalog
 		return $arResult;
 	}
 
-	public static function UnLinkSKUIBlock($ID)
+	public static function UnLinkSKUIBlock($ID): bool
 	{
 		global $APPLICATION;
 
@@ -1716,7 +1784,7 @@ class CAllCatalog
 			$obError = new CAdminException($arMsg);
 			$APPLICATION->ResetException();
 			$APPLICATION->ThrowException($obError);
-			return $boolResult;
+			return false;
 		}
 		else
 		{
@@ -1730,7 +1798,7 @@ class CAllCatalog
 	 *
 	 * @return array
 	 */
-	public static function GetCatalogFieldsList()
+	public static function GetCatalogFieldsList(): array
 	{
 		global $DB;
 		$arFieldsList = $DB->GetTableFieldsList('b_catalog_iblock');
@@ -1738,34 +1806,36 @@ class CAllCatalog
 		$arFieldsList[] = 'CATALOG_TYPE';
 		$arFieldsList[] = 'OFFERS_IBLOCK_ID';
 		$arFieldsList[] = 'OFFERS_PROPERTY_ID';
-		$arFieldsList = array_unique($arFieldsList);
-		return $arFieldsList;
+		return array_unique($arFieldsList);
 	}
 
-	public static function IsUserExists()
+	public static function IsUserExists(): bool
 	{
 		global $USER;
 
 		return (isset($USER) && $USER instanceof CUser);
 	}
 
-	public static function clearCache()
+	public static function clearCache(): void
 	{
-		self::$arCatalogCache = array();
-		self::$catalogVatCache = array();
+		self::$arCatalogCache = [];
+		self::$catalogVatCache = [];
 	}
 
-	private static function disableHandler()
+	private static function disableHandler(): void
 	{
 		self::$disableCheckIblock--;
 	}
 
-	private static function enableHandler()
+	private static function enableHandler(): void
 	{
 		self::$disableCheckIblock++;
 	}
 
-	private static function isEnabledHandler()
+	/**
+	 * @return bool
+	 */
+	private static function isEnabledHandler(): bool
 	{
 		return (self::$disableCheckIblock >= 0);
 	}

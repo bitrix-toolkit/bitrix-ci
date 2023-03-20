@@ -819,9 +819,7 @@ class CControllerClient
 	public static function GetInstalledOptions($module_id)
 	{
 		$arOptions = CControllerClient::GetBackup();
-		$arOptions = $arOptions["options"][$module_id];
-		if(!is_array($arOptions))
-			return Array();
+		$arOptions = $arOptions["options"][$module_id] ?? [];
 		return $arOptions;
 	}
 
@@ -942,7 +940,7 @@ class __CControllerPacket
 			$arParameters = unserialize($parameters, ['allowed_classes' => false]);
 			if ($encoding)
 			{
-				if (array_key_exists("file", $arParameters))
+				if (is_array($arParameters) && array_key_exists("file", $arParameters))
 				{
 					$file = $arParameters["file"];
 					unset($arParameters["file"]);
@@ -1574,7 +1572,7 @@ class CControllerTools
 {
 	public static function PackFileArchive($path)
 	{
-		include_once(dirname(__FILE__) . '/tar_gz.php');
+		include_once(__DIR__ . '/tar_gz.php');
 
 		if (file_exists($path))
 		{
@@ -1605,7 +1603,7 @@ class CControllerTools
 
 		if(file_put_contents($arcname, $strfile) !== false)
 		{
-			include_once(dirname(__FILE__) . '/tar_gz.php');
+			include_once(__DIR__ . '/tar_gz.php');
 			$ob = new CArchiver($arcname);
 
 			CheckDirPath($_SERVER['DOCUMENT_ROOT'].$path_to);

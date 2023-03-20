@@ -11,6 +11,8 @@ Loc::loadMessages(__FILE__);
 
 class CAllAgent
 {
+	protected const LOCK_TIME = 600;
+
 	public static function AddAgent(
 		$name, // PHP function name
 		$module = "", // module
@@ -55,16 +57,19 @@ class CAllAgent
 			if (!$existError)
 				return $agent['ID'];
 
-			$e = new CAdminException(array(
-				array(
-					"id" => "agent_exist",
-					"text" => ($user_id
-						? Loc::getMessage("MAIN_AGENT_ERROR_EXIST_FOR_USER", array('#AGENT#' => $name, '#USER_ID#' => $user_id))
-						: Loc::getMessage("MAIN_AGENT_ERROR_EXIST_EXT", array('#AGENT#' => $name))
+			if ($APPLICATION instanceof CMain)
+			{
+				$e = new CAdminException(array(
+					array(
+						"id" => "agent_exist",
+						"text" => ($user_id
+							? Loc::getMessage("MAIN_AGENT_ERROR_EXIST_FOR_USER", array('#AGENT#' => $name, '#USER_ID#' => $user_id))
+							: Loc::getMessage("MAIN_AGENT_ERROR_EXIST_EXT", array('#AGENT#' => $name))
+						)
 					)
-				)
-			));
-			$APPLICATION->throwException($e);
+				));
+				$APPLICATION->throwException($e);
+			}
 			return false;
 		}
 	}
@@ -316,10 +321,26 @@ class CAllAgent
 
 		if(!empty($errMsg))
 		{
-			$e = new CAdminException($errMsg);
-			$APPLICATION->ThrowException($e);
+			if ($APPLICATION instanceof CMain)
+			{
+				$e = new CAdminException($errMsg);
+				$APPLICATION->ThrowException($e);
+			}
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Three states: no cron (null), on cron (true), on hit (false).
+	 * @return bool|null
+	 */
+	protected static function OnCron()
+	{
+		if (COption::GetOptionString('main', 'agents_use_crontab', 'N') == 'Y' || (defined('BX_CRONTAB_SUPPORT') && BX_CRONTAB_SUPPORT === true))
+		{
+			return (defined('BX_CRONTAB') && BX_CRONTAB === true);
+		}
+		return null;
 	}
 }

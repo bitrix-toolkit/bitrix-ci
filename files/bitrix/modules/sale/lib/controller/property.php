@@ -6,12 +6,15 @@ namespace Bitrix\Sale\Controller;
 
 
 use Bitrix\Main\Engine\Response\DataType\Page;
+use Bitrix\Main\Entity\ExpressionField;
 use Bitrix\Main\Error;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\UI\PageNavigation;
+use Bitrix\Sale\EntityProperty;
 use Bitrix\Sale\Internals\Input\File;
 use Bitrix\Sale\Internals\Input\Manager;
 use Bitrix\Sale\Internals\OrderPropsValueTable;
+use Bitrix\Sale\Registry;
 use Bitrix\Sale\Rest\Entity\RelationType;
 use Bitrix\Sale\Result;
 
@@ -140,32 +143,63 @@ class Property extends Controller
 		}
 	}
 
-	public function listAction($select=[], $filter=[], $order=[], PageNavigation $pageNavigation)
+	public function listAction(PageNavigation $pageNavigation, $select=[], $filter=[], $order=[]): Page
 	{
-		$select = empty($select)? ['*']:$select;
-		$order = empty($order)? ['ID'=>'ASC']:$order;
+		$select = empty($select) ? ['*'] : $select;
+		$order = empty($order) ? ['ID' => 'ASC'] : $order;
 
-		$items = \Bitrix\Sale\Property::getList(
+		/** @var EntityProperty $propertyClassName */
+		$propertyClassName = $this->getPropertyClassName();
+
+		$items = $propertyClassName::getList(
 			[
-				'select'=>$select,
-				'filter'=>$filter,
-				'order'=>$order,
+				'select' => $select,
+				'filter' => $filter,
+				'order' => $order,
 				'offset' => $pageNavigation->getOffset(),
-				'limit' => $pageNavigation->getLimit()
+				'limit' => $pageNavigation->getLimit(),
 			]
 		)->fetchAll();
 
 		return new Page('PROPERTIES', $items, function() use ($filter)
 		{
-			return count(
-				\Bitrix\Sale\Property::getList(['filter'=>$filter])->fetchAll()
-			);
+			/** @var EntityProperty $propertyClassName */
+			$propertyClassName = $this->getPropertyClassName();
+
+			return (int) $propertyClassName::getList([
+				'select' => ['CNT'],
+				'filter' => $filter,
+				'runtime' => [
+					new ExpressionField('CNT', 'COUNT(ID)')
+				]
+			])->fetch()['CNT'];
 		});
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getPropertyClassName(): string
+	{
+		return \Bitrix\Sale\Property::class;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	protected function getEntityType(): string
+	{
+		return Registry::ENTITY_ORDER;
 	}
 
 	public function addAction($fields)
 	{
 		$fields = self::prepareFields($fields);
+		if (isset($fields['SETTINGS']) && is_array($fields['SETTINGS']))
+		{
+			$fields = array_merge($fields, $fields['SETTINGS']);
+			unset($fields['SETTINGS']);
+		}
 
 		$r = $this->checkFileds($fields);
 
@@ -288,6 +322,10 @@ class Property extends Controller
 			elseif ($type === 'LOCATION')
 			{
 				$fields += $this->getLocationSettings();
+			}
+			elseif ($type === 'ADDRESS')
+			{
+				$fields += $this->getAddressSettings();
 			}
 
 			foreach ($fields as $code=>&$v)
@@ -424,11 +462,6 @@ class Property extends Controller
 				'HIDDEN' => 'Y',
 				'REQUIRED' => 'Y',
 				'RLABEL' => $personType['NAME']
-			],
-			'ENTITY_TYPE' => [
-				'TYPE' => 'STRING',
-				'LABEL' => 'ENTITY_TYPE',
-				'HIDDEN' => 'Y',
 			],
 			'PROPS_GROUP_ID' => [
 				'TYPE' => 'ENUM',
@@ -639,6 +672,22 @@ class Property extends Controller
 		];
 	}
 
+	protected function getAddressSettings()
+	{
+		return array(
+			'IS_ADDRESS_FROM' => [
+				'TYPE' => 'Y/N',
+				'LABEL' => 'IS_ADDRESS_FROM',
+				'DESCRIPTION' => 'IS_ADDRESS_FROM'
+			],
+			'IS_ADDRESS_TO' => [
+				'TYPE' => 'Y/N',
+				'LABEL' => 'IS_ADDRESS_TO',
+				'DESCRIPTION' => 'IS_ADDRESS_TO'
+			],
+		);
+	}
+
 	protected function getVariantSettings()
 	{
 		return [
@@ -720,6 +769,10 @@ class Property extends Controller
 			{
 				unset($propertySettings['INPUT_FIELD_LOCATION']);
 			}
+		}
+		elseif ($this->property['TYPE'] === 'ADDRESS')
+		{
+			$propertySettings += $this->getAddressSettings();
 		}
 	}
 
@@ -1039,6 +1092,8 @@ class Property extends Controller
 		}
 
 		$propertiesToSave['ENTITY_REGISTRY_TYPE'] = \Bitrix\Sale\Registry::REGISTRY_TYPE_ORDER;
+		$propertiesToSave['ENTITY_TYPE'] = $this->getEntityType();
+		//
 		$addResult = \Bitrix\Sale\Internals\OrderPropsTable::add($propertiesToSave);
 		if ($addResult->isSuccess())
 		{

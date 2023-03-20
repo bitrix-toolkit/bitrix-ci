@@ -12,7 +12,9 @@ Loc::loadMessages(__FILE__);
  * Class Landing
  * @package Bitrix\Sale\TradingPlatform\Landing
  */
-class Landing extends Sale\TradingPlatform\Platform
+class Landing
+	extends Sale\TradingPlatform\Platform
+	implements Sale\TradingPlatform\IRestriction
 {
 	public const TRADING_PLATFORM_CODE = 'landing';
 	public const CODE_DELIMITER = '_';
@@ -130,7 +132,7 @@ class Landing extends Sale\TradingPlatform\Platform
 	public static function onLandingSiteUpdate(Main\Event $event)
 	{
 		$fields = $event->getParameter('fields');
-		if ($fields['TYPE'] !== 'STORE')
+		if (empty($fields['TYPE']) || $fields['TYPE'] !== 'STORE')
 		{
 			return;
 		}
@@ -190,19 +192,19 @@ class Landing extends Sale\TradingPlatform\Platform
 		$delete = $event->getParameter('delete');
 
 		$res = \Bitrix\Landing\Site::getList([
-		    'select' => [
-		        'ID'
-		    ],
-		    'filter' => [
-		        '=ID' => $id,
-		        'CHECK_PERMISSIONS' => 'N',
-		        '=TYPE' => 'STORE'
-		    ]
+			'select' => [
+				'ID'
+			],
+			'filter' => [
+				'=ID' => $id,
+				'CHECK_PERMISSIONS' => 'N',
+				'=TYPE' => 'STORE'
+			]
 		]);
 
 		if (!$res->fetch())
 		{
-		    return;
+			return;
 		}
 
 		$landing = Landing::getInstanceByCode(static::getCodeBySiteId($id));
@@ -329,7 +331,7 @@ class Landing extends Sale\TradingPlatform\Platform
 	 */
 	public function getRealName()
 	{
-		return (string)$this->getInfo()['TITLE'];
+		return (string)($this->getInfo()['TITLE'] ?? '');
 	}
 
 	/**

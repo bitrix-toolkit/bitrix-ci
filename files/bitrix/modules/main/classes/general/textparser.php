@@ -6,6 +6,7 @@
  * @copyright 2001-2014 Bitrix
  */
 
+use Bitrix\Main\Config\Option;
 use Bitrix\Main\Localization\Loc;
 
 Loc::loadMessages(__FILE__);
@@ -46,24 +47,29 @@ class CTextParser
 		"TABLE" => "Y",
 		"CUT_ANCHOR" => "N",
 		"SHORT_ANCHOR" => "N",
+		"TEXT_ANCHOR" => "Y",
 		"ALIGN" => "Y",
 		"USERFIELDS" => "N",
 		"USER" => "Y",
+		'PROJECT' => 'Y',
+		'DEPARTMENT' => 'Y',
 		"P" => "Y",
 		"TAG" => "N",
 		"SPOILER" => "Y",
 	);
+	public $anchorType = "html";
 	public $smiles = null;
+	public $smilesGallery = CSmileGallery::GALLERY_DEFAULT;
+	public $bMobile = false;
+	public $LAZYLOAD = "N";
+
 	protected $wordSeparator = "\\s.,;:!?\\#\\-\\*\\|\\[\\]\\(\\)\\{\\}";
 	protected $smilePatterns = null;
 	protected $smileReplaces = null;
 	protected static $repoSmiles = array();
-	public $smilesGallery = CSmileGallery::GALLERY_DEFAULT;
 	protected $defended_urls = array();
 	protected $anchorSchemes = null;
 	protected $userField;
-	public $bMobile = false;
-	public $LAZYLOAD = "N";
 	protected $tagPattern = "/([\s]+|^)#([^\s,\.\[\]<>]+)/is";
 
 	public function __construct()
@@ -76,6 +82,7 @@ class CTextParser
 		$this->authorName = '';
 
 		$this->pathToUser = '';
+
 		$this->pathToUserEntityType = false;
 		$this->pathToUserEntityId = false;
 		$this->ajaxPage = $APPLICATION->GetCurPageParam("", array("bxajaxid", "logout"));
@@ -89,7 +96,7 @@ class CTextParser
 			static $schemes = null;
 			if($schemes === null)
 			{
-				$schemes = \Bitrix\Main\Config\Option::get("main", "~parser_anchor_schemes", "http|https|news|ftp|aim|mailto|file|tel|callto|skype|viber");
+				$schemes = Option::get("main", "~parser_anchor_schemes", "http|https|news|ftp|aim|mailto|file|tel|callto|skype|viber");
 			}
 			$this->anchorSchemes = $schemes;
 		}
@@ -383,22 +390,25 @@ class CTextParser
 
 			$text = preg_replace_callback($patt, array($this, "preconvertAnchor"), $text);
 
-			$patt = array();
-			if (mb_strpos($text, "&lt;") !== false)
-				$patt[] = "/(?<=\\&lt\\;)((((".$this->getAnchorSchemes()."):\\/\\/)|www\\.)[._:a-z0-9@-].*?)(?=\\&gt\\;)/is".BX_UTF_PCRE_MODIFIER;
+			if (($this->allow["TEXT_ANCHOR"] ?? "Y") == "Y")
+			{
+				$patt = array();
+				if (mb_strpos($text, "&lt;") !== false)
+					$patt[] = "/(?<=\\&lt\\;)((((".$this->getAnchorSchemes()."):\\/\\/)|www\\.)[._:a-z0-9@-].*?)(?=\\&gt\\;)/is".BX_UTF_PCRE_MODIFIER;
 
-			$word_separator = str_replace("?", "", $this->wordSeparator);
-			if (self::strpos($text, "(") !== false)
-				$patt[] = "/(?<=\\()(?<!\\[nomodify\\]|<nomodify>)((((".$this->getAnchorSchemes()."):\\/\\/)|www\\.)[._:a-z0-9@-].*?)(?=\\))/is".BX_UTF_PCRE_MODIFIER;
-			if (self::strpos($text, "“") !== false)
-				$patt[] = "/(?<=[".self::chr("“")."])(?<!\\[nomodify\\]|<nomodify>)((((".$this->getAnchorSchemes()."):\\/\\/)|www\\.)[._:a-z0-9@-].*?)(?=[".self::chr("”")."])/is".BX_UTF_PCRE_MODIFIER;
-			if (self::strpos($text, "‘") !== false)
-				$patt[] = "/(?<=[".self::chr("‘")."])(?<!\\[nomodify\\]|<nomodify>)((((".$this->getAnchorSchemes()."):\\/\\/)|www\\.)[._:a-z0-9@-].*?)(?=[".self::chr("’")."])/is".BX_UTF_PCRE_MODIFIER;
-			if (self::strpos($text, "«") !== false)
-				$patt[] = "/(?<=[".self::chr("«")."])(?<!\\[nomodify\\]|<nomodify>)((((".$this->getAnchorSchemes()."):\\/\\/)|www\\.)[._:a-z0-9@-].*?)(?=[".self::chr("»")."])/is".BX_UTF_PCRE_MODIFIER;
+				$word_separator = str_replace("?", "", $this->wordSeparator);
+				if (self::strpos($text, "(") !== false)
+					$patt[] = "/(?<=\\()(?<!\\[nomodify\\]|<nomodify>)((((".$this->getAnchorSchemes()."):\\/\\/)|www\\.)[._:a-z0-9@-].*?)(?=\\))/is".BX_UTF_PCRE_MODIFIER;
+				if (self::strpos($text, "“") !== false)
+					$patt[] = "/(?<=[".self::chr("“")."])(?<!\\[nomodify\\]|<nomodify>)((((".$this->getAnchorSchemes()."):\\/\\/)|www\\.)[._:a-z0-9@-].*?)(?=[".self::chr("”")."])/is".BX_UTF_PCRE_MODIFIER;
+				if (self::strpos($text, "‘") !== false)
+					$patt[] = "/(?<=[".self::chr("‘")."])(?<!\\[nomodify\\]|<nomodify>)((((".$this->getAnchorSchemes()."):\\/\\/)|www\\.)[._:a-z0-9@-].*?)(?=[".self::chr("’")."])/is".BX_UTF_PCRE_MODIFIER;
+				if (self::strpos($text, "«") !== false)
+					$patt[] = "/(?<=[".self::chr("«")."])(?<!\\[nomodify\\]|<nomodify>)((((".$this->getAnchorSchemes()."):\\/\\/)|www\\.)[._:a-z0-9@-].*?)(?=[".self::chr("»")."])/is".BX_UTF_PCRE_MODIFIER;
 
-			$patt[] = "/(?<=^|[".$word_separator."]|\\s)(?<!\\[nomodify\\]|<nomodify>)((((".$this->getAnchorSchemes()."):\\/\\/)|www\\.)[._:a-z0-9@-].*?)(?=[\\s'\"{}\\[\\]]|&quot;|\$)/is".BX_UTF_PCRE_MODIFIER;
-			$text = preg_replace_callback($patt, array($this, "preconvertUrl"), $text);
+				$patt[] = "/(?<=^|[".$word_separator."]|\\s)(?<!\\[nomodify\\]|<nomodify>)((((".$this->getAnchorSchemes()."):\\/\\/)|www\\.)[._:a-z0-9@-].*?)(?=[\\s'\"{}\\[\\]]|&quot;|\$)/is".BX_UTF_PCRE_MODIFIER;
+				$text = preg_replace_callback($patt, array($this, "preconvertUrl"), $text);
+			}
 		}
 		else if (!empty($patt))
 		{
@@ -801,11 +811,35 @@ class CTextParser
 				}
 			}
 		}
+
 		if (!isset($this->allow["USER"]) || $this->allow["USER"] != "N")
 		{
+			do
+			{
+				$textOriginal = $text;
+				$text = preg_replace_callback(
+					"/\[user\s*=\s*([^\]]*)\]((?:(?!\[user\s*=\s*[^\]]*\]).)+?)\[\/user\]/is".BX_UTF_PCRE_MODIFIER,
+					array($this, "convert_user"),
+					$text
+				);
+			}
+			while ($textOriginal !== $text);
+		}
+
+		if (!isset($this->allow['PROJECT']) || $this->allow['PROJECT'] !== 'N')
+		{
 			$text = preg_replace_callback(
-				"/\[user\s*=\s*([^\]]*)\](.+?)\[\/user\]/is".BX_UTF_PCRE_MODIFIER,
-				array($this, "convert_user"),
+				"/\[project\s*=\s*([^\]]*)\](.+?)\[\/project\]/is" . BX_UTF_PCRE_MODIFIER,
+				[ $this, 'convert_project' ],
+				$text
+			);
+		}
+
+		if (!isset($this->allow['DEPARTMENT']) || $this->allow['DEPARTMENT'] !== 'N')
+		{
+			$text = preg_replace_callback(
+				"/\[department\s*=\s*([^\]]*)\](.+?)\[\/department\]/is" . BX_UTF_PCRE_MODIFIER,
+				[ $this, 'convert_department' ],
 				$text
 			);
 		}
@@ -961,6 +995,12 @@ class CTextParser
 		$arPattern[] = "/\\[user([^\\]]*)\\](.+?)\\[\\/user\\]/is".BX_UTF_PCRE_MODIFIER;
 		$arReplace[] = "\\2";
 
+		$arPattern[] = "/\\[project([^\\]]*)\\](.+?)\\[\\/project\\]/is" . BX_UTF_PCRE_MODIFIER;
+		$arReplace[] = "\\2";
+
+		$arPattern[] = "/\\[department([^\\]]*)\\](.+?)\\[\\/department\\]/is" . BX_UTF_PCRE_MODIFIER;
+		$arReplace[] = "\\2";
+
 		$arPattern[] = "/\\[DOCUMENT([^\\]]*)\\]/is".BX_UTF_PCRE_MODIFIER;
 		$arReplace[] = "";
 
@@ -968,13 +1008,13 @@ class CTextParser
 		$arReplace[] = "";
 
 		$arPattern[] = "/\\[(table)(.*?)\\]/is".BX_UTF_PCRE_MODIFIER;
-		$arReplace[] = "\n>================== \\1 ===================\n";
+		$arReplace[] = "\n>================== \\1 ===================";
 
 		$arPattern[] = "/\\[\\/table(.*?)\\]/is".BX_UTF_PCRE_MODIFIER;
 		$arReplace[] = "\n>===========================================\n";
 
-		$arPattern[] = "/\\[tr\\]\\s+/is".BX_UTF_PCRE_MODIFIER;
-		$arReplace[] = "";
+		$arPattern[] = "/\\[tr\\]\\s*/is".BX_UTF_PCRE_MODIFIER;
+		$arReplace[] = "\n";
 
 		$arPattern[] = "/\\[(\\/?)(tr|td)\\]/is".BX_UTF_PCRE_MODIFIER;
 		$arReplace[] = "";
@@ -1461,8 +1501,6 @@ class CTextParser
 
 	public function convert_user($userId = 0, $userName = "")
 	{
-		static $arExtranetUser = false;
-		static $arEmailUser = false;
 		static $userTypeList = [];
 
 		if (is_array($userId))
@@ -1577,6 +1615,138 @@ class CTextParser
 		}
 
 		return '<a class="blog-p-user-name'.$classAdditional.'" href="'.CComponentEngine::MakePathFromTemplate($pathToUser, array("user_id" => $userId)).'" bx-tooltip-user-id="'.(!$this->bMobile ? $userId : '').'"'.(!empty($fields['TOOLTIP_PARAMS']) ? ' bx-tooltip-params="'.htmlspecialcharsbx($fields['TOOLTIP_PARAMS']).'"' : '').'>'.$userName.'</a>';
+	}
+
+	public function convert_project(array $matches): string
+	{
+		static $projectTypeList = [];
+		static $extranetProjectIdList = null;
+		static $pathToProject = null;
+
+		$projectName = $matches[2];
+		$projectId = (int)$matches[1];
+
+		$renderParams = array(
+			'PROJECT_ID' => $projectId,
+			'PROJECT_NAME' => $projectName
+		);
+
+		if ($projectId > 0)
+		{
+			if ($extranetProjectIdList === null)
+			{
+				$extranetSiteId = (\Bitrix\Main\Loader::includeModule('extranet') ? CExtranet::getExtranetSiteId() : '');
+				if (!empty($extranetSiteId))
+				{
+					$res = \Bitrix\Socialnetwork\WorkgroupSiteTable::getList([
+						'filter' => [
+							'=SITE_ID' => $extranetSiteId,
+						],
+						'select' => [ 'GROUP_ID' ],
+					]);
+
+					while ($projectSiteFields = $res->fetch())
+					{
+						$extranetProjectIdList[] = (int)$projectSiteFields['GROUP_ID'];
+					}
+				}
+			}
+
+			$type = false;
+
+			if (isset($projectTypeList[$projectId]))
+			{
+				$type = $projectTypeList[$projectId];
+			}
+			else
+			{
+				if (!empty($extranetProjectIdList))
+				{
+					$type = (in_array($projectId, $extranetProjectIdList, true) ? 'extranet' : false);
+				}
+
+				$projectTypeList[$projectId] = $type;
+			}
+
+			if ($pathToProject === null)
+			{
+				// then replace to \Bitrix\Socialnetwork\Helper\Path::get('group_path_template')
+				$pathToProject = Option::get('socialnetwork', 'group_path_template', SITE_DIR . 'workgroups/group/#group_id#/', SITE_ID);
+			}
+
+			switch ($type)
+			{
+				case 'extranet':
+					$classAdditional = ' blog-p-user-name-extranet';
+					break;
+				default:
+					$classAdditional = '';
+			}
+
+			$renderParams['CLASS_ADDITIONAL'] = $classAdditional;
+			$renderParams['PATH_TO_PROJECT'] = $pathToProject;
+		}
+
+		$res = $this->render_project($renderParams);
+
+		return $this->defended_tags($res);
+	}
+
+	protected function render_project($fields): string
+	{
+		$classAdditional = ($fields['CLASS_ADDITIONAL'] ?? '');
+		$pathToProject = ($fields['PATH_TO_PROJECT'] ?? '');
+		$projectId = (int)($fields['PROJECT_ID'] ?? 0);
+		$projectName = (string)($fields['PROJECT_NAME'] ?? '');
+
+		if ($projectId <= 0)
+		{
+			return "<span class=\"blog-p-user-name\">{$projectName}</span>";
+		}
+
+		return '<a class="blog-p-user-name' . $classAdditional . '" href="' . CComponentEngine::MakePathFromTemplate($pathToProject, [ 'group_id' => $projectId ]) . '" ' .'>' . $projectName . '</a>';
+	}
+
+	public function convert_department(array $matches): string
+	{
+		static $pathToDepartment = null;
+
+		$departmentName = $matches[2];
+		$departmentId = (int)$matches[1];
+
+		$renderParams = array(
+			'DEPARTMENT_ID' => $departmentId,
+			'DEPARTMENT_NAME' => $departmentName
+		);
+
+		if ($departmentId > 0)
+		{
+			if ($pathToDepartment === null)
+			{
+				// then replace to \Bitrix\Socialnetwork\Helper\Path::get('department_path_template')
+				$pathToDepartment = Option::get('main', 'TOOLTIP_PATH_TO_CONPANY_DEPARTMENT', SITE_DIR . 'company/structure.php?set_filter_structure=Y&structure_UF_DEPARTMENT=#ID#', SITE_ID);
+			}
+
+			$renderParams['PATH_TO_DEPARTMENT'] = $pathToDepartment;
+		}
+
+		$res = $this->render_department($renderParams);
+
+		return $this->defended_tags($res);
+	}
+
+	protected function render_department($fields): string
+	{
+		$pathToDepartment = ($fields['PATH_TO_DEPARTMENT'] ?? '');
+		$departmentId = (int)($fields['DEPARTMENT_ID'] ?? 0);
+		$departmentName = (string)($fields['DEPARTMENT_NAME'] ?? '');
+
+		if ($departmentId <= 0)
+		{
+			return "<span class=\"blog-p-user-name\">{$departmentName}</span>";
+		}
+
+		return '<a class="blog-p-user-name" href="' . CComponentEngine::MakePathFromTemplate($pathToDepartment, [ 'ID' => $departmentId ]) . '" ' .'>' . $departmentName . '</a>';
 	}
 
 	public function getTagPattern()
@@ -1707,7 +1877,7 @@ class CTextParser
 		return $this->convert_anchor_tag($matches[1], ($matches[2] <> ''? $matches[2] : $matches[1]), '');
 	}
 
-	public function convert_anchor_tag($url, $text, $pref="")
+	public function convert_anchor_tag($url, $text, $prefix="")
 	{
 		$url = trim(str_replace(array("[nomodify]", "[/nomodify]"), "", $url));
 		$text = trim(str_replace(array("[nomodify]", "[/nomodify]"), "", $text));
@@ -1717,11 +1887,11 @@ class CTextParser
 		$bShortUrl = (($this->allow["SHORT_ANCHOR"] ?? '') == "Y");
 
 		$text = str_replace("\\\"", "\"", $text);
-		$end = "";
+		$postfix = "";
 		$pattern = "/([\\.,\\?\\!\\;]|&#33;)$/".BX_UTF_PCRE_MODIFIER;
 		if ($bTextUrl && preg_match($pattern, $url, $match))
 		{
-			$end = $match[1];
+			$postfix = $match[1];
 			$url = preg_replace($pattern, "", $url);
 			$text = preg_replace($pattern, "", $text);
 		}
@@ -1764,8 +1934,38 @@ class CTextParser
 				);
 		}
 
-		$url = $this->defended_tags(htmlspecialcharsbx(htmlspecialcharsback($url)), 'replace');
-		return $pref.($this->parser_nofollow == "Y" ? '<noindex>' : '').'<a href="'.$url.'" target="'.$this->link_target.'"'.($this->parser_nofollow == "Y" ? ' rel="nofollow"' : '').'>'.$text.'</a>'.($this->parser_nofollow == "Y" ? '</noindex>' : '').$end;
+		if ($this->anchorType === 'bbcode')
+		{
+			if ($url === $text)
+			{
+				$link = '[URL]'.$url .'[/URL]';
+			}
+			else
+			{
+				$link = '[URL='.$url.']'.$text .'[/URL]';
+			}
+		}
+		else
+		{
+			$url = $this->defended_tags(htmlspecialcharsbx($url, ENT_COMPAT, false), 'replace');
+
+			if (strpos($text, "<\017") === false)
+			{
+				// it could be "defended" tag inside URL code
+				$text = htmlspecialcharsbx($text, ENT_COMPAT, false);
+			}
+
+			$noFollowAttribute = $this->parser_nofollow == "Y"? ' rel="nofollow"': '';
+
+			$link = '<a href="' . $url . '" target="' . $this->link_target . '"' . $noFollowAttribute . '>' . $text .'</a>';
+
+			if ($noFollowAttribute)
+			{
+				$link = '<noindex>'.$link.'</noindex>';
+			}
+		}
+
+		return $prefix.$link.$postfix;
 	}
 
 	private function preconvertUrl($matches)
@@ -1929,7 +2129,9 @@ class CTextParser
 
 		$arPattern[] = "/\\<(\\/?)(code|font|color|video)(.*?)\\>/is".BX_UTF_PCRE_MODIFIER;
 		$arReplace[] = "";
-		$arPattern[] = "/\\[(\\/?)(p|b|i|u|s|list|code|quote|size|font|color|url|img|video|td|tr|table|file|document id|disk file id|user|left|right|center|justify|\\*)(.*?)\\]/is".BX_UTF_PCRE_MODIFIER;
+		$arPattern[] = "/\\[\\/td(.*?)\\]\\[td(.*?)\\]/is".BX_UTF_PCRE_MODIFIER;
+		$arReplace[] = " ";
+		$arPattern[] = "/\\[(\\/?)(p|b|i|u|s|list|code|quote|size|font|color|url|img|video|td|tr|table|file|document id|disk file id|user|project|left|right|center|justify|\\*)(.*?)\\]/is".BX_UTF_PCRE_MODIFIER;
 		$arReplace[] = "";
 
 		return preg_replace($arPattern, $arReplace, $text);

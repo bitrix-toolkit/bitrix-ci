@@ -57,25 +57,8 @@ class HandlerService extends BaseService
 			throw new RestException('Parameter CODE is not defined', self::ERROR_CHECK_FAILURE);
 		}
 
-		if (empty($params['SETTINGS']) || !is_array($params['SETTINGS']))
-		{
-			throw new RestException('Parameter SETTINGS is not defined', self::ERROR_CHECK_FAILURE);
-		}
-
-		if (empty($params['SETTINGS']['CALCULATE_URL']))
-		{
-			throw new RestException('Parameter SETTINGS[CALCULATE_URL] is not defined', self::ERROR_CHECK_FAILURE);
-		}
-
-		if (empty($params['SETTINGS']['CONFIG']) || !is_array($params['SETTINGS']['CONFIG']))
-		{
-			throw new RestException('Parameter SETTINGS[CONFIG] is not defined', self::ERROR_CHECK_FAILURE);
-		}
-
-		if (empty($params['PROFILES']) || !is_array($params['PROFILES']))
-		{
-			throw new RestException('Parameter PROFILES is not defined', self::ERROR_CHECK_FAILURE);
-		}
+		self::checkSettings($params['SETTINGS']);
+		self::checkProfiles($params['PROFILES']);
 
 		$deliveryRestHandler = Internals\DeliveryRestHandlerTable::getList([
 			'filter' => [
@@ -90,10 +73,8 @@ class HandlerService extends BaseService
 
 	/**
 	 * @param array $params
-	 * @throws Main\ArgumentException
-	 * @throws Main\ObjectPropertyException
-	 * @throws Main\SystemException
 	 * @throws RestException
+	 * @throws AccessException
 	 */
 	private static function checkParamsOnUpdateHandler(array $params): void
 	{
@@ -102,9 +83,24 @@ class HandlerService extends BaseService
 			throw new RestException('Parameter ID is not defined', self::ERROR_CHECK_FAILURE);
 		}
 
-		if (empty($params['FIELDS']) || !is_array($params['FIELDS']))
+		if (array_key_exists('NAME', $params) && empty($params['NAME']))
 		{
-			throw new RestException('Parameter FIELDS is not defined', self::ERROR_CHECK_FAILURE);
+			throw new RestException('Parameter NAME is not defined', self::ERROR_CHECK_FAILURE);
+		}
+
+		if (array_key_exists('CODE', $params) && empty($params['CODE']))
+		{
+			throw new RestException('Parameter CODE is not defined', self::ERROR_CHECK_FAILURE);
+		}
+
+		if (array_key_exists('SETTINGS', $params))
+		{
+			self::checkSettings($params['SETTINGS']);
+		}
+
+		if (array_key_exists('PROFILES', $params))
+		{
+			self::checkProfiles($params['PROFILES']);
 		}
 
 		$deliveryRestHandler = Internals\DeliveryRestHandlerTable::getList(array(
@@ -119,16 +115,14 @@ class HandlerService extends BaseService
 
 		if ($params['APP_ID'] && !empty($deliveryRestHandler['APP_ID']) && $deliveryRestHandler['APP_ID'] !== $params['APP_ID'])
 		{
-			throw new RestException('Access denied', self::ERROR_HANDLER_UPDATE);
+			throw new AccessException();
 		}
 	}
 
 	/**
 	 * @param $params
-	 * @throws Main\ArgumentException
-	 * @throws Main\ObjectPropertyException
-	 * @throws Main\SystemException
 	 * @throws RestException
+	 * @throws AccessException
 	 */
 	private static function checkParamsOnDeleteHandler($params): void
 	{
@@ -149,7 +143,7 @@ class HandlerService extends BaseService
 
 		if ($params['APP_ID'] && !empty($deliveryRestHandler['APP_ID']) && $deliveryRestHandler['APP_ID'] !== $params['APP_ID'])
 		{
-			throw new RestException('Access denied', self::ERROR_HANDLER_DELETE);
+			throw new AccessException();
 		}
 
 		$deliveryListResult = Sale\Delivery\Services\Manager::getList([
@@ -181,11 +175,6 @@ class HandlerService extends BaseService
 	 * @param $n
 	 * @param \CRestServer $server
 	 * @return array|false|int
-	 * @throws AccessException
-	 * @throws Main\ArgumentException
-	 * @throws Main\LoaderException
-	 * @throws Main\ObjectPropertyException
-	 * @throws Main\SystemException
 	 * @throws RestException
 	 */
 	public static function addHandler($query, $n, \CRestServer $server)
@@ -194,13 +183,20 @@ class HandlerService extends BaseService
 		$params = self::prepareHandlerParams($query, $server);
 		self::checkParamsOnAddHandler($params);
 
+		if (isset($params['SETTINGS']['CONFIG']) && is_array($params['SETTINGS']['CONFIG']))
+		{
+			$params['SETTINGS']['CONFIG'] = [
+				'ITEMS' => self::convertArrayForSaving($params['SETTINGS']['CONFIG'], '[SETTINGS][CONFIG][]'),
+			];
+		}
+
 		$data = [
 			'NAME' => $params['NAME'],
 			'CODE' => $params['CODE'],
 			'SORT' => $params['SORT'] ?: 100,
 			'DESCRIPTION' => $params['DESCRIPTION'],
 			'SETTINGS' => $params['SETTINGS'],
-			'PROFILES' => $params['PROFILES'],
+			'PROFILES' => self::convertArrayForSaving($params['PROFILES'], '[PROFILES][]'),
 			'APP_ID' => $params['APP_ID'],
 		];
 
@@ -219,11 +215,6 @@ class HandlerService extends BaseService
 	 * @param $n
 	 * @param \CRestServer $server
 	 * @return bool
-	 * @throws AccessException
-	 * @throws Main\ArgumentException
-	 * @throws Main\LoaderException
-	 * @throws Main\ObjectPropertyException
-	 * @throws Main\SystemException
 	 * @throws RestException
 	 */
 	public static function updateHandler($query, $n, \CRestServer $server): bool
@@ -233,7 +224,38 @@ class HandlerService extends BaseService
 
 		self::checkParamsOnUpdateHandler($params);
 
-		$result = Internals\DeliveryRestHandlerTable::update($params['ID'], $params['FIELDS']);
+		$fields = [];
+		foreach (['CODE', 'NAME', 'DESCRIPTION', 'SETTINGS', 'PROFILES'] as $field)
+		{
+			if (!array_key_exists($field, $params))
+			{
+				continue;
+			}
+
+			if ($field === 'PROFILES')
+			{
+				$value = self::convertArrayForSaving($params[$field], '[PROFILES][]');
+			}
+			elseif ($field === 'SETTINGS')
+			{
+				if (isset($params[$field]['CONFIG']) && is_array($params[$field]['CONFIG']))
+				{
+					$params[$field]['CONFIG'] = [
+						'ITEMS' => self::convertArrayForSaving($params[$field]['CONFIG'], '[SETTINGS][CONFIG][]'),
+					];
+				}
+
+				$value = $params[$field];
+			}
+			else
+			{
+				$value = $params[$field];
+			}
+
+			$fields[$field] = $value;
+		}
+
+		$result = Internals\DeliveryRestHandlerTable::update($params['ID'], $fields);
 		if ($result->isSuccess())
 		{
 			return true;
@@ -248,11 +270,6 @@ class HandlerService extends BaseService
 	 * @param $n
 	 * @param \CRestServer $server
 	 * @return bool
-	 * @throws AccessException
-	 * @throws Main\ArgumentException
-	 * @throws Main\LoaderException
-	 * @throws Main\ObjectPropertyException
-	 * @throws Main\SystemException
 	 * @throws RestException
 	 */
 	public static function deleteHandler($query, $n, \CRestServer $server): bool
@@ -277,15 +294,154 @@ class HandlerService extends BaseService
 	 * @param $n
 	 * @param \CRestServer $server
 	 * @return array
-	 * @throws AccessException
-	 * @throws Main\ArgumentException
-	 * @throws Main\LoaderException
-	 * @throws Main\ObjectPropertyException
-	 * @throws Main\SystemException
 	 */
 	public static function getHandlerList($query, $n, \CRestServer $server): array
 	{
 		self::checkDeliveryPermission();
-		return Sale\Delivery\Services\Manager::getRestHandlerList() ?? [];
+
+		$result = [];
+
+		$handlersList = array_values(Sale\Delivery\Services\Manager::getRestHandlerList());
+		foreach ($handlersList as $handler)
+		{
+			/**
+			 * Profiles
+			 */
+			$profiles = [];
+			if (isset($handler['PROFILES']) && is_array($handler['PROFILES']))
+			{
+				$profiles = self::convertArrayForOutput($handler['PROFILES']);
+			}
+			$handler['PROFILES'] = $profiles;
+
+			/**
+			 * Settings
+			 */
+			$settings = $handler['SETTINGS'];
+			$config = [];
+			if (isset($settings['CONFIG']['ITEMS']) && is_array($settings['CONFIG']['ITEMS']))
+			{
+				$config = self::convertArrayForOutput($settings['CONFIG']['ITEMS']);
+			}
+			$settings['CONFIG'] = $config;
+			$handler['SETTINGS'] = $settings;
+
+			$result[] = $handler;
+		}
+
+		return $result;
+	}
+
+	/**
+	 * @param $profiles
+	 * @throws RestException
+	 */
+	private static function checkProfiles($profiles): void
+	{
+		if (empty($profiles) || !is_array($profiles))
+		{
+			throw new RestException('Parameter PROFILES is not defined', self::ERROR_CHECK_FAILURE);
+		}
+	}
+
+	/**
+	 * @param $settings
+	 * @throws RestException
+	 */
+	private static function checkSettings($settings): void
+	{
+		if (empty($settings) || !is_array($settings))
+		{
+			throw new RestException('Parameter SETTINGS is not defined', self::ERROR_CHECK_FAILURE);
+		}
+
+		if (empty($settings['CALCULATE_URL']))
+		{
+			throw new RestException(
+				'Parameter SETTINGS[CALCULATE_URL] is not defined',
+				self::ERROR_CHECK_FAILURE
+			);
+		}
+		elseif (!is_string($settings['CALCULATE_URL']))
+		{
+			throw new RestException(
+				'Parameter SETTINGS[CALCULATE_URL] must be of string type',
+				self::ERROR_CHECK_FAILURE
+			);
+		}
+
+		if (
+			!empty($settings['CREATE_DELIVERY_REQUEST_URL'])
+			&& !is_string($settings['CREATE_DELIVERY_REQUEST_URL'])
+		)
+		{
+			throw new RestException(
+				'Parameter SETTINGS[CREATE_DELIVERY_REQUEST_URL] must be of string type',
+				self::ERROR_CHECK_FAILURE
+			);
+		}
+
+		if (
+			!empty($settings['CANCEL_DELIVERY_REQUEST_URL'])
+			&& !is_string($settings['CANCEL_DELIVERY_REQUEST_URL'])
+		)
+		{
+			throw new RestException(
+				'Parameter SETTINGS[CANCEL_DELIVERY_REQUEST_URL] must be of string type',
+				self::ERROR_CHECK_FAILURE
+			);
+		}
+
+		if (empty($settings['CONFIG']) || !is_array($settings['CONFIG']))
+		{
+			throw new RestException('Parameter SETTINGS[CONFIG] is not defined', self::ERROR_CHECK_FAILURE);
+		}
+	}
+
+	/**
+	 * @param array $items
+	 * @param string $path
+	 * @return array
+	 * @throws RestException
+	 */
+	private static function convertArrayForSaving(array $items, string $path = ''): array
+	{
+		$result = [];
+
+		foreach ($items as $item)
+		{
+			if (!isset($item['CODE']))
+			{
+				throw new RestException(
+					($path === '' ? '' : $path . ' ') . 'Item CODE is not specified',
+					self::ERROR_CHECK_FAILURE
+				);
+			}
+
+			$profileCode = $item['CODE'];
+			unset($item['CODE']);
+
+			$result[$profileCode] = $item;
+		}
+
+		return $result;
+	}
+
+	/**
+	 * @param array $items
+	 * @return array
+	 */
+	private static function convertArrayForOutput(array $items): array
+	{
+		$result = [];
+
+		foreach ($items as $profileCode => $item)
+		{
+			$item['CODE'] = $profileCode;
+
+			$result[] = $item;
+		}
+
+		return $result;
 	}
 }

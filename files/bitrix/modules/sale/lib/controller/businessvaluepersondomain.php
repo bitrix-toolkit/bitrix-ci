@@ -10,37 +10,37 @@ use Bitrix\Main\UI\PageNavigation;
 use Bitrix\Sale\Internals\BusinessValuePersonDomainTable;
 use Bitrix\Sale\Result;
 
-class BusinessValuePersonDomain extends Controller
+class BusinessValuePersonDomain extends ControllerBase
 {
 	//region Actions
 	public function getFieldsAction()
 	{
-		$entity = new \Bitrix\Sale\Rest\Entity\BusinessValuePersonDomain();
-		return ['BUSINESS_VALUE_PERSON_DOMAIN'=>$entity->prepareFieldInfos(
-			$entity->getFields()
+		$view = $this->getViewManager()
+			->getView($this);
+
+		return ['BUSINESS_VALUE_PERSON_DOMAIN'=>$view->prepareFieldInfos(
+			$view->getFields()
 		)];
 	}
 
-	public function listAction($select=[], $filter=[], $order=[], PageNavigation $pageNavigation)
+	public function listAction(PageNavigation $pageNavigation, array $select = [], array $filter = [], array $order = []): Page
 	{
-		$select = empty($select)? ['*']:$select;
-		$order = empty($order)? ['PERSON_TYPE_ID'=>'ASC']:$order;
+		$select = empty($select) ? ['*'] : $select;
+		$order = empty($order) ? ['PERSON_TYPE_ID'=>'ASC'] : $order;
 
 		$items = BusinessValuePersonDomainTable::getList(
 			[
-				'select'=>$select,
-				'filter'=>$filter,
-				'order'=>$order,
+				'select' => $select,
+				'filter' => $filter,
+				'order' => $order,
 				'offset' => $pageNavigation->getOffset(),
-				'limit' => $pageNavigation->getLimit()
+				'limit' => $pageNavigation->getLimit(),
 			]
 		)->fetchAll();
 
 		return new Page('BUSINESS_VALUE_PERSON_DOMAINS', $items, function() use ($filter)
 		{
-			return count(
-				BusinessValuePersonDomainTable::getList(['filter'=>$filter])->fetchAll()
-			);
+			return BusinessValuePersonDomainTable::getCount([$filter]);
 		});
 	}
 
@@ -110,9 +110,7 @@ class BusinessValuePersonDomain extends Controller
 		$r = $this->exists($personTypeId);
 		if($r->isSuccess())
 		{
-			\Bitrix\Sale\Internals\BusinessValuePersonDomainTable::delete([
-				'PERSON_TYPE_ID' => $personTypeId
-			]);
+			\Bitrix\Sale\Internals\BusinessValuePersonDomainTable::deleteByPersonTypeId((int)$personTypeId);
 		}
 
 		if($r->isSuccess())
@@ -208,7 +206,7 @@ class BusinessValuePersonDomain extends Controller
 		return $r;
 	}
 
-	protected function checkPermissionEntity($name)
+	protected function checkPermissionEntity($name, $arguments = [])
 	{
 		if($name == 'deletebyfilter')
 		{
@@ -217,6 +215,30 @@ class BusinessValuePersonDomain extends Controller
 		else
 		{
 			$r = parent::checkPermissionEntity($name);
+		}
+		return $r;
+	}
+
+	protected function checkModifyPermissionEntity()
+	{
+		$r = new Result();
+
+		$saleModulePermissions = self::getApplication()->GetGroupRight("sale");
+		if ($saleModulePermissions  < "W")
+		{
+			$r->addError(new Error('Access Denied', 200040300020));
+		}
+		return $r;
+	}
+
+	protected function checkReadPermissionEntity()
+	{
+		$r = new Result();
+
+		$saleModulePermissions = self::getApplication()->GetGroupRight("sale");
+		if ($saleModulePermissions  == "D")
+		{
+			$r->addError(new Error('Access Denied', 200040300010));
 		}
 		return $r;
 	}

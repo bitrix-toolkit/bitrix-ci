@@ -41,10 +41,7 @@ final class Section extends Base
 				'TYPE'=>DataType::TYPE_CHAR
 			],
 			'CODE'=>[
-				'TYPE'=>DataType::TYPE_STRING,
-				'ATTRIBUTES'=>[
-					Attributes::REQUIRED
-				]
+				'TYPE'=>DataType::TYPE_STRING
 			],
 			'XML_ID'=>[
 				'TYPE'=>DataType::TYPE_STRING
@@ -61,7 +58,7 @@ final class Section extends Base
 		];
 	}
 
-	public function checkFieldsList($arguments)
+	public function checkFieldsList($arguments): Result
 	{
 		$r = new Result();
 

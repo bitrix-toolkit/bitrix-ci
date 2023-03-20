@@ -9,6 +9,7 @@ namespace Bitrix\Sale;
 
 use Bitrix\Currency;
 use Bitrix\Main;
+use Bitrix\Main\ArgumentNullException;
 use Bitrix\Main\Type;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Sale\Internals;
@@ -72,17 +73,8 @@ abstract class OrderBase extends Internals\Entity
 	 */
 	protected function __construct(array $fields = array())
 	{
-		$priceFields = ['PRICE', 'PRICE_DELIVERY', 'SUM_PAID', 'PRICE_PAYMENT', 'DISCOUNT_VALUE'];
-
-		foreach ($priceFields as $code)
-		{
-			if (isset($fields[$code]))
-			{
-				$fields[$code] = PriceMaths::roundPrecision($fields[$code]);
-			}
-		}
-
 		parent::__construct($fields);
+
 		$this->isNew = (empty($fields['ID']));
 	}
 
@@ -246,13 +238,14 @@ abstract class OrderBase extends Internals\Entity
 	/**
 	 * Load order object by id
 	 *
-	 * @param $id
+	 * @param int $id
 	 * @return null|static
 	 * @throws Main\ArgumentNullException
 	 */
 	public static function load($id)
 	{
-		if (intval($id) <= 0)
+		$id = (int)$id;
+		if ($id <= 0)
 		{
 			throw new Main\ArgumentNullException("id");
 		}
@@ -438,7 +431,7 @@ abstract class OrderBase extends Internals\Entity
 	 */
 	protected function loadBasket()
 	{
-		if ((int)$this->getId() > 0)
+		if ($this->getId() > 0)
 		{
 			$registry = Registry::getInstance(static::getRegistryType());
 			/** @var BasketBase $basketClassName */
@@ -462,18 +455,6 @@ abstract class OrderBase extends Internals\Entity
 	 */
 	public function setField($name, $value)
 	{
-		$priceFields = array(
-			'PRICE' => 'PRICE',
-			'PRICE_DELIVERY' => 'PRICE_DELIVERY',
-			'SUM_PAID' => 'SUM_PAID',
-			'PRICE_PAYMENT' => 'PRICE_PAYMENT',
-			'DISCOUNT_VALUE' => 'DISCOUNT_VALUE',
-		);
-		if (isset($priceFields[$name]))
-		{
-			$value = PriceMaths::roundPrecision($value);
-		}
-
 		if ($this->isCalculatedField($name))
 		{
 			$this->calculatedFields->set($name, $value);
@@ -513,6 +494,16 @@ abstract class OrderBase extends Internals\Entity
 		return $result;
 	}
 
+	protected function normalizeValue($name, $value)
+	{
+		if ($this->isPriceField($name))
+		{
+			$value = PriceMaths::roundPrecision($value);
+		}
+
+		return parent::normalizeValue($name, $value);
+	}
+
 	/**
 	 * @internal
 	 * Set value without call events on field modify
@@ -525,18 +516,6 @@ abstract class OrderBase extends Internals\Entity
 	 */
 	public function setFieldNoDemand($name, $value)
 	{
-		$priceFields = array(
-			'PRICE' => 'PRICE',
-			'PRICE_DELIVERY' => 'PRICE_DELIVERY',
-			'SUM_PAID' => 'SUM_PAID',
-			'PRICE_PAYMENT' => 'PRICE_PAYMENT',
-			'DISCOUNT_VALUE' => 'DISCOUNT_VALUE',
-		);
-		if (isset($priceFields[$name]))
-		{
-			$value = PriceMaths::roundPrecision($value);
-		}
-
 		if ($this->isCalculatedField($name))
 		{
 			$this->calculatedFields->set($name, $value);
@@ -821,6 +800,44 @@ abstract class OrderBase extends Internals\Entity
 	}
 
 	/**
+	 * Change order currency.
+	 *
+	 * @param string $currency
+	 *
+	 * @return Main\Result
+	 *
+	 * @throws ArgumentNullException if currency empty
+	 */
+	public function changeCurrency(string $currency): Main\Result
+	{
+		$result = new Main\Result();
+
+		if ($this->getCurrency() === $currency)
+		{
+			return $result;
+		}
+		elseif (empty($currency))
+		{
+			throw new ArgumentNullException('currency');
+		}
+
+		$this->setFieldNoDemand('CURRENCY', $currency);
+
+		foreach ($this->getBasket() as $basketItem)
+		{
+			/**
+			 * @var BasketItem $basketItem
+			 */
+
+			$result->addErrors(
+				$basketItem->changeCurrency($currency)->getErrors()
+			);
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Return user id
 	 *
 	 * @return int
@@ -895,6 +912,17 @@ abstract class OrderBase extends Internals\Entity
 	public function isMarked()
 	{
 		return $this->getField('MARKED') === "Y";
+	}
+
+	protected function isPriceField(string $name) : bool
+	{
+		return
+			$name === 'PRICE'
+			|| $name === 'PRICE_DELIVERY'
+			|| $name === 'SUM_PAID'
+			|| $name === 'PRICE_PAYMENT'
+			|| $name === 'DISCOUNT_VALUE'
+		;
 	}
 
 	/**
@@ -2023,9 +2051,8 @@ abstract class OrderBase extends Internals\Entity
 	 */
 	public function getTaxLocation()
 	{
-		if (strval(($this->getField('TAX_LOCATION')) == ""))
+		if ((string)$this->getField('TAX_LOCATION') === "")
 		{
-			/** @var PropertyValueCollectionBase $propertyCollection */
 			$propertyCollection = $this->getPropertyCollection();
 
 			if ($property = $propertyCollection->getTaxLocation())

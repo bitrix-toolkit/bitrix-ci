@@ -4,6 +4,7 @@ namespace Bitrix\Sale;
 
 use Bitrix\Main\Type\Date;
 use Bitrix\Sale\Internals\BusinessValueTable;
+use Bitrix\Main\Event;
 use Bitrix\Main\EventManager;
 use Bitrix\Main\SystemException;
 use Bitrix\Main\Localization\Loc;
@@ -14,6 +15,8 @@ final class BusinessValue
 {
 	const ENTITY_DOMAIN     = 'E';
 	const INDIVIDUAL_DOMAIN = 'I';
+
+	private const EVENT_ON_BUSINESS_VALUE_SET_MAPPING = 'OnBusinessValueSetMapping';
 
 	private static $redefinedFields = array();
 	private static $consumers = array();
@@ -111,11 +114,13 @@ final class BusinessValue
 			$personTypeId = null;
 		}
 
-		$match = is_int($options['MATCH']) ? $options['MATCH'] : self::MATCH_ALL;
+		$match = isset($options['MATCH']) && is_int($options['MATCH']) ? $options['MATCH'] : self::MATCH_ALL;
 
-		$consumerCodePersonMapping = is_array($options['consumerCodePersonMapping']) // internal, do not use!
-			? $options['consumerCodePersonMapping']
-			: self::getConsumerCodePersonMapping();
+		$consumerCodePersonMapping =
+			isset($options['consumerCodePersonMapping']) && is_array($options['consumerCodePersonMapping']) // internal, do not use!
+				? $options['consumerCodePersonMapping']
+				: self::getConsumerCodePersonMapping()
+		;
 
 		if ($match & self::MATCH_EXACT && isset($consumerCodePersonMapping[$consumerKey][$codeKeyUp][$personTypeId]))
 		{
@@ -135,9 +140,10 @@ final class BusinessValue
 
 			if (! $mapping && $match & self::MATCH_DEFAULT && ($consumers = self::getConsumers()))
 			{
-				if (is_array($consumers[$consumerKey]['CODES'][$codeKey]['DEFAULT']))
+				$mappingValue = $consumers[$consumerKey]['CODES'][$codeKey]['DEFAULT'] ?? null;
+				if (is_array($mappingValue))
 				{
-					$mapping = $consumers[$consumerKey]['CODES'][$codeKey]['DEFAULT'];
+					$mapping = $mappingValue;
 				}
 //				elseif ($consumerKey && is_array($consumers['']['CODES'][$codeKey]['DEFAULT']))
 //				{
@@ -176,6 +182,9 @@ final class BusinessValue
 	public static function setMapping($codeKey, $consumerKey, $personTypeId, array $mapping, $withCommon = false)
 	{
 		$codeKey = ToUpper($codeKey);
+
+		$oldMapping = self::getMapping($codeKey, $consumerKey, $personTypeId, ['MATCH' => self::MATCH_EXACT]);
+
 		if (! $consumerKey || $consumerKey === BusinessValueTable::COMMON_CONSUMER_KEY)
 			$consumerKey = null;
 
@@ -230,9 +239,23 @@ final class BusinessValue
 			if ($result->isSuccess())
 			{
 				if ($mapping)
+				{
 					self::$consumerCodePersonMapping[$consumerKey][$codeKey][$personTypeId] = $mapping;
+				}
 				else
+				{
 					unset(self::$consumerCodePersonMapping[$consumerKey][$codeKey][$personTypeId]);
+				}
+
+				$eventParams = [
+					'CODE_KEY' => $codeKey,
+					'CONSUMER_KEY' => $consumerKey,
+					'PERSON_TYPE_ID' => $personTypeId,
+					'OLD_MAPPING' => $oldMapping,
+					'NEW_MAPPING' => $mapping,
+				];
+				$onSetMappingEvent = new Event('sale', self::EVENT_ON_BUSINESS_VALUE_SET_MAPPING, $eventParams);
+				EventManager::getInstance()->send($onSetMappingEvent);
 			}
 		}
 		else
@@ -419,43 +442,60 @@ final class BusinessValue
 //		if (substr($consumerKey, 0, 10) == 'PAYSYSTEM_')
 //			$consumer['PROVIDERS'] = array('VALUE', 'COMPANY', 'ORDER', 'USER', 'PROPERTY', 'PAYMENT');
 
-		if (is_array($consumer['CODES']))
+		if (isset($consumer['CODES']) && is_array($consumer['CODES']))
 		{
 			$codes =& self::$commonConsumer['CODES'];
 
 			foreach ($consumer['CODES'] as $codeKey => $code)
 			{
-				if ($codeKey && is_array($code) && ! $code['NOT_COMMON'])
+				$isCommon = !($code['NOT_COMMON'] ?? false);
+				if ($codeKey && is_array($code) && $isCommon)
 				{
+					$codeName = ($code['NAME'] ?? null) ?: $codeKey;
+
 					if ($c =& $codes[$codeKey])
 					{
-						if (! $c['GROUP'] && $code['GROUP'])
-							$c['GROUP'] = $code['GROUP'];
-
-						if (! isset($c['SORT']) && isset($code['SORT']))
-							$c['SORT'] = $code['SORT'];
-
-						if (! is_array($c['DEFAULT']) && is_array($code['DEFAULT']))
-							$c['DEFAULT'] = $code['DEFAULT'];
-
-						if (is_array($code['DOMAINS']))
+						if (empty($c['GROUP']) && !empty($code['GROUP']))
 						{
-							$c['DOMAINS'] = is_array($c['DOMAINS'])
-								? array_intersect($c['DOMAINS'], $code['DOMAINS'])
-								: $code['DOMAINS'];
+							$c['GROUP'] = $code['GROUP'];
 						}
 
-						if (! is_array($code['PROVIDERS']))
-							$code['PROVIDERS'] = $consumer['PROVIDERS'];
+						if (!isset($c['SORT']) && isset($code['SORT']))
+						{
+							$c['SORT'] = $code['SORT'];
+						}
+
+						if (
+							isset($c['DEFAULT'], $code['DEFAULT'])
+								&& !is_array($c['DEFAULT'])
+								&& is_array($code['DEFAULT'])
+						)
+						{
+							$c['DEFAULT'] = $code['DEFAULT'];
+						}
+
+						if (isset($code['DOMAINS']) && is_array($code['DOMAINS']))
+						{
+							$c['DOMAINS'] = isset($c['DOMAINS']) && is_array($c['DOMAINS'])
+								? array_intersect($c['DOMAINS'], $code['DOMAINS'])
+								: $code['DOMAINS']
+							;
+						}
+
+						if (!isset($code['PROVIDERS']) || !is_array($code['PROVIDERS']))
+						{
+							$code['PROVIDERS'] = $consumer['PROVIDERS'] ?? [];
+						}
 
 						if (is_array($code['PROVIDERS']))
 						{
-							$c['PROVIDERS'] = is_array($c['PROVIDERS'])
+							$c['PROVIDERS'] = isset($c['PROVIDERS']) && is_array($c['PROVIDERS'])
 								? array_intersect($c['PROVIDERS'], $code['PROVIDERS'])
-								: $code['PROVIDERS'];
+								: $code['PROVIDERS']
+							;
 						}
 
-						$c['NAMES'][$code['NAME'] ?: $codeKey] = 1;
+						$c['NAMES'][$codeName] = 1;
 
 //						if (! $c['NAME'] && $code['NAME'])
 //							$c['NAME'] = $code['NAME'];
@@ -463,11 +503,11 @@ final class BusinessValue
 					else
 					{
 						$c = $code;
-						$c['PROVIDERS'] = $code['PROVIDERS'] ?: $consumer['PROVIDERS'];
-						$c['NAMES'][$code['NAME'] ?: $codeKey] = 1;
+						$c['PROVIDERS'] = $code['PROVIDERS'] ?? $consumer['PROVIDERS'] ?? [];
+						$c['NAMES'][$codeName] = 1;
 					}
 
-					$c['CONSUMERS'] []= $consumer['NAME'] ?: $consumerKey;
+					$c['CONSUMERS'] []= !empty($consumer['NAME']) ? $consumer['NAME'] : $consumerKey;
 				}
 			}
 
@@ -537,7 +577,7 @@ final class BusinessValue
 				{
 					foreach ($result as $groupKey => $group)
 					{
-						if ($groupKey && is_array($group) && ! $groups[$groupKey])
+						if ($groupKey && is_array($group) && !isset($groups[$groupKey]))
 						{
 							$groups[$groupKey] = $group;
 						}
@@ -558,8 +598,8 @@ final class BusinessValue
 			$data,
 			function ($aa, $bb) // $aa & $bb - because php before 5.4 passes by reference
 			{
-				$a = is_array($aa) ? (int) $aa['SORT'] : 0;
-				$b = is_array($bb) ? (int) $bb['SORT'] : 0;
+				$a = is_array($aa) ? (int)($aa['SORT'] ?? 0) : 0;
+				$b = is_array($bb) ? (int)($bb['SORT'] ?? 0) : 0;
 				return $a < $b ? -1 : ($a > $b ? 1 : 0);
 			}
 		);

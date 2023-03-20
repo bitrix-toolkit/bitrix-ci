@@ -1,7 +1,7 @@
 version: "3"
 services:
   bitrix:
-    image: webdevops/php-apache-dev:${PHP-7.3}
+    image: webdevops/php-apache-dev:${PHP-8.2}
     volumes:
       - ./:/app/
     working_dir: /app/

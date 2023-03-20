@@ -89,7 +89,7 @@ class Manager
 	protected static $classNames = null;
 	//If status didn't changed for a long time let's stop update it.
 	protected static $activeStatusLiveTime = 5184000;  //60 days
-	
+
 	/** @var bool  */
 	protected $isClone = false;
 
@@ -214,8 +214,10 @@ class Manager
 				$eventParams->deliveryId = $shipment['DELIVERY_ID'];
 				$res = $this->processStatusChange(array($eventParams));
 
-				if(!$res)
+				if(!$res->isSuccess())
+				{
 					$result->addErrors($res->getErrors());
+				}
 			}
 		}
 
@@ -680,7 +682,7 @@ class Manager
 			if(empty($userName))
 				$userName = $data["USER_NAME"].(($data["USER_NAME"] == '' || $data["USER_LAST_NAME"] == '') ? "" : " ").$data["USER_LAST_NAME"];
 
-			$siteFields = \CAllEvent::GetSiteFieldsArray($data['SITE_ID']);
+			$siteFields = \CEvent::GetSiteFieldsArray($data['SITE_ID']);
 
 			$fields = array(
 				'SITE_NAME' => $data['SITE_NAME'],
@@ -851,7 +853,7 @@ class Manager
 	}
 
 	/**
-	 * @internal 
+	 * @internal
 	 * @param \SplObjectStorage $cloneEntity
 	 *
 	 * @return Manager
@@ -870,7 +872,7 @@ class Manager
 		{
 			$cloneEntity[$this] = $trackingClone;
 		}
-		
+
 		return $trackingClone;
 	}
 

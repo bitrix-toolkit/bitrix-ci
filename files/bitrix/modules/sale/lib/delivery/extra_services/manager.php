@@ -404,6 +404,8 @@ class Manager
 				$extraService->getId(),
 				[
 					'NAME' => $extraService->getName(),
+					'CODE' => $extraService->getCode(),
+					'INIT_VALUE' => $extraService->getInitValue(),
 					'PARAMS' => $extraService->getParams()
 				],
 				$currency,
@@ -540,8 +542,13 @@ class Manager
 
 		$result = self::getExtraServicesList($deliveryId, true);
 
-		if($onlyActive && $result['ACTIVE'] != 'Y')
-			return array();
+		if(
+			$onlyActive
+			&& (empty($result['ACTIVE']) || $result['ACTIVE'] !== 'Y')
+		)
+		{
+			return [];
+		}
 
 		return $result;
 	}

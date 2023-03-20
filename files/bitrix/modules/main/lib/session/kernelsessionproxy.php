@@ -17,6 +17,11 @@ final class KernelSessionProxy extends KernelSession
 		return $this->session->isActive();
 	}
 
+	public function isAccessible(): bool
+	{
+		return $this->session->isAccessible();
+	}
+
 	public function getId(): string
 	{
 		return $this->session->getId();
@@ -92,12 +97,12 @@ final class KernelSessionProxy extends KernelSession
 		return $this->session->isStarted();
 	}
 
-	public function offsetExists($offset)
+	public function offsetExists($offset): bool
 	{
 		return $this->session->offsetExists($offset);
 	}
 
-	public function offsetSet($offset, $value)
+	public function offsetSet($offset, $value): void
 	{
 		$this->session->offsetSet($offset, $value);
 	}

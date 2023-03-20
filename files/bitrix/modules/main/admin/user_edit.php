@@ -10,7 +10,10 @@
  * @global CDatabase $DB
  * @global CUserTypeManager $USER_FIELD_MANAGER
  */
-require_once(dirname(__FILE__)."/../include/prolog_admin_before.php");
+
+use \Bitrix\Main\Authentication\Policy;
+
+require_once(__DIR__."/../include/prolog_admin_before.php");
 require_once($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/main/prolog.php");
 define("HELP_FILE", "users/user_edit.php");
 $strRedirect_admin = BX_ROOT."/admin/user_admin.php?lang=".LANG;
@@ -81,7 +84,7 @@ $editable = ($USER->IsAdmin() ||
 if($_REQUEST["action"] == "authorize" && check_bitrix_sessid() && $USER->CanDoOperation('edit_php'))
 {
 	$USER->Logout();
-	$USER->Authorize(intval($_REQUEST["ID"]), false, false, null, false);
+	$USER->Authorize(intval($_REQUEST["ID"]), false, true, null, false);
 	LocalRedirect("user_edit.php?lang=".LANGUAGE_ID."&ID=".intval($_REQUEST["ID"]));
 }
 
@@ -96,7 +99,10 @@ $aTabs = array();
 $aTabs[] = array("DIV" => "edit1", "TAB" => GetMessage("MAIN_USER_TAB1"), "ICON"=>"main_user_edit", "TITLE"=>GetMessage("MAIN_USER_TAB1_TITLE"));
 
 if($showGroupTabs)
+{
 	$aTabs[] = array("DIV" => "edit2", "TAB" => GetMessage("GROUPS"), "ICON"=>"main_user_edit", "TITLE"=>GetMessage("MAIN_USER_TAB2_TITLE"));
+	$aTabs[] = array("DIV" => "edit_policy", "TAB" => GetMessage("main_user_edit_policy"), "ICON"=>"main_user_edit", "TITLE"=>GetMessage("main_user_edit_policy_title"));
+}
 $aTabs[] = array("DIV" => "edit3", "TAB" => GetMessage("USER_PERSONAL_INFO"), "ICON"=>"main_user_edit", "TITLE"=>GetMessage("USER_PERSONAL_INFO"));
 $aTabs[] = array("DIV" => "edit4", "TAB" => GetMessage("MAIN_USER_TAB4"), "ICON"=>"main_user_edit", "TITLE"=>GetMessage("USER_WORK_INFO"));
 $aTabs[] = array("DIV" => "edit_rating", "TAB" => GetMessage("USER_RATING_INFO"), "ICON"=>"main_user_edit", "TITLE"=>GetMessage("USER_RATING_INFO"));
@@ -498,7 +504,7 @@ if($canViewUserList)
 {
 	$aMenu[] = array(
 		"TEXT"	=> GetMessage("RECORD_LIST"),
-		"LINK"	=> "/bitrix/admin/user_admin.php?lang=".LANGUAGE_ID."&set_default=Y",
+		"LINK"	=> "user_admin.php?lang=".LANGUAGE_ID."&set_default=Y",
 		"ICON"	=> "btn_list",
 		"TITLE"	=> GetMessage("RECORD_LIST_TITLE"),
 	);
@@ -510,7 +516,7 @@ if($USER->CanDoOperation('edit_php') && $ID != $USER->GetID())
 		"ICON" => "",
 		"TEXT" => GetMessage("MAIN_ADMIN_AUTH"),
 		"TITLE" => GetMessage("MAIN_ADMIN_AUTH_TITLE"),
-		"LINK" => "/bitrix/admin/user_edit.php?lang=".LANGUAGE_ID."&ID=".$ID."&action=authorize&".bitrix_sessid_get()
+		"LINK" => "user_edit.php?lang=".LANGUAGE_ID."&ID=".$ID."&action=authorize&".bitrix_sessid_get()
 	);
 }
 
@@ -520,7 +526,13 @@ if($USER->CanDoOperation('edit_all_users'))
 		"ICON" => "",
 		"TEXT" => GetMessage("MAIN_USER_EDIT_HISTORY"),
 		"TITLE" => GetMessage("MAIN_USER_EDIT_HISTORY_TITLE"),
-		"LINK" => "/bitrix/admin/profile_history.php?lang=".LANGUAGE_ID."&find_user_id=".$ID."&set_filter=Y"
+		"LINK" => "profile_history.php?lang=".LANGUAGE_ID."&find_user_id=".$ID."&set_filter=Y"
+	);
+	$aMenu[] = array(
+		"ICON" => "",
+		"TEXT" => GetMessage('main_user_edit_devices'),
+		"TITLE" => GetMessage('main_user_edit_devices_title'),
+		"LINK" => "user_devices.php?lang=" . LANGUAGE_ID . "&USER_ID=" . $ID . "&apply_filter=Y"
 	);
 }
 
@@ -530,13 +542,13 @@ if($USER->CanDoOperation('edit_all_users') || $USER->CanDoOperation('edit_subord
 	{
 		$aMenu[] = array(
 			"TEXT"	=> GetMessage("MAIN_NEW_RECORD"),
-			"LINK"	=> "/bitrix/admin/user_edit.php?lang=".LANGUAGE_ID,
+			"LINK"	=> "user_edit.php?lang=".LANGUAGE_ID,
 			"ICON"	=> "btn_new",
 			"TITLE"	=> GetMessage("MAIN_NEW_RECORD_TITLE"),
 		);
 		$aMenu[] = array(
 			"TEXT"	=> GetMessage("MAIN_COPY_RECORD"),
-			"LINK"	=> "/bitrix/admin/user_edit.php?lang=".LANGUAGE_ID.htmlspecialcharsbx("&COPY_ID=").$ID,
+			"LINK"	=> "user_edit.php?lang=".LANGUAGE_ID.htmlspecialcharsbx("&COPY_ID=").$ID,
 			"ICON"	=> "btn_copy",
 			"TITLE"	=> GetMessage("MAIN_COPY_RECORD_TITLE"),
 		);
@@ -545,7 +557,7 @@ if($USER->CanDoOperation('edit_all_users') || $USER->CanDoOperation('edit_subord
 		{
 			$aMenu[] = array(
 				"TEXT"	=> GetMessage("MAIN_DELETE_RECORD"),
-				"LINK"	=> "javascript:if(confirm('".GetMessage("MAIN_DELETE_RECORD_CONF")."')) window.location='/bitrix/admin/user_admin.php?action=delete&ID=".$ID."&lang=".LANGUAGE_ID."&".bitrix_sessid_get()."';",
+				"LINK"	=> "javascript:if(confirm('".GetMessage("MAIN_DELETE_RECORD_CONF")."')) window.location='user_admin.php?action=delete&ID=".$ID."&lang=".LANGUAGE_ID."&".bitrix_sessid_get()."';",
 				"ICON"	=> "btn_delete",
 				"TITLE"	=> GetMessage("MAIN_DELETE_RECORD_TITLE"),
 			);
@@ -631,6 +643,7 @@ $tabControl->BeginCustomField("BLOCKED", GetMessage("main_user_edit_blocked"));
 			<input type="checkbox" <?if($str_BLOCKED == "Y") echo " checked"?> disabled>
 			<input type="hidden" name="BLOCKED" value="<?=$str_BLOCKED;?>">
 		<?endif;?>
+		</td>
 	</tr>
 <?
 $tabControl->EndCustomField("BLOCKED", '<input type="hidden" name="BLOCKED" value="'.$str_BLOCKED.'">');
@@ -661,7 +674,7 @@ if(!CMain::IsHTTPS() && COption::GetOptionString('main', 'use_encrypted_auth', '
 }
 ?>
 	<tr id="bx_pass_row" style="display:<?=($str_EXTERNAL_AUTH_ID <> ''? 'none':'')?>;"<?if($ID<=0 || $COPY_ID>0):?> class="adm-detail-required-field"<?endif?>>
-		<td><?echo GetMessage('NEW_PASSWORD_REQ')?>:<sup><span class="required">1</span></sup></td>
+		<td><?echo GetMessage('NEW_PASSWORD_REQ')?>:</td>
 		<td><input type="password" name="NEW_PASSWORD" size="30" maxlength="255" value="<? echo htmlspecialcharsbx($NEW_PASSWORD) ?>" autocomplete="new-password" style="vertical-align:middle;">
 <?if($bSecure):?>
 				<span class="bx-auth-secure" id="bx_auth_secure" title="<?echo GetMessage("AUTH_SECURE_NOTE")?>" style="display:none">
@@ -685,7 +698,7 @@ document.getElementById('bx_auth_secure').style.display = 'inline-block';
 <?
 $tabControl->EndCustomField("PASSWORD");
 
-$tabControl->AddCheckBoxField("PASSWORD_EXPIRED", GetMessage("main_user_edit_pass_expired"), false, "Y", ($str_PASSWORD_EXPIRED == "Y"));
+$tabControl->AddCheckBoxField("PASSWORD_EXPIRED", GetMessage("main_user_edit_pass_expired"), false, array("Y","N"), ($str_PASSWORD_EXPIRED == "Y"));
 ?>
 <?if($USER->CanDoOperation('view_all_users')):?>
 <?
@@ -808,6 +821,33 @@ if($showGroupTabs):
 	</tr>
 <?
 	$tabControl->EndCustomField("GROUP_ID");
+
+	$tabControl->BeginNextFormTab();
+
+	$tabControl->BeginCustomField("GROUP_POLICY", GetMessage("main_user_edit_policy_field"));
+
+	foreach (CUser::getPolicy($ID) as $rule):
+?>
+	<tr>
+		<td width="50%">
+			<?= htmlspecialcharsbx($rule->getTitle()) ?><?php if ($rule->getGroupId() > 0): ?>
+				[<a href="group_edit.php?ID=<?= (int)$rule->getGroupId() ?>&amp;lang=<?= LANGUAGE_ID ?>" title="<?= GetMessage("MAIN_VIEW_GROUP")?> "><?= (int)$rule->getGroupId()?></a>]<?php endif ?>:</td>
+		<td><b>
+			<?php
+				if ($rule instanceof Policy\BooleanRule)
+				{
+					echo ($rule->getValue() ? GetMessage("main_user_edit_policy_yes") : GetMessage("main_user_edit_policy_no"));
+				}
+				else
+				{
+					echo htmlspecialcharsbx($rule->getValue());
+				}
+			?></b>
+		</td>
+	</tr>
+<?php
+	endforeach;
+	$tabControl->EndCustomField("GROUP_POLICY");
 endif;
 ?>
 <?
@@ -882,6 +922,7 @@ $tabControl->BeginCustomField("RATING_BOX", GetMessage("USER_RATING_INFO"), fals
 		$aTabs2 = array();
 		$arRatings = array();
 		$rsRatings = CRatings::GetList(array('ID' => 'ASC'), array('ACTIVE' => 'Y', 'ENTITY_ID' => 'USER'));
+		$showNote = false;
 		while ($arRatingsTmp = $rsRatings->GetNext())
 		{
 			if ($arRatingsTmp['AUTHORITY'] == 'Y')
@@ -909,9 +950,12 @@ $tabControl->BeginCustomField("RATING_BOX", GetMessage("USER_RATING_INFO"), fals
 				$viewTabControl->BeginNextTab();
 				?>
 					<table cellspacing="7" cellpadding="0" border="0" width="100%" class="edit-table">
-				<?	if ($USER->CanDoOperation('edit_ratings') && ($selfEdit || $ID!=$uid)): ?>
+				<?
+					if ($USER->CanDoOperation('edit_ratings') && ($selfEdit || $ID!=$uid)):
+						$showNote = true;
+				?>
 					<tr>
-						<td class="field-name" width="40%"><?=GetMessage('RATING_BONUS')?>:<sup><span class="required">2</span></sup></td>
+						<td class="field-name" width="40%"><?=GetMessage('RATING_BONUS')?>:<sup><span class="required">1</span></sup></td>
 						<td><?=InputType('text', "RATING_BONUS[$ratingId]", floatval($arRatingUserProp['BONUS']), false, false, '', 'size="5" maxlength="11"')?> <?=($ratingWeightType == 'auto'? 'x '.GetMessage('RATING_NORM_VOTE_WEIGHT'): '')?></td>
 					</tr>
 				<? endif; ?>
@@ -989,7 +1033,9 @@ $tabControl->BeginCustomField("RATING_BOX", GetMessage("USER_RATING_INFO"), fals
 			$viewTabControl->End();
 		}
 		else
+		{
 			echo GetMessage('RATING_NOT_AVAILABLE');
+		}
 		?>
 		</td>
 	</tr>
@@ -1058,12 +1104,13 @@ $tabControl->Show();
 $tabControl->ShowWarnings($tabControl->GetName(), $message);
 ?>
 
+<?php if ($showNote):?>
 <?if(!defined('BX_PUBLIC_MODE') || BX_PUBLIC_MODE != 1):?>
 <?echo BeginNote();?>
-<span class="required">1</span> <?$GROUP_POLICY = CUser::GetGroupPolicy($ID);echo $GROUP_POLICY["PASSWORD_REQUIREMENTS"];?><br>
-<span class="required">2</span> <?echo GetMessage("RATING_BONUS_NOTICE")?><br>
+<span class="required">1</span> <?echo GetMessage("RATING_BONUS_NOTICE")?><br>
 <?echo EndNote();?>
 <?endif;?>
+<?php endif;?>
 
 <?
 require_once ($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/main/include/epilog_admin.php");

@@ -2,7 +2,6 @@
 
 namespace Bitrix\Main\Session;
 
-use Bitrix\Main\Config\Configuration;
 use Bitrix\Main\NotSupportedException;
 use Bitrix\Main\Security\Random;
 use Bitrix\Main\Session\Handlers\CookieSessionHandler;
@@ -32,6 +31,11 @@ class KernelSession implements SessionInterface, \ArrayAccess
 	public function isActive(): bool
 	{
 		return $this->isStarted();
+	}
+
+	public function isAccessible(): bool
+	{
+		return true;
 	}
 
 	public function getId(): string

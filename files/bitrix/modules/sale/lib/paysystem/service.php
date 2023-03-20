@@ -9,6 +9,7 @@ use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\NotSupportedException;
 use Bitrix\Main\Request;
 use Bitrix\Main\SystemException;
+use Bitrix\Main\Type\Date;
 use Bitrix\Sale;
 use Bitrix\Sale\Order;
 use Bitrix\Sale\Payment;
@@ -26,6 +27,7 @@ Loc::loadMessages(__FILE__);
 class Service
 {
 	public const EVENT_ON_BEFORE_PAYMENT_PAID = 'OnSalePsServiceProcessRequestBeforePaid';
+	public const EVENT_ON_AFTER_PROCESS_REQUEST = 'OnSaleAfterPsServiceProcessRequest';
 
 	public const EVENT_BEFORE_ON_INITIATE_PAY = 'onSalePsBeforeInitiatePay';
 	public const EVENT_INITIATE_PAY_SUCCESS = 'onSalePsInitiatePaySuccess';
@@ -53,7 +55,7 @@ class Service
 	 */
 	public function __construct($fields)
 	{
-		[$className, $handlerType] = Manager::includeHandler($fields["ACTION_FILE"]);
+		[$className, $handlerType] = Manager::includeHandler($fields['ACTION_FILE']);
 
 		$this->fields = $fields;
 		$this->handler = new $className($handlerType, $this);
@@ -311,10 +313,14 @@ class Service
 			$status = null;
 			$operationType = $serviceResult->getOperationType();
 
-			if ($operationType == ServiceResult::MONEY_COMING)
+			if ($operationType === ServiceResult::MONEY_COMING)
+			{
 				$status = 'Y';
-			else if ($operationType == ServiceResult::MONEY_LEAVING)
+			}
+			else if ($operationType === ServiceResult::MONEY_LEAVING)
+			{
 				$status = 'N';
+			}
 
 			if ($status !== null)
 			{
@@ -326,6 +332,14 @@ class Service
 					)
 				);
 				$event->send();
+
+				if ($status === 'N')
+				{
+					$payment->setFieldsNoDemand([
+						'IS_RETURN' => Payment::RETURN_PS,
+						'PAY_RETURN_DATE' => new Date(),
+					]);
+				}
 
 				$paidResult = $payment->setPaid($status);
 				if (!$paidResult->isSuccess())
@@ -377,6 +391,17 @@ class Service
 			Logger::addError(get_class($this->handler).'. ProcessRequest Error: '.$error);
 		}
 
+		$event = new Event(
+			'sale',
+			self::EVENT_ON_AFTER_PROCESS_REQUEST,
+			[
+				'payment' => $payment,
+				'serviceResult' => $serviceResult,
+				'request' => $request,
+			]
+		);
+		$event->send();
+
 		$this->handler->sendResponse($serviceResult, $request);
 
 		return $processResult;
@@ -387,7 +412,9 @@ class Service
 	 */
 	public function getConsumerName()
 	{
-		return static::PAY_SYSTEM_PREFIX.$this->fields['ID'];
+		$id = $this->fields['ID'] ?? 0;
+
+		return static::PAY_SYSTEM_PREFIX.$id;
 	}
 
 	/**
@@ -452,7 +479,7 @@ class Service
 	 */
 	public function getField($name)
 	{
-		return $this->fields[$name];
+		return $this->fields[$name] ?? null;
 	}
 
 	/**
@@ -461,6 +488,28 @@ class Service
 	public function getCurrency()
 	{
 		return $this->handler->getCurrencyList();
+	}
+
+	/**
+	 * The type of client that the handler can work with
+	 *
+	 * @return string
+	 */
+	public function getClientTypeFromHandler()
+	{
+		return $this->handler->getClientType(
+			$this->fields['PS_MODE'] ?? null
+		);
+	}
+
+	/**
+	 * The type of client that the payment system can work with
+	 *
+	 * @return string
+	 */
+	public function getClientType()
+	{
+		return (string)($this->fields['PS_CLIENT_TYPE'] ?? $this->getClientTypeFromHandler());
 	}
 
 	/**

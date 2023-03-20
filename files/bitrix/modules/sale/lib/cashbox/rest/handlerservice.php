@@ -9,7 +9,6 @@ use Bitrix\Sale\Cashbox\CashboxRest;
 use Bitrix\Sale\Cashbox\Manager;
 use Bitrix\Sale\Internals\CashboxRestHandlerTable;
 use Bitrix\Sale\Helpers;
-use Bitrix\Sale\Location\Exception;
 
 if (!Main\Loader::includeModule('rest'))
 {
@@ -48,7 +47,7 @@ class HandlerService extends RestService
 			throw new RestException('Parameter SETTINGS is not defined or empty', self::ERROR_CHECK_FAILURE);
 		}
 
-		self::checkHandlerSettings($params['SETTINGS']);
+		self::checkHandlerSettingsBeforeAdd($params['SETTINGS']);
 
 		$handler = CashboxRestHandlerTable::getList([
 			'filter' => [
@@ -64,6 +63,7 @@ class HandlerService extends RestService
 	/**
 	 * @param $params
 	 * @throws RestException
+	 * @throws AccessException
 	 */
 	private static function checkParamsBeforeUpdateHandler($params)
 	{
@@ -84,7 +84,7 @@ class HandlerService extends RestService
 
 		if ($params['APP_ID'] && !empty($handler['APP_ID']) && $handler['APP_ID'] !== $params['APP_ID'])
 		{
-			throw new RestException('Access denied', self::ERROR_CHECK_FAILURE);
+			throw new AccessException();
 		}
 
 		if (empty($params['FIELDS']) || !is_array($params['FIELDS']))
@@ -94,13 +94,14 @@ class HandlerService extends RestService
 
 		if (isset($params['FIELDS']['SETTINGS']))
 		{
-			self::checkHandlerSettings($params['FIELDS']['SETTINGS']);
+			self::checkHandlerSettingsBeforeUpdate($params['FIELDS']['SETTINGS']);
 		}
 	}
 
 	/**
 	 * @param $params
 	 * @throws RestException
+	 * @throws AccessException
 	 */
 	private static function checkParamsBeforeDeleteHandler($params)
 	{
@@ -121,7 +122,7 @@ class HandlerService extends RestService
 
 		if ($params['APP_ID'] && !empty($handler['APP_ID']) && $handler['APP_ID'] !== $params['APP_ID'])
 		{
-			throw new RestException('Access denied', self::ERROR_CHECK_FAILURE);
+			throw new AccessException();
 		}
 
 		$cashboxListResult = Manager::getList([
@@ -151,24 +152,115 @@ class HandlerService extends RestService
 
 	/**
 	 * @param $settings
+	 */
+	private static function checkHandlerSettingsBeforeAdd($settings): void
+	{
+		self::checkRequiredSettingsFields($settings, ['PRINT_URL', 'CHECK_URL', 'CONFIG']);
+		self::checkSettingsFieldValues($settings, ['HTTP_VERSION', 'CONFIG']);
+	}
+
+	/**
+	 * @param $settings
+	 */
+	private static function checkHandlerSettingsBeforeUpdate($settings): void
+	{
+		self::checkSettingsFieldValues($settings, ['PRINT_URL', 'CHECK_URL', 'CONFIG', 'HTTP_VERSION']);
+	}
+
+	/**
+	 * @param array $settings
+	 * @param array $requiredFields
 	 * @throws RestException
 	 */
-	private static function checkHandlerSettings($settings)
+	private static function checkRequiredSettingsFields(array $settings, array $requiredFields): void
 	{
-		if (empty($settings['PRINT_URL']))
+		foreach ($requiredFields as $fieldName)
 		{
-			throw new RestException('Parameter SETTINGS[PRINT_URL] is not defined', self::ERROR_CHECK_FAILURE);
+			if (empty($settings[$fieldName]))
+			{
+				throw new RestException('Parameter SETTINGS[' . $fieldName . '] is not defined', self::ERROR_CHECK_FAILURE);
+			}
+		}
+	}
+
+	/**
+	 * @param array $settings
+	 * @param array $fields
+	 * @throws RestException
+	 */
+	private static function checkSettingsFieldValues(array $settings, array $fields): void
+	{
+		foreach ($fields as $fieldName)
+		{
+			if ($fieldName === 'HTTP_VERSION' && array_key_exists('HTTP_VERSION', $settings))
+			{
+				$version = $settings['HTTP_VERSION'];
+				if (
+					$version !== Main\Web\HttpClient::HTTP_1_0
+					&& $version !== Main\Web\HttpClient::HTTP_1_1
+				)
+				{
+					throw new RestException('The value of SETTINGS[HTTP_VERSION] is not valid', self::ERROR_CHECK_FAILURE);
+				}
+			}
+			elseif ($fieldName === 'CONFIG' && array_key_exists('CONFIG', $settings))
+			{
+				self::checkSettingsConfig($settings['CONFIG']);
+			}
+			elseif (array_key_exists($fieldName, $settings) && empty($settings[$fieldName]))
+			{
+				throw new RestException('The value of SETTINGS[' . $fieldName . '] is not valid', self::ERROR_CHECK_FAILURE);
+			}
+		}
+	}
+
+	/**
+	 * @param array $config
+	 * @throws RestException
+	 */
+	private static function checkSettingsConfig(array $config): void
+	{
+		foreach ($config as $group => $block)
+		{
+			foreach ($block['ITEMS'] as $code => $item)
+			{
+				try
+				{
+					\Bitrix\Sale\Internals\Input\Manager::getEditHtml('SETTINGS['.$group.']['.$code.']', $item);
+				}
+				catch (\Exception $exception)
+				{
+					throw new RestException('The config provided in SETTINGS[CONFIG] is not valid', self::ERROR_CHECK_FAILURE);
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param $handlerId
+	 * @param $newSettings
+	 * @return array|null
+	 */
+	private static function mergeHandlerSettings($cashboxId, array $newSettings): array
+	{
+		$dbResult = $existingSettings = CashboxRestHandlerTable::getList([
+			'select' => ['SETTINGS'],
+			'filter' => ['=ID' => $cashboxId],
+			'limit' => 1,
+		])->fetch();
+
+		if (!$dbResult)
+		{
+			return $newSettings;
 		}
 
-		if (empty($settings['CHECK_URL']))
+		$existingSettings = $dbResult['SETTINGS'];
+		if (!$existingSettings)
 		{
-			throw new RestException('Parameter SETTINGS[CHECK_URL] is not defined', self::ERROR_CHECK_FAILURE);
+			return $newSettings;
 		}
 
-		if (empty($settings['CONFIG']))
-		{
-			throw new RestException('Parameter SETTINGS[CONFIG] is not defined', self::ERROR_CHECK_FAILURE);
-		}
+		return array_replace_recursive($existingSettings, $newSettings);
 	}
 
 	/**
@@ -205,6 +297,8 @@ class HandlerService extends RestService
 
 	/**
 	 * @param $params
+	 * @param $page
+	 * @param \CRestServer $server
 	 * @return bool
 	 * @throws RestException
 	 */
@@ -214,7 +308,13 @@ class HandlerService extends RestService
 		$params = self::prepareHandlerParams($params, $server);
 		self::checkParamsBeforeUpdateHandler($params);
 
-		$result = CashboxRestHandlerTable::update($params['ID'], $params['FIELDS']);
+		$handlerFields = $params['FIELDS'];
+		if ($handlerFields['SETTINGS'])
+		{
+			$handlerFields['SETTINGS'] = self::mergeHandlerSettings($params['ID'], $handlerFields['SETTINGS']);
+		}
+
+		$result = CashboxRestHandlerTable::update($params['ID'], $handlerFields);
 		if ($result->isSuccess())
 		{
 			return true;
@@ -251,18 +351,17 @@ class HandlerService extends RestService
 	public static function getHandlerList($params, $page, \CRestServer $server)
 	{
 		Helpers\Rest\AccessChecker::checkAccessPermission();
-		$params = self::prepareHandlerParams($params, $server);
-		$appId = $params['APP_ID'];
 
-		$handlers = Manager::getRestHandlersList();
-		if ($appId)
+		$result = [];
+
+		$dbRes = CashboxRestHandlerTable::getList([
+			'select' => ['ID', 'NAME', 'CODE', 'SORT', 'SETTINGS'],
+		]);
+		while ($item = $dbRes->fetch())
 		{
-			$filterByAppID = static function ($handler) use ($appId) {
-				return $handler['APP_ID'] === $appId;
-			};
-			$handlers = array_filter($handlers, $filterByAppID);
+			$result[] = $item;
 		}
 
-		return $handlers;
+		return $result;
 	}
 }

@@ -1,7 +1,9 @@
-<?
+<?php
 namespace Bitrix\Sale\Helpers\Order\Builder;
 
 use Bitrix\Main;
+use Bitrix\Sale\Internals;
+use Bitrix\Sale\PropertyValue;
 use Bitrix\Sale\PropertyValueCollection;
 use Bitrix\Sale\BasketItem;
 use Bitrix\Sale\Shipment;
@@ -21,6 +23,8 @@ use Bitrix\Sale\Configuration;
 use Bitrix\Sale\ShipmentItem;
 use Bitrix\Sale\TradeBindingEntity;
 use Bitrix\Sale\TradingPlatformTable;
+
+Loc::loadLanguageFile($_SERVER['DOCUMENT_ROOT'] . BX_ROOT . '/modules/sale/lib/helpers/admin/blocks/orderbasketshipment.php');
 
 /**
  * Class OrderBuilder
@@ -79,6 +83,7 @@ abstract class OrderBuilder
 			->buildBasket()
 			->buildPayments()
 			->buildShipments()
+			->setRelatedProperties()
 			->setDiscounts() //?
 			->finalActions();
 	}
@@ -144,12 +149,14 @@ abstract class OrderBuilder
 
 	protected function getSettableShipmentFields()
 	{
-		return array_merge(['PROPERTIES'], Shipment::getAvailableFields());
+		$shipmentClassName = $this->registry->getShipmentClassName();
+		return array_merge(['PROPERTIES'], $shipmentClassName::getAvailableFields());
 	}
 
 	protected function getSettablePaymentFields()
 	{
-		return Payment::getAvailableFields();
+		$paymentClassName = $this->registry->getPaymentClassName();
+		return $paymentClassName::getAvailableFields();
 	}
 
 	protected function getSettableOrderFields()
@@ -199,7 +206,7 @@ abstract class OrderBuilder
 
 	public function setProperties()
 	{
-		if(!$this->formData["PROPERTIES"])
+		if (empty($this->formData["PROPERTIES"]))
 		{
 			return $this;
 		}
@@ -212,42 +219,35 @@ abstract class OrderBuilder
 
 		if (!$res->isSuccess())
 		{
-			foreach ($res->getErrors() as $error)
-			{
-				$this->getErrorsContainer()->addError(
-					new Main\Error($error->getMessage(), $error->getCode(), 'PROPERTIES')
-				);
-			}
+			$this->getErrorsContainer()->addErrors($res->getErrors());
 		}
 
-		/** @var \Bitrix\Sale\PropertyValue $propValue */
-		foreach ($propCollection as $propValue)
+		return $this;
+	}
+
+	public function setRelatedProperties()
+	{
+		if (empty($this->formData["PROPERTIES"]))
 		{
-			if ($propValue->isUtil())
+			return $this;
+		}
+
+		$propCollection = $this->order->getPropertyCollection();
+
+		/** @var PropertyValue $propertyValue */
+		foreach ($propCollection as $propertyValue)
+		{
+			if (!$propertyValue->getRelations())
 			{
 				continue;
 			}
 
-			$res = $propValue->verify();
-			if (!$res->isSuccess())
-			{
-				foreach ($res->getErrors() as $error)
-				{
-					$this->getErrorsContainer()->addError(
-						new Main\Error($error->getMessage(), $propValue->getPropertyId(), 'PROPERTIES')
-					);
-				}
-			}
+			$post = Internals\Input\File::getPostWithFiles($this->formData, $this->settingsContainer->getItemValue('propsFiles'));
 
-			$res = $propValue->checkRequiredValue($propValue->getPropertyId(), $propValue->getValue());
+			$res = $propertyValue->setValueFromPost($post);
 			if (!$res->isSuccess())
 			{
-				foreach ($res->getErrors() as $error)
-				{
-					$this->getErrorsContainer()->addError(
-						new Main\Error($error->getMessage(), $propValue->getPropertyId(), 'PROPERTIES')
-					);
-				}
+				$this->getErrorsContainer()->addErrors($res->getErrors());
 			}
 		}
 
@@ -399,14 +399,14 @@ abstract class OrderBuilder
 		}
 
 		global $USER;
-		$basketResult = null;
 		$shipmentCollection = $this->order->getShipmentCollection();
 
 		foreach($this->formData["SHIPMENT"] as $item)
 		{
-			$shipmentId = intval($item['ID']);
+			$shipmentId = intval($item['ID'] ?? 0);
 			$isNew = ($shipmentId <= 0);
 			$deliveryService = null;
+			$storeId = null;
 
 			if (!isset($item['DEDUCTED']) || $item['DEDUCTED'] !== 'Y')
 			{
@@ -420,7 +420,7 @@ abstract class OrderBuilder
 			{
 				//for backward compatibility
 				$product = $item['PRODUCT'];
-				$storeId = $item['DELIVERY_STORE_ID'];
+				$storeId = (int)$item['DELIVERY_STORE_ID'];
 				$item = array_intersect_key($item, array_flip($settableShipmentFields));
 				$item['PRODUCT'] = $product;
 			}
@@ -496,6 +496,11 @@ abstract class OrderBuilder
 				'CURRENCY' => $this->order->getCurrency(),
 				'COMMENTS' => $item['COMMENTS'],
 			);
+
+			if (!empty($item['IS_REALIZATION']))
+			{
+				$shipmentFields['IS_REALIZATION'] = $item['IS_REALIZATION'];
+			}
 
 			if(isset($item['ACCOUNT_NUMBER']) && $item['ACCOUNT_NUMBER']<>'')
 				$shipmentFields['ACCOUNT_NUMBER'] = $item['ACCOUNT_NUMBER'];
@@ -662,7 +667,10 @@ abstract class OrderBuilder
 			}
 			// endregion
 
-			$shipment->setStoreId((int)$storeId);
+			if ($storeId)
+			{
+				$shipment->setStoreId($storeId);
+			}
 
 			if($item['DEDUCTED'] == 'N' && $products !== null)
 			{
@@ -716,20 +724,26 @@ abstract class OrderBuilder
 				/** @var Result $r */
 				$r = $shipmentItem->delete();
 				if (!$r->isSuccess())
+				{
 					$result->addErrors($r->getErrors());
+				}
 			}
 
 			$shipmentItemStoreCollection = $shipmentItem->getShipmentItemStoreCollection();
-
-			/** @var \Bitrix\Sale\ShipmentItemStore $shipmentItemStore */
-			foreach ($shipmentItemStoreCollection as $shipmentItemStore)
+			if ($shipmentItemStoreCollection)
 			{
-				$shipmentItemId = $shipmentItemStore->getId();
-				if (!isset($idsFromForm[$shipmentItem->getBasketCode()]['BARCODE_IDS'][$shipmentItemId]))
+				/** @var \Bitrix\Sale\ShipmentItemStore $shipmentItemStore */
+				foreach ($shipmentItemStoreCollection as $shipmentItemStore)
 				{
-					$delResult = $shipmentItemStore->delete();
-					if (!$delResult->isSuccess())
-						$result->addErrors($delResult->getErrors());
+					$shipmentItemId = $shipmentItemStore->getId();
+					if (!isset($idsFromForm[$shipmentItem->getBasketCode()]['BARCODE_IDS'][$shipmentItemId]))
+					{
+						$delResult = $shipmentItemStore->delete();
+						if (!$delResult->isSuccess())
+						{
+							$result->addErrors($delResult->getErrors());
+						}
+					}
 				}
 			}
 		}
@@ -778,7 +792,7 @@ abstract class OrderBuilder
 					return $result;
 				}
 
-				if (isset($items['BASKET_ID']) && $items['BASKET_ID'] > 0)
+				if (isset($items['BASKET_ID']) && !BasketBuilder::isBasketItemNew($items['BASKET_ID']))
 				{
 					if (!$basketItem = $basket->getItemById($items['BASKET_ID']))
 					{
@@ -821,28 +835,51 @@ abstract class OrderBuilder
 				{
 					foreach ($items['BARCODE_INFO'] as $item)
 					{
-						if ($basketItem->isBundleParent())
+						if (!$basketItem->isReservableItem())
 						{
 							$shippingItems[] = $tmp;
 							continue;
 						}
 
+						$barcodeQuantity = ($basketItem->isBarcodeMulti() || $basketItem->isSupportedMarkingCode()) ? 1 : $item['QUANTITY'];
+						$barcodeStoreId = $item['STORE_ID'];
+
 						$tmp['BARCODE'] = array(
 							'ORDER_DELIVERY_BASKET_ID' => $items['ORDER_DELIVERY_BASKET_ID'],
-							'STORE_ID' => $item['STORE_ID'],
-							'QUANTITY' => ($basketItem->isBarcodeMulti() || $basketItem->isSupportedMarkingCode()) ? 1 : $item['QUANTITY'],
+							'STORE_ID' => $barcodeStoreId,
+							'QUANTITY' => $barcodeQuantity,
 						);
+
+						$tmp['BARCODE_INFO'] = [
+							$item['STORE_ID'] => [
+								'STORE_ID' => (int)$barcodeStoreId,
+								'QUANTITY' => (float)$barcodeQuantity,
+							],
+						];
 
 						$barcodeCount = 0;
 						if ($item['BARCODE'])
 						{
 							foreach ($item['BARCODE'] as $barcode)
 							{
+								$barcode['ID'] = (int)$barcode['ID'];
+
+								$tmp['BARCODE_INFO'][$barcodeStoreId]['BARCODE'] = [$barcode];
+
+								if (isset($barcode['MARKING_CODE']))
+								{
+									$barcode['MARKING_CODE'] = (string)$barcode['MARKING_CODE'];
+								}
+								else
+								{
+									$barcode['MARKING_CODE'] = '';
+								}
+
 								$idsFromForm[$basketCode]['BARCODE_IDS'][$barcode['ID']] = true;
 
 								if ($barcode['ID'] > 0)
 								{
-									$tmp['BARCODE']['ID'] = (int)$barcode['ID'];
+									$tmp['BARCODE']['ID'] = $barcode['ID'];
 								}
 								else
 								{
@@ -850,7 +887,8 @@ abstract class OrderBuilder
 								}
 
 								$tmp['BARCODE']['BARCODE'] = (string)$barcode['VALUE'];
-								$tmp['BARCODE']['MARKING_CODE'] = (string)$barcode['MARKING_CODE'];
+								$tmp['BARCODE']['MARKING_CODE'] = $barcode['MARKING_CODE'];
+
 								$shippingItems[] = $tmp;
 								$barcodeCount++;
 							}
@@ -1031,42 +1069,54 @@ abstract class OrderBuilder
 
 		$useStoreControl = Configuration::useStoreControl();
 
-		if (!empty($params['BARCODE']) && ($useStoreControl || $params['IS_SUPPORTED_MARKING_CODE'] == 'Y' ))
+		if (
+			!empty($params['BARCODE'])
+			&& ($useStoreControl || $params['IS_SUPPORTED_MARKING_CODE'] === 'Y' )
+			&& $basketItem->isReservableItem()
+		)
 		{
 			$barcode = $params['BARCODE'];
 
 			/** @var \Bitrix\Sale\ShipmentItemStoreCollection $shipmentItemStoreCollection */
 			$shipmentItemStoreCollection = $shipmentItem->getShipmentItemStoreCollection();
-			if (!$basketItem->isBarcodeMulti() && !$basketItem->isSupportedMarkingCode())
+			if ($shipmentItemStoreCollection)
 			{
-				/** @var Result $r */
-				$r = $shipmentItemStoreCollection->setBarcodeQuantityFromArray($params);
-				if(!$r->isSuccess())
+				if (!$basketItem->isBarcodeMulti() && !$basketItem->isSupportedMarkingCode())
 				{
-					$result->addErrors($r->getErrors());
+					/** @var Result $r */
+					$r = $shipmentItemStoreCollection->setBarcodeQuantityFromArray($params);
+					if (!$r->isSuccess())
+					{
+						$result->addErrors($r->getErrors());
+					}
 				}
-			}
 
-			if (isset($barcode['ID']) && intval($barcode['ID']) > 0)
-			{
-				/** @var \Bitrix\Sale\ShipmentItemStore $shipmentItemStore */
-				if ($shipmentItemStore = $shipmentItemStoreCollection->getItemById($barcode['ID']))
+				if (isset($barcode['ID']) && intval($barcode['ID']) > 0)
 				{
-					unset($barcode['ID']);
+					/** @var \Bitrix\Sale\ShipmentItemStore $shipmentItemStore */
+					if ($shipmentItemStore = $shipmentItemStoreCollection->getItemById($barcode['ID']))
+					{
+						unset($barcode['ID']);
+						$setFieldResult = $shipmentItemStore->setFields($barcode);
+
+						if (!$setFieldResult->isSuccess())
+						{
+							$result->addErrors($setFieldResult->getErrors());
+						}
+					}
+				}
+				else
+				{
+					$shipmentItemStore = $shipmentItemStoreCollection->createItem($basketItem);
 					$setFieldResult = $shipmentItemStore->setFields($barcode);
-
 					if (!$setFieldResult->isSuccess())
+					{
 						$result->addErrors($setFieldResult->getErrors());
+					}
 				}
-			}
-			else
-			{
-				$shipmentItemStore = $shipmentItemStoreCollection->createItem($basketItem);
-				$setFieldResult = $shipmentItemStore->setFields($barcode);
-				if (!$setFieldResult->isSuccess())
-					$result->addErrors($setFieldResult->getErrors());
 			}
 		}
+
 		return $result;
 	}
 
@@ -1143,7 +1193,7 @@ abstract class OrderBuilder
 			$this->formData['PAYMENT'] = [];
 		}
 
-		if (!$this->needCreateDefaultPayment())
+		if ($isEmptyPaymentData && !$this->needCreateDefaultPayment())
 		{
 			return $this;
 		}
@@ -1223,7 +1273,7 @@ abstract class OrderBuilder
 				}
 			}
 
-			$dateFields = ['DATE_PAID', 'DATE_PAY_BEFORE', 'DATE_BILL', 'PAY_RETURN_DATE', 'PAY_VOUCHER_DATE', 'DATE_RESPONSIBLE_ID'];
+			$dateFields = ['DATE_PAID', 'DATE_PAY_BEFORE', 'DATE_BILL', 'PAY_RETURN_DATE', 'PAY_VOUCHER_DATE'];
 
 			foreach($dateFields as $fieldName)
 			{
@@ -1399,11 +1449,17 @@ abstract class OrderBuilder
 
 			foreach($this->formData["TRADE_BINDINGS"] as $fields)
 			{
-				$r = $this->tradingPlatformExists($fields['TRADING_PLATFORM_ID']);
+				$tradingPlatformId = (int)($fields['TRADING_PLATFORM_ID'] ?? 0);
+				if ($tradingPlatformId === 0)
+				{
+					continue;
+				}
+
+				$r = $this->tradingPlatformExists($tradingPlatformId);
 
 				if($r->isSuccess())
 				{
-					$id = intval($fields['ID']);
+					$id = (int)($fields['ID'] ?? 0);
 					$isNew = ($id <= 0);
 
 					if($isNew)
@@ -1440,8 +1496,10 @@ abstract class OrderBuilder
 
 		$platformFields = TradingPlatformTable::getById($id)->fetchAll();
 
-		if(isset($platformFields[0]) == false)
+		if (!isset($platformFields[0]))
+		{
 			$r->addError(new Error('tradingPlatform is not exists'));
+		}
 
 		return $r;
 	}
@@ -1564,25 +1622,22 @@ abstract class OrderBuilder
 
 	public function getUserId()
 	{
-		if((int)$this->formData["USER_ID"] > 0)
+		$userId = (int)($this->formData["USER_ID"] ?? 0);
+		if($userId > 0)
 		{
-			return (int)$this->formData["USER_ID"];
+			return $userId;
 		}
 
 		$userId = 0;
 
-		if (!isset($this->formData["USER_ID"]) || (int)($this->formData["USER_ID"]) <= 0)
+		$settingValue = (int)$this->getSettingsContainer()->getItemValue('createUserIfNeed');
+		if ($settingValue === \Bitrix\Sale\Helpers\Order\Builder\SettingsContainer::SET_ANONYMOUS_USER)
 		{
-			$settingValue = (int)$this->getSettingsContainer()->getItemValue('createUserIfNeed');
-
-			if ($settingValue === \Bitrix\Sale\Helpers\Order\Builder\SettingsContainer::SET_ANONYMOUS_USER)
-			{
-				$userId = \CSaleUser::GetAnonymousUserID();
-			}
-			elseif ($settingValue === \Bitrix\Sale\Helpers\Order\Builder\SettingsContainer::ALLOW_NEW_USER_CREATION)
-			{
-				$userId = $this->createUserFromFormData();
-			}
+			$userId = \CSaleUser::GetAnonymousUserID();
+		}
+		elseif ($settingValue === \Bitrix\Sale\Helpers\Order\Builder\SettingsContainer::ALLOW_NEW_USER_CREATION)
+		{
+			$userId = $this->createUserFromFormData();
 		}
 
 		if ($userId > 0 && empty($this->formData["USER_ID"]))

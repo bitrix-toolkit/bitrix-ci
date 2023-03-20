@@ -6,6 +6,10 @@ use Bitrix\Main\SystemException;
 
 class SettingsContainer
 {
+	public const BUILDER_SCENARIO_SHIPMENT = 'shipment';
+	public const BUILDER_SCENARIO_PAYMENT = 'payment';
+	public const BUILDER_SCENARIO_RESERVATION = 'reservation';
+
 	const DISALLOW_NEW_USER_CREATION = 0;
 	const ALLOW_NEW_USER_CREATION = 1;
 	const SET_ANONYMOUS_USER = 2;
@@ -40,6 +44,8 @@ class SettingsContainer
 			'createDefaultPaymentIfNeed' => true,
 			//Do we need to create a new shipment by default, if shipments empty?
 			'createDefaultShipmentIfNeed' => true,
+			//Do we have to clear reserves for a basket item that doesn't explicitly have any reserve data set in it's product data?
+			'clearReservesIfEmpty' => false,
 
 			//Do we need update the price of just added products.
 			//Now it is used only after the buyerId was changed.
@@ -55,6 +61,10 @@ class SettingsContainer
 			'acceptableErrorCodes' => [],
 			//We need this if some of order properties upload files.
 			'propsFiles' => [],
+			//Fill shipments by FORM_DATA of basket builder
+			'fillShipmentsByBasketBuilder' => false,
+			//Builder scenario
+			'builderScenario' => null,
 		];
 	}
 

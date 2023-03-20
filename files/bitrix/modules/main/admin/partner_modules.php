@@ -12,7 +12,7 @@
  * @global CMain $APPLICATION
  * @global CDatabase $DB
  */
-require_once(dirname(__FILE__)."/../include/prolog_admin_before.php");
+require_once(__DIR__."/../include/prolog_admin_before.php");
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/classes/general/update_client_partner.php");
 define("HELP_FILE", "settings/module_admin.php");
 
@@ -344,7 +344,13 @@ while($info = $rsData->Fetch())
 {
 	$row =& $lAdmin->AddRow($info["MODULE_ID"], $info);
 
-	$name = "<b><a href=\"https://marketplace.1c-bitrix.ru/".htmlspecialcharsbx($info["MODULE_ID"])."\" target=\"_blank\">".htmlspecialcharsbx($info["MODULE_NAME"])."</a></b> (".htmlspecialcharsbx($info["MODULE_ID"]).")";
+	if(in_array(LANGUAGE_ID, ["ru"]))
+		$name = "<b><a href=\"https://marketplace.1c-bitrix.ru/".htmlspecialcharsbx($info["MODULE_ID"])."\" target=\"_blank\">".htmlspecialcharsbx($info["MODULE_NAME"])."</a></b> (".htmlspecialcharsbx($info["MODULE_ID"]).")";
+	elseif(in_array(LANGUAGE_ID, ["ua"]))
+		$name = "<b><a href=\"https://marketplace.bitrix.ua/".htmlspecialcharsbx($info["MODULE_ID"])."\" target=\"_blank\">".htmlspecialcharsbx($info["MODULE_NAME"])."</a></b> (".htmlspecialcharsbx($info["MODULE_ID"]).")";
+	else
+		$name = "<b>".htmlspecialcharsbx($info["MODULE_NAME"])."</b> (".htmlspecialcharsbx($info["MODULE_ID"]).")";
+
 	if($info["DEMO"] == "Y")
 		$name .= " <span style=\"color:red;\">".GetMessage("MOD_DEMO")."</span>";
 	$name .= "<br />".htmlspecialcharsbx($info["MODULE_DESCRIPTION"]);

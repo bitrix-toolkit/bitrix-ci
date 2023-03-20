@@ -10,10 +10,12 @@ namespace Bitrix\Main\UI\AccessRights\Entity;
 
 
 use Bitrix\Main\Access\AccessCode;
+use Bitrix\Main\Web\Uri;
 use Bitrix\Socialnetwork\WorkgroupTable;
 
 class SocnetGroup extends EntityBase
 {
+	private static $modelsCache = [];
 
 	public function getType(): string
 	{
@@ -52,7 +54,26 @@ class SocnetGroup extends EntityBase
 	{
 		if (!$this->model)
 		{
-			$this->model = WorkgroupTable::getById($this->id)->fetchObject();
+			if (array_key_exists($this->id, self::$modelsCache))
+			{
+				$this->model = self::$modelsCache[$this->id];
+			}
+			else
+			{
+				$this->model = WorkgroupTable::getList([
+					'select' => [
+						'ID',
+						'NAME',
+						'IMAGE_ID',
+					],
+					'filter' => [
+						'=ID' => $this->id,
+					],
+					'limit' => 1,
+				])->fetchObject();
+
+				self::$modelsCache[$this->id] = $this->model;
+			}
 		}
 	}
 }

@@ -36,7 +36,7 @@ class CAllSQLWhere
 		"=%" => "M", //Identical by like
 		"%=" => "M", //Identical by like
 		"!@" => "NIN", //not in
-		"==" => "SE",  // strong equality for boolean and null
+		"==" => "SE",  // strong equality (no is null)
 		"=" => "I", //Identical
 		"%" => "S", //substring
 		"?" => "?", //logical
@@ -174,7 +174,7 @@ class CAllSQLWhere
 				$andValues = array_map(
 					function($val)
 					{
-						return CSQLWhere::ForLIKE(ToUpper($val));
+						return CSQLWhere::ForLIKE(mb_strtoupper($val));
 					},
 					$andValues
 				);
@@ -196,16 +196,16 @@ class CAllSQLWhere
 		{
 			foreach($arFields as $key=>$arField)
 			{
-				$key = mb_strtoupper($key);
+				$key = strtoupper($key);
 				if(!isset($this->fields[$key]) && is_array($arField) && $arField["FIELD_NAME"] <> '')
 				{
 					$ar = array();
-					$ar["TABLE_ALIAS"] = $arField["TABLE_ALIAS"];
+					$ar["TABLE_ALIAS"] = $arField["TABLE_ALIAS"] ?? '';
 					$ar["FIELD_NAME"] = $arField["FIELD_NAME"];
-					$ar["FIELD_TYPE"] = $arField["FIELD_TYPE"];
+					$ar["FIELD_TYPE"] = $arField["FIELD_TYPE"] ?? '';
 					$ar["USER_TYPE_ID"] = $arField["USER_TYPE_ID"] ?? '';
 					$ar["MULTIPLE"] = $arField["MULTIPLE"] ?? "N";
-					$ar["JOIN"] = $arField["JOIN"];
+					$ar["JOIN"] = $arField["JOIN"] ?? '';
 					if(isset($arField["LEFT_JOIN"]))
 						$ar["LEFT_JOIN"] = $arField["LEFT_JOIN"];
 					if(isset($arField["CALLBACK"]))
@@ -246,7 +246,7 @@ class CAllSQLWhere
 	{
 		$all_operations = array_flip(self::$operations);
 
-		return $all_operations[$code];
+		return $all_operations[$code] ?? null;
 	}
 
 	public function GetQuery($arFilter)
@@ -449,6 +449,7 @@ class CAllSQLWhere
 		case "E":
 		case "S":
 		case "M":
+		case "SE":
 			if (is_array($FIELD_VALUE))
 			{
 				if (!empty($FIELD_VALUE))
@@ -461,7 +462,7 @@ class CAllSQLWhere
 			}
 			elseif (is_object($FIELD_VALUE))
 				$result[] = $FIELD_NAME." = ".$FIELD_VALUE->compile();
-			elseif ($FIELD_VALUE == 0)
+			elseif ($FIELD_VALUE == 0 && $operation !== "SE")
 				$result[] = "(".$FIELD_NAME." IS NULL OR ".$FIELD_NAME." = 0)";
 			else
 				$result[] = $FIELD_NAME." = ".$FIELD_VALUE;
@@ -692,7 +693,7 @@ class CAllSQLWhere
 			if ($operation=="S" || $operation=="NS")
 			{
 				foreach ($value as $val)
-					$FIELD_VALUE[] = $this->ForLIKE(toupper($val));
+					$FIELD_VALUE[] = $this->ForLIKE(mb_strtoupper($val));
 			}
 			else
 			{
@@ -707,7 +708,7 @@ class CAllSQLWhere
 		else
 		{
 			if ($operation=="S" || $operation=="NS")
-				$FIELD_VALUE = $this->ForLIKE(toupper($value));
+				$FIELD_VALUE = $this->ForLIKE(mb_strtoupper($value));
 			else
 				$FIELD_VALUE = $DB->ForSQL($value);
 		}

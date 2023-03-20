@@ -22,6 +22,20 @@ class PriceCollection extends BaseCollection
 		$this->factory = $factory;
 	}
 
+	public function findBasePrice(): ?BasePrice
+	{
+		/** @var \Bitrix\Catalog\v2\Price\BasePrice $price */
+		foreach ($this->getIterator() as $price)
+		{
+			if ($price->isPriceBase())
+			{
+				return $price;
+			}
+		}
+
+		return null;
+	}
+
 	public function findByGroupId(int $groupId): ?BasePrice
 	{
 		/** @var \Bitrix\Catalog\v2\Price\BasePrice $price */
@@ -96,6 +110,18 @@ class PriceCollection extends BaseCollection
 		return $values;
 	}
 
+	public function hasBasePrice(): bool
+	{
+		$basePrice = $this->findBasePrice();
+
+		return $basePrice && $basePrice->hasPrice();
+	}
+
+	public function hasAnyPrice(): bool
+	{
+		return !empty($this->getValues());
+	}
+
 	private function prepareValues(array $values): array
 	{
 		// ToDo check required properties + QUANTITY_FROM etc
@@ -134,7 +160,6 @@ class PriceCollection extends BaseCollection
 				{
 					unset($fields['CURRENCY']);
 				}
-
 			}
 
 			if (!empty($fields))

@@ -328,7 +328,7 @@ class CBXFavAdmMenu
 				if($this->CheckItemActivity($tmpMenu))
 					$tmpMenu["_active"] = true;
 
-				if(($tmpMenu["_active"] || $this->CheckSubItemActivity($tmpMenu)) && $favOptions["stick"] == "Y")
+				if((isset($tmpMenu["_active"]) && $tmpMenu["_active"] || $this->CheckSubItemActivity($tmpMenu)) && $favOptions["stick"] == "Y")
 					$GLOBALS["BX_FAVORITE_MENU_ACTIVE_ID"] = true;
 
 				$aMenu[] = $tmpMenu;
@@ -357,7 +357,7 @@ class CBXFavAdmMenu
 
 	private function CheckItemActivity($arMenu)
 	{
-		if($arMenu["_active"] == true )
+		if(isset($arMenu["_active"]) && $arMenu["_active"])
 			return true;
 
 		global $adminMenu, $APPLICATION;
@@ -518,7 +518,7 @@ class CBXFavUrls
 		{
 			foreach ($arUrl1["ar_query"] as $valName => $value)
 			{
-				if($arUrl1["ar_query"][$valName] != $arUrl2["ar_query"][$valName])
+				if (!isset($arUrl2["ar_query"][$valName]) || $arUrl1["ar_query"][$valName] != $arUrl2["ar_query"][$valName])
 				{
 					if(!empty($arReqVals))
 					{

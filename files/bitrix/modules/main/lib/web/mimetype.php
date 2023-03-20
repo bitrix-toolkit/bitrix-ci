@@ -167,7 +167,12 @@ final class MimeType
 		'djvu' => 'image/vnd.djvu',
 		'epub' => 'application/epub+zip',
 		'msg' => 'message/rfc822',
+		'ott' => 'application/vnd.oasis.opendocument.text-template',
+		'otp' => 'application/vnd.oasis.opendocument.presentation-template',
+		'ots' => 'application/vnd.oasis.opendocument.spreadsheet-template',
 		'odt' => 'application/vnd.oasis.opendocument.text',
+		'odp' => 'application/vnd.oasis.opendocument.presentation',
+		'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
 		'xodt' => 'application/vnd.collabio.xodocuments.document',
 		'7z' => 'application/x-7z-compressed',
 		'bz2' => 'application/x-bzip2',
@@ -259,5 +264,48 @@ final class MimeType
 		$mimeType = $fileInfo->buffer($content);
 
 		return $mimeType?: 'application/octet-stream';
+	}
+
+	public static function isImage($mime)
+	{
+		// Attributes are possible: image/jpeg; charset=ISO-8859-1
+		$parts = explode(';', (string)$mime);
+		$mime = trim($parts[0]);
+
+		return preg_match('#^image/[a-z0-9.-]+$#i', $mime);
+	}
+
+	public static function normalize($contentType)
+	{
+		if (!is_string($contentType))
+		{
+			return 'application/octet-stream';
+		}
+
+		$ct = strtolower($contentType);
+		$ct = str_replace(array("\r", "\n", "\0"), "", $ct);
+
+		// We don't need attributes: image/jpeg; charset=ISO-8859-1
+		$parts = explode(';', $ct);
+		$ct = trim($parts[0]);
+
+		if ($ct == '')
+		{
+			$ct = 'application/octet-stream';
+		}
+		elseif (strpos($ct, "excel") !== false)
+		{
+			$ct = "application/vnd.ms-excel";
+		}
+		elseif (strpos($ct, "word") !== false && strpos($ct, "vnd.openxmlformats") === false)
+		{
+			$ct = "application/msword";
+		}
+		elseif ($ct == 'image/pjpeg' || $ct == 'image/jpg')
+		{
+			$ct = 'image/jpeg';
+		}
+
+		return $ct;
 	}
 }

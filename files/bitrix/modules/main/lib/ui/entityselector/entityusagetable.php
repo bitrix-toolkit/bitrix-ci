@@ -1,18 +1,36 @@
-<?
+<?php
 
 namespace Bitrix\Main\UI\EntitySelector;
 
 use Bitrix\Main;
 use Bitrix\Main\Application;
+use Bitrix\Main\ORM\Data;
 use Bitrix\Main\ORM\Fields;
 use Bitrix\Main\ORM\Fields\Relations\Reference;
 use Bitrix\Main\ORM\Query\Join;
-use Bitrix\Main\ORM\Query\Query;
 use Bitrix\Main\Type\DateTime;
 use Bitrix\Main\UserTable;
 
-class EntityUsageTable extends Main\Entity\DataManager
+/**
+ * Class EntityUsageTable
+ *
+ * DO NOT WRITE ANYTHING BELOW THIS
+ *
+ * <<< ORMENTITYANNOTATION
+ * @method static EO_EntityUsage_Query query()
+ * @method static EO_EntityUsage_Result getByPrimary($primary, array $parameters = [])
+ * @method static EO_EntityUsage_Result getById($id)
+ * @method static EO_EntityUsage_Result getList(array $parameters = [])
+ * @method static EO_EntityUsage_Entity getEntity()
+ * @method static \Bitrix\Main\UI\EntitySelector\EO_EntityUsage createObject($setDefaultValues = true)
+ * @method static \Bitrix\Main\UI\EntitySelector\EO_EntityUsage_Collection createCollection()
+ * @method static \Bitrix\Main\UI\EntitySelector\EO_EntityUsage wakeUpObject($row)
+ * @method static \Bitrix\Main\UI\EntitySelector\EO_EntityUsage_Collection wakeUpCollection($rows)
+ */
+class EntityUsageTable extends Data\DataManager
 {
+	use Data\Internal\DeleteByFilterTrait;
+
 	/**
 	 * @inheritdoc
 	 */
@@ -97,8 +115,7 @@ class EntityUsageTable extends Main\Entity\DataManager
 			new Reference(
 				"CODE_USER",
 				UserTable::class,
-				Join::on("this.ITEM_ID_INT", "ref.ID")->where('this.ENTITY_ID', 'user'),
-				["join_type" => "INNER"]
+				Join::on("this.ITEM_ID_INT", "ref.ID")->where('this.ENTITY_ID', 'user')
 			),
 
 			new Reference(
@@ -201,19 +218,5 @@ class EntityUsageTable extends Main\Entity\DataManager
 		}
 
 		return true;
-	}
-
-	public static function deleteByFilter(array $filter)
-	{
-		$entity = static::getEntity();
-		$sqlTableName = static::getTableName();
-		$sqlHelper = $entity->getConnection()->getSqlHelper();
-
-		$where = Query::buildFilterSql($entity, $filter);
-		if ($where !== '')
-		{
-			$sql = "DELETE FROM {$sqlHelper->quote($sqlTableName)} WHERE ".$where;
-			$entity->getConnection()->queryExecute($sql);
-		}
 	}
 }

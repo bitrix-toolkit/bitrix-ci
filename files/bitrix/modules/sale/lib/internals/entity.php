@@ -16,6 +16,11 @@ abstract class Entity
 
 	protected function __construct(array $fields = array())
 	{
+		foreach ($fields as $name => $value)
+		{
+			$fields[$name] = $this->normalizeValue($name, $value);
+		}
+
 		$this->fields = new Fields($fields);
 	}
 
@@ -61,14 +66,14 @@ abstract class Entity
 	 */
 	public static function getAvailableFieldsMap()
 	{
-		static $fieldsMap = null;
+		static $fieldsMap = [];
 
-		if ($fieldsMap === null)
+		if (!isset($fieldsMap[static::class]))
 		{
-			$fieldsMap = array_fill_keys(static::getAvailableFields(), true);
+			$fieldsMap[static::class] = array_fill_keys(static::getAvailableFields(), true);
 		}
 
-		return $fieldsMap;
+		return $fieldsMap[static::class];
 	}
 
 	/**
@@ -78,19 +83,20 @@ abstract class Entity
 	 */
 	public static function getAllFields()
 	{
-		static $mapFields = array();
-		if ($mapFields)
+		static $mapFields = [];
+
+		if (!isset($mapFields[static::class]))
 		{
-			return $mapFields;
+			$mapFields[static::class] = [];
+
+			$fields = static::getFieldsDescription();
+			foreach ($fields as $field)
+			{
+				$mapFields[static::class][$field['CODE']] = $field['CODE'];
+			}
 		}
 
-		$fields = static::getFieldsDescription();
-		foreach ($fields as $field)
-		{
-			$mapFields[$field['CODE']] = $field['CODE'];
-		}
-
-		return $mapFields;
+		return $mapFields[static::class];
 	}
 
 	/**
@@ -151,6 +157,11 @@ abstract class Entity
 		return $this->fields->get($name);
 	}
 
+	protected function normalizeValue($name, $value)
+	{
+		return $value;
+	}
+
 	/**
 	 * @param $name
 	 * @param $value
@@ -162,6 +173,8 @@ abstract class Entity
 	public function setField($name, $value)
 	{
 		$result = new Result();
+
+		$value = $this->normalizeValue($name, $value);
 
 		if ($this->eventName === null)
 		{
@@ -277,6 +290,18 @@ abstract class Entity
 			try
 			{
 				$result = $this->onFieldModify($name, $oldValue, $value);
+
+				if ($result->isSuccess() && $this->eventName)
+				{
+					$event = new Main\Event('sale', 'OnAfter'.$this->eventName.'SetField', array(
+						'ENTITY' => $this,
+						'NAME' => $name,
+						'VALUE' => $value,
+						'OLD_VALUE' => $oldValue,
+					));
+					$event->send();
+				}
+
 				if ($result->isSuccess())
 				{
 					static::addChangesToHistory($name, $oldValue, $value);
@@ -376,6 +401,8 @@ abstract class Entity
 		{
 			throw new Main\ArgumentOutOfRangeException($name);
 		}
+
+		$value = $this->normalizeValue($name, $value);
 
 		$oldValue = $this->fields->get($name);
 

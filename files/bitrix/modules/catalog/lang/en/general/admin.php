@@ -1,4 +1,4 @@
-<?
+<?php
 $MESS["CAT_ACT_MENU_VIEW_SECTION"] = "View in Public Section";
 $MESS["CAT_DISCOUNT_SAVE"] = "Progressive discounts";
 $MESS["CAT_DISCOUNT_SAVE_DESCR"] = "Progressive discount offers";
@@ -15,7 +15,7 @@ $MESS["CAT_MENU_ROOT"] = "Product Catalog";
 $MESS["CAT_MENU_ROOT_MULTI"] = "Product Catalogs";
 $MESS["CAT_MENU_ROOT_TITLE"] = "Commercial catalog";
 $MESS["CAT_MENU_SKU_PROPERTIES"] = "SKU Properties";
-$MESS["CM_CONTRACTORS"] = "Suppliers";
+$MESS["CM_CONTRACTORS"] = "Vendors";
 $MESS["CM_COUPONS"] = "Coupons";
 $MESS["CM_COUPONS_ALT"] = "Coupons";
 $MESS["CM_COUPONS_EXT"] = "Product discount coupons";
@@ -24,8 +24,8 @@ $MESS["CM_DISCOUNTS3"] = "Product discounts";
 $MESS["CM_STORE"] = "Warehouses";
 $MESS["CM_STORE_DOCS"] = "Documents";
 $MESS["CM_SUBSCRIPTION_PRODUCT"] = "Product subscriptions";
-$MESS["EXTRA"] = "Price adjustment";
-$MESS["EXTRA_ALT"] = "Base price adjustment";
+$MESS["EXTRA"] = "Markups";
+$MESS["EXTRA_ALT"] = "Markups";
 $MESS["GROUP"] = "Price types";
 $MESS["GROUP_ALT"] = "Price types";
 $MESS["MEASURE"] = "Units of measurement";
@@ -42,4 +42,3 @@ $MESS["SETUP_UNLOAD_DATA"] = "Data export";
 $MESS["SETUP_UNLOAD_DATA_ALT"] = "Data export setup";
 $MESS["VAT"] = "VAT rates";
 $MESS["VAT_ALT"] = "Edit tax rates";
-?>

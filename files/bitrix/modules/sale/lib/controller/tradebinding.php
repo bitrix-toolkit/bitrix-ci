@@ -5,24 +5,29 @@ namespace Bitrix\Sale\Controller;
 
 
 use Bitrix\Main\Engine\Response\DataType\Page;
+use Bitrix\Main\Entity\ExpressionField;
+use Bitrix\Main\Error;
 use Bitrix\Main\UI\PageNavigation;
 use Bitrix\Sale\Registry;
+use Bitrix\Sale\Result;
 use Bitrix\Sale\TradeBindingCollection;
 
-class TradeBinding extends Controller
+class TradeBinding extends ControllerBase
 {
 	public function getFieldsAction()
 	{
-		$entity = new \Bitrix\Sale\Rest\Entity\TradeBinding();
-		return ['TRADE_BINDING'=>$entity->prepareFieldInfos(
-			$entity->getFields()
+		$view = $this->getViewManager()
+			->getView($this);
+
+		return ['TRADE_BINDING'=>$view->prepareFieldInfos(
+			$view->getFields()
 		)];
 	}
 
-	public function listAction($select=[], $filter=[], $order=[], PageNavigation $pageNavigation)
+	public function listAction(PageNavigation $pageNavigation, array $select = [], array $filter = [], array $order = []): Page
 	{
-		$select = empty($select)? ['*']:$select;
-		$order = empty($order)? ['ID'=>'ASC']:$order;
+		$select = empty($select) ? ['*'] : $select;
+		$order = empty($order) ? ['ID' => 'ASC'] : $order;
 
 		$registry = Registry::getInstance(Registry::REGISTRY_TYPE_ORDER);
 		/** @var TradeBindingCollection $tradeBindingCollection */
@@ -30,11 +35,11 @@ class TradeBinding extends Controller
 
 		$tradeBindings = $tradeBindingCollection::getList(
 			[
-				'select'=>$select,
-				'filter'=>$filter,
-				'order'=>$order,
+				'select' => $select,
+				'filter' => $filter,
+				'order' => $order,
 				'offset' => $pageNavigation->getOffset(),
-				'limit' => $pageNavigation->getLimit()
+				'limit' => $pageNavigation->getLimit(),
 			]
 		)->fetchAll();
 
@@ -44,14 +49,30 @@ class TradeBinding extends Controller
 			/** @var TradeBindingCollection $tradeBindingCollection */
 			$tradeBindingCollection = $registry->get(Registry::ENTITY_TRADE_BINDING_COLLECTION);
 
-			return count(
-				$tradeBindingCollection::getList(['filter'=>$filter])->fetchAll()
-			);
+			return (int) $tradeBindingCollection::getList([
+				'select' => ['CNT'],
+				'filter' => $filter,
+				'runtime' => [
+					new ExpressionField('CNT', 'COUNT(ID)')
+				]
+			])->fetch()['CNT'];
 		});
 	}
 
 	static public function prepareFields($fields)
 	{
 		return isset($fields['TRADE_BINDINGS'])?['TRADE_BINDINGS'=>$fields['TRADE_BINDINGS']]:[];
+	}
+
+	protected function checkReadPermissionEntity(): Result
+	{
+		$r = new Result();
+
+		$saleModulePermissions = self::getApplication()->GetGroupRight("sale");
+		if ($saleModulePermissions  == "D")
+		{
+			$r->addError(new Error('Access Denied', 200040300010));
+		}
+		return $r;
 	}
 }

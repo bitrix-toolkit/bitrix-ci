@@ -11,6 +11,7 @@ use Bitrix\Main\ModuleManager;
 use Bitrix\Main\NotImplementedException;
 use Bitrix\Rest\RestException;
 use Bitrix\Sale\Helpers\Order\Builder\SettingsContainer;
+use Bitrix\Sale\Rest\ModificationFieldsBase;
 use Bitrix\Sale\Result;
 use Bitrix\Sale\TradeBindingEntity;
 /*
@@ -63,9 +64,9 @@ class Controller extends Engine\Controller
 
 	protected function processAfterAction(Engine\Action $action, $result)
 	{
+		$externalizer = null;
 		if($this->errorCollection->count()==0)
 		{
-
 			if($result instanceof Engine\Response\DataType\Page || is_array($result))
 			{
 				$data = $result instanceof Engine\Response\DataType\Page ?
@@ -79,9 +80,35 @@ class Controller extends Engine\Controller
 				{
 					$externalizer = \Bitrix\Sale\Rest\Externalizer::buildByAction($action, $data, $this->getScope());
 				}
+			}
+		}
+		else
+		{
+			return parent::processAfterAction($action, $result);
+		}
 
+		if($externalizer instanceof ModificationFieldsBase)
+		{
+			if($this->getScope() == Engine\Controller::SCOPE_REST)
+			{
+				// nothing
+			}
+			else if($this->getScope() == Engine\Controller::SCOPE_AJAX)
+			{
+				$externalizer->setFormat([
+					ModificationFieldsBase::TO_WHITE_LIST,
+					ModificationFieldsBase::SORTING_KEYS
+				]);
+			}
+
+			if($this->getScope() == Engine\Controller::SCOPE_REST)
+			{
 				return $result instanceof Engine\Response\DataType\Page ?
 					$externalizer->getPage($result):$externalizer;
+			}
+			else if($this->getScope() == Engine\Controller::SCOPE_AJAX)
+			{
+				return $externalizer->toArray();
 			}
 		}
 
@@ -134,7 +161,7 @@ class Controller extends Engine\Controller
 			'deletePropertyValuesIfNotExists' => true,
 			'createDefaultPaymentIfNeed' => false,
 			'createDefaultShipmentIfNeed' => false,
-			'createUserIfNeed' => false,
+			'createUserIfNeed' => SettingsContainer::SET_ANONYMOUS_USER,
 			'cacheProductProviderData' => false,
 			'propsFiles' => $this->getFielsPropertyValuesFromRequest(),
 			'acceptableErrorCodes' => []

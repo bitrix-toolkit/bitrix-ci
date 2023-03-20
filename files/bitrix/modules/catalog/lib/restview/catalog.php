@@ -69,11 +69,9 @@ final class Catalog extends Base
 		];
 	}
 
-	public function internalizeArguments($name, $arguments)
+	public function internalizeArguments($name, $arguments): array
 	{
-		if($name == 'isoffers'
-		){}
-		else
+		if ($name !== 'isoffers')
 		{
 			parent::internalizeArguments($name, $arguments);
 		}

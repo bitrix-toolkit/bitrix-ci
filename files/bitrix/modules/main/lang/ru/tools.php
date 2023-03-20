@@ -1,4 +1,4 @@
-<?
+<?php
 $MESS["TOOLS_DN"] = "дн.";
 $MESS["TOOLS_DAYS"] = "дней";
 $MESS["TOOLS_CALENDAR"] = "Календарь";
@@ -131,7 +131,7 @@ $MESS["COUNTRY_93"] = "Мексика";
 $MESS["COUNTRY_94"] = "Мозамбик";
 $MESS["COUNTRY_95"] = "Монако";
 $MESS["COUNTRY_96"] = "Монголия";
-$MESS["COUNTRY_97"] = "Морокко";
+$MESS["COUNTRY_97"] = "Марокко";
 $MESS["COUNTRY_98"] = "Намибия";
 $MESS["COUNTRY_99"] = "Непал";
 $MESS["COUNTRY_100"] = "Нигерия";
@@ -193,7 +193,7 @@ $MESS["COUNTRY_156"] = "Восточный Тимор";
 $MESS["COUNTRY_157"] = "Эль Сальвадор";
 $MESS["COUNTRY_158"] = "Экваториальная Гвинея";
 $MESS["COUNTRY_159"] = "Эритрея";
-$MESS["COUNTRY_160"] = "Фижи";
+$MESS["COUNTRY_160"] = "Фиджи";
 $MESS["COUNTRY_161"] = "Габон";
 $MESS["COUNTRY_162"] = "Гана";
 $MESS["COUNTRY_163"] = "Гвинея-Биссау";
@@ -273,7 +273,6 @@ $MESS["COUNTRY_236"] = "Черногория";
 $MESS["MAIN_MAILTO"] = "Написать письмо";
 $MESS["MAIN_F_TIMESTAMP"] = "Дата изменения";
 $MESS["AJAX_WAIT"] = "Загрузка...";
-$MESS["HTTP_CLIENT_ERROR_CONNECT"] = "Ошибка подключения к %HOST%:%PORT%. Код ошибки: \"%ERRNO%\", текст ошибки: \"%ERRSTR%\"";
 $MESS["TOOLS_TRIAL_EXP"] = "Срок работы пробной версии продукта истек. Вы можете купить полнофункциональную версию продукта на сайте <a href=\"http://www.1c-bitrix.ru/?r1=bsm7trial&amp;r2=expired\">www.1c-bitrix.ru</a>.";
 $MESS["expire_mess1"] = "<font class=\"tablebodytext\"><font color=\"#FF0000\">
 		Срок работы пробной версии продукта истек.
@@ -283,8 +282,6 @@ $MESS["expire_mess1"] = "<font class=\"tablebodytext\"><font color=\"#FF0000\">
 $MESS["expire_mess2"] = "Срок работы пробной версии продукта истек. Вы можете купить полнофункциональную версию продукта на сайте <a href=\"http://www.1c-bitrix.ru/?r1=bsm7trial&amp;r2=expired\">www.1c-bitrix.ru</a>. <a href=\"/bitrix/coupon_activation.php?lang=ru\">Регистрация</a>.";
 $MESS["main_tools_menu_left"] = "Меню раздела";
 $MESS["main_tools_menu_top"] = "Главное меню";
-$MESS["ABC_LOWER"] = "йцукенгшщзхъэждлорпавыфячсмитьбюё";
-$MESS["ABC_UPPER"] = "ЙЦУКЕНГШЩЗХЪЭЖДЛОРПАВЫФЯЧСМИТЬБЮЁ";
 $MESS["MONTH_1"] = "Январь";
 $MESS["MONTH_2"] = "Февраль";
 $MESS["MONTH_3"] = "Март";
@@ -434,4 +431,3 @@ $MESS["CAL_TIME"] = "Время";
 $MESS["expire_mess_timelicense1"] = "<font class=\"tablebodytext\"><font color=\"#FF0000\">Срок действия текущей лицензии закончился. Через две недели этот сайт полностью прекратит свою работу. Срочно свяжитесь с <a href=\"http://www.1c-bitrix.ru/\">отделом по работе с ключевыми клиентами компании 1С-Битрикс</a> для приобретения лицензии на следующий год.</font></font>";
 $MESS["YEAR_PATTERN"] = "";
 $MESS["DOM_PATTERN"] = "";
-?>

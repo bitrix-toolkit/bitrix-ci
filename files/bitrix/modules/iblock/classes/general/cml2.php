@@ -1,19 +1,19 @@
 <?php
-use Bitrix\Main,
-	Bitrix\Main\ModuleManager,
-	Bitrix\Main\Loader,
-	Bitrix\Iblock,
-	Bitrix\Catalog,
-	Bitrix\Catalog\Product;
+use Bitrix\Main;
+use Bitrix\Main\ModuleManager;
+use Bitrix\Main\Loader;
+use Bitrix\Iblock;
+use Bitrix\Catalog;
+use Bitrix\Catalog\Product;
 
 IncludeModuleLangFile(__FILE__);
 
 class CIBlockCMLImport
 {
-	const IBLOCK_CACHE_FREEZE = 'D';
-	const IBLOCK_CACHE_FINAL = 'F';
-	const IBLOCK_CACHE_HIT = 'H';
-	const IBLOCK_CACHE_NORMAL = 'N';
+	public const IBLOCK_CACHE_FREEZE = 'D';
+	public const IBLOCK_CACHE_FINAL = 'F';
+	public const IBLOCK_CACHE_HIT = 'H';
+	public const IBLOCK_CACHE_NORMAL = 'N';
 
 	var $LAST_ERROR = "";
 	/** @var bool|array */
@@ -65,6 +65,12 @@ class CIBlockCMLImport
 	protected $currentUserId = null;
 
 	protected $currencyIncluded = null;
+
+	protected array $productSizes = [
+		'WIDTH',
+		'LENGTH',
+		'HEIGHT',
+	];
 
 	function InitEx(&$next_step, $params)
 	{
@@ -128,7 +134,7 @@ class CIBlockCMLImport
 	function Init(&$next_step, $files_dir = false, $use_crc = true, $preview = false, $detail = false, $use_offers = false, $use_iblock_type_id = false, $table_name = "b_xml_tree")
 	{
 		global $USER;
-		$this->currentUserId = (isset($USER) && is_object($USER) && $USER instanceof CUser ? (int)$USER->GetID() : 0);
+		$this->currentUserId = (isset($USER) && $USER instanceof CUser ? (int)$USER->GetID() : 0);
 
 		$this->next_step = &$next_step;
 		$this->files_dir = $files_dir;
@@ -156,7 +162,7 @@ class CIBlockCMLImport
 		$this->bitrix24mode = ModuleManager::isModuleInstalled('bitrix24');
 		$this->arProperties = array();
 		$this->PROPERTY_MAP = array();
-		if($this->next_step["IBLOCK_ID"] > 0)
+		if (isset($this->next_step["IBLOCK_ID"]) && $this->next_step["IBLOCK_ID"] > 0)
 		{
 			$obProperty = new CIBlockProperty;
 			$rsProperties = $obProperty->GetList(array(), array("IBLOCK_ID"=>$this->next_step["IBLOCK_ID"], "ACTIVE"=>"Y"));
@@ -178,8 +184,10 @@ class CIBlockCMLImport
 			}
 		}
 
-		if ($this->next_step["lang"])
-			$this->mess = Main\Localization\Loc::loadLanguageFile(__FILE__, $this->next_step["lang"]);
+		if (isset($this->next_step['lang']) && $this->next_step['lang'])
+		{
+			$this->mess = Main\Localization\Loc::loadLanguageFile(__FILE__, $this->next_step['lang']);
+		}
 
 		$this->arTempFiles = array();
 		$this->arLinkedProps = false;
@@ -601,29 +609,64 @@ class CIBlockCMLImport
 
 	function CheckTax($title, $rate)
 	{
-		$tax_name = $title." ".$rate."%";
-		if(!array_key_exists($tax_name, $this->arTaxCache))
+		if ($rate === null)
 		{
-			$rsVat = CCatalogVat::GetListEx(
-				array(),
-				array(
-					"=NAME" => $tax_name,
-					"RATE" => $rate,
-				),
-				false,
-				false,
-				array("ID")
-			);
-			if($arVat = $rsVat->Fetch())
-				$this->arTaxCache[$tax_name] = $arVat["ID"];
-			else
-				$this->arTaxCache[$tax_name] = CCatalogVat::Add(array(
-					"ACTIVE" => "Y",
-					"NAME" => $tax_name,
-					"RATE" => $rate,
-				));
+			$taxName = GetMessage('IBLOCK_NO_VAT_TITLE');
 		}
-		return $this->arTaxCache[$tax_name];
+		else
+		{
+			$taxName = $title . " " . $rate . "%";
+		}
+
+		if (isset($this->arTaxCache[$taxName]))
+		{
+			return $this->arTaxCache[$taxName];
+		}
+
+		$vatParams = [
+			'select' => ['ID'],
+		];
+
+		if ($rate === null)
+		{
+			$vatParams['filter'] = [
+				'=EXCLUDE_VAT' => 'Y',
+			];
+		}
+		else
+		{
+			$vatParams['filter'] = [
+				'=NAME' => $taxName,
+				'=EXCLUDE_VAT' => 'N',
+				'=RATE' => $rate,
+			];
+		}
+
+		$getResult = \Bitrix\Catalog\Model\Vat::getList($vatParams)->fetch();
+		if (isset($getResult['ID']))
+		{
+			$vatId = $getResult['ID'];
+			$this->arTaxCache[$taxName] = $vatId;
+			return $vatId;
+		}
+
+		$addParams = [
+			'ACTIVE' => 'Y',
+			'NAME' => $taxName,
+		];
+
+		if ($rate === null)
+		{
+			$addParams['EXCLUDE_VAT'] = 'Y';
+		}
+		else
+		{
+			$addParams['RATE'] = $rate;
+		}
+
+		$this->arTaxCache[$taxName] = \Bitrix\Catalog\Model\Vat::add($addParams)->getId();
+
+		return $this->arTaxCache[$taxName];
 	}
 
 	function CheckCurrency($currency)
@@ -813,10 +856,14 @@ class CIBlockCMLImport
 			if($ar["ATTRIBUTES"] <> '')
 			{
 				$attrs = unserialize($ar["ATTRIBUTES"], ['allowed_classes' => false]);
-				if(is_array($attrs))
+				if (is_array($attrs))
 				{
-					if(array_key_exists($this->mess["IBLOCK_XML2_UPDATE_ONLY"], $attrs))
-						$this->next_step["bUpdateOnly"] = ($attrs[$this->mess["IBLOCK_XML2_UPDATE_ONLY"]]=="true") || intval($attrs[$this->mess["IBLOCK_XML2_UPDATE_ONLY"]])? true: false;
+					if (isset($attrs[$this->mess["IBLOCK_XML2_UPDATE_ONLY"]]))
+					{
+						$this->next_step["bUpdateOnly"] = $attrs[$this->mess["IBLOCK_XML2_UPDATE_ONLY"]] === "true"
+							|| (int)$attrs[$this->mess["IBLOCK_XML2_UPDATE_ONLY"]] > 0
+						;
+					}
 				}
 			}
 
@@ -826,9 +873,10 @@ class CIBlockCMLImport
 			);
 			while($ar = $rs->Fetch())
 			{
-
 				if(isset($ar["VALUE_CLOB"]))
 					$ar["VALUE"] = $ar["VALUE_CLOB"];
+
+				$trueValue = $ar['VALUE'] === 'true' || (int)$ar['VALUE'] > 0;
 
 				if($ar["NAME"] == $this->mess["IBLOCK_XML2_ID"])
 					$arIBlock["XML_ID"] = ($this->use_iblock_type_id? $IBLOCK_TYPE."-": "").$ar["VALUE"];
@@ -852,9 +900,11 @@ class CIBlockCMLImport
 				elseif($ar["NAME"] == $this->mess["IBLOCK_XML2_METADATA_ID"])
 					$meta_data_xml_id = $ar["VALUE"];
 				elseif($ar["NAME"] == $this->mess["IBLOCK_XML2_UPDATE_ONLY"])
-					$this->next_step["bUpdateOnly"] = ($ar["VALUE"]=="true") || intval($ar["VALUE"])? true: false;
+					$this->next_step["bUpdateOnly"] = $trueValue;
 				elseif($ar["NAME"] == $this->mess["IBLOCK_XML2_BX_CODE"])
 					$arIBlock["CODE"] = $ar["VALUE"];
+				elseif($ar["NAME"] == $this->mess["IBLOCK_XML2_BX_API_CODE"])
+					$arIBlock["API_CODE"] = $ar["VALUE"];
 				elseif($ar["NAME"] == $this->mess["IBLOCK_XML2_BX_SORT"])
 					$arIBlock["SORT"] = $ar["VALUE"];
 				elseif($ar["NAME"] == $this->mess["IBLOCK_XML2_BX_LIST_URL"])
@@ -866,9 +916,9 @@ class CIBlockCMLImport
 				elseif($ar["NAME"] == $this->mess["IBLOCK_XML2_BX_CANONICAL_URL"])
 					$arIBlock["CANONICAL_PAGE_URL"] = $ar["VALUE"];
 				elseif($ar["NAME"] == $this->mess["IBLOCK_XML2_BX_INDEX_ELEMENTS"])
-					$arIBlock["INDEX_ELEMENT"] = ($ar["VALUE"]=="true") || intval($ar["VALUE"])? "Y": "N";
+					$arIBlock["INDEX_ELEMENT"] = $trueValue ? "Y": "N";
 				elseif($ar["NAME"] == $this->mess["IBLOCK_XML2_BX_INDEX_SECTIONS"])
-					$arIBlock["INDEX_SECTION"] = ($ar["VALUE"]=="true") || intval($ar["VALUE"])? "Y": "N";
+					$arIBlock["INDEX_SECTION"] = $trueValue ? "Y": "N";
 				elseif($ar["NAME"] == $this->mess["IBLOCK_XML2_BX_SECTIONS_NAME"])
 					$arIBlock["SECTIONS_NAME"] = $ar["VALUE"];
 				elseif($ar["NAME"] == $this->mess["IBLOCK_XML2_BX_SECTION_NAME"])
@@ -912,7 +962,7 @@ class CIBlockCMLImport
 			}
 			if($this->next_step["bOffer"] && !$this->use_offers)
 			{
-				if($arIBlock["CATALOG_XML_ID"] <> '')
+				if (isset($arIBlock["CATALOG_XML_ID"]) && $arIBlock["CATALOG_XML_ID"] !== '')
 				{
 					$arIBlock["XML_ID"] = $arIBlock["CATALOG_XML_ID"];
 					$this->next_step["bUpdateOnly"] = true;
@@ -988,7 +1038,7 @@ class CIBlockCMLImport
 			if($this->bCatalog && $this->next_step["bOffer"])
 			{
 				$obCatalog = new CCatalog();
-				$intParentID = $this->GetIBlockByXML_ID($arIBlock["CATALOG_XML_ID"]);
+				$intParentID = $this->GetIBlockByXML_ID($arIBlock["CATALOG_XML_ID"] ?? $arIBlock["XML_ID"]);
 				if (0 < intval($intParentID) && $this->use_offers)
 				{
 					$mxSKUProp = $obCatalog->LinkSKUIBlock($intParentID,$arIBlock["ID"]);
@@ -1237,7 +1287,7 @@ class CIBlockCMLImport
 		$ar = $rs->Fetch();
 		if ($ar)
 		{
-			$this->next_step["SETS"] = $ar["ID"];
+			$this->next_step["SETS"] = (int)$ar["ID"];
 		}
 
 		return true;
@@ -2368,9 +2418,9 @@ class CIBlockCMLImport
 					$arPrice = array(
 						"NAME" => $PRICE_NAME,
 						"XML_ID" => $PRICE_ID,
-						"CURRENCY" => $arXMLPrice[$this->mess["IBLOCK_XML2_CURRENCY"]],
-						"TAX_NAME" => $arXMLPrice[$this->mess["IBLOCK_XML2_TAX"]][$this->mess["IBLOCK_XML2_NAME"]],
-						"TAX_IN_SUM" => $arXMLPrice[$this->mess["IBLOCK_XML2_TAX"]][$this->mess["IBLOCK_XML2_IN_SUM"]],
+						"CURRENCY" => $arXMLPrice[$this->mess["IBLOCK_XML2_CURRENCY"]] ?? '',
+						"TAX_NAME" => $arXMLPrice[$this->mess["IBLOCK_XML2_TAX"]][$this->mess["IBLOCK_XML2_NAME"]] ?? '',
+						"TAX_IN_SUM" => $arXMLPrice[$this->mess["IBLOCK_XML2_TAX"]][$this->mess["IBLOCK_XML2_IN_SUM"]] ?? '',
 					);
 					if($this->bCatalog)
 					{
@@ -2421,6 +2471,8 @@ class CIBlockCMLImport
 			{
 				foreach($arPrices as $arPrice)
 				{
+					$arPrice['TAX_NAME'] = '';
+					$arPrice['TAX_IN_SUM'] = '';
 					$PRICES_MAP[$arPrice["XML_ID"]] = $arPrice;
 				}
 			}
@@ -2457,6 +2509,11 @@ class CIBlockCMLImport
 		if (!$xml)
 		{
 			return "";
+		}
+
+		if (!isset($this->PROPERTY_MAP["CML2_MANUFACTURER"]))
+		{
+			return '';
 		}
 
 		$propertyId = $this->PROPERTY_MAP["CML2_MANUFACTURER"];
@@ -2547,9 +2604,16 @@ class CIBlockCMLImport
 			$obElement = new CIBlockElement();
 			$obElement->CancelWFSetMove();
 			$bWF = Loader::includeModule("workflow");
+			$filter = [
+				'PARENT_ID' => $this->next_step['XML_ELEMENTS_PARENT'],
+			];
+			if (isset($this->next_step['XML_LAST_ID']))
+			{
+				$filter['>ID'] = $this->next_step['XML_LAST_ID'];
+			}
 			$rsParents = $this->_xml_file->GetList(
 				array("ID" => "asc"),
-				array("PARENT_ID" => $this->next_step["XML_ELEMENTS_PARENT"], ">ID" => $this->next_step["XML_LAST_ID"]),
+				$filter,
 				array("ID", "LEFT_MARGIN", "RIGHT_MARGIN")
 			);
 			while($arParent = $rsParents->Fetch())
@@ -2662,7 +2726,7 @@ class CIBlockCMLImport
 
 	function ImportProductSets()
 	{
-		if ($this->bCatalog && $this->next_step["SETS"] > 0)
+		if ($this->bCatalog && isset($this->next_step["SETS"]) && $this->next_step["SETS"] > 0)
 		{
 			$rsParents = $this->_xml_file->GetList(
 				array("ID" => "asc"),
@@ -2834,7 +2898,7 @@ class CIBlockCMLImport
 
 	function __unserialize_callback($match)
 	{
-		return 's:'.CUtil::BinStrlen($match[2]).':"'.$match[2].'";';
+		return 's:'.strlen($match[2]).':"'.$match[2].'";';
 	}
 
 	function convertBaseUnitFromXmlToPropertyValue($xmlValue)
@@ -2966,22 +3030,30 @@ class CIBlockCMLImport
 				}
 			}
 
-			if($this->bCatalog && $this->next_step["bOffer"])
+			if ($this->bCatalog && $this->next_step["bOffer"])
 			{
-				$p = strpos($arXMLElement[$this->mess["IBLOCK_XML2_ID"]], "#");
-				if ($p !== false)
-					$link_xml_id = substr($arXMLElement[$this->mess["IBLOCK_XML2_ID"]], 0, $p);
-				else
-					$link_xml_id = $arXMLElement[$this->mess["IBLOCK_XML2_ID"]];
-				$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_LINK"]] = array(
-					"n0" => array(
-						"VALUE" => $this->GetElementByXML_ID(
-							$this->arProperties[$this->PROPERTY_MAP["CML2_LINK"]]["LINK_IBLOCK_ID"],
-							$link_xml_id
-						),
-						"DESCRIPTION" => false,
-					),
-				);
+				if (isset($this->PROPERTY_MAP["CML2_LINK"]))
+				{
+					$p = strpos($arXMLElement[$this->mess["IBLOCK_XML2_ID"]], "#");
+					if ($p !== false)
+					{
+						$link_xml_id = substr($arXMLElement[$this->mess["IBLOCK_XML2_ID"]], 0, $p);
+					}
+					else
+					{
+						$link_xml_id = $arXMLElement[$this->mess["IBLOCK_XML2_ID"]];
+					}
+
+					$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_LINK"]] = [
+						"n0" => [
+							"VALUE" => $this->GetElementByXML_ID(
+								$this->arProperties[$this->PROPERTY_MAP["CML2_LINK"]]["LINK_IBLOCK_ID"],
+								$link_xml_id
+							),
+							"DESCRIPTION" => false,
+						],
+					];
+				}
 			}
 
 			if(isset($arXMLElement[$this->mess["IBLOCK_XML2_NAME"]]))
@@ -3033,37 +3105,44 @@ class CIBlockCMLImport
 						$arElement["IPROPERTY_TEMPLATES"][$id] = $template;
 				}
 			}
-			if(array_key_exists($this->mess["IBLOCK_XML2_BAR_CODE2"], $arXMLElement))
+			if (isset($this->PROPERTY_MAP["CML2_BAR_CODE"]))
 			{
-				$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_BAR_CODE"]] = array(
-					"n0" => array(
-						"VALUE" => $arXMLElement[$this->mess["IBLOCK_XML2_BAR_CODE2"]],
-						"DESCRIPTION" => false,
-					),
-				);
-			}
-			elseif(array_key_exists($this->mess["IBLOCK_XML2_BAR_CODE"], $arXMLElement))
-			{
-				$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_BAR_CODE"]] = array(
-					"n0" => array(
-						"VALUE" => $arXMLElement[$this->mess["IBLOCK_XML2_BAR_CODE"]],
-						"DESCRIPTION" => false,
-					),
-				);
-			}
-
-			if(array_key_exists($this->mess["IBLOCK_XML2_ARTICLE"], $arXMLElement))
-			{
-				$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_ARTICLE"]] = array(
-					"n0" => array(
-						"VALUE" => $arXMLElement[$this->mess["IBLOCK_XML2_ARTICLE"]],
-						"DESCRIPTION" => false,
-					),
-				);
+				if (array_key_exists($this->mess["IBLOCK_XML2_BAR_CODE2"], $arXMLElement))
+				{
+					$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_BAR_CODE"]] = [
+						"n0" => [
+							"VALUE" => $arXMLElement[$this->mess["IBLOCK_XML2_BAR_CODE2"]],
+							"DESCRIPTION" => false,
+						],
+					];
+				}
+				elseif (array_key_exists($this->mess["IBLOCK_XML2_BAR_CODE"], $arXMLElement))
+				{
+					$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_BAR_CODE"]] = [
+						"n0" => [
+							"VALUE" => $arXMLElement[$this->mess["IBLOCK_XML2_BAR_CODE"]],
+							"DESCRIPTION" => false,
+						],
+					];
+				}
 			}
 
-			if(
+			if (isset($this->PROPERTY_MAP["CML2_ARTICLE"]))
+			{
+				if (array_key_exists($this->mess["IBLOCK_XML2_ARTICLE"], $arXMLElement))
+				{
+					$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_ARTICLE"]] = [
+						"n0" => [
+							"VALUE" => $arXMLElement[$this->mess["IBLOCK_XML2_ARTICLE"]],
+							"DESCRIPTION" => false,
+						],
+					];
+				}
+			}
+
+			if (
 				array_key_exists($this->mess["IBLOCK_XML2_MANUFACTURER"], $arXMLElement)
+				&& isset($this->PROPERTY_MAP["CML2_MANUFACTURER"])
 				&& $this->PROPERTY_MAP["CML2_MANUFACTURER"] > 0
 			)
 			{
@@ -3096,7 +3175,7 @@ class CIBlockCMLImport
 
 					if($arFile["VALUE"] <> '')
 					{
-						$arElement["DETAIL_PICTURE"] = $this->ResizePicture($arFile["VALUE"], $this->detail, "DETAIL_PICTURE", $this->PROPERTY_MAP["CML2_PICTURES"]);
+						$arElement["DETAIL_PICTURE"] = $this->ResizePicture($arFile["VALUE"], $this->detail, "DETAIL_PICTURE", $this->PROPERTY_MAP["CML2_PICTURES"] ?? '');
 
 						if(is_array($arElement["DETAIL_PICTURE"]))
 						{
@@ -3124,7 +3203,7 @@ class CIBlockCMLImport
 						}
 					}
 
-					$prop_id = $this->PROPERTY_MAP["CML2_PICTURES"];
+					$prop_id = (int)($this->PROPERTY_MAP["CML2_PICTURES"] ?? 0);
 					if($prop_id > 0)
 					{
 						$i = 1;
@@ -3158,7 +3237,9 @@ class CIBlockCMLImport
 							$i++;
 						}
 
-						if(is_array($arElement["PROPERTY_VALUES"][$prop_id]))
+						if(
+							isset($arElement["PROPERTY_VALUES"][$prop_id])
+							&& is_array($arElement["PROPERTY_VALUES"][$prop_id]))
 						{
 							foreach($arElement["PROPERTY_VALUES"][$prop_id] as $PROPERTY_VALUE_ID => $PROPERTY_VALUE)
 							{
@@ -3179,7 +3260,7 @@ class CIBlockCMLImport
 			$cleanCml2FilesProperty = false;
 			if(
 				array_key_exists($this->mess["IBLOCK_XML2_FILE"], $arXMLElement)
-				&& $this->PROPERTY_MAP["CML2_FILES"] <> ''
+				&& isset($this->PROPERTY_MAP["CML2_FILES"])
 			)
 			{
 				$prop_id = $this->PROPERTY_MAP["CML2_FILES"];
@@ -3268,7 +3349,7 @@ class CIBlockCMLImport
 			if($this->bCatalog && array_key_exists($this->mess["IBLOCK_XML2_AMOUNT"], $arXMLElement))
 			{
 				$arElement["QUANTITY_RESERVED"] = 0;
-				if($arDBElement["ID"])
+				if($arDBElement)
 				{
 					$iterator = Catalog\Model\Product::getList([
 						'select' => ['ID', 'QUANTITY_RESERVED'],
@@ -3283,7 +3364,10 @@ class CIBlockCMLImport
 				$arElement["QUANTITY"] = $this->ToFloat($arXMLElement[$this->mess["IBLOCK_XML2_AMOUNT"]]) - $arElement["QUANTITY_RESERVED"];
 			}
 
-			if(isset($arXMLElement[$this->mess["IBLOCK_XML2_ITEM_ATTRIBUTES"]]))
+			if (
+				isset($arXMLElement[$this->mess["IBLOCK_XML2_ITEM_ATTRIBUTES"]])
+				&& isset($this->PROPERTY_MAP["CML2_ATTRIBUTES"])
+			)
 			{
 				$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_ATTRIBUTES"]] = array();
 				$i = 0;
@@ -3299,9 +3383,12 @@ class CIBlockCMLImport
 
 			$i = 0;
 			$weightKey = false;
-			if(isset($arXMLElement[$this->mess["IBLOCK_XML2_TRAITS_VALUES"]]))
+			if (isset($arXMLElement[$this->mess["IBLOCK_XML2_TRAITS_VALUES"]]))
 			{
-				$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_TRAITS"]] = array();
+				if (isset($this->PROPERTY_MAP["CML2_TRAITS"]))
+				{
+					$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_TRAITS"]] = [];
+				}
 				foreach($arXMLElement[$this->mess["IBLOCK_XML2_TRAITS_VALUES"]] as $value)
 				{
 					if(
@@ -3331,7 +3418,7 @@ class CIBlockCMLImport
 					{
 						if($value[$this->mess["IBLOCK_XML2_VALUE"]] <> '')
 						{
-							$prop_id = $this->PROPERTY_MAP["CML2_FILES"];
+							$prop_id = $this->PROPERTY_MAP["CML2_FILES"] ?? 0;
 
 							$j = 1;
 							while (isset($arElement["PROPERTY_VALUES"][$prop_id]["n".$j]))
@@ -3356,7 +3443,7 @@ class CIBlockCMLImport
 					{
 						if($value[$this->mess["IBLOCK_XML2_VALUE"]] <> '')
 						{
-							list($fileName, $description) = explode("#", $value[$this->mess["IBLOCK_XML2_VALUE"]]);
+							[$fileName, $description] = explode("#", $value[$this->mess["IBLOCK_XML2_VALUE"]]);
 							if (isset($this->arFileDescriptionsMap[$fileName]))
 							{
 								foreach($this->arFileDescriptionsMap[$fileName] as $k => $tmp)
@@ -3371,61 +3458,57 @@ class CIBlockCMLImport
 							$arElement["BASE_WEIGHT"] = $this->ToFloat($value[$this->mess["IBLOCK_XML2_VALUE"]])*1000;
 							$weightKey = "n".$i;
 						}
-
-						$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_TRAITS"]]["n".$i] = array(
-							"VALUE" => $value[$this->mess["IBLOCK_XML2_VALUE"]],
-							"DESCRIPTION" => $value[$this->mess["IBLOCK_XML2_NAME"]],
-						);
+						if (isset($this->PROPERTY_MAP["CML2_TRAITS"]))
+						{
+							$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_TRAITS"]]["n" . $i] = [
+								"VALUE" => $value[$this->mess["IBLOCK_XML2_VALUE"]],
+								"DESCRIPTION" => $value[$this->mess["IBLOCK_XML2_NAME"]],
+							];
+						}
 						$i++;
 					}
 				}
 			}
 
-			if(isset($arXMLElement[$this->mess["IBLOCK_XML2_WEIGHT"]]))
+			if (isset($arXMLElement[$this->mess["IBLOCK_XML2_WEIGHT"]]))
 			{
-				if ($weightKey !== false)
+				if (isset($this->PROPERTY_MAP["CML2_TRAITS"]))
 				{
+					if ($weightKey === false)
+					{
+						if (!isset($arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_TRAITS"]]))
+						{
+							$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_TRAITS"]] = [];
+							$weightKey = "n0";
+						}
+						else // $weightKey === false && isset($arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_TRAITS"]])
+						{
+							$weightKey = "n" . $i;
+						}
+					}
+					$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_TRAITS"]][$weightKey] = [
+						"VALUE" => $arXMLElement[$this->mess["IBLOCK_XML2_WEIGHT"]],
+						"DESCRIPTION" => $this->mess["IBLOCK_XML2_WEIGHT"],
+					];
 				}
-				elseif (!isset($arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_TRAITS"]]))
-				{
-					$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_TRAITS"]] = array();
-					$weightKey = "n0";
-				}
-				else // $weightKey === false && isset($arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_TRAITS"]])
-				{
-					$weightKey = "n".$i;
-				}
-				$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_TRAITS"]][$weightKey] = array(
-					"VALUE" => $arXMLElement[$this->mess["IBLOCK_XML2_WEIGHT"]],
-					"DESCRIPTION" => $this->mess["IBLOCK_XML2_WEIGHT"],
-				);
 				$arElement["BASE_WEIGHT"] = $this->ToFloat($arXMLElement[$this->mess["IBLOCK_XML2_WEIGHT"]])*1000;
 			}
 
 			if ($this->bCatalog)
 			{
-				if (isset($arXMLElement[$this->mess["IBLOCK_XML2_MARKING_CODE_GROUP"]]))
-				{
-					$arElement[Product\SystemField::CODE_MARKING_CODE_GROUP] = $arXMLElement[$this->mess["IBLOCK_XML2_MARKING_CODE_GROUP"]];
-				}
-				if (isset($arXMLElement[$this->mess["IBLOCK_XML2_WIDTH"]]))
-				{
-					$arElement['WIDTH'] = $this->ToFloatEmpty($arXMLElement[$this->mess["IBLOCK_XML2_WIDTH"]]);
-				}
-				if (isset($arXMLElement[$this->mess["IBLOCK_XML2_LENGTH"]]))
-				{
-					$arElement['LENGTH'] = $this->ToFloatEmpty($arXMLElement[$this->mess["IBLOCK_XML2_LENGTH"]]);
-				}
-				if (isset($arXMLElement[$this->mess["IBLOCK_XML2_HEIGHT"]]))
-				{
-					$arElement['HEIGHT'] = $this->ToFloatEmpty($arXMLElement[$this->mess["IBLOCK_XML2_HEIGHT"]]);
-				}
+				$arElement = array_merge(
+					$arElement,
+					$this->getProductFieldsFromXml($arXMLElement)
+				);
 			}
 
 			if ($cleanCml2FilesProperty)
 			{
-				$prop_id = $this->PROPERTY_MAP["CML2_FILES"];
-				if(is_array($arElement["PROPERTY_VALUES"][$prop_id]))
+				$prop_id = $this->PROPERTY_MAP["CML2_FILES"] ?? 0;
+				if (
+					isset($arElement["PROPERTY_VALUES"][$prop_id])
+					&& is_array($arElement["PROPERTY_VALUES"][$prop_id])
+				)
 				{
 					foreach($arElement["PROPERTY_VALUES"][$prop_id] as $PROPERTY_VALUE_ID => $PROPERTY_VALUE)
 					{
@@ -3441,17 +3524,20 @@ class CIBlockCMLImport
 				}
 			}
 
-			if(isset($arXMLElement[$this->mess["IBLOCK_XML2_TAXES_VALUES"]]))
+			if (isset($arXMLElement[$this->mess["IBLOCK_XML2_TAXES_VALUES"]]))
 			{
-				$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_TAXES"]] = array();
-				$i = 0;
-				foreach($arXMLElement[$this->mess["IBLOCK_XML2_TAXES_VALUES"]] as $value)
+				if (isset($this->PROPERTY_MAP["CML2_TAXES"]))
 				{
-					$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_TAXES"]]["n".$i] = array(
-						"VALUE" => $value[$this->mess["IBLOCK_XML2_TAX_VALUE"]],
-						"DESCRIPTION" => $value[$this->mess["IBLOCK_XML2_NAME"]],
-					);
-					$i++;
+					$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_TAXES"]] = [];
+					$i = 0;
+					foreach ($arXMLElement[$this->mess["IBLOCK_XML2_TAXES_VALUES"]] as $value)
+					{
+						$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_TAXES"]]["n" . $i] = [
+							"VALUE" => $value[$this->mess["IBLOCK_XML2_TAX_VALUE"]],
+							"DESCRIPTION" => $value[$this->mess["IBLOCK_XML2_NAME"]],
+						];
+						$i++;
+					}
 				}
 			}
 
@@ -3481,9 +3567,12 @@ class CIBlockCMLImport
 			if(isset($arXMLElement[$this->mess["IBLOCK_XML2_BASE_UNIT"]]))
 			{
 				$unitData = $this->convertBaseUnitFromXmlToPropertyValue($arXMLElement[$this->mess["IBLOCK_XML2_BASE_UNIT"]]);
-				$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_BASE_UNIT"]] = array(
-					"n0" => $unitData,
-				);
+				if (isset($this->PROPERTY_MAP["CML2_BASE_UNIT"]))
+				{
+					$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_BASE_UNIT"]] = [
+						"n0" => $unitData,
+					];
+				}
 				if ($unitData["DESCRIPTION"])
 				{
 					$arElement['MEASURE'] = $unitData["DESCRIPTION"];
@@ -3504,7 +3593,7 @@ class CIBlockCMLImport
 					if(!array_key_exists($prop_id, $this->PROPERTY_MAP))
 					{
 						if($prop_id == "CML2_CODE")
-							$arElement["CODE"] = isset($value[$this->mess["IBLOCK_XML2_VALUE"]])? $value[$this->mess["IBLOCK_XML2_VALUE"]]: "";
+							$arElement["CODE"] = $value[$this->mess["IBLOCK_XML2_VALUE"]] ?? "";
 						elseif($prop_id == "CML2_ACTIVE")
 						{
 							$value = array_pop($value);
@@ -3658,29 +3747,33 @@ class CIBlockCMLImport
 			}
 
 			//If there is no BaseUnit specified check prices for it
-			if(
-				(
-					!array_key_exists($this->PROPERTY_MAP["CML2_BASE_UNIT"], $arElement["PROPERTY_VALUES"])
-					|| (
-						is_array($arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_BASE_UNIT"]])
-						&& array_key_exists("bOld", $arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_BASE_UNIT"]])
-					)
-				)
-				&& isset($arXMLElement[$this->mess["IBLOCK_XML2_PRICES"]])
-			)
+			if (isset($this->PROPERTY_MAP["CML2_BASE_UNIT"]))
 			{
-				foreach($arXMLElement[$this->mess["IBLOCK_XML2_PRICES"]] as $price)
-				{
-					if(
-						isset($price[$this->mess["IBLOCK_XML2_PRICE_TYPE_ID"]])
-						&& array_key_exists($price[$this->mess["IBLOCK_XML2_PRICE_TYPE_ID"]], $this->PRICES_MAP)
-						&& array_key_exists($this->mess["IBLOCK_XML2_MEASURE"], $price)
+				if (
+					(
+						!array_key_exists($this->PROPERTY_MAP["CML2_BASE_UNIT"], $arElement["PROPERTY_VALUES"])
+						|| (
+							is_array($arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_BASE_UNIT"]])
+							&& array_key_exists("bOld",
+								$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_BASE_UNIT"]])
+						)
 					)
+					&& isset($arXMLElement[$this->mess["IBLOCK_XML2_PRICES"]])
+				)
+				{
+					foreach ($arXMLElement[$this->mess["IBLOCK_XML2_PRICES"]] as $price)
 					{
-						$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_BASE_UNIT"]] = array(
-							"n0" => $this->convertBaseUnitFromXmlToPropertyValue($price[$this->mess["IBLOCK_XML2_MEASURE"]]),
-						);
-						break;
+						if (
+							isset($price[$this->mess["IBLOCK_XML2_PRICE_TYPE_ID"]])
+							&& array_key_exists($price[$this->mess["IBLOCK_XML2_PRICE_TYPE_ID"]], $this->PRICES_MAP)
+							&& array_key_exists($this->mess["IBLOCK_XML2_MEASURE"], $price)
+						)
+						{
+							$arElement["PROPERTY_VALUES"][$this->PROPERTY_MAP["CML2_BASE_UNIT"]] = [
+								"n0" => $this->convertBaseUnitFromXmlToPropertyValue($price[$this->mess["IBLOCK_XML2_MEASURE"]]),
+							];
+							break;
+						}
 					}
 				}
 			}
@@ -3698,8 +3791,13 @@ class CIBlockCMLImport
 					}
 				}
 
-				if(intval($arElement["MODIFIED_BY"]) <= 0 && $this->currentUserId > 0)
-					$arElement["MODIFIED_BY"] = $this->currentUserId;
+				if (!isset($arElement['MODIFIED_BY']) || (int)$arElement['MODIFIED_BY'] <= 0)
+				{
+					if ($this->currentUserId > 0)
+					{
+						$arElement['MODIFIED_BY'] = $this->currentUserId;
+					}
+				}
 
 				if(!array_key_exists("CODE", $arElement) && is_array($this->translit_on_update))
 				{
@@ -3858,8 +3956,6 @@ class CIBlockCMLImport
 		}
 		elseif($arElement["ID"] && $this->bCatalog && $this->isCatalogIblock)
 		{
-			$CML_LINK = $this->PROPERTY_MAP["CML2_LINK"];
-
 			$arProduct = array(
 				"ID" => $arElement["ID"],
 			);
@@ -3869,7 +3965,16 @@ class CIBlockCMLImport
 			elseif(isset($arElement["STORE_AMOUNT"]) && !empty($arElement["STORE_AMOUNT"]))
 				$arProduct["QUANTITY"] = $this->countTotalQuantity($arElement["STORE_AMOUNT"]);
 
-			$CML_LINK_ELEMENT = $arElement["PROPERTY_VALUES"][$CML_LINK];
+			$CML_LINK = '';
+			$CML_LINK_ELEMENT = 0;
+			if (isset($this->PROPERTY_MAP["CML2_LINK"]))
+			{
+				$CML_LINK = $this->PROPERTY_MAP["CML2_LINK"];
+				if (isset($arElement["PROPERTY_VALUES"][$CML_LINK]))
+				{
+					$CML_LINK_ELEMENT = $arElement["PROPERTY_VALUES"][$CML_LINK];
+				}
+			}
 			if (is_array($CML_LINK_ELEMENT) && isset($CML_LINK_ELEMENT["n0"]))
 			{
 				$CML_LINK_ELEMENT = $CML_LINK_ELEMENT["n0"];
@@ -3909,24 +4014,44 @@ class CIBlockCMLImport
 
 				//Check if all the taxes exists in BSM catalog
 				$arTaxMap = array();
-				$rsTaxProperty = CIBlockElement::GetProperty($this->arProperties[$CML_LINK]["LINK_IBLOCK_ID"], $CML_LINK_ELEMENT, "sort", "asc", array("CODE" => "CML2_TAXES"));
-				while($arTaxProperty = $rsTaxProperty->Fetch())
+				if ($CML_LINK !== '' && isset($this->arProperties[$CML_LINK]) && $CML_LINK_ELEMENT > 0)
 				{
-					if(
-						$arTaxProperty["VALUE"] <> ''
-						&& $arTaxProperty["DESCRIPTION"] <> ''
-						&& !array_key_exists($arTaxProperty["DESCRIPTION"], $arTaxMap)
-					)
+					$rsTaxProperty = CIBlockElement::GetProperty(
+						$this->arProperties[$CML_LINK]["LINK_IBLOCK_ID"],
+						$CML_LINK_ELEMENT,
+						"sort",
+						"asc",
+						[
+							"CODE" => "CML2_TAXES",
+						]
+					);
+					while ($arTaxProperty = $rsTaxProperty->Fetch())
 					{
-						$arTaxMap[$arTaxProperty["DESCRIPTION"]] = array(
-							"RATE" => $this->ToFloat($arTaxProperty["VALUE"]),
-							"ID" => $this->CheckTax($arTaxProperty["DESCRIPTION"], $this->ToFloat($arTaxProperty["VALUE"])),
-						);
+						if (
+							$arTaxProperty["DESCRIPTION"] <> ''
+							&& !array_key_exists($arTaxProperty["DESCRIPTION"], $arTaxMap)
+						)
+						{
+							if ($arTaxProperty["VALUE"] === '' || !is_numeric($arTaxProperty["VALUE"]))
+							{
+								$taxValue = null;
+							}
+							else
+							{
+								$taxValue = $this->ToFloat($arTaxProperty["VALUE"]);
+							}
+							$arTaxMap[$arTaxProperty["DESCRIPTION"]] = [
+								"RATE" => $this->ToFloat($arTaxProperty["VALUE"]),
+								"ID" => $this->CheckTax($arTaxProperty["DESCRIPTION"], $taxValue),
+							];
+						}
 					}
+					unset($rsTaxProperty);
 				}
 
 				//First find out if all the prices have TAX_IN_SUM true
 				$TAX_IN_SUM = "Y";
+
 				foreach($arElement["PRICES"] as $price)
 				{
 					if($price["PRICE"]["TAX_IN_SUM"] !== "true")
@@ -3978,33 +4103,10 @@ class CIBlockCMLImport
 				$arProduct["VAT_INCLUDED"] = $TAX_IN_SUM;
 			}
 
-			$productSystemFields = Product\SystemField::getFieldList();
-			$useMarkingCode = isset($productSystemFields[Product\SystemField::CODE_MARKING_CODE_GROUP]);
-			if ($useMarkingCode && isset($arElement[Product\SystemField::CODE_MARKING_CODE_GROUP]))
-			{
-				$arProduct[Product\SystemField::CODE_MARKING_CODE_GROUP] = ($arElement[Product\SystemField::CODE_MARKING_CODE_GROUP] === '' ? null : $arElement[Product\SystemField::CODE_MARKING_CODE_GROUP]);
-			}
-			if (!empty($productSystemFields))
-			{
-				Product\SystemField::prepareRow($arProduct);
-			}
-
-			if (isset($arElement['MEASURE']))
-			{
-				$arProduct['MEASURE'] = ($arElement['MEASURE'] === '' ? null : (int)$arElement['MEASURE']);
-			}
-			if (isset($arElement['WIDTH']))
-			{
-				$arProduct['WIDTH'] = ($arElement['WIDTH'] === '' ? null : $arElement['WIDTH']);
-			}
-			if (isset($arElement['LENGTH']))
-			{
-				$arProduct['LENGTH'] = ($arElement['LENGTH'] === '' ? null : $arElement['LENGTH']);
-			}
-			if (isset($arElement['HEIGHT']))
-			{
-				$arProduct['HEIGHT'] = ($arElement['HEIGHT'] === '' ? null : $arElement['HEIGHT']);
-			}
+			$arProduct = array_merge(
+				$arProduct,
+				$this->getPreparedProductFieldsFromArray($arElement)
+			);
 
 			$productCache = Catalog\Model\Product::getCacheItem($arProduct['ID'], true);
 			if (!empty($productCache))
@@ -4059,6 +4161,82 @@ class CIBlockCMLImport
 
 
 		return $arElement["ID"];
+	}
+
+	protected function getProductFieldsFromXml(array $xmlElement): array
+	{
+		$result = [];
+
+		if (array_key_exists($this->mess['IBLOCK_XML2_MARKING_CODE_GROUP'], $xmlElement))
+		{
+			$result[Product\SystemField\MarkingCodeGroup::FIELD_ID] = $xmlElement[$this->mess['IBLOCK_XML2_MARKING_CODE_GROUP']] ?? '';
+		}
+		if (array_key_exists($this->mess['IBLOCK_XML2_PRODUCT_MAPPING'], $xmlElement))
+		{
+			$result[Product\SystemField\ProductMapping::FIELD_ID] = [];
+			if (is_array($xmlElement[$this->mess['IBLOCK_XML2_PRODUCT_MAPPING']]))
+			{
+				foreach ($xmlElement[$this->mess['IBLOCK_XML2_PRODUCT_MAPPING']] as $value)
+				{
+					$value = (string)$value;
+					if ($value !== '')
+					{
+						$result[Product\SystemField\ProductMapping::FIELD_ID][] = $value;
+					}
+				}
+			}
+		}
+		if (isset($xmlElement[$this->mess['IBLOCK_XML2_WIDTH']]))
+		{
+			$result['WIDTH'] = $this->ToFloatEmpty($xmlElement[$this->mess['IBLOCK_XML2_WIDTH']]);
+		}
+		if (isset($xmlElement[$this->mess['IBLOCK_XML2_LENGTH']]))
+		{
+			$result['LENGTH'] = $this->ToFloatEmpty($xmlElement[$this->mess['IBLOCK_XML2_LENGTH']]);
+		}
+		if (isset($xmlElement[$this->mess['IBLOCK_XML2_HEIGHT']]))
+		{
+			$result['HEIGHT'] = $this->ToFloatEmpty($xmlElement[$this->mess['IBLOCK_XML2_HEIGHT']]);
+		}
+
+		return $result;
+	}
+
+	protected function getPreparedProductFieldsFromArray(array $element): array
+	{
+		$result = [];
+
+		$productSystemFields = Product\SystemField::getImportSelectFields();
+		if (!empty($productSystemFields))
+		{
+			foreach ($productSystemFields as $index => $value)
+			{
+				$fieldName = is_string($index) ? $index : $value;
+				if (isset($element[$fieldName]))
+				{
+					$result[$fieldName] = $element[$fieldName] === '' ? null : $element[$fieldName];
+				}
+			}
+			unset($fieldName, $index, $value);
+
+			Product\SystemField::prepareRow($result, Product\SystemField::OPERATION_IMPORT);
+		}
+
+		if (isset($element['MEASURE']))
+		{
+			$result['MEASURE'] = ($element['MEASURE'] === '' ? null : (int)$element['MEASURE']);
+		}
+
+		foreach ($this->productSizes as $fieldName)
+		{
+			if (isset($element[$fieldName]))
+			{
+				$result[$fieldName] = $element[$fieldName] === '' ? null : $element[$fieldName];
+			}
+		}
+		unset($fieldName);
+
+		return $result;
 	}
 
 	function ImportElementPrices($arXMLElement, &$counter, $arParent = false)
@@ -4293,14 +4471,21 @@ class CIBlockCMLImport
 				while($arTaxProperty = $rsTaxProperty->Fetch())
 				{
 					if(
-						$arTaxProperty["VALUE"] <> ''
-						&& $arTaxProperty["DESCRIPTION"] <> ''
+						$arTaxProperty["DESCRIPTION"] <> ''
 						&& !array_key_exists($arTaxProperty["DESCRIPTION"], $arTaxMap)
 					)
 					{
+						if ($arTaxProperty["VALUE"] === '' || !is_numeric($arTaxProperty["VALUE"]))
+						{
+							$taxValue = null;
+						}
+						else
+						{
+							$taxValue = $this->ToFloat($arTaxProperty["VALUE"]);
+						}
 						$arTaxMap[$arTaxProperty["DESCRIPTION"]] = array(
 							"RATE" => $this->ToFloat($arTaxProperty["VALUE"]),
-							"ID" => $this->CheckTax($arTaxProperty["DESCRIPTION"], $this->ToFloat($arTaxProperty["VALUE"])),
+							"ID" => $this->CheckTax($arTaxProperty["DESCRIPTION"], $taxValue),
 						);
 					}
 				}
@@ -4310,6 +4495,7 @@ class CIBlockCMLImport
 					!$arTaxMap
 					&& $this->use_offers
 					&& $hashPosition !== false
+					&& isset($this->PROPERTY_MAP["CML2_LINK"])
 					&& $this->arProperties[$this->PROPERTY_MAP["CML2_LINK"]]["LINK_IBLOCK_ID"] > 0
 				)
 				{
@@ -4320,14 +4506,21 @@ class CIBlockCMLImport
 						while($arTaxProperty = $rsTaxProperty->Fetch())
 						{
 							if(
-								$arTaxProperty["VALUE"] <> ''
-								&& $arTaxProperty["DESCRIPTION"] <> ''
+								$arTaxProperty["DESCRIPTION"] <> ''
 								&& !array_key_exists($arTaxProperty["DESCRIPTION"], $arTaxMap)
 							)
 							{
+								if ($arTaxProperty["VALUE"] === '' || !is_numeric($arTaxProperty["VALUE"]))
+								{
+									$taxValue = null;
+								}
+								else
+								{
+									$taxValue = $this->ToFloat($arTaxProperty["VALUE"]);
+								}
 								$arTaxMap[$arTaxProperty["DESCRIPTION"]] = array(
 									"RATE" => $this->ToFloat($arTaxProperty["VALUE"]),
-									"ID" => $this->CheckTax($arTaxProperty["DESCRIPTION"], $this->ToFloat($arTaxProperty["VALUE"])),
+									"ID" => $this->CheckTax($arTaxProperty["DESCRIPTION"], $taxValue),
 								);
 							}
 						}
@@ -4883,8 +5076,13 @@ class CIBlockCMLImport
 					}
 				}
 
-				if(intval($arSection["MODIFIED_BY"]) <= 0 && $this->currentUserId > 0)
-					$arSection["MODIFIED_BY"] = $this->currentUserId;
+				if (!isset($arSection['MODIFIED_BY']) || (int)$arSection['MODIFIED_BY'] <= 0)
+				{
+					if ($this->currentUserId > 0)
+					{
+						$arSection['MODIFIED_BY'] = $this->currentUserId;
+					}
+				}
 
 				$res = $obSection->Update($arDBSection["ID"], $arSection);
 				if(!$res)
@@ -5097,7 +5295,7 @@ class CIBlockCMLImport
 	 * @param array $counters
 	 * @return int
 	 */
-	public function updateCounters(array $counters)
+	public function updateCounters(array $counters): int
 	{
 		$result = 0;
 
@@ -5120,7 +5318,7 @@ class CIBlockCMLImport
 	 * @param bool $description
 	 * @return array
 	 */
-	public static function getIblockCacheModeList($description = false)
+	public static function getIblockCacheModeList(bool $description = false): array
 	{
 		if ($description)
 		{
@@ -5142,61 +5340,71 @@ class CIBlockCMLImport
 	/**
 	 * @return void
 	 */
-	public function freezeIblockCache()
+	public function freezeIblockCache(): void
 	{
 		if (
 			isset($this->next_step['IBLOCK_ID'])
 			&& $this->next_step['IBLOCK_ID'] > 0
 			&& !$this->isIblockCacheModeNormal()
 		)
-			CIblock::disableClearTagCache();
+		{
+			CIBlock::disableClearTagCache();
+		}
 	}
 
 	/**
 	 * @return void
 	 */
-	public function unFreezeIblockCache()
+	public function unFreezeIblockCache(): void
 	{
 		if (
 			isset($this->next_step['IBLOCK_ID'])
 			&& $this->next_step['IBLOCK_ID'] > 0
 			&& !$this->isIblockCacheModeNormal()
 		)
-			CIblock::enableClearTagCache();
+		{
+			CIBlock::enableClearTagCache();
+		}
 	}
 
 	/**
 	 * @return void
 	 */
-	public function clearIblockCacheOnHit()
+	public function clearIblockCacheOnHit(): void
 	{
 		if (
 			!isset($this->next_step['IBLOCK_ID'])
 			|| $this->next_step['IBLOCK_ID'] <= 0
 			|| !$this->isIblockCacheModeHit()
 		)
+		{
 			return;
+		}
+
 		CIBlock::clearIblockTagCache($this->next_step['IBLOCK_ID']);
 	}
 
 	/**
 	 * @return void
 	 */
-	public function clearIblockCacheAfterFinal()
+	public function clearIblockCacheAfterFinal(): void
 	{
 		if (
 			!isset($this->next_step['IBLOCK_ID'])
 			|| $this->next_step['IBLOCK_ID'] <= 0
 			|| !$this->isIblockCacheModeFinal()
 		)
+		{
 			return;
+		}
+
 		CIBlock::clearIblockTagCache($this->next_step['IBLOCK_ID']);
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getIblockCacheMode()
+	public function getIblockCacheMode(): string
 	{
 		return $this->iblockCacheMode;
 	}
@@ -5204,33 +5412,33 @@ class CIBlockCMLImport
 	/**
 	 * @return bool
 	 */
-	public function isIblockCacheModeNormal()
+	public function isIblockCacheModeNormal(): bool
 	{
-		return $this->getIblockCacheMode() == self::IBLOCK_CACHE_NORMAL;
+		return $this->getIblockCacheMode() === self::IBLOCK_CACHE_NORMAL;
 	}
 
 	/**
 	 * @return bool
 	 */
-	public function isIblockCacheModeHit()
+	public function isIblockCacheModeHit(): bool
 	{
-		return $this->getIblockCacheMode() == self::IBLOCK_CACHE_HIT;
+		return $this->getIblockCacheMode() === self::IBLOCK_CACHE_HIT;
 	}
 
 	/**
 	 * @return bool
 	 */
-	public function isIblockCacheModeFinal()
+	public function isIblockCacheModeFinal(): bool
 	{
-		return $this->getIblockCacheMode() == self::IBLOCK_CACHE_FINAL;
+		return $this->getIblockCacheMode() === self::IBLOCK_CACHE_FINAL;
 	}
 
 	/**
 	 * @return bool
 	 */
-	public function isIblockCacheModeFreeze()
+	public function isIblockCacheModeFreeze(): bool
 	{
-		return $this->getIblockCacheMode() == self::IBLOCK_CACHE_FREEZE;
+		return $this->getIblockCacheMode() === self::IBLOCK_CACHE_FREEZE;
 	}
 
 	/**
@@ -5238,7 +5446,7 @@ class CIBlockCMLImport
 	 *
 	 * @return array
 	 */
-	protected function getStoreList()
+	protected function getStoreList(): array
 	{
 		$result = array();
 		if ($this->bCatalog)
@@ -5261,7 +5469,7 @@ class CIBlockCMLImport
 	 *
 	 * @return array
 	 */
-	protected function getActiveStores()
+	protected function getActiveStores(): array
 	{
 		$result = array();
 		if ($this->bCatalog)
@@ -5309,8 +5517,9 @@ class CIBlockCMLExport
 	var $file_dir = false;
 	/** @var bool|array */
 	var $next_step = false;
+	/** @var array */
 	var $arIBlock = false;
-	var $prices = false;
+	var $prices = array();
 	var $only_price = false;
 	var $download_files = true;
 	var $export_as_url = false;
@@ -5346,7 +5555,7 @@ class CIBlockCMLExport
 				{
 					$this->next_step["catalog"] = true;
 					$this->prices = array();
-					foreach (CCatalogGroup::GetListArray() as $arPrice)
+					foreach (Catalog\GroupTable::getTypeList() as $arPrice)
 					{
 						$this->prices[$arPrice["ID"]] = $arPrice["NAME"];
 					}
@@ -5605,17 +5814,21 @@ class CIBlockCMLExport
 						$arField,
 					)
 				);
-				while($arEnum = $rsEnum->GetNext())
+				if (is_object($rsEnum))
 				{
-					fwrite($this->fp,
-						"\t\t\t\t\t<".GetMessage("IBLOCK_XML2_CHOICE").">\n"
-						.$this->formatXMLNode(6, GetMessage("IBLOCK_XML2_ID"), $arEnum["XML_ID"])
-						.$this->formatXMLNode(6, GetMessage("IBLOCK_XML2_VALUE"), $arEnum["VALUE"])
-						.$this->formatXMLNode(6, GetMessage("IBLOCK_XML2_BY_DEFAULT"), ($arEnum["DEF"]=="Y"? "true": "false"))
-						.$this->formatXMLNode(6, GetMessage("IBLOCK_XML2_SORT"), intval($arEnum["SORT"]))
-						."\t\t\t\t\t</".GetMessage("IBLOCK_XML2_CHOICE").">\n"
-					);
+					while ($arEnum = $rsEnum->GetNext())
+					{
+						fwrite($this->fp,
+							"\t\t\t\t\t<".GetMessage("IBLOCK_XML2_CHOICE").">\n"
+							.$this->formatXMLNode(6, GetMessage("IBLOCK_XML2_ID"), $arEnum["XML_ID"])
+							.$this->formatXMLNode(6, GetMessage("IBLOCK_XML2_VALUE"), $arEnum["VALUE"])
+							.$this->formatXMLNode(6, GetMessage("IBLOCK_XML2_BY_DEFAULT"), ($arEnum["DEF"] == "Y" ? "true" : "false"))
+							.$this->formatXMLNode(6, GetMessage("IBLOCK_XML2_SORT"), intval($arEnum["SORT"]))
+							."\t\t\t\t\t</".GetMessage("IBLOCK_XML2_CHOICE").">\n"
+						);
+					}
 				}
+				unset($rsEnum);
 
 				fwrite($this->fp, "\t\t\t\t</".GetMessage("IBLOCK_XML2_CHOICE_VALUES").">\n");
 			}
@@ -6069,6 +6282,7 @@ class CIBlockCMLExport
 			{
 				fwrite($this->fp,
 					$this->formatXMLNode(2, GetMessage("IBLOCK_XML2_BX_CODE"), $this->arIBlock["CODE"])
+					.$this->formatXMLNode(2, GetMessage("IBLOCK_XML2_BX_API_CODE"), (string)$this->arIBlock["API_CODE"])
 					.$this->formatXMLNode(2, GetMessage("IBLOCK_XML2_BX_SORT"), intval($this->arIBlock["SORT"]))
 					.$this->formatXMLNode(2, GetMessage("IBLOCK_XML2_BX_LIST_URL"), $this->arIBlock["LIST_PAGE_URL"])
 					.$this->formatXMLNode(2, GetMessage("IBLOCK_XML2_BX_DETAIL_URL"), $this->arIBlock["DETAIL_PAGE_URL"])
@@ -6323,7 +6537,7 @@ class CIBlockCMLExport
 					$xml_id = $parent_xml_id;
 				else
 				{
-					list($productXmlId, $offerXmlId) = explode("#", $xml_id, 2);
+					[$productXmlId, $offerXmlId] = explode("#", $xml_id, 2);
 					if ($productXmlId !== $parent_xml_id)
 						$xml_id = $parent_xml_id."#".$xml_id;
 				}
@@ -6369,10 +6583,29 @@ class CIBlockCMLExport
 					$measure[$arIDUnit["ID"]] = $arIDUnit["CODE"];
 			}
 
+			static $systemFieldTypes = null;
+			if (!isset($systemFieldTypes))
+			{
+				$systemFieldTypes = [];
+				if (Product\SystemField\MarkingCodeGroup::isAllowed())
+				{
+					$systemFieldTypes[Product\SystemField\MarkingCodeGroup::FIELD_ID] = array_fill_keys(
+						Product\SystemField\MarkingCodeGroup::getAllowedProductTypeList(),
+						true
+					);
+				}
+				if (Product\SystemField\ProductMapping::isAllowed())
+				{
+					$systemFieldTypes[Product\SystemField\ProductMapping::FIELD_ID] = array_fill_keys(
+						Product\SystemField\ProductMapping::getAllowedProductTypeList(),
+						true
+					);
+				}
+			}
+
 			//TODO: change this code after refactoring product system fields
 			$selectFields = ['ID', 'MEASURE', 'QUANTITY', 'TYPE', 'WIDTH', 'LENGTH', 'HEIGHT'];
-			$productSystemFields = Catalog\Product\SystemField::getFieldList();
-			$useMarkingCode = isset($productSystemFields[Product\SystemField::CODE_MARKING_CODE_GROUP]);
+			$productSystemFields = Catalog\Product\SystemField::getExportSelectFields();
 
 			$selectFields = array_merge($selectFields, $productSystemFields);
 			$iterator = Catalog\ProductTable::getList([
@@ -6383,34 +6616,61 @@ class CIBlockCMLExport
 			unset($iterator);
 			if (!empty($row) && is_array($row))
 			{
-				Product\SystemField::convertRow($row);
+				Product\SystemField::prepareRow($row, Product\SystemField::OPERATION_EXPORT);
 				$row['TYPE'] = (int)$row['TYPE'];
+
+				if (
+					isset($systemFieldTypes[Product\SystemField\MarkingCodeGroup::FIELD_ID])
+					&& isset($systemFieldTypes[Product\SystemField\MarkingCodeGroup::FIELD_ID][$row['TYPE']])
+				)
+				{
+					fwrite(
+						$this->fp,
+						"\t\t\t\t<".GetMessage("IBLOCK_XML2_MARKING_CODE_GROUP").">"
+						.htmlspecialcharsbx((string)$row[Product\SystemField\MarkingCodeGroup::FIELD_ID])
+						."</".GetMessage("IBLOCK_XML2_MARKING_CODE_GROUP").">\n"
+					);
+				}
+				if (
+					isset($systemFieldTypes[Product\SystemField\ProductMapping::FIELD_ID])
+					&& isset($systemFieldTypes[Product\SystemField\ProductMapping::FIELD_ID][$row['TYPE']])
+				)
+				{
+					fwrite(
+						$this->fp,
+						"\t\t\t\t<".GetMessage("IBLOCK_XML2_PRODUCT_MAPPING").">\n"
+					);
+					if (
+						!empty($row[Product\SystemField\ProductMapping::FIELD_ID])
+						&& is_array($row[Product\SystemField\ProductMapping::FIELD_ID])
+					)
+					{
+						foreach ($row[Product\SystemField\ProductMapping::FIELD_ID] as $value)
+						{
+							fwrite(
+								$this->fp,
+								"\t\t\t\t\t<".GetMessage('IBLOCK_XML2_ID').">"
+								.htmlspecialcharsbx($value)
+								."</".GetMessage('IBLOCK_XML2_ID').">\n"
+							);
+						}
+					}
+					fwrite(
+						$this->fp,
+						"\t\t\t\t</".GetMessage("IBLOCK_XML2_PRODUCT_MAPPING").">\n"
+					);
+				}
+
 				if (
 					$row['TYPE'] == Catalog\ProductTable::TYPE_PRODUCT
 					|| $row['TYPE'] == Catalog\ProductTable::TYPE_SET
 					|| $row['TYPE'] == Catalog\ProductTable::TYPE_OFFER
 					|| (
 						$row['TYPE'] == Catalog\ProductTable::TYPE_SKU
-						&& (string)Main\Config\Option::get('catalog', 'show_catalog_tab_with_offers') == 'Y'
+						&& Main\Config\Option::get('catalog', 'show_catalog_tab_with_offers') === 'Y'
 					)
 				)
 				{
-					if (
-						$useMarkingCode
-						&& (
-							$row['TYPE'] == Catalog\ProductTable::TYPE_PRODUCT
-							|| $row['TYPE'] == Catalog\ProductTable::TYPE_OFFER
-						)
-					)
-					{
-						fwrite(
-							$this->fp,
-							"\t\t\t\t<".GetMessage("IBLOCK_XML2_MARKING_CODE_GROUP").">"
-							.htmlspecialcharsbx((string)$row["MARKING_CODE_GROUP"])
-							."</".GetMessage("IBLOCK_XML2_MARKING_CODE_GROUP").">\n"
-						);
-					}
-
 					$row['MEASURE'] = (int)$row['MEASURE'];
 					$xmlMeasure = GetMessage("IBLOCK_XML2_PCS");
 					if ($row["MEASURE"] > 0 && isset($measure[$row["MEASURE"]]))

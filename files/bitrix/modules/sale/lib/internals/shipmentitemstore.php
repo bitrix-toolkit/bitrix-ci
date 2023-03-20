@@ -22,7 +22,20 @@ Loc::loadMessages(__FILE__);
  * </ul>
  *
  * @package Bitrix\Sale
- **/
+ *
+ * DO NOT WRITE ANYTHING BELOW THIS
+ *
+ * <<< ORMENTITYANNOTATION
+ * @method static EO_ShipmentItemStore_Query query()
+ * @method static EO_ShipmentItemStore_Result getByPrimary($primary, array $parameters = array())
+ * @method static EO_ShipmentItemStore_Result getById($id)
+ * @method static EO_ShipmentItemStore_Result getList(array $parameters = array())
+ * @method static EO_ShipmentItemStore_Entity getEntity()
+ * @method static \Bitrix\Sale\Internals\EO_ShipmentItemStore createObject($setDefaultValues = true)
+ * @method static \Bitrix\Sale\Internals\EO_ShipmentItemStore_Collection createCollection()
+ * @method static \Bitrix\Sale\Internals\EO_ShipmentItemStore wakeUpObject($row)
+ * @method static \Bitrix\Sale\Internals\EO_ShipmentItemStore_Collection wakeUpCollection($rows)
+ */
 
 class ShipmentItemStoreTable extends Main\Entity\DataManager
 {
@@ -54,6 +67,12 @@ class ShipmentItemStoreTable extends Main\Entity\DataManager
 				'data_type' => 'integer',
 				'required' => true,
 				'title' => Loc::getMessage('STORE_BARCODE_ENTITY_ORDER_DELIVERY_BASKET_ID_FIELD'),
+			),
+			'ORDER_DELIVERY_BASKET' => array(
+				'data_type' => 'Bitrix\Sale\Internals\ShipmentItem',
+				'reference' => array(
+					'=this.ORDER_DELIVERY_BASKET_ID' => 'ref.ID'
+				)
 			),
 			'BASKET_ID' => array(
 				'data_type' => 'integer',

@@ -157,53 +157,61 @@ class Product
 
 	private function fillCatalogData()
 	{
-		$this->catalogData = array();
-		$this->measuresIds = array();
+		$this->catalogData = [];
+		$this->measuresIds = [];
 
-		if(empty($this->iblockData))
+		if (empty($this->iblockData))
+		{
 			return;
+		}
 
-		$setIds = array();
+		$setIds = [];
 
-		$res = Catalog\ProductTable::getList(array(
-			'select' => array(
+		$res = Catalog\ProductTable::getList([
+			'select' => [
 				'ID', 'TYPE',
 				'AVAILABLE', 'QUANTITY', 'QUANTITY_TRACE', 'CAN_BUY_ZERO',
 				'WEIGHT', 'WIDTH', 'LENGTH', 'HEIGHT',
 				'MEASURE', 'BARCODE_MULTI', 'VAT_ID'
-			),
-			'filter' => array('@ID' => array_keys($this->iblockData))
-		));
-		while($row = $res->fetch())
+			],
+			'filter' => ['@ID' => array_keys($this->iblockData)]
+		]);
+		while ($row = $res->fetch())
 		{
 			$this->catalogData[$row['ID']] = $row;
 			$this->measuresIds[] = $row['MEASURE'];
 
-			if($row['TYPE'] == Catalog\ProductTable::TYPE_SET)
-				$setIds[] = $row['ID'];
-
-			if(isset($this->resultData[$row['ID']]))
+			$type = (int)$row['TYPE'];
+			if($type === Catalog\ProductTable::TYPE_SET)
 			{
+				$setIds[] = $row['ID'];
+			}
+
+			if (isset($this->resultData[$row['ID']]))
+			{
+				$this->resultData[$row['ID']]['TYPE'] = Sale\Internals\Catalog\ProductTypeMapper::getType($type);
 				$this->resultData[$row['ID']]['DIMENSIONS'] = serialize(
-					array(
+					[
 						"WIDTH" => $row["WIDTH"],
 						"HEIGHT" => $row["HEIGHT"],
 						"LENGTH" => $row["LENGTH"]
-					)
+					]
 				);
 
-				$this->resultData[$row['ID']]['AVAILABLE'] = floatval($row["QUANTITY"]);
+				$this->resultData[$row['ID']]['AVAILABLE'] = (float)$row["QUANTITY"];
 				$this->resultData[$row['ID']]['WEIGHT'] = $row["WEIGHT"];
 				$this->resultData[$row['ID']]['BARCODE_MULTI'] = $row["BARCODE_MULTI"];
-				$this->resultData[$row['ID']]["SET_ITEMS"] = array();
+				$this->resultData[$row['ID']]["SET_ITEMS"] = [];
 				$this->resultData[$row['ID']]["IS_SET_ITEM"] = "N";
 				$this->resultData[$row['ID']]["VAT_ID"] = $row["VAT_ID"];
 				$this->resultData[$row['ID']]["IS_SET_PARENT"] = "N"; //empty($arSetInfo) ? "N" : "Y";
 			}
 		}
 
-		if(!empty($setIds))
+		if (!empty($setIds))
+		{
 			$this->fillSetInfo($setIds);
+		}
 	}
 
 	private function fillSetInfo($setIds)
@@ -565,14 +573,23 @@ class Product
 
 		foreach ($properties as $prop)
 		{
-			if ($prop['XML_ID'] == 'CML2_LINK' || $prop['PROPERTY_TYPE'] == 'F')
+			if (
+				(isset($prop['XML_ID']) && $prop['XML_ID'] === 'CML2_LINK')
+				|| $prop['PROPERTY_TYPE'] == 'F'
+			)
+			{
 				continue;
+			}
 
-			if(is_array($prop["VALUE"]) && empty($prop["VALUE"]))
+			if (is_array($prop["VALUE"]) && empty($prop["VALUE"]))
+			{
 				continue;
+			}
 
-			if(!is_array($prop["VALUE"]) && $prop["VALUE"] == '')
+			if (!is_array($prop["VALUE"]) && $prop["VALUE"] == '')
+			{
 				continue;
+			}
 
 			$displayProperty = \CIBlockFormatProperties::GetDisplayValue(array(), $prop, '');
 
@@ -855,52 +872,76 @@ class Product
 	{
 		$res = "";
 
-		if ($propData["MULTIPLE"] == "Y")
+		if ($propData["MULTIPLE"] === "Y")
 		{
 			$arVal = array();
 			if (!is_array($value))
 			{
+				$value = (string)$value;
 				if (mb_strpos($value, ",") !== false)
+				{
 					$arVal = explode(",", $value);
+				}
 				else
+				{
 					$arVal[] = $value;
+				}
 			}
 			else
+			{
 				$arVal = $value;
+			}
 
 			if (count($arVal) > 0)
 			{
 				foreach ($arVal as $key => $val)
 				{
-					if ($propData["PROPERTY_TYPE"] == "F")
+					if ($propData["PROPERTY_TYPE"] === "F")
 					{
+						$val = (string)$val;
 						if ($res <> '')
+						{
 							$res .= "<br/> ".self::showImageOrDownloadLink(trim($val), $orderId, $arSize);
+						}
 						else
+						{
 							$res = self::showImageOrDownloadLink(trim($val), $orderId, $arSize);
+						}
 					}
 					else
 					{
 						if ($res <> '')
+						{
 							$res .= ", ".$val;
+						}
 						else
+						{
 							$res = $val;
+						}
 					}
 				}
 			}
 		}
 		else
 		{
-			if ($propData["PROPERTY_TYPE"] == "F")
+			if ($propData["PROPERTY_TYPE"] === "F")
+			{
 				$res = self::showImageOrDownloadLink($value, $orderId, $arSize);
-			elseif($propData["PROPERTY_TYPE"] == "S" && $propData["USER_TYPE"] == "HTML" && isset($value["TEXT"]))
+			}
+			elseif($propData["PROPERTY_TYPE"] === "S" && $propData["USER_TYPE"] === "HTML" && isset($value["TEXT"]))
+			{
 				$res = $value["TEXT"];
+			}
 			else
+			{
 				$res = $value;
+			}
 		}
 
 		if ($res == '')
+		{
 			$res = null;
+		}
 
 		return $res;
 	}

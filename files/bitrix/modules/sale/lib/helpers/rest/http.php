@@ -16,14 +16,32 @@ class Http
 	/**
 	 * @param string $url
 	 * @param array $params
+	 * @param array $options
 	 * @return Sale\Result
 	 */
-	public static function sendRequest(string $url, array $params): Sale\Result
+	public static function sendRequest(string $url, array $params, array $options = []): Sale\Result
 	{
 		$result = new Sale\Result();
-		$httpClient = new HttpClient();
 
-		$response = $httpClient->post($url, $params);
+		$httpClientOptions = [];
+		if (array_key_exists('HTTP_CLIENT_OPTIONS', $options) && is_array($options['HTTP_CLIENT_OPTIONS']))
+		{
+			$httpClientOptions = $options['HTTP_CLIENT_OPTIONS'];
+		}
+
+		$httpClient = new HttpClient($httpClientOptions);
+
+		$isJsonRequest = isset($options['JSON_REQUEST']) && $options['JSON_REQUEST'] === true;
+
+		if ($isJsonRequest)
+		{
+			$httpClient->setHeader('Content-Type', 'application/json');
+		}
+
+		$response = $httpClient->post(
+			$url,
+			$isJsonRequest ? Json::encode($params) : $params
+		);
 		if ($response === false)
 		{
 			$errors = $httpClient->getError();

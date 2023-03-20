@@ -28,7 +28,7 @@ class CIBlockPropertyResult extends CDBResult
 			$res = parent::Fetch();
 		}
 
-		if ($res && $res["USER_TYPE"]!="")
+		if ($res && isset($res["USER_TYPE"]) && $res["USER_TYPE"]!="")
 		{
 			$arUserType = CIBlockProperty::GetUserType($res["USER_TYPE"]);
 			if (isset($arUserType["ConvertFromDB"]))
@@ -37,19 +37,19 @@ class CIBlockPropertyResult extends CDBResult
 				{
 					$value = array("VALUE"=>$res["VALUE"],"DESCRIPTION"=>"");
 					$value = call_user_func_array($arUserType["ConvertFromDB"],array($res,$value));
-					$res["VALUE"] = $value["VALUE"];
+					$res["VALUE"] = $value["VALUE"] ?? null;
 				}
 
 				if(array_key_exists("DEFAULT_VALUE", $res))
 				{
 					$value = array("VALUE"=>$res["DEFAULT_VALUE"],"DESCRIPTION"=>"");
 					$value = call_user_func_array($arUserType["ConvertFromDB"],array($res,$value));
-					$res["DEFAULT_VALUE"] = $value["VALUE"];
+					$res["DEFAULT_VALUE"] = $value["VALUE"] ?? null;
 				}
 			}
 			if($res["USER_TYPE_SETTINGS"] <> '')
 			{
-				$res["USER_TYPE_SETTINGS"] = unserialize($res["USER_TYPE_SETTINGS"]);
+				$res["USER_TYPE_SETTINGS"] = unserialize($res["USER_TYPE_SETTINGS"], ['allowed_classes' => false]);
 			}
 		}
 
@@ -77,7 +77,7 @@ class CIBlockPropertyResult extends CDBResult
 						}
 						else
 						{
-							$tmp = unserialize($res[$field_name]);
+							$tmp = unserialize($res[$field_name], ['allowed_classes' => false]);
 							if (!isset($tmp['ID']))
 								$update = true;
 						}
@@ -275,12 +275,12 @@ class CIBlockPropertyResult extends CDBResult
 						{
 							$value = array("VALUE" => $property["DEFAULT_VALUE"], "DESCRIPTION" => "");
 							$value = call_user_func_array($userType["ConvertFromDB"], array($property, $value));
-							$property["DEFAULT_VALUE"] = $value["VALUE"];
+							$property["DEFAULT_VALUE"] = $value["VALUE"] ?? null;
 						}
 					}
 				}
-				if ($property['USER_TYPE_SETTINGS'] !== '' || $property['USER_TYPE_SETTINGS'] !== null)
-					$property['USER_TYPE_SETTINGS'] = unserialize($property['USER_TYPE_SETTINGS']);
+				if ($property['USER_TYPE_SETTINGS'] !== '' && $property['USER_TYPE_SETTINGS'] !== null)
+					$property['USER_TYPE_SETTINGS'] = unserialize($property['USER_TYPE_SETTINGS'], ['allowed_classes' => false]);
 				$this->arProperties[$property['ID']] = $property;
 			}
 			unset($property, $propertyIterator);

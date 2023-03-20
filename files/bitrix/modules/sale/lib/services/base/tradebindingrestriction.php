@@ -1,6 +1,7 @@
 <?php
 namespace Bitrix\Sale\Services\Base;
 
+use Bitrix\Main\Loader;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\NotImplementedException;
 use Bitrix\Sale;
@@ -63,20 +64,23 @@ abstract class TradeBindingRestriction extends Restriction
 	 */
 	protected static function getTradePlatformList()
 	{
+		Loader::includeModule('crm');
+
 		$result = [];
 
-		$dbRes = Sale\TradingPlatformTable::getList(['select' => ['CODE', 'CLASS']]);
+		$dbRes = Sale\TradingPlatformTable::getList([
+			'select' => ['CODE', 'CLASS'],
+			'filter' => ['=ACTIVE' => 'Y'],
+			'cache' => ['ttl' => 36000]
+		]);
 		while ($data = $dbRes->fetch())
 		{
-			/** @var Sale\TradingPlatform\Platform $platformClassName */
-			$platformClassName = $data['CLASS'];
-
+			$platformClassName = (string)$data['CLASS'];
 			if (class_exists($platformClassName))
 			{
+				/** @var Sale\TradingPlatform\Platform $platformClassName */
 				$platform = $platformClassName::getInstanceByCode($data['CODE']);
-				if ($platform
-					&& $platform instanceof Sale\TradingPlatform\Landing\Landing
-				)
+				if ($platform instanceof Sale\TradingPlatform\IRestriction)
 				{
 					$result[$platform->getId()] = $platform->getRealName();
 				}
@@ -161,7 +165,7 @@ abstract class TradeBindingRestriction extends Restriction
 	 */
 	public static function isAvailable()
 	{
-		return count(static::getTradePlatformList()) > 0;
+		return (bool)static::getTradePlatformList();
 	}
 
 } 

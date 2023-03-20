@@ -32,12 +32,14 @@ use Bitrix\Main\SystemException;
 use Bitrix\Main\ArgumentException;
 use Bitrix\Main\Text\StringHelper;
 use Bitrix\Main\Type\Dictionary;
+use Bitrix\Main\Web\Json;
 
 /**
  * Entity object
  *
  * @property-read \Bitrix\Main\ORM\Entity $entity
  * @property-read array $primary
+ * @property-read string $primaryAsString
  * @property-read int $state @see State
  * @property-read Dictionary $customData
  * @property Context $authContext For UF values validation
@@ -90,6 +92,9 @@ abstract class EntityObject implements ArrayAccess
 
 	/** @var Context */
 	protected $_authContext;
+
+	/** @var bool Save lock */
+	protected $_savingInProgress = false;
 
 	/**
 	 * Cache for lastName => LAST_NAME transforming
@@ -294,6 +299,13 @@ abstract class EntityObject implements ArrayAccess
 				$result = new Result;
 		}
 
+		if ($this->_savingInProgress)
+		{
+			return $result;
+		}
+
+		$this->_savingInProgress = true;
+
 		$dataClass = $this->entity->getDataClass();
 
 		// check for object fields, it could be changed without notification
@@ -333,6 +345,8 @@ abstract class EntityObject implements ArrayAccess
 			// check for error
 			if (!$result->isSuccess())
 			{
+				$this->_savingInProgress = false;
+
 				return $result;
 			}
 
@@ -362,6 +376,8 @@ abstract class EntityObject implements ArrayAccess
 				// check for error
 				if (!$result->isSuccess())
 				{
+					$this->_savingInProgress = false;
+
 					return $result;
 				}
 			}
@@ -377,6 +393,8 @@ abstract class EntityObject implements ArrayAccess
 		}
 
 		$this->sysPostSave();
+
+		$this->_savingInProgress = false;
 
 		return $result;
 	}
@@ -442,6 +460,7 @@ abstract class EntityObject implements ArrayAccess
 
 		// delete object itself
 		$dataClass = static::$dataClass;
+		$dataClass::setCurrentDeletingObject($this);
 		$deleteResult = $dataClass::delete($this->primary);
 
 		if (!$deleteResult->isSuccess())
@@ -854,6 +873,8 @@ abstract class EntityObject implements ArrayAccess
 				return $this->sysGetEntity();
 			case 'primary':
 				return $this->sysGetPrimary();
+			case 'primaryAsString':
+				return $this->sysGetPrimaryAsString();
 			case 'state':
 				return $this->sysGetState();
 			case 'dataClass':
@@ -1373,6 +1394,11 @@ abstract class EntityObject implements ArrayAccess
 		return $primaryValues;
 	}
 
+	public function sysGetPrimaryAsString()
+	{
+		return static::sysSerializePrimary($this->sysGetPrimary(), $this->_entity);
+	}
+
 	/**
 	 * Query Runtime Field values or just any runtime value getter
 	 * @internal For internal system usage only.
@@ -1383,7 +1409,7 @@ abstract class EntityObject implements ArrayAccess
 	 */
 	public function sysGetRuntime($name)
 	{
-		return $this->_runtimeValues[$name];
+		return $this->_runtimeValues[$name] ?? null;
 	}
 
 	/**
@@ -1545,14 +1571,19 @@ abstract class EntityObject implements ArrayAccess
 				if (!($value instanceof $remoteObjectClass))
 				{
 					throw new ArgumentException(sprintf(
-						'Expected instance of `%s`, got `%s` instead', $remoteObjectClass, get_class($value)
+						'Expected instance of `%s`, got `%s` instead',
+						$remoteObjectClass,
+						is_object($value) ? get_class($value) : gettype($value)
 					));
 				}
 			}
 		}
 
 		// change only if value is different from actual
-		if (array_key_exists($fieldName, $this->_actualValues))
+		// exclude UF fields for this check as long as UF file fields look into request to change value
+		// (\Bitrix\Main\UserField\Types\FileType::onBeforeSave)
+		// let UF manager handle all the values without optimization
+		if (array_key_exists($fieldName, $this->_actualValues) && !($field instanceof UserTypeField))
 		{
 			if ($field instanceof IReadable)
 			{
@@ -1613,8 +1644,26 @@ abstract class EntityObject implements ArrayAccess
 						}
 					}
 
-					$elementalValue = empty($value) ? null : $value->sysGetValue($remoteFieldName);
-					$this->sysSetValue($localFieldName, $elementalValue);
+					$remoteField = $field->getRefEntity()->getField($remoteFieldName);
+
+					if (!empty($value) && !$value->sysHasValue($remoteField->getName())
+						&& $value->state === State::RAW && $remoteField->isPrimary() && $remoteField->isAutocomplete())
+					{
+						// get primary value after save
+						$localObject = $this;
+						$remoteObject = $value;
+
+						$remoteObject->sysAddOnPrimarySetListener(function () use (
+							$localObject, $localFieldName, $remoteObject, $remoteFieldName
+						) {
+							$localObject->sysSetValue($localFieldName, $remoteObject->get($remoteFieldName));
+						});
+					}
+					else
+					{
+						$elementalValue = empty($value) ? null : $value->sysGetValue($remoteFieldName);
+						$this->sysSetValue($localFieldName, $elementalValue);
+					}
 
 					$elementalsChanged = true;
 				}
@@ -1906,8 +1955,9 @@ abstract class EntityObject implements ArrayAccess
 		{
 			$field = $this->entity->getField($fieldName);
 
-			if ($field instanceof Reference)
+			if ($field instanceof Reference && !array_key_exists($fieldName, $this->_currentValues))
 			{
+				// if there is a new relation, then the old one is not into cascade anymore
 				if ($saveCascade && !empty($value))
 				{
 					$value->save();
@@ -2047,6 +2097,22 @@ abstract class EntityObject implements ArrayAccess
 				$value->sysReviseDeletedObjects();
 			}
 		}
+
+		if ($saveCascade)
+		{
+			$this->sysSaveCurrentReferences();
+		}
+	}
+
+	public function sysSaveCurrentReferences()
+	{
+		foreach ($this->_currentValues as $fieldName => $value)
+		{
+			if ($this->entity->getField($fieldName) instanceof Reference && !empty($value))
+			{
+				$value->save();
+			}
+		}
 	}
 
 	public function sysPostSave()
@@ -2074,6 +2140,12 @@ abstract class EntityObject implements ArrayAccess
 			elseif ($field instanceof ScalarField || $field instanceof UserTypeField)
 			{
 				$v = $field->cast($v);
+
+				if ($v instanceof SqlExpression)
+				{
+					continue;
+				}
+
 				$this->sysSetActual($k, $v);
 			}
 
@@ -2128,9 +2200,6 @@ abstract class EntityObject implements ArrayAccess
 			$this->_actualValues[$fieldName] = $collection;
 		}
 
-		/** @var Collection $collection Add to collection */
-		$collection->add($remoteObject);
-
 		if ($field instanceof OneToMany)
 		{
 			// set self to the object
@@ -2147,6 +2216,9 @@ abstract class EntityObject implements ArrayAccess
 				});
 			}
 		}
+
+		/** @var Collection $collection Add to collection */
+		$collection->add($remoteObject);
 
 		// mark object as changed
 		if ($this->_state == State::ACTUAL)
@@ -2319,6 +2391,23 @@ abstract class EntityObject implements ArrayAccess
 	}
 
 	/**
+	 * @param array $primary
+	 * @param Entity $entity
+	 *
+	 * @return string
+	 * @throws ArgumentException
+	 */
+	public static function sysSerializePrimary($primary, $entity)
+	{
+		if (count($entity->getPrimaryArray()) == 1)
+		{
+			return (string) current($primary);
+		}
+
+		return (string) Json::encode(array_values($primary));
+	}
+
+	/**
 	 * ArrayAccess interface implementation.
 	 *
 	 * @param mixed $offset
@@ -2327,7 +2416,7 @@ abstract class EntityObject implements ArrayAccess
 	 * @throws ArgumentException
 	 * @throws SystemException
 	 */
-	public function offsetExists($offset)
+	public function offsetExists($offset): bool
 	{
 		return $this->sysHasValue($offset) && $this->sysGetValue($offset) !== null;
 	}
@@ -2341,6 +2430,7 @@ abstract class EntityObject implements ArrayAccess
 	 * @throws ArgumentException
 	 * @throws SystemException
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetGet($offset)
 	{
 		if ($this->offsetExists($offset))
@@ -2366,7 +2456,7 @@ abstract class EntityObject implements ArrayAccess
 	 * @throws ArgumentException
 	 * @throws SystemException
 	 */
-	public function offsetSet($offset, $value)
+	public function offsetSet($offset, $value): void
 	{
 		if (is_null($offset))
 		{
@@ -2383,7 +2473,7 @@ abstract class EntityObject implements ArrayAccess
 	 *
 	 * @param mixed $offset
 	 */
-	public function offsetUnset($offset)
+	public function offsetUnset($offset): void
 	{
 		$this->unset($offset);
 	}

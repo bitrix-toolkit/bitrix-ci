@@ -16,7 +16,7 @@
  * @global string $order
  */
 
-require_once(dirname(__FILE__)."/../include/prolog_admin_before.php");
+require_once(__DIR__."/../include/prolog_admin_before.php");
 require_once($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/main/prolog.php");
 define("HELP_FILE", "users/user_admin.php");
 $entity_id = "USER";
@@ -40,7 +40,7 @@ IncludeModuleLangFile(__FILE__);
 if($_REQUEST["action"] == "authorize" && check_bitrix_sessid() && $USER->CanDoOperation('edit_php'))
 {
 	$USER->Logout();
-	$USER->Authorize(intval($_REQUEST["ID"]), false, false, null, false);
+	$USER->Authorize(intval($_REQUEST["ID"]), false, true, null, false);
 	LocalRedirect("user_admin.php?lang=".LANGUAGE_ID);
 }
 
@@ -222,13 +222,15 @@ if($lAdmin->EditAction())
 		$DB->StartTransaction();
 
 		$ob = new CUser;
-		if(!$ob->Update($ID, $arFields))
+		if ($ob->Update($ID, $arFields))
+		{
+			$DB->Commit();
+		}
+		else
 		{
 			$lAdmin->AddUpdateError(GetMessage("SAVE_ERROR").$ID.": ".$ob->LAST_ERROR, $ID);
 			$DB->Rollback();
 		}
-
-		$DB->Commit();
 	}
 }
 
@@ -278,7 +280,10 @@ if(($arID = $lAdmin->GroupAction()) && ($USER->CanDoOperation('edit_all_users') 
 						$err = '<br>'.$ex->GetString();
 					$lAdmin->AddGroupError(GetMessage("DELETE_ERROR").$err, $ID);
 				}
-				$DB->Commit();
+				else
+				{
+					$DB->Commit();
+				}
 				break;
 			case "activate":
 			case "deactivate":
@@ -793,13 +798,12 @@ function getUserQuery(CAdminUiList $lAdmin, $arFilter, $filterFields, $excelMode
 	if (!empty($arFilter["KEYWORDS"]))
 	{
 		$listFields = array(
-			"PERSONAL_PROFESSION", "PERSONAL_WWW", "PERSONAL_ICQ", "PERSONAL_GENDER",
+			"PERSONAL_PROFESSION", "PERSONAL_WWW", "PERSONAL_ICQ",
 			"PERSONAL_PHONE", "PERSONAL_FAX", "PERSONAL_MOBILE", "PERSONAL_PAGER", "PERSONAL_STREET", "PERSONAL_MAILBOX",
 			"PERSONAL_CITY", "PERSONAL_STATE", "PERSONAL_ZIP", "PERSONAL_COUNTRY", "PERSONAL_NOTES", "WORK_COMPANY",
 			"WORK_DEPARTMENT", "WORK_POSITION", "WORK_WWW", "WORK_PHONE", "WORK_FAX", "WORK_PAGER", "WORK_STREET",
 			"WORK_MAILBOX", "WORK_CITY", "WORK_STATE", "WORK_ZIP", "WORK_COUNTRY", "WORK_PROFILE", "WORK_NOTES",
-			"ADMIN_NOTES", "XML_ID", "LAST_NAME", "SECOND_NAME", "EXTERNAL_AUTH_ID", "CONFIRM_CODE",
-			"PASSWORD", "LID", "LANGUAGE_ID", "TITLE"
+			"LAST_NAME", "SECOND_NAME", "TITLE",
 		);
 		$keyWords = $arFilter["KEYWORDS"];
 		$filterQueryObject = new CFilterQuery("and", "yes", "N", array(), "N", "Y", "N");

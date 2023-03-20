@@ -1,8 +1,8 @@
-<?
+<?php
 use Bitrix\Iblock;
 
 global $IBLOCK_CACHE_PROPERTY;
-$IBLOCK_CACHE_PROPERTY = Array();
+$IBLOCK_CACHE_PROPERTY = [];
 IncludeModuleLangFile(__FILE__);
 
 class CAllIBlockProperty
@@ -122,8 +122,8 @@ class CAllIBlockProperty
 			";
 
 		$res = $DB->Query($strSql, false, "FILE: ".__FILE__."<br> LINE: ".__LINE__);
-		$res = new CIBlockPropertyResult($res);
-		return $res;
+
+		return new CIBlockPropertyResult($res);
 	}
 
 	///////////////////////////////////////////////////////////////////
@@ -131,7 +131,6 @@ class CAllIBlockProperty
 	///////////////////////////////////////////////////////////////////
 	public static function Delete($ID)
 	{
-		/** @var CMain $APPLICATION */
 		global $DB, $APPLICATION;
 		$ID = (int)$ID;
 		if ($ID <= 0)
@@ -224,7 +223,7 @@ class CAllIBlockProperty
 
 		CIBlock::clearIblockTagCache($arProperty["IBLOCK_ID"]);
 
-		Iblock\PropertyTable::getEntity()->cleanCache();
+		Iblock\PropertyTable::cleanCache();
 
 		$res = $DB->Query("DELETE FROM b_iblock_property WHERE ID=".$ID, true);
 
@@ -336,7 +335,7 @@ class CAllIBlockProperty
 					)
 					{
 						$arLink = array(
-							"SMART_FILTER" => $arFields["SMART_FILTER"],
+							"SMART_FILTER" => $arFields["SMART_FILTER"] ?? null,
 						);
 						if (array_key_exists("DISPLAY_TYPE", $arFields))
 							$arLink["DISPLAY_TYPE"] = $arFields["DISPLAY_TYPE"];
@@ -358,7 +357,7 @@ class CAllIBlockProperty
 					unset($featureResult);
 				}
 
-				Iblock\PropertyTable::getEntity()->cleanCache();
+				Iblock\PropertyTable::cleanCache();
 			}
 		}
 
@@ -381,7 +380,6 @@ class CAllIBlockProperty
 	///////////////////////////////////////////////////////////////////
 	public function CheckFields(&$arFields, $ID=false, $bFormValidate=false)
 	{
-		/** @var CMain $APPLICATION */
 		global $APPLICATION;
 		$this->LAST_ERROR = "";
 		if ($ID===false || array_key_exists("NAME", $arFields))
@@ -555,7 +553,12 @@ class CAllIBlockProperty
 			if($strUpdate <> '')
 			{
 				$strSql = "UPDATE b_iblock_property SET ".$strUpdate." WHERE ID=".$ID;
-				$DB->QueryBind($strSql, array("USER_TYPE_SETTINGS"=>$arFields["USER_TYPE_SETTINGS"]));
+				$bindList = [];
+				if (isset($arFields['USER_TYPE_SETTINGS']))
+				{
+					$bindList['USER_TYPE_SETTINGS'] = $arFields['USER_TYPE_SETTINGS'];
+				}
+				$DB->QueryBind($strSql, $bindList);
 			}
 
 			if(is_set($arFields, "VALUES"))
@@ -571,9 +574,11 @@ class CAllIBlockProperty
 					|| $arFields["SECTION_PROPERTY"] !== "N"
 				)
 				{
-					$arLink = array(
-						"SMART_FILTER" => $arFields["SMART_FILTER"],
-					);
+					$arLink = [];
+					if (array_key_exists("SMART_FILTER", $arFields))
+					{
+						$arLink["SMART_FILTER"] = $arFields["SMART_FILTER"];
+					}
 					if (array_key_exists("DISPLAY_TYPE", $arFields))
 						$arLink["DISPLAY_TYPE"] = $arFields["DISPLAY_TYPE"];
 					if (array_key_exists("DISPLAY_EXPANDED", $arFields))
@@ -598,7 +603,7 @@ class CAllIBlockProperty
 				unset($featureResult);
 			}
 
-			Iblock\PropertyTable::getEntity()->cleanCache();
+			Iblock\PropertyTable::cleanCache();
 
 			global $BX_IBLOCK_PROP_CACHE;
 			if (isset($arFields["IBLOCK_ID"]))
@@ -647,8 +652,7 @@ class CAllIBlockProperty
 				"	AND UPPER(BP.CODE)=UPPER('".$DB->ForSql($ID)."') "
 			);
 
-		$res = new CIBlockPropertyResult($DB->Query($strSql));
-		return $res;
+		return new CIBlockPropertyResult($DB->Query($strSql));
 	}
 
 	public static function GetPropertyArray($ID, $IBLOCK_ID, $bCached=true)
@@ -659,7 +663,7 @@ class CAllIBlockProperty
 		$block_code = false;
 		if(is_array($IBLOCK_ID))
 		{
-			foreach($IBLOCK_ID as $k=>$v)
+			foreach($IBLOCK_ID as $v)
 			{
 				if(is_numeric($v))
 				{
@@ -668,7 +672,7 @@ class CAllIBlockProperty
 					else
 						$block_id = "";
 
-					$block_id .= intval($v);
+					$block_id .= (int)$v;
 				}
 				elseif($v <> '')
 				{
@@ -682,13 +686,18 @@ class CAllIBlockProperty
 			}
 		}
 		elseif(is_numeric($IBLOCK_ID))
-			$block_id = intval($IBLOCK_ID);
+			$block_id = (int)$IBLOCK_ID;
 		elseif($IBLOCK_ID <> '')
 			$block_code = "'".$DB->ForSQL($IBLOCK_ID, 200)."'";
 
+		$cacheId = $ID . '|' . $block_id . '|' . $block_code;
+
 		global $IBLOCK_CACHE_PROPERTY;
-		if($bCached && is_set($IBLOCK_CACHE_PROPERTY, $ID."|".$block_id."|".$block_code))
-			return $IBLOCK_CACHE_PROPERTY[$ID."|".$block_id."|".$block_code];
+
+		if ($bCached && isset($IBLOCK_CACHE_PROPERTY[$cacheId]))
+		{
+			return $IBLOCK_CACHE_PROPERTY[$cacheId];
+		}
 
 		if($block_code && $block_id)
 			$cond = " AND (B.ID IN (".$block_id.") OR B.CODE IN (".$block_code.")) ";
@@ -710,13 +719,13 @@ class CAllIBlockProperty
 			".$cond."
 			".(mb_substr($upperID, -6) == '_VALUE'?
 				(is_numeric(mb_substr($ID, 0, 1))?
-					"AND BP.ID=".intval($ID)
+					"AND BP.ID=".(int)$ID
 				:
 					"AND ((UPPER(BP.CODE)='".$DB->ForSql($upperID)."' AND BP.PROPERTY_TYPE!='L') OR (UPPER(BP.CODE)='".$DB->ForSql(mb_substr($upperID, 0, -6))."' AND BP.PROPERTY_TYPE='L'))"
 				)
 			:
 				(is_numeric(mb_substr($ID, 0, 1))?
-					"AND BP.ID=".intval($ID)
+					"AND BP.ID=".(int)$ID
 				:
 					"AND UPPER(BP.CODE)='".$DB->ForSql($upperID)."'"
 				)
@@ -745,7 +754,8 @@ class CAllIBlockProperty
 				$arr["ID"] = $ID;
 		}
 
-		$IBLOCK_CACHE_PROPERTY[$ID."|".$block_id."|".$block_code] = $arr;
+		$IBLOCK_CACHE_PROPERTY[$cacheId] = $arr;
+
 		return $arr;
 	}
 
@@ -806,7 +816,7 @@ class CAllIBlockProperty
 		else
 			$strSqlOrder = " ORDER BY ".implode(", ", $arSqlOrder);
 
-		$res = $DB->Query($s = "
+		return $DB->Query("
 			SELECT BPE.*, BPE.XML_ID as EXTERNAL_ID
 			FROM
 				b_iblock_property_enum BPE
@@ -814,14 +824,12 @@ class CAllIBlockProperty
 			WHERE
 			".(
 				is_numeric(mb_substr($PROP_ID, 0, 1))?
-				"BP.ID = ".intval($PROP_ID):
+				"BP.ID = ".(int)$PROP_ID:
 				"BP.CODE = '".$DB->ForSql($PROP_ID)."'"
 			)."
 			".$strSqlSearch."
 			".$strSqlOrder."
 		");
-
-		return $res;
 	}
 
 	function UpdateEnum($ID, $arVALUES, $bForceDelete = true)

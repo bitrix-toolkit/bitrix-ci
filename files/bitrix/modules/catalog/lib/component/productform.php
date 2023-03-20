@@ -2,8 +2,13 @@
 
 namespace Bitrix\Catalog\Component;
 
+use Bitrix\Main;
 use Bitrix\Main\Component\ParameterSigner;
+use Bitrix\Main\Loader;
 use Bitrix\Main\Localization\Loc;
+use Bitrix\Catalog;
+use Bitrix\Highloadblock as Highload;
+use Bitrix\UI\EntityForm\Control;
 
 class ProductForm extends BaseForm
 {
@@ -14,15 +19,7 @@ class ProductForm extends BaseForm
 	{
 		$controllers = parent::getControllers();
 
-		$controllers[] = [
-			'name' => 'VARIATION_GRID_CONTROLLER',
-			'type' => 'variation_grid',
-			'config' => [
-				'reloadUrl' => '/bitrix/components/bitrix/catalog.productcard.variation.grid/list.ajax.php',
-				'signedParameters' => $this->getVariationGridSignedParameters(),
-				'gridId' => $this->getVariationGridId(),
-			],
-		];
+		$controllers[] = $this->getGridController();
 		$controllers[] = [
 			'name' => 'IBLOCK_SECTION_CONTROLLER',
 			'type' => 'iblock_section',
@@ -32,11 +29,31 @@ class ProductForm extends BaseForm
 		return $controllers;
 	}
 
+	protected function getGridController(): array
+	{
+		return [
+			'name' => 'VARIATION_GRID_CONTROLLER',
+			'type' => 'variation_grid',
+			'config' => [
+				'reloadUrl' => '/bitrix/components/bitrix/' . $this->getVariationGridShortComponentName() . '/list.ajax.php',
+				'signedParameters' => $this->getVariationGridSignedParameters(),
+				'gridId' => $this->getVariationGridId(),
+			],
+		];
+	}
+
 	public function collectFieldConfigs(): array
 	{
 		$config = parent::collectFieldConfigs();
 
-		$config['right']['elements'][] = [
+		$config['right']['elements'][] = $this->getGridFieldConfig();
+
+		return $config;
+	}
+
+	protected function getGridFieldConfig(): array
+	{
+		return [
 			'name' => 'variation_grid',
 			'title' => 'Variation grid',
 			'type' => 'included_area',
@@ -50,13 +67,16 @@ class ProductForm extends BaseForm
 			],
 			'sort' => 100,
 		];
+	}
 
-		return $config;
+	protected function getVariationGridShortComponentName(): string
+	{
+		return 'catalog.productcard.variation.grid';
 	}
 
 	protected function getVariationGridComponentName(): string
 	{
-		return 'bitrix:catalog.productcard.variation.grid';
+		return 'bitrix:' . $this->getVariationGridShortComponentName();
 	}
 
 	protected function getVariationGridParameters(): array
@@ -76,6 +96,11 @@ class ProductForm extends BaseForm
 			$this->getVariationGridComponentName(),
 			$this->getVariationGridParameters()
 		);
+	}
+
+	protected function getCardSettingsItems(): array
+	{
+		return GridVariationForm::getGridCardSettingsItems();
 	}
 
 	protected function buildDescriptions(): array
@@ -110,7 +135,7 @@ class ProductForm extends BaseForm
 				'name' => 'IBLOCK_SECTION',
 				'title' => Loc::getMessage('CATALOG_C_F_SECTION_SELECTOR_TITLE'),
 				'type' => 'iblock_section',
-				'editable' => true,
+				'editable' => $this->isAllowedEditFields(),
 				'required' => false,
 				'defaultValue' => null,
 			],
@@ -144,9 +169,9 @@ class ProductForm extends BaseForm
 		return $sectionIds;
 	}
 
-	protected function getAdditionalValues(array $values): array
+	protected function getAdditionalValues(array $values, array $descriptions = []): array
 	{
-		$additionalValues = parent::getAdditionalValues($values);
+		$additionalValues = parent::getAdditionalValues($values, $descriptions);
 
 		$additionalValues['IBLOCK_SECTION_DATA'] = $this->getIblockSectionServiceFieldValue($values);
 		$additionalValues['VARIATION_GRID_SIGNED_PARAMETERS'] = $this->getVariationGridSignedParameters();
@@ -171,12 +196,13 @@ class ProductForm extends BaseForm
 			);
 			while ($section = $sectionList->Fetch())
 			{
-				$section['PICTURE'] = \CFile::resizeImageGet(
+				$picture = \CFile::resizeImageGet(
 					$section['PICTURE'],
 					['width' => 100, 'height' => 100],
 					BX_RESIZE_IMAGE_EXACT,
 					false
-				)['src'];
+				);
+				$section['PICTURE'] = $picture['src'] ?? null;
 				$sectionData[] = $section;
 			}
 		}

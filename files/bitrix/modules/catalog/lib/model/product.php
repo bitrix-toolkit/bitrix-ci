@@ -1,20 +1,31 @@
 <?php
 namespace Bitrix\Catalog\Model;
 
+use Bitrix\Catalog\v2\Integration\Seo\Entity\ExportedProductTable;
 use Bitrix\Main;
 use Bitrix\Main\ORM;
 use Bitrix\Main\Loader;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Catalog;
-
-Loc::loadMessages(__FILE__);
+use Bitrix\Iblock;
 
 class Product extends Entity
 {
-	/** @var bool Enable offers automation */
-	private static $separateSkuMode = null;
-	/** @var bool Sale exists */
-	private static $saleIncluded = null;
+	/** @var string Need to recalculate parent product available */
+	protected const ACTION_CHANGE_PARENT_AVAILABLE = 'SKU_AVAILABLE';
+	/** @var string Need to check parent product type */
+	protected const ACTION_CHANGE_PARENT_TYPE = 'PARENT_TYPE';
+	/** @var string Need to recalculate sets with current product */
+	protected const ACTION_RECALCULATE_SETS = 'SETS';
+	/** @var string Need to send notifications about available products */
+	protected const ACTION_SEND_NOTIFICATIONS = 'SUBSCRIPTION';
+
+	/** @var null|bool Enable offers automation */
+	private static ?bool $separateSkuMode = null;
+	/** @var null|bool Sale exists */
+	private static ?bool $saleIncluded = null;
+	/** @var null|string Query for update element timestamp */
+	private static ?string $queryElementDate = null;
 
 	/**
 	 * Returns product tablet name.
@@ -24,6 +35,24 @@ class Product extends Entity
 	public static function getTabletClassName(): string
 	{
 		return '\Bitrix\Catalog\ProductTable';
+	}
+
+	/**
+	 * Returns product default fields list for caching.
+	 *
+	 * @return array
+	 */
+	protected static function getDefaultCachedFieldList(): array
+	{
+		return [
+			'ID',
+			'TYPE',
+			'AVAILABLE',
+			'QUANTITY',
+			'QUANTITY_TRACE' => 'QUANTITY_TRACE_ORIG',
+			'CAN_BUY_ZERO' => 'CAN_BUY_ZERO_ORIG',
+			'SUBSCRIBE' => 'SUBSCRIBE_ORIG'
+		];
 	}
 
 	/**
@@ -80,7 +109,6 @@ class Product extends Entity
 		}
 		$data['external_fields']['IBLOCK_ID'] = $iblockId;
 
-		$defaultType = self::getDefaultProductType($iblockData['CATALOG_TYPE']);
 		$allowedTypes = self::getProductTypes($iblockData['CATALOG_TYPE']);
 
 		$fields = $data['fields'];
@@ -121,7 +149,11 @@ class Product extends Entity
 				'BUNDLE' => Catalog\ProductTable::STATUS_NO,
 				'PURCHASING_PRICE' => null,
 				'PURCHASING_CURRENCY' => null,
-				'TMP_ID' => null
+				'TMP_ID' => null,
+				'MEASURE' => null,
+				'WIDTH' => null,
+				'LENGTH' => null,
+				'HEIGHT' => null,
 			];
 
 			$blackList = [
@@ -134,7 +166,7 @@ class Product extends Entity
 			$nullFields = ['MEASURE', 'TRIAL_PRICE_ID', 'VAT_ID', 'RECUR_SCHEME_LENGTH'];
 			$sizeFields = ['WIDTH', 'LENGTH', 'HEIGHT'];
 		}
-		$defaultValues['TYPE'] = $defaultType;
+		$defaultValues['TYPE'] = self::getDefaultProductType($iblockData['CATALOG_TYPE']);
 
 		$fields = array_merge($defaultValues, array_diff_key($fields, $blackList));
 
@@ -147,6 +179,26 @@ class Product extends Entity
 			return;
 		}
 
+		$isSpecialType = (
+			$fields['TYPE'] === Catalog\ProductTable::TYPE_EMPTY_SKU
+			|| $fields['TYPE'] === Catalog\ProductTable::TYPE_FREE_OFFER
+		);
+		if ($isSpecialType)
+		{
+			$fields['AVAILABLE'] = Catalog\ProductTable::STATUS_NO;
+			$fields['QUANTITY'] = 0;
+			$fields['QUANTITY_RESERVED'] = 0;
+			$fields['QUANTITY_TRACE'] = Catalog\ProductTable::STATUS_YES;
+			$fields['CAN_BUY_ZERO'] = Catalog\ProductTable::STATUS_NO;
+		}
+		$isService = $fields['TYPE'] === Catalog\ProductTable::TYPE_SERVICE;
+		if ($isService)
+		{
+			$fields['QUANTITY_RESERVED'] = 0;
+			$fields['QUANTITY_TRACE'] = Catalog\ProductTable::STATUS_NO;
+			$fields['CAN_BUY_ZERO'] = Catalog\ProductTable::STATUS_YES;
+		}
+
 		if (is_string($fields['QUANTITY']) && !is_numeric($fields['QUANTITY']))
 		{
 			$result->addError(new ORM\EntityError(
@@ -156,7 +208,19 @@ class Product extends Entity
 				)
 			));
 		}
-		$fields['QUANTITY'] = (float)$fields['QUANTITY'];
+
+		if ($isService)
+		{
+			$fields['QUANTITY'] = (int)$fields['QUANTITY'];
+			if ($fields['QUANTITY'] !== 1)
+			{
+				$fields['QUANTITY'] = 0;
+			}
+		}
+		else
+		{
+			$fields['QUANTITY'] = (float)$fields['QUANTITY'];
+		}
 
 		if (is_string($fields['QUANTITY_RESERVED']) && !is_numeric($fields['QUANTITY_RESERVED']))
 		{
@@ -253,7 +317,18 @@ class Product extends Entity
 			}
 			else
 			{
-				$data['actions']['SKU_AVAILABLE'] = true;
+				if (!$isSpecialType)
+				{
+					if ($isService)
+					{
+						//TODO: remove this hack after reservation resource
+						$fields['QUANTITY'] = $fields['AVAILABLE'] !== Catalog\ProductTable::STATUS_YES ? 0 : 1;
+					}
+					else
+					{
+						$data['actions'][self::ACTION_CHANGE_PARENT_AVAILABLE] = true;
+					}
+				}
 			}
 		}
 
@@ -270,7 +345,9 @@ class Product extends Entity
 					$fields['AVAILABLE'] = Catalog\ProductTable::STATUS_NO;
 			}
 			if ($fields['TYPE'] === Catalog\ProductTable::TYPE_OFFER)
-				$data['actions']['PARENT_TYPE'] = true;
+			{
+				$data['actions'][self::ACTION_CHANGE_PARENT_TYPE] = true;
+			}
 		}
 
 		if ($result->isSuccess())
@@ -390,7 +467,7 @@ class Product extends Entity
 			}
 		}
 		if (isset($fields['SUBSCRIBE']))
-			$data['actions']['SUBSCRIPTION'] = true;
+			$data['actions'][self::ACTION_SEND_NOTIFICATIONS] = true;
 		foreach ($booleanFields as $fieldName)
 		{
 			if (array_key_exists($fieldName, $fields))
@@ -404,23 +481,24 @@ class Product extends Entity
 		}
 		foreach ($nullFields as $fieldName)
 		{
-			if (array_key_exists($fieldName, $fields))
+			if (isset($fields[$fieldName]))
 			{
-				if ($fields[$fieldName] !== null)
+				$fields[$fieldName] = (int)$fields[$fieldName];
+				if ($fields[$fieldName] <= 0)
 				{
-					$fields[$fieldName] = (int)$fields[$fieldName];
-					if ($fields[$fieldName] <= 0)
-						$fields[$fieldName] = null;
+					$fields[$fieldName] = null;
 				}
 			}
 		}
 		foreach ($sizeFields as $fieldName)
 		{
-			if ($fields[$fieldName] !== null)
+			if (isset($fields[$fieldName]))
 			{
 				$fields[$fieldName] = (float)$fields[$fieldName];
 				if ($fields[$fieldName] <= 0)
+				{
 					$fields[$fieldName] = null;
+				}
 			}
 		}
 		unset($fieldName);
@@ -449,7 +527,7 @@ class Product extends Entity
 			else
 			{
 				$fields['WEIGHT'] = (float)$fields['WEIGHT'];
-				$data['actions']['SETS'] = true;
+				$data['actions'][self::ACTION_RECALCULATE_SETS] = true;
 			}
 		}
 		if (isset($fields['TMP_ID']))
@@ -487,9 +565,24 @@ class Product extends Entity
 
 			if (isset($fields['AVAILABLE']))
 			{
-				$data['actions']['SKU_AVAILABLE'] = true;
-				$data['actions']['SETS'] = true;
-				$data['actions']['SUBSCRIPTION'] = true;
+				$copyFields =
+					isset($fields['TYPE'])
+						? $fields
+						: array_merge(static::getCacheItem($id, true), $fields)
+				;
+				$copyFields['TYPE'] = (int)$copyFields['TYPE'];
+				$isService = $copyFields['TYPE'] === Catalog\ProductTable::TYPE_SERVICE;
+				if ($isService)
+				{
+					//TODO: remove this hack after reservation resource
+					$fields['QUANTITY'] = $fields['AVAILABLE'] !== Catalog\ProductTable::STATUS_YES ? 0 : 1;
+				}
+				if (!$isService)
+				{
+					$data['actions'][self::ACTION_CHANGE_PARENT_AVAILABLE] = true;
+				}
+				$data['actions'][self::ACTION_RECALCULATE_SETS] = true;
+				$data['actions'][self::ACTION_SEND_NOTIFICATIONS] = true;
 			}
 			else
 			{
@@ -510,7 +603,7 @@ class Product extends Entity
 						? array_merge(static::getCacheItem($id, true), $fields)
 						: $fields
 					);
-
+					$copyFields['TYPE'] = (int)$copyFields['TYPE'];
 					self::calculateAvailable($copyFields, $data['actions']);
 					if ($copyFields['AVAILABLE'] !== null)
 						$fields['AVAILABLE'] = $copyFields['AVAILABLE'];
@@ -537,8 +630,8 @@ class Product extends Entity
 		{
 			case Catalog\ProductTable::TYPE_OFFER:
 				if (
-					isset($data['actions']['SKU_AVAILABLE'])
-					|| isset($data['actions']['PARENT_TYPE'])
+					isset($data['actions'][self::ACTION_CHANGE_PARENT_AVAILABLE])
+					|| isset($data['actions'][self::ACTION_CHANGE_PARENT_TYPE])
 				)
 				{
 					Catalog\Product\Sku::calculateComplete(
@@ -549,7 +642,7 @@ class Product extends Entity
 				}
 				break;
 			case Catalog\ProductTable::TYPE_SKU:
-				if (isset($data['actions']['SKU_AVAILABLE']))
+				if (isset($data['actions'][self::ACTION_CHANGE_PARENT_AVAILABLE]))
 				{
 					Catalog\Product\Sku::calculateComplete(
 						$id,
@@ -571,60 +664,95 @@ class Product extends Entity
 	protected static function runUpdateExternalActions($id, array $data): void
 	{
 		$product = self::getCacheItem($id);
-		if (isset($data['actions']['SKU_AVAILABLE']))
+		if (isset($data['actions'][self::ACTION_CHANGE_PARENT_AVAILABLE]))
 		{
 			switch ($product['TYPE'])
 			{
 				case Catalog\ProductTable::TYPE_OFFER:
-					Catalog\Product\Sku::calculateComplete(
-						$id,
-						$data['external_fields']['IBLOCK_ID'],
-						Catalog\ProductTable::TYPE_OFFER
-					);
+					if (isset($data['actions']['SKU_AVAILABLE']))
+					{
+						Catalog\Product\Sku::calculateComplete(
+							$id,
+							$data['external_fields']['IBLOCK_ID'],
+							Catalog\ProductTable::TYPE_OFFER
+						);
+					}
+					self::updateElementModificationTime($id);
 					break;
 				case Catalog\ProductTable::TYPE_SKU:
-					Catalog\Product\Sku::calculateComplete(
-						$id,
-						$data['external_fields']['IBLOCK_ID'],
-						Catalog\ProductTable::TYPE_SKU
-					);
+					if (isset($data['actions']['SKU_AVAILABLE']))
+					{
+						Catalog\Product\Sku::calculateComplete(
+							$id,
+							$data['external_fields']['IBLOCK_ID'],
+							Catalog\ProductTable::TYPE_SKU
+						);
+					}
+					break;
+				case Catalog\ProductTable::TYPE_PRODUCT:
+				case Catalog\ProductTable::TYPE_SET:
+					self::updateElementModificationTime($id);
 					break;
 			}
 		}
-		if (isset($data['actions']['SUBSCRIPTION']))
+		if (isset($data['actions'][self::ACTION_SEND_NOTIFICATIONS]))
+		{
 			self::checkSubscription($id, $product);
-		if (isset($data['actions']['SETS']))
+		}
+		if (isset($data['actions'][self::ACTION_RECALCULATE_SETS]))
+		{
 			\CCatalogProductSet::recalculateSetsByProduct($id);
+		}
 
-		// clear public components cache
-		if (
+		$changeAvailable = (
 			isset($product['AVAILABLE'])
 			&& isset($product[self::PREFIX_OLD.'AVAILABLE'])
 			&& $product[self::PREFIX_OLD.'AVAILABLE'] != $product['AVAILABLE']
-		)
+		);
+		if ($changeAvailable)
 		{
+			// clear public components cache
 			\CIBlock::clearIblockTagCache($data['external_fields']['IBLOCK_ID']);
+			// send old event
+			$eventId = 'OnProductQuantityTrace';
+			if (
+				Main\Config\Option::get('catalog', 'enable_processing_deprecated_events') === 'Y'
+				&& Event::existEventHandlersById($eventId)
+			)
+			{
+				$description = [
+					'ID' => $product['ID'],
+					'ELEMENT_IBLOCK_ID' => $data['external_fields']['IBLOCK_ID'],
+					'IBLOCK_ID' => $data['external_fields']['IBLOCK_ID'],
+					'TYPE' => $product['TYPE'],
+					'AVAILABLE' => $product['AVAILABLE'],
+					'CAN_BUY_ZERO' => $product['CAN_BUY_ZERO'],
+					'NEGATIVE_AMOUNT_TRACE' => $product['CAN_BUY_ZERO'],
+					'QUANTITY_TRACE' => $product['QUANTITY_TRACE'],
+					'QUANTITY' => $product['QUANTITY'],
+					'OLD_QUANTITY' => $product[self::PREFIX_OLD.'QUANTITY'] ?? $product['QUANTITY'],
+				];
+				$description['DELTA'] = $description['QUANTITY'] - $description['OLD_QUANTITY'];
+				$handlerData = [
+					$product['ID'],
+					$description,
+				];
+				unset($description);
+
+				$eventManager = Main\EventManager::getInstance();
+				$handlerList = $eventManager->findEventHandlers('catalog', $eventId);
+				foreach ($handlerList as $handler)
+				{
+					$handler['FROM_MODULE_ID'] = 'catalog';
+					$handler['MESSAGE_ID'] = $eventId;
+					ExecuteModuleEventEx($handler, $handlerData);
+				}
+				unset($handler, $handlerList);
+				unset($handlerData);
+			}
 		}
 
 		unset($product);
-	}
-
-	/**
-	 * Returns product default fields list for caching.
-	 *
-	 * @return array
-	 */
-	protected static function getDefaultCachedFieldList(): array
-	{
-		return [
-			'ID',
-			'TYPE',
-			'AVAILABLE',
-			'QUANTITY',
-			'QUANTITY_TRACE' => 'QUANTITY_TRACE_ORIG',
-			'CAN_BUY_ZERO' => 'CAN_BUY_ZERO_ORIG',
-			'SUBSCRIBE' => 'SUBSCRIBE_ORIG'
-		];
 	}
 
 	/**
@@ -640,6 +768,7 @@ class Product extends Entity
 		Catalog\ProductGroupAccessTable::deleteByProduct($id);
 		Catalog\StoreProductTable::deleteByProduct($id);
 		Catalog\SubscribeTable::onIblockElementDelete($id);
+		ExportedProductTable::deleteProduct($id);
 		//TODO: replace this code
 		$conn = Main\Application::getConnection();
 		$helper = $conn->getSqlHelper();
@@ -722,8 +851,11 @@ class Product extends Entity
 	private static function checkPriceCurrency($currency): ?string
 	{
 		$result = null;
-		if ($currency !== null && $currency !== '')
+		if (is_string($currency) && $currency !== '')
+		{
 			$result = $currency;
+		}
+
 		return $result;
 	}
 
@@ -736,21 +868,21 @@ class Product extends Entity
 			case Catalog\ProductTable::TYPE_PRODUCT:
 			case Catalog\ProductTable::TYPE_FREE_OFFER:
 				$result = Catalog\ProductTable::calculateAvailable($fields);
-				$actions['SETS'] = true;
-				$actions['SUBSCRIPTION'] = true;
+				$actions[self::ACTION_RECALCULATE_SETS] = true;
+				$actions[self::ACTION_SEND_NOTIFICATIONS] = true;
 				break;
 			case Catalog\ProductTable::TYPE_OFFER:
 				$result = Catalog\ProductTable::calculateAvailable($fields);
 				if (!self::$separateSkuMode)
-					$actions['SKU_AVAILABLE'] = true;
-				$actions['SETS'] = true;
-				$actions['SUBSCRIPTION'] = true;
+					$actions[self::ACTION_CHANGE_PARENT_AVAILABLE] = true;
+				$actions[self::ACTION_RECALCULATE_SETS] = true;
+				$actions[self::ACTION_SEND_NOTIFICATIONS] = true;
 				break;
 			case Catalog\ProductTable::TYPE_SKU:
 				if (self::$separateSkuMode)
 					$result = Catalog\ProductTable::calculateAvailable($fields);
 				else
-					$actions['SKU_AVAILABLE'] = true;
+					$actions[self::ACTION_CHANGE_PARENT_AVAILABLE] = true;
 				break;
 			case Catalog\ProductTable::TYPE_SET:
 				$result = Catalog\ProductTable::calculateAvailable($fields);
@@ -758,6 +890,12 @@ class Product extends Entity
 			case Catalog\ProductTable::TYPE_EMPTY_SKU:
 				$result = Catalog\ProductTable::STATUS_NO;
 				break;
+			case Catalog\ProductTable::TYPE_SERVICE:
+				if (isset($fields['QUANTITY']))
+				{
+					$result = ($fields['QUANTITY'] > 0 ? Catalog\ProductTable::STATUS_YES : Catalog\ProductTable::STATUS_NO);
+					$actions[self::ACTION_SEND_NOTIFICATIONS] = true;
+				}
 		}
 
 		$fields['AVAILABLE'] = $result;
@@ -773,7 +911,8 @@ class Product extends Entity
 			case \CCatalogSku::TYPE_CATALOG:
 				$result = [
 					Catalog\ProductTable::TYPE_PRODUCT => true,
-					Catalog\ProductTable::TYPE_SET => true
+					Catalog\ProductTable::TYPE_SET => true,
+					Catalog\ProductTable::TYPE_SERVICE => true,
 				];
 				break;
 			case \CCatalogSku::TYPE_OFFERS:
@@ -787,7 +926,8 @@ class Product extends Entity
 					Catalog\ProductTable::TYPE_PRODUCT => true,
 					Catalog\ProductTable::TYPE_SET => true,
 					Catalog\ProductTable::TYPE_SKU => true,
-					Catalog\ProductTable::TYPE_EMPTY_SKU => true
+					Catalog\ProductTable::TYPE_EMPTY_SKU => true,
+					Catalog\ProductTable::TYPE_SERVICE => true,
 				];
 				break;
 			case \CCatalogSku::TYPE_PRODUCT:
@@ -821,5 +961,18 @@ class Product extends Entity
 		}
 
 		return $result;
+	}
+
+	private static function updateElementModificationTime(int $elementId): void
+	{
+		$conn = Main\Application::getConnection();
+		if (self::$queryElementDate === null)
+		{
+			$helper = $conn->getSqlHelper();
+			self::$queryElementDate = 'update ' . $helper->quote(Iblock\ElementTable::getTableName())
+				. ' set ' . $helper->quote('TIMESTAMP_X') . ' = ' . $helper->getCurrentDateTimeFunction()
+				. ' where ' . $helper->quote('ID') . '=';
+		}
+		$conn->queryExecute(self::$queryElementDate . $elementId);
 	}
 }

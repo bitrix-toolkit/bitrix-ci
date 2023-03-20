@@ -105,7 +105,7 @@ class ImageInput
 	{
 		if (!$this->inputId)
 		{
-			$id = $this->getInputName().'_'.random_int(1, 1000000);
+			$id = uniqid($this->getInputName().'_', false);
 			$this->inputId = strtolower(preg_replace('/[^a-z0-9]/i', '_', $id));
 		}
 
@@ -136,14 +136,25 @@ class ImageInput
 
 		$this->values = [];
 		$photoCollection = $this->entity->getFrontImageCollection();
-		foreach ($photoCollection as $item)
+		if ($this->isMorePhotoEnabled())
 		{
-			if ($item instanceof MorePhotoImage)
+			foreach ($photoCollection as $item)
 			{
-				$propName = str_replace('n#IND#', $item->getPropertyValueId(), $this->getInputName());
-				$this->values[$propName] = $item->getId();
+				if ($item instanceof MorePhotoImage)
+				{
+					$propName = str_replace('n#IND#', $item->getPropertyValueId(), $this->getInputName());
+					$this->values[$propName] = $item->getId();
+				}
+				else
+				{
+					$this->values[$item::CODE] = $item->getId();
+				}
 			}
-			else
+		}
+		else
+		{
+			$item = $photoCollection->getFrontImage();
+			if ($item)
 			{
 				$this->values[$item::CODE] = $item->getId();
 			}
@@ -191,6 +202,9 @@ class ImageInput
 					'=CODE' => MorePhotoImage::CODE,
 				],
 				'limit' => 1,
+				'cache' => [
+					'ttl' => 86400,
+				],
 			]);
 
 			if ($morePhotoProperty = $propertyRaw->fetch())

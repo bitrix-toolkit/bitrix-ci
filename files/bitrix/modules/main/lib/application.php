@@ -3,7 +3,7 @@
  * Bitrix Framework
  * @package bitrix
  * @subpackage main
- * @copyright 2001-2012 Bitrix
+ * @copyright 2001-2022 Bitrix
  */
 namespace Bitrix\Main;
 
@@ -29,10 +29,9 @@ abstract class Application
 	/**
 	 * @var Application
 	 */
-	protected static $instance = null;
+	protected static $instance;
 
-	protected $isBasicKernelInitialized = false;
-	protected $isExtendedKernelInitialized = false;
+	protected bool $initialized = false;
 
 	/**
 	 * Execution context.
@@ -79,40 +78,49 @@ abstract class Application
 	 */
 	protected $backgroundJobs;
 
+	/** @var License */
+	protected $license;
+
 	/**
 	 * Creates new application instance.
 	 */
 	protected function __construct()
 	{
+		ServiceLocator::getInstance()->registerByGlobalSettings();
 		$this->backgroundJobs = new \SplPriorityQueue();
+		$this->initializeExceptionHandler();
+		$this->initializeCache();
+		$this->createDatabaseConnection();
 	}
 
 	/**
 	 * Returns current instance of the Application.
 	 *
-	 * @return Application
+	 * @return Application | HttpApplication
 	 */
 	public static function getInstance()
 	{
 		if (!isset(static::$instance))
+		{
 			static::$instance = new static();
-
+		}
 		return static::$instance;
 	}
 
 	/**
-	 * Does minimally possible kernel initialization.
+	 * @return bool
+	 */
+	public static function hasInstance()
+	{
+		return isset(static::$instance);
+	}
+
+	/**
+	 * @deprecated
+	 * Does nothing, will be removed soon.
 	 */
 	public function initializeBasicKernel()
 	{
-		if ($this->isBasicKernelInitialized)
-			return;
-		$this->isBasicKernelInitialized = true;
-
-		ServiceLocator::getInstance()->registerByGlobalSettings();
-		$this->initializeExceptionHandler();
-		$this->initializeCache();
-		$this->createDatabaseConnection();
 	}
 
 	/**
@@ -122,13 +130,15 @@ abstract class Application
 	 */
 	public function initializeExtendedKernel(array $params)
 	{
-		if ($this->isExtendedKernelInitialized)
-			return;
-		$this->isExtendedKernelInitialized = true;
-
-		$this->initializeSessions();
 		$this->initializeContext($params);
-		$this->initializeSessionLocalStorage();
+
+		if (!$this->initialized)
+		{
+			$this->initializeSessions();
+			$this->initializeSessionLocalStorage();
+
+			$this->initialized = true;
+		}
 	}
 
 	private function initializeSessions()
@@ -215,7 +225,7 @@ abstract class Application
 	/**
 	 * Runs controller and its action and sends response to the output.
 	 *
-	 * It's a stub method and we can't mark it as abstract because there is compatibility.
+	 * It's a stub method, and we can't mark it as abstract because there is compatibility.
 	 * @return void
 	 */
 	public function run()
@@ -314,7 +324,7 @@ abstract class Application
 	 *			'assertion_throws_exception' => true,       // assertion throws exception
 	 *			'assertion_error_type' => 256,
 	 *			'log' => array(
-	 *              'class_name' => 'MyLog',        // custom log class, must extends ExceptionHandlerLog; can be omited, in this case default Diag\FileExceptionHandlerLog will be used
+	 *              'class_name' => 'MyLog',        // custom log class, must extend ExceptionHandlerLog; can be omited, in this case default Diag\FileExceptionHandlerLog will be used
 	 *              'extension' => 'MyLogExt',      // php extension, is used only with 'class_name'
 	 *              'required_file' => 'modules/mylog.module/mylog.php'     // included file, is used only with 'class_name'
 	 *				'settings' => array(        // any settings for 'class_name'
@@ -338,6 +348,11 @@ abstract class Application
 		if (!isset($exceptionHandling["debug"]) || !is_bool($exceptionHandling["debug"]))
 			$exceptionHandling["debug"] = false;
 		$exceptionHandler->setDebugMode($exceptionHandling["debug"]);
+
+		if (!empty($exceptionHandling['track_modules']) && is_array($exceptionHandling['track_modules']))
+		{
+			$exceptionHandler->setTrackModules($exceptionHandling['track_modules']);
+		}
 
 		if (isset($exceptionHandling["handled_errors_types"]) && is_int($exceptionHandling["handled_errors_types"]))
 			$exceptionHandler->setHandledErrorsTypes($exceptionHandling["handled_errors_types"]);
@@ -365,8 +380,11 @@ abstract class Application
 	public function createExceptionHandlerLog()
 	{
 		$exceptionHandling = Config\Configuration::getValue("exception_handling");
-		if ($exceptionHandling === null || !is_array($exceptionHandling) || !isset($exceptionHandling["log"]) || !is_array($exceptionHandling["log"]))
+
+		if (!is_array($exceptionHandling) || !isset($exceptionHandling["log"]) || !is_array($exceptionHandling["log"]))
+		{
 			return null;
+		}
 
 		$options = $exceptionHandling["log"];
 
@@ -375,14 +393,20 @@ abstract class Application
 		if (isset($options["class_name"]) && !empty($options["class_name"]))
 		{
 			if (isset($options["extension"]) && !empty($options["extension"]) && !extension_loaded($options["extension"]))
+			{
 				return null;
+			}
 
 			if (isset($options["required_file"]) && !empty($options["required_file"]) && ($requiredFile = Loader::getLocal($options["required_file"])) !== false)
+			{
 				require_once($requiredFile);
+			}
 
 			$className = $options["class_name"];
 			if (!class_exists($className))
+			{
 				return null;
+			}
 
 			$log = new $className();
 		}
@@ -422,7 +446,7 @@ abstract class Application
 		$show_cache_stat = "";
 		if (isset($_GET["show_cache_stat"]))
 		{
-			$show_cache_stat = (mb_strtoupper($_GET["show_cache_stat"]) == "Y" ? "Y" : "");
+			$show_cache_stat = (strtoupper($_GET["show_cache_stat"]) == "Y" ? "Y" : "");
 			@setcookie("show_cache_stat", $show_cache_stat, false, "/");
 		}
 		elseif (isset($_COOKIE["show_cache_stat"]))
@@ -458,7 +482,7 @@ abstract class Application
 	/**
 	 * Returns context of the current request.
 	 *
-	 * @return Context
+	 * @return Context | HttpContext
 	 */
 	public function getContext()
 	{
@@ -473,6 +497,16 @@ abstract class Application
 	public function setContext(Context $context)
 	{
 		$this->context = $context;
+	}
+
+	public function getLicense(): License
+	{
+		if (!$this->license)
+		{
+			$this->license = new License();
+		}
+
+		return $this->license;
 	}
 
 	/**
@@ -623,7 +657,7 @@ abstract class Application
 				return $personalRoot = $server->getPersonalRoot();
 		}
 
-		return isset($_SERVER["BX_PERSONAL_ROOT"]) ? $_SERVER["BX_PERSONAL_ROOT"] : "/bitrix";
+		return $_SERVER["BX_PERSONAL_ROOT"] ?? '/bitrix';
 	}
 
 	/**
@@ -673,7 +707,7 @@ abstract class Application
 				$jobs[] = $job;
 			}
 
-			//do jobs
+			//do job
 			foreach ($jobs as $job)
 			{
 				try
@@ -694,8 +728,12 @@ abstract class Application
 		}
 	}
 
-	public function isExtendedKernelInitialized(): bool
+	/**
+	 * Returns true if the application is fully initialized.
+	 * @return bool
+	 */
+	public function isInitialized()
 	{
-		return (bool)$this->isExtendedKernelInitialized;
+		return $this->initialized;
 	}
 }

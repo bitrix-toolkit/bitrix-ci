@@ -48,6 +48,8 @@ class CHotKeysCode
 
 	protected function CleanUrl($url)
 	{
+		$url = (string)$url;
+
 		//removes host & proto from url
 		if(($hostPos = mb_strpos($url, $_SERVER["HTTP_HOST"])))
 			$cleanUrl = mb_substr($url, $hostPos + mb_strlen($_SERVER["HTTP_HOST"]));
@@ -998,11 +1000,14 @@ class CHotKeys
 		{
 			$name = str_replace(array("#BR#", "&nbsp;"), array(" ", ""), $arPanelButton["TEXT"]);
 
-			if($parent != "")
+			if ($parent != "")
+			{
 				$name = $parent.$name;
-			else
-				if($arPanelButton["MENU"])
-					$name = "<b>".$name."</b>";
+			}
+			elseif (isset($arPanelButton["MENU"]) && $arPanelButton["MENU"])
+			{
+				$name = "<b>".$name."</b>";
+			}
 
 			$Execs = $this->GetCodeByClassName($arPanelButton["HK_ID"], $name, $hkCode);
 			$retJS .= $this->PrintJSExecs($Execs);

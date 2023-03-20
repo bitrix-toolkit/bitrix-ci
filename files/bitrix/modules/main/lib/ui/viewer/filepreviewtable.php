@@ -9,6 +9,22 @@ use Bitrix\Main\ORM\Event;
 use Bitrix\Main\Type\Date;
 use Bitrix\Main\Type\DateTime;
 
+/**
+ * Class FilePreviewTable
+ *
+ * DO NOT WRITE ANYTHING BELOW THIS
+ *
+ * <<< ORMENTITYANNOTATION
+ * @method static EO_FilePreview_Query query()
+ * @method static EO_FilePreview_Result getByPrimary($primary, array $parameters = [])
+ * @method static EO_FilePreview_Result getById($id)
+ * @method static EO_FilePreview_Result getList(array $parameters = [])
+ * @method static EO_FilePreview_Entity getEntity()
+ * @method static \Bitrix\Main\UI\Viewer\EO_FilePreview createObject($setDefaultValues = true)
+ * @method static \Bitrix\Main\UI\Viewer\EO_FilePreview_Collection createCollection()
+ * @method static \Bitrix\Main\UI\Viewer\EO_FilePreview wakeUpObject($row)
+ * @method static \Bitrix\Main\UI\Viewer\EO_FilePreview_Collection wakeUpCollection($rows)
+ */
 final class FilePreviewTable extends DataManager
 {
 	/** @var array */
@@ -47,7 +63,11 @@ final class FilePreviewTable extends DataManager
 					return new DateTime();
 				},
 			]),
-			new Entity\DatetimeField('TOUCHED_AT'),
+			new Entity\DatetimeField('TOUCHED_AT', [
+				'default_value' => function () {
+					return new DateTime();
+				},
+			]),
 			new Entity\ReferenceField('FILE',FileTable::class,
 				['=this.FILE_ID' => 'ref.ID'],
 				['join_type' => 'INNER']
@@ -100,7 +120,7 @@ final class FilePreviewTable extends DataManager
 		return "\\Bitrix\\Main\\UI\\Viewer\\FilePreviewTable::deleteOldAgent({$dayToDeath}, {$portion});";
 	}
 
-	public static function onBeforeDelete(Event $event)
+	public static function onDelete(Event $event)
 	{
 		$id = $event->getParameter('primary')['ID'];
 		if (isset(self::$alreadyDeleted[$id]))
@@ -127,10 +147,7 @@ final class FilePreviewTable extends DataManager
 		self::$alreadyDeleted[$file['ID']] = true;
 
 		\CFile::delete($file['PREVIEW_ID']);
-		if (!$keepImage)
-		{
-			\CFile::delete($file['PREVIEW_IMAGE_ID']);
-		}
+		\CFile::delete($file['PREVIEW_IMAGE_ID']);
 	}
 
 	/**

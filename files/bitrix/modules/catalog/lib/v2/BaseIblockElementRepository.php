@@ -75,7 +75,8 @@ abstract class BaseIblockElementRepository implements IblockElementRepositoryCon
 
 		foreach ($entities as $entity)
 		{
-			if ($entityId = $entity->getId())
+			$entityId = $entity->getId();
+			if ($entityId !== null)
 			{
 				$res = $this->updateInternal($entityId, $entity->getChangedFields());
 
@@ -117,6 +118,11 @@ abstract class BaseIblockElementRepository implements IblockElementRepositoryCon
 			foreach ($entities as $entity)
 			{
 				$entityFields = $fields[$entity->getId()] ?? null;
+				if (!is_array($entityFields))
+				{
+					AddMessage2Log('Cannot load product ' . $entity->getId(), 'catalog');
+					continue;
+				}
 				$entityFields = array_diff_key($entityFields, ['TYPE' => true]);
 
 				if ($entityFields)
@@ -165,6 +171,7 @@ abstract class BaseIblockElementRepository implements IblockElementRepositoryCon
 	{
 		$filter = $params['filter'] ?? [];
 		$order = $params['order'] ?? [];
+		$nav = $params['nav'] ?? false;
 
 		\CTimeZone::Disable();
 
@@ -181,7 +188,7 @@ abstract class BaseIblockElementRepository implements IblockElementRepositoryCon
 				$this->getAdditionalFilter()
 			),
 			false,
-			false,
+			$nav,
 			['*']
 		);
 		if ($detailUrlTemplate = $this->getDetailUrlTemplate())
@@ -205,14 +212,14 @@ abstract class BaseIblockElementRepository implements IblockElementRepositoryCon
 				'SUBSCRIBE' => 'SUBSCRIBE_ORIG',
 			];
 			$catalogResult = ProductTable::getList([
-				'select' => array_merge(['*'], array_values($specificFields)),
+				'select' => array_merge(['*', 'UF_*'], array_values($specificFields)),
 				'filter' => array_merge(
 					[
 						'@ID' => array_keys($iblockElements),
 					],
 					$this->getAdditionalProductFilter()
 				),
-			]);
+			])->fetchAll();
 
 			foreach ($catalogResult as $item)
 			{
@@ -394,7 +401,13 @@ abstract class BaseIblockElementRepository implements IblockElementRepositoryCon
 
 	protected function prepareProductFields(array $fields): array
 	{
-		$catalogFields = array_intersect_key($fields, ProductTable::getMap());
+		$catalogFields = array_intersect_key(
+			$fields,
+			array_fill_keys(
+				Product::getTabletFieldNames(Product::FIELDS_ALL),
+				true
+			)
+		);
 
 		if (isset($catalogFields['TIMESTAMP_X']))
 		{

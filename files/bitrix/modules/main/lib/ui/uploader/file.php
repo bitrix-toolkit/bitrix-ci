@@ -1,13 +1,16 @@
 <?php
 namespace Bitrix\Main\UI\Uploader;
+
+use Bitrix\Main\Context;
 use Bitrix\Main\Error;
 use Bitrix\Main\ErrorCollection;
 use Bitrix\Main\Result;
-use \Bitrix\Main\UI\FileInputUtility;
-use \Bitrix\Main\Web\HttpClient;
-use \Bitrix\Main\Web\Uri;
-use \Bitrix\Main\Localization\Loc;
-use \Bitrix\Main\Application;
+use Bitrix\Main\UI\FileInputUtility;
+use Bitrix\Main\Web;
+use Bitrix\Main\Web\HttpClient;
+use Bitrix\Main\Web\Uri;
+use Bitrix\Main\Localization\Loc;
+use Bitrix\Main\Application;
 
 class File
 {
@@ -303,13 +306,12 @@ class File
 	 */
 	public function getErrorMessage()
 	{
-		$m = array();
-		if ($error = $this->errorCollection->rewind())
+		$m = [];
+		for ($this->errorCollection->rewind(); $this->errorCollection->valid(); $this->errorCollection->next())
 		{
-			do
-			{
-				$m[] = ($error->getMessage()?:$error->getCode());
-			} while ($error = $this->errorCollection->next());
+			/** @var Error $error */
+			$error = $this->errorCollection->current();
+			$m[] = ($error->getMessage()?:$error->getCode());
 		}
 		return implode("", $m);
 	}
@@ -496,21 +498,23 @@ class File
 	 * @param string $copy
 	 * @return string
 	 */
-	private function getUrl($act = "view", $copy = "default", $uri = null)
+	private function getUrl($act = "view", $copy = "default", $url = null)
 	{
-		$uri = is_null($uri) ? \Bitrix\Main\Context::getCurrent()->getRequest()->getRequestUri() : $uri;
-		return \CHTTP::URN2URI($uri.(mb_strpos($uri, "?") === false ? "?" : "&").
-			\CHTTP::PrepareData(
-				array(
-					Uploader::INFO_NAME => array(
-						"CID" => $this->package->getCid(),
-						"mode" => $act,
-						"hash" => $this->getHash(),
-						"copy" => $copy
-					)
-				)
-			)
-		);
+		$url = is_null($url) ? Context::getCurrent()->getRequest()->getRequestUri() : $url;
+
+		$uri = (new Uri($url))
+			->addParams([
+				Uploader::INFO_NAME => [
+					"CID" => $this->package->getCid(),
+					"mode" => $act,
+					"hash" => $this->getHash(),
+					"copy" => $copy
+				],
+			])
+			->toAbsolute()
+		;
+
+		return $uri->getUri();
 	}
 
 	public static function getUrlFromRelativePath($tmpName)
@@ -755,7 +759,7 @@ class File
 		else
 			$attachment_name = $name;
 
-		$content_type = \CFile::NormalizeContentType($content_type);
+		$content_type = Web\MimeType::normalize($content_type);
 
 		$src = null;
 		$file = null;
@@ -842,7 +846,7 @@ class File
 				}
 			}
 
-			$utfName = \CHTTP::urnEncode($attachment_name, "UTF-8");
+			$utfName = Uri::urnEncode($attachment_name, "UTF-8");
 			$translitName = \CUtil::translit($attachment_name, LANGUAGE_ID, array(
 				"max_len" => 1024,
 				"safe_chars" => ".",

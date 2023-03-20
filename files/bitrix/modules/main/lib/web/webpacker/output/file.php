@@ -185,13 +185,18 @@ class File extends Base
 			return $uri;
 		}
 
-		$file = \CFile::getByID($this->id)->fetch();
+		$file = \CFile::GetFileArray($this->id);
 		if (!$file)
 		{
 			return $uri;
 		}
 
-		$uri = $file['~src'];
+		$uri = $file['SRC'];
+		if ($uri && !preg_match('#^(https?://)#', $uri))
+		{
+			return WebPacker\Builder::getDefaultSiteUri() . $uri;
+		}
+
 		if ($uri)
 		{
 			return $uri;
@@ -201,7 +206,8 @@ class File extends Base
 		return WebPacker\Builder::getDefaultSiteUri() .
 			'/' . $uploadDir .
 			'/' . $file['SUBDIR'] .
-			'/' . $file['FILE_NAME'];
+			'/' . $file['FILE_NAME']
+		;
 	}
 
 	protected function saveFile($content)

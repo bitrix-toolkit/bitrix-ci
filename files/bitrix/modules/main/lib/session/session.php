@@ -4,6 +4,7 @@ namespace Bitrix\Main\Session;
 
 use Bitrix\Main\Application;
 use Bitrix\Main\Config\Configuration;
+use Bitrix\Main\Session\Handlers\AbstractSessionHandler;
 use Bitrix\Main\Session\Handlers\NullSessionHandler;
 use Bitrix\Main\Web\Cookie;
 
@@ -23,6 +24,8 @@ class Session implements SessionInterface, \ArrayAccess
 	protected $debugger;
 	/** @var bool */
 	protected $ignoringSessionStartErrors = false;
+	/** @var bool */
+	protected $useStrictMode = true;
 
 	/**
 	 * Session constructor.
@@ -86,6 +89,16 @@ class Session implements SessionInterface, \ArrayAccess
 		return session_status() === \PHP_SESSION_ACTIVE;
 	}
 
+	private function isHeadersSent(&$file, &$line): bool
+	{
+		return filter_var(ini_get('session.use_cookies'), FILTER_VALIDATE_BOOLEAN) && headers_sent($file, $line);
+	}
+
+	public function isAccessible(): bool
+	{
+		return !$this->isHeadersSent($file, $line);
+	}
+
 	public function getId(): string
 	{
 		return session_id();
@@ -116,6 +129,11 @@ class Session implements SessionInterface, \ArrayAccess
 		session_name($name);
 	}
 
+	public function getSessionHandler(): ?\SessionHandlerInterface
+	{
+		return $this->sessionHandler;
+	}
+
 	public function start(): bool
 	{
 		if ($this->isStarted())
@@ -123,12 +141,12 @@ class Session implements SessionInterface, \ArrayAccess
 			return true;
 		}
 
-		if (session_status() === \PHP_SESSION_ACTIVE)
+		if ($this->isActive())
 		{
 			throw new \RuntimeException('Could not start session by PHP because session is active.');
 		}
 
-		if (filter_var(ini_get('session.use_cookies'), FILTER_VALIDATE_BOOLEAN) && headers_sent($file, $line))
+		if ($this->isHeadersSent($file, $line))
 		{
 			throw new \RuntimeException(
 				"Could not start session because headers have already been sent. \"{$file}\":{$line}."
@@ -148,10 +166,9 @@ class Session implements SessionInterface, \ArrayAccess
 		}
 		catch (\Error $error)
 		{
-			Application::getInstance()->getExceptionHandler()->writeToLog($error);
-			if ($error->getPrevious())
+			if ($this->shouldLogError($error))
 			{
-				Application::getInstance()->getExceptionHandler()->writeToLog($error->getPrevious());
+				$this->writeToLogError($error);
 			}
 
 			if (!$this->ignoringSessionStartErrors)
@@ -187,17 +204,19 @@ class Session implements SessionInterface, \ArrayAccess
 
 	protected function getSessionStartOptions(): array
 	{
+		$useStrictModeValue = $this->useStrictMode? 1 : 0;
+
 		if ($this->sessionHandler instanceof NullSessionHandler)
 		{
 			return [
 				'use_cookies' => 0,
-				'use_strict_mode' => 1,
+				'use_strict_mode' => $useStrictModeValue,
 			];
 		}
 
 		$options = [
 			'cookie_httponly' => 1,
-			'use_strict_mode' => 1,
+			'use_strict_mode' => $useStrictModeValue,
 		];
 
 		$domain = Cookie::getCookieDomain();
@@ -217,6 +236,32 @@ class Session implements SessionInterface, \ArrayAccess
 		}
 	}
 
+	private function writeToLogError(\Error $error): void
+	{
+		$exceptionHandler = Application::getInstance()->getExceptionHandler();
+		$exceptionHandler->writeToLog($error);
+
+		if ($error->getPrevious())
+		{
+			$exceptionHandler->writeToLog($error->getPrevious());
+		}
+	}
+
+	private function shouldLogError(\Error $error): bool
+	{
+		if (!$error->getPrevious())
+		{
+			return true;
+		}
+
+		if (strpos($error->getPrevious()->getMessage(), AbstractSessionHandler::LOCK_ERROR_MESSAGE) === 0)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
 	public function regenerateId(): bool
 	{
 		if (!$this->isStarted())
@@ -230,9 +275,9 @@ class Session implements SessionInterface, \ArrayAccess
 		$this->set('destroyed', time());
 
 		$backup = $this->sessionData;
-		$this->save();
+		$this->saveWithoutReleaseLock();
 
-		$prevStrictMode = ini_set('session.use_strict_mode', 0);
+		$this->disableStrictMode();
 		$this->setId($newSessionId);
 // Idea to switch on strict mode after setId is good. But in that case
 // session_start will invoke validateId for one time more. So behavior in
@@ -243,6 +288,8 @@ class Session implements SessionInterface, \ArrayAccess
 //		}
 
 		$this->start();
+		$this->enableStrictMode();
+
 		$_SESSION = $backup;
 
 		$this->remove('newSid');
@@ -257,6 +304,20 @@ class Session implements SessionInterface, \ArrayAccess
 		{
 			session_destroy();
 			$this->started = false;
+		}
+	}
+
+	protected function saveWithoutReleaseLock(): void
+	{
+		if ($this->sessionHandler instanceof AbstractSessionHandler)
+		{
+			$this->sessionHandler->turnOffReleaseLockAfterCloseSession();
+			$this->save();
+			$this->sessionHandler->turnOnReleaseLockAfterCloseSession();
+		}
+		else
+		{
+			$this->save();
 		}
 	}
 
@@ -347,5 +408,20 @@ class Session implements SessionInterface, \ArrayAccess
 		}
 
 		$this->getDebugger()->detectFirstUsage();
+	}
+
+	private function enableStrictMode(): self
+	{
+		$this->useStrictMode = true;
+
+		return $this;
+	}
+
+	private function disableStrictMode(): self
+	{
+		ini_set('session.use_strict_mode', 0);
+		$this->useStrictMode = false;
+
+		return $this;
 	}
 }

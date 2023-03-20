@@ -781,11 +781,11 @@ class Query
 				{
 					$columnField = $chain->getLastElement()->getValue();
 
-					trigger_error(sprintf(
+					throw new SystemException(sprintf(
 						'Private field %s.%s is restricted in query, use Query::enablePrivateFields() to allow it',
 						$columnField->getEntity()->getDataClass(),
 						$columnField->getName()
-					), E_USER_WARNING);
+					));
 				}
 			}
 		}
@@ -821,7 +821,7 @@ class Query
 	/**
 	 * Adds a runtime field (being created dynamically, opposite to being described statically in the entity map)
 	 *
-	 * @param string|null $name
+	 * @param string|null|Field $name
 	 * @param array|Field $fieldInfo
 	 *
 	 * @return $this
@@ -2501,7 +2501,10 @@ class Query
 		// union
 		if (!empty($this->unionHandler))
 		{
-			$query = "({$query})";
+			if ($this->order || $this->limit)
+			{
+				$query = "({$query})";
+			}
 
 			foreach ($this->unionHandler->getQueries() as $union)
 			{

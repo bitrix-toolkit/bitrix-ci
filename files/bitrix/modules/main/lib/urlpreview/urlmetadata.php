@@ -7,7 +7,24 @@ use Bitrix\Main\Application;
 use Bitrix\Main\Entity;
 use Bitrix\Main\Entity\AddResult;
 use Bitrix\Main\Entity\ScalarField;
+use Bitrix\Main\Text\Emoji;
 
+/**
+ * Class UrlMetadataTable
+ *
+ * DO NOT WRITE ANYTHING BELOW THIS
+ *
+ * <<< ORMENTITYANNOTATION
+ * @method static EO_UrlMetadata_Query query()
+ * @method static EO_UrlMetadata_Result getByPrimary($primary, array $parameters = [])
+ * @method static EO_UrlMetadata_Result getById($id)
+ * @method static EO_UrlMetadata_Result getList(array $parameters = [])
+ * @method static EO_UrlMetadata_Entity getEntity()
+ * @method static \Bitrix\Main\UrlPreview\EO_UrlMetadata createObject($setDefaultValues = true)
+ * @method static \Bitrix\Main\UrlPreview\EO_UrlMetadata_Collection createCollection()
+ * @method static \Bitrix\Main\UrlPreview\EO_UrlMetadata wakeUpObject($row)
+ * @method static \Bitrix\Main\UrlPreview\EO_UrlMetadata_Collection wakeUpCollection($rows)
+ */
 class UrlMetadataTable extends Entity\DataManager
 {
 	const TYPE_STATIC = 'S';
@@ -43,11 +60,20 @@ class UrlMetadataTable extends Entity\DataManager
 			'TYPE' => new Entity\StringField('TYPE', array(
 				'required' => true,
 			)),
-			'TITLE' => new Entity\StringField('TITLE'),
-			'DESCRIPTION' => new Entity\TextField('DESCRIPTION'),
+			'TITLE' => new Entity\StringField('TITLE', [
+				'save_data_modification' => [Emoji::class, 'getSaveModificator'],
+				'fetch_data_modification' => [Emoji::class, 'getFetchModificator'],
+			]),
+			'DESCRIPTION' => new Entity\TextField('DESCRIPTION', [
+				'save_data_modification' => [Emoji::class, 'getSaveModificator'],
+				'fetch_data_modification' => [Emoji::class, 'getFetchModificator'],
+			]),
 			'IMAGE_ID' => new Entity\IntegerField('IMAGE_ID'),
 			'IMAGE' => new Entity\StringField('IMAGE'),
-			'EMBED' => new Entity\TextField('EMBED'),
+			'EMBED' => new Entity\TextField('EMBED', [
+				'save_data_modification' => [Emoji::class, 'getSaveModificator'],
+				'fetch_data_modification' => [Emoji::class, 'getFetchModificator'],
+			]),
 			'EXTRA' => new Entity\TextField('EXTRA', array(
 				'serialized' => true,
 			)),
@@ -59,7 +85,7 @@ class UrlMetadataTable extends Entity\DataManager
 	}
 
 	/**
-	 * Returns first record filtered by $url value
+	 * Returns last record filtered by $url value
 	 *
 	 * @param string $url Url of the page with metadata.
 	 * @return array|false
@@ -67,12 +93,16 @@ class UrlMetadataTable extends Entity\DataManager
 	 */
 	public static function getByUrl($url)
 	{
-		$parameters = array(
-			'select' => array('*'),
-			'filter' => array(
+		$parameters = [
+			'select' => ['*'],
+			'filter' => [
 				'=URL' => $url,
-			)
-		);
+			],
+			'order' => [
+				'ID' => 'desc'
+			],
+			'limit' => 1
+		];
 
 		return static::getList($parameters)->fetch();
 	}

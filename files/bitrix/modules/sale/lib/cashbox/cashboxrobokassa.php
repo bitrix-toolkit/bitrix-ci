@@ -23,7 +23,7 @@ class CashboxRobokassa extends CashboxPaySystem
 
 	private const CHECK_PAYMENT_TYPE = 2;
 
-	private const MAX_NAME_LENGTH = 64;
+	private const MAX_NAME_LENGTH = 128;
 
 	public static function getName(): string
 	{
@@ -90,6 +90,7 @@ class CashboxRobokassa extends CashboxPaySystem
 
 		$checkTypeMap = $this->getCheckTypeMap();
 		$paymentMethod = $checkTypeMap[$check::getType()];
+		$paymentObjectMap = $this->getPaymentObjectMap();
 		foreach ($checkData['items'] as $item)
 		{
 			$vat = $this->getValueFromSettings('VAT', $item['vat']);
@@ -101,12 +102,12 @@ class CashboxRobokassa extends CashboxPaySystem
 				'sum' => (string)Sale\PriceMaths::roundPrecision($item['sum']),
 				'tax' => $tax,
 				'payment_method' => $paymentMethod,
-				'payment_object' => $item['payment_object'],
+				'payment_object' => $paymentObjectMap[$item['payment_object']],
 			];
 
-			if ($item['nomenclature_code'])
+			if (!empty($item['marking_code']))
 			{
-				$receiptItem['nomenclature_code'] = $item['nomenclature_code'];
+				$receiptItem['nomenclature_code'] = $item['marking_code'];
 			}
 
 			$fields['items'][] = $receiptItem;
@@ -190,7 +191,7 @@ class CashboxRobokassa extends CashboxPaySystem
 	{
 		return [
 			'merchantId' => $this->getPaySystemSetting($payment, 'ROBOXCHANGE_SHOPLOGIN'),
-			'id' => $this->getPaySystemSetting($payment, 'PAYMENT_ID'),
+			'id' => $payment->getId(),
 		];
 	}
 
@@ -337,6 +338,12 @@ class CashboxRobokassa extends CashboxPaySystem
 		Logger::addDebugInfo(__CLASS__ . ': response data: ' . $response);
 
 		$response = static::decode($response);
+		if (!$response)
+		{
+			$result->addError(new Main\Error(Main\Localization\Loc::getMessage('SALE_CASHBOX_ROBOKASSA_ERROR_DECODE_RESPONSE')));
+			return $result;
+		}
+
 		$result->setData($response);
 
 		return $result;
@@ -373,7 +380,7 @@ class CashboxRobokassa extends CashboxPaySystem
 	 */
 	private static function encode(array $data)
 	{
-		return Main\Web\Json::encode($data, JSON_UNESCAPED_UNICODE);
+		return Main\Web\Json::encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 	}
 
 	/**
@@ -520,5 +527,43 @@ class CashboxRobokassa extends CashboxPaySystem
 		}
 
 		return $result;
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getPaymentObjectMap(): array
+	{
+		return [
+			Check::PAYMENT_OBJECT_COMMODITY => 'commodity',
+			Check::PAYMENT_OBJECT_SERVICE => 'service',
+			Check::PAYMENT_OBJECT_JOB => 'job',
+			Check::PAYMENT_OBJECT_EXCISE => 'excise',
+			Check::PAYMENT_OBJECT_PAYMENT => 'payment',
+			Check::PAYMENT_OBJECT_GAMBLING_BET => 'gambling_bet',
+			Check::PAYMENT_OBJECT_GAMBLING_PRIZE => 'gambling_prize',
+			Check::PAYMENT_OBJECT_LOTTERY => 'lottery',
+			Check::PAYMENT_OBJECT_LOTTERY_PRIZE => 'lottery_prize',
+			Check::PAYMENT_OBJECT_INTELLECTUAL_ACTIVITY => 'intellectual_activity',
+			Check::PAYMENT_OBJECT_AGENT_COMMISSION => 'agent_commission',
+			Check::PAYMENT_OBJECT_COMPOSITE => 'composite',
+			Check::PAYMENT_OBJECT_ANOTHER => 'another',
+			Check::PAYMENT_OBJECT_PROPERTY_RIGHT => 'property_right',
+			Check::PAYMENT_OBJECT_NON_OPERATING_GAIN => 'non-operating_gain',
+			Check::PAYMENT_OBJECT_SALES_TAX => 'sales_tax',
+			Check::PAYMENT_OBJECT_RESORT_FEE => 'resort_fee',
+			Check::PAYMENT_OBJECT_DEPOSIT => 'deposit',
+			Check::PAYMENT_OBJECT_EXPENSE => 'expense',
+			Check::PAYMENT_OBJECT_PENSION_INSURANCE_IP => 'pension_insurance_ip',
+			Check::PAYMENT_OBJECT_PENSION_INSURANCE => 'pension_insurance',
+			Check::PAYMENT_OBJECT_MEDICAL_INSURANCE_IP => 'medical_insurance_ip',
+			Check::PAYMENT_OBJECT_MEDICAL_INSURANCE => 'medical_insurance',
+			Check::PAYMENT_OBJECT_SOCIAL_INSURANCE => 'social_insurance',
+			Check::PAYMENT_OBJECT_CASINO_PAYMENT => 'casino_payment',
+			Check::PAYMENT_OBJECT_COMMODITY_MARKING_NO_MARKING_EXCISE => 'excise',
+			Check::PAYMENT_OBJECT_COMMODITY_MARKING_EXCISE => 'excise',
+			Check::PAYMENT_OBJECT_COMMODITY_MARKING_NO_MARKING => 'commodity',
+			Check::PAYMENT_OBJECT_COMMODITY_MARKING => 'commodity',
+		];
 	}
 }

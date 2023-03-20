@@ -28,7 +28,7 @@ class RedisConnectionConfigurator
 	{
 		$servers = $config['servers'] ?? [];
 
-		if (isset($config['host'], $config['port']))
+		if (empty($servers) && isset($config['host'], $config['port']))
 		{
 			array_unshift($servers, [
 				'host' => $config['host'],
@@ -92,7 +92,15 @@ class RedisConnectionConfigurator
 		{
 			['host' => $host, 'port' => $port] = $this->servers[0];
 			$connection = new \Redis();
-			$result = $connection->pconnect($host, $port);
+
+			if ($config['persistent'])
+			{
+				$result = $connection->pconnect($host, $port);
+			}
+			else
+			{
+				$result = $connection->connect($host, $port);
+			}
 		}
 		else
 		{

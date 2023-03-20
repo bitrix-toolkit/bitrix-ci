@@ -6,10 +6,24 @@ use Bitrix\Main\Entity\DataManager;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\StringField;
 use Bitrix\Main\Application;
+use Bitrix\Main\Result;
 
 /**
  * Class NumeratorSequenceTable
  * @package Bitrix\Main\Numerator\Model
+ *
+ * DO NOT WRITE ANYTHING BELOW THIS
+ *
+ * <<< ORMENTITYANNOTATION
+ * @method static EO_NumeratorSequence_Query query()
+ * @method static EO_NumeratorSequence_Result getByPrimary($primary, array $parameters = [])
+ * @method static EO_NumeratorSequence_Result getById($id)
+ * @method static EO_NumeratorSequence_Result getList(array $parameters = [])
+ * @method static EO_NumeratorSequence_Entity getEntity()
+ * @method static \Bitrix\Main\Numerator\Model\EO_NumeratorSequence createObject($setDefaultValues = true)
+ * @method static \Bitrix\Main\Numerator\Model\EO_NumeratorSequence_Collection createCollection()
+ * @method static \Bitrix\Main\Numerator\Model\EO_NumeratorSequence wakeUpObject($row)
+ * @method static \Bitrix\Main\Numerator\Model\EO_NumeratorSequence_Collection wakeUpCollection($rows)
  */
 class NumeratorSequenceTable extends DataManager
 {
@@ -84,12 +98,27 @@ class NumeratorSequenceTable extends DataManager
 
 	/**
 	 * @param $id
-	 * @return \Bitrix\Main\Entity\DeleteResult
 	 * @throws \Exception
 	 */
 	public static function deleteByNumeratorId($id)
 	{
-		return static::delete(['NUMERATOR_ID' => intval($id)]);
+		$result = new Result();
+
+		$list = static::getList([
+			'filter' => [
+				'=NUMERATOR_ID' => (int)$id,
+			]
+		]);
+		while($row = $list->fetchObject())
+		{
+			$deleteResult = $row->delete();
+			if (!$deleteResult->isSuccess())
+			{
+				$result->addErrors($deleteResult->getErrors());
+			}
+		}
+
+		return $result;
 	}
 
 	/**

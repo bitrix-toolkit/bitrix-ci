@@ -133,8 +133,13 @@ $MESS["MAIN_MENU_HTTPS"] = "Настройка HTTPS";
 $MESS["MAIN_MENU_HTTPS_ALT"] = "Настройка HTTPS-соединения для Вашего сайта";
 $MESS["MAIN_MENU_GEOIP_HANDLERS"] = "Геолокация";
 $MESS["MAIN_MENU_USER_CONSENT"] = "Соглашения";
+$MESS["MAIN_MENU_USER_CONSENT_1"] = "Соглашения";
 $MESS["MAIN_MENU_PROFILE_HISTORY"] = "История профилей";
 $MESS["MAIN_MENU_PROFILE_HISTORY_TITLE"] = "Журнал изменений профилей пользователей";
 $MESS["main_menu_sms_templates"] = "Шаблоны СМС";
 $MESS["main_menu_sms_templates_title"] = "Шаблоны СМС-сообщений";
+$MESS["MAIN_MENU_SMTP_CONFIG"] = "Настройки SMTP";
+$MESS["MAIN_MENU_SMTP_CONFIG_TITLE"] = "Настройки SMTP";
+$MESS['main_admin_menu_devices'] = 'Устройства пользователей';
+$MESS['main_admin_menu_devices_title'] = 'Список устройств пользователей';
 ?>

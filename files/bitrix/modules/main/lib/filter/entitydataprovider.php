@@ -36,4 +36,67 @@ abstract class EntityDataProvider extends DataProvider
 
 		return new Field($this, $fieldID, $params);
 	}
+
+	protected function getUserEntitySelectorParams(string $context, array $params): array
+	{
+		$entities = [
+			[
+				'id' => 'user',
+				'options' => [
+					'inviteEmployeeLink' => false,
+					'intranetUsersOnly' => true,
+				]
+			],
+		];
+
+		if (class_exists(\Bitrix\Socialnetwork\Integration\UI\EntitySelector\FiredUserProvider::class))
+		{
+			$entities[] = [
+				'id' => 'fired-user',
+				'options' => [
+					'inviteEmployeeLink' => false,
+					'intranetUsersOnly' => true,
+					'fieldName' => $params['fieldName'],
+					'referenceClass'  => ($params['referenceClass'] ?? null),
+					'entityTypeId' => ($params['entityTypeId'] ?? null),
+					'module' => ($params['module'] ?? null),
+				]
+			];
+		}
+
+		$isEnableAllUsers = isset($params['isEnableAllUsers']) && $params['isEnableAllUsers'] === true;
+		$isEnableOtherUsers = isset($params['isEnableOtherUsers']) && $params['isEnableOtherUsers'] === true;
+
+		if ($isEnableAllUsers || $isEnableOtherUsers)
+		{
+			$metaUser = [
+				'id' => 'meta-user',
+				'options' => [],
+			];
+
+			if ($isEnableAllUsers)
+			{
+				$metaUser['options']['all-users'] = true;
+			}
+			if ($isEnableOtherUsers)
+			{
+				$metaUser['options']['other-users'] = true;
+			}
+
+			$entities[] = $metaUser;
+		}
+
+		return [
+			'params' => [
+				'multiple' => 'Y',
+				'dialogOptions' => [
+					'height' => 200,
+					'context' => $context,
+					'entities' => $entities,
+					'showAvatars' => true,
+					'dropdownMode' => false,
+				],
+			],
+		];
+	}
 }

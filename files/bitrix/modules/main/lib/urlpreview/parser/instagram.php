@@ -5,11 +5,16 @@ namespace Bitrix\Main\UrlPreview\Parser;
 use Bitrix\Main\Loader;
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Text\Encoding;
+use Bitrix\Main\Type\DateTime;
 use Bitrix\Main\Web\HttpClient;
 use Bitrix\Main\UrlPreview\HtmlDocument;
 
 class Instagram extends Oembed
 {
+	protected $versionApiPrefix = 'v11.0';
+
+	protected const METADATA_TTL = 43200; // 12 hours
+
 	/**
 	 * @param HtmlDocument $document
 	 * @return bool
@@ -33,7 +38,7 @@ class Instagram extends Oembed
 				{
 					$this->metadataType = 'json';
 					$this->metadataUrl =
-						'https://graph.facebook.com/instagram_oembed?omitscript=true&url='
+						'https://graph.facebook.com/' . $this->versionApiPrefix . '/instagram_oembed?omitscript=true&url='
 						. $document->getUri()->getLocator()
 						. '&access_token='
 						. $urlAppId
@@ -90,15 +95,12 @@ class Instagram extends Oembed
 						$document->setTitle($parsedMetadata['provider_name']);
 					}
 
-					if(isset($parsedMetadata['html']))
-					{
-						$document->setEmbed($parsedMetadata['html']);
-					}
-
 					if(isset($parsedMetadata['thumbnail_url']))
 					{
 						$document->setImage($parsedMetadata['thumbnail_url']);
 					}
+
+					$document->setDateExpire(DateTime::createFromTimestamp(time() + static::METADATA_TTL));
 				}
 			}
 		}

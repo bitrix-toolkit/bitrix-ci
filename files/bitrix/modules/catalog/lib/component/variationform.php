@@ -6,6 +6,7 @@ use Bitrix\Catalog\v2\Property\Property;
 use Bitrix\Currency\CurrencyManager;
 use Bitrix\Main\Component\ParameterSigner;
 use Bitrix\Main\Localization\Loc;
+use Bitrix\Catalog;
 
 class VariationForm extends BaseForm
 {
@@ -108,6 +109,11 @@ class VariationForm extends BaseForm
 		);
 	}
 
+	protected function getCardSettingsItems(): array
+	{
+		return GridVariationForm::getGridCardSettingsItems();
+	}
+
 	protected function showCatalogProductFields(): bool
 	{
 		return true;
@@ -131,13 +137,13 @@ class VariationForm extends BaseForm
 	protected function getPriceDescriptions(): array
 	{
 		$descriptions = [];
-		$priceTypeList = \CCatalogGroup::GetListArray();
+		$priceTypeList = Catalog\GroupTable::getTypeList();
 
 		if (!empty($priceTypeList))
 		{
 			foreach ($priceTypeList as $priceType)
 			{
-				$title = htmlspecialcharsbx(!empty($priceType['NAME_LANG']) ? $priceType['NAME_LANG'] : $priceType['NAME']);
+				$title = !empty($priceType['NAME_LANG']) ? $priceType['NAME_LANG'] : $priceType['NAME'];
 				$priceFieldName = static::formatFieldName(BaseForm::PRICE_FIELD_PREFIX.$priceType['ID']);
 
 				$descriptions[] = $this->preparePriceDescription([
@@ -170,7 +176,7 @@ class VariationForm extends BaseForm
 			'type' => 'money',
 			'entity' => 'money',
 			'priceTypeId' => $fields['TYPE_ID'],
-			'editable' => true,
+			'editable' => $this->isPricesEditable(),
 			'data' => [
 				'affectedFields' => [
 					$fields['PRICE_FIELD'],
@@ -195,7 +201,7 @@ class VariationForm extends BaseForm
 				'name' => static::formatFieldName('MEASURE_RATIO'),
 				'title' => Loc::getMessage('CATALOG_C_F_VARIATION_SETTINGS_MEASURE_RATIO_TITLE'),
 				'type' => 'number',
-				'editable' => true,
+				'editable' => $this->isAllowedEditFields(),
 				'required' => false,
 				'defaultValue' => 1,
 			],
@@ -276,10 +282,10 @@ class VariationForm extends BaseForm
 		return $measureRatio ? $measureRatio->getRatio() : null;
 	}
 
-	protected function getAdditionalValues(array $values): array
+	protected function getAdditionalValues(array $values, array $descriptions = []): array
 	{
-		$additionalValues = parent::getAdditionalValues($values);
-		foreach ($this->getDescriptions() as $description)
+		$additionalValues = parent::getAdditionalValues($values, $descriptions);
+		foreach ($descriptions as $description)
 		{
 			if ($description['entity'] === 'money' && \Bitrix\Main\Loader::includeModule('currency'))
 			{

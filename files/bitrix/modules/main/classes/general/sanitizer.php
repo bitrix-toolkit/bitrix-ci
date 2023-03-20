@@ -625,7 +625,8 @@
 
 					if ($this->bHtmlSpecChars)
 					{
-						$entQuotes =$openTagsStack[0] !== 'style' ? ENT_QUOTES : ENT_NOQUOTES;
+						$openTagsStackSize = count($openTagsStack);
+						$entQuotes = ($openTagsStackSize && $openTagsStack[$openTagsStackSize-1] === 'style' ? ENT_NOQUOTES : ENT_QUOTES);
 
 						$seg[$i]['value'] = htmlspecialchars(
 							$seg[$i]['value'],
@@ -634,6 +635,17 @@
 							$this->bDoubleEncode
 						);
 					}
+				}
+				elseif(
+					$seg[$i]['segType'] == 'tag'
+					&& (
+						preg_match('/^<!--\\[if\\s+((?:mso|gt|lt|gte|lte|\\||!|[0-9]+|\\(|\\))\\s*)+\\]>$/', $seg[$i]['value'])
+						|| preg_match('/^<!\\[endif\\]-->$/', $seg[$i]['value'])
+					)
+				)
+				{
+					//Keep ms html comments https://stackoverflow.design/email/base/mso/
+					$seg[$i]['segType'] = 'text';
 				}
 				elseif($seg[$i]['segType'] == 'tag')
 				{

@@ -1,14 +1,15 @@
-<?
+<?php
+
 namespace Bitrix\Iblock\Component;
 
-use \Bitrix\Iblock;
-use \Bitrix\Catalog;
-use \Bitrix\Main;
-use \Bitrix\Main\Loader;
-use \Bitrix\Main\Text;
-use \Bitrix\Main\Web\Json;
-use \Bitrix\Main\Type\Collection;
-use \Bitrix\Currency;
+use Bitrix\Iblock;
+use Bitrix\Catalog;
+use Bitrix\Main;
+use Bitrix\Main\Loader;
+use Bitrix\Main\Text;
+use Bitrix\Main\Web\Json;
+use Bitrix\Main\Type\Collection;
+use Bitrix\Currency;
 
 /**
  * @global \CUser $USER
@@ -90,8 +91,8 @@ abstract class ElementList extends Base
 		}
 
 		$params['PAGE_ELEMENT_COUNT'] = (int)$params['PAGE_ELEMENT_COUNT'];
-		$params['ELEMENT_COUNT'] = (int)$params['ELEMENT_COUNT'];
-		$params['LINE_ELEMENT_COUNT'] = (int)$params['LINE_ELEMENT_COUNT'];
+		$params['ELEMENT_COUNT'] = (int)($params['ELEMENT_COUNT'] ?? 0);
+		$params['LINE_ELEMENT_COUNT'] = (int)($params['LINE_ELEMENT_COUNT'] ?? 3);
 
 		if (!isset($params['INCLUDE_SUBSECTIONS']) || !in_array($params['INCLUDE_SUBSECTIONS'], array('Y', 'A', 'N')))
 		{
@@ -124,6 +125,7 @@ abstract class ElementList extends Base
 			if (
 				!empty($params['FILTER_NAME'])
 				&& preg_match(self::PARAM_TITLE_MASK, $params['FILTER_NAME'])
+				&& isset($GLOBALS[$params['FILTER_NAME']])
 				&& is_array($GLOBALS[$params['FILTER_NAME']])
 			)
 			{
@@ -139,8 +141,23 @@ abstract class ElementList extends Base
 			$this->arResult['ORIGINAL_PARAMETERS']['GLOBAL_FILTER'] = $this->globalFilter;
 		}
 
+		$productMappingFilter = [];
+		if (
+			Loader::includeModule('catalog')
+			&& Catalog\Product\SystemField\ProductMapping::isAllowed()
+		)
+		{
+			$productMappingFilter = Catalog\Product\SystemField\ProductMapping::getExtendedFilterByArea(
+				[],
+				Catalog\Product\SystemField\ProductMapping::MAP_LANDING
+			);
+		}
 		$params['CACHE_FILTER'] = isset($params['CACHE_FILTER']) && $params['CACHE_FILTER'] === 'Y';
-		if (!$params['CACHE_FILTER'] && !empty($this->globalFilter))
+		if (
+			!$params['CACHE_FILTER']
+			&& !empty($this->globalFilter)
+			&& array_diff_assoc($this->globalFilter, $productMappingFilter)
+		)
 		{
 			$params['CACHE_TIME'] = 0;
 		}
@@ -157,9 +174,12 @@ abstract class ElementList extends Base
 			['ORDER' => 'ID', 'DIRECTION' => 'desc']
 		);
 
+		$params['PAGER_BASE_LINK_ENABLE'] = (string)($params['PAGER_BASE_LINK_ENABLE'] ?? '');
+		$params['PAGER_TITLE'] = (string)($params['PAGER_TITLE'] ?? '');
+		$params['PAGER_TEMPLATE'] = (string)($params['PAGER_TEMPLATE'] ?? '');
 		if (!empty($params['PAGER_PARAMS_NAME']) && preg_match(self::PARAM_TITLE_MASK, $params['PAGER_PARAMS_NAME']))
 		{
-			$this->pagerParameters = $GLOBALS[$params['PAGER_PARAMS_NAME']];
+			$this->pagerParameters = $GLOBALS[$params['PAGER_PARAMS_NAME']] ?? [];
 
 			if (!is_array($this->pagerParameters))
 			{
@@ -201,7 +221,7 @@ abstract class ElementList extends Base
 	 * @param array $default
 	 * @return array
 	 */
-	protected function prepareElementSortRow(array $params, array $orderRow, array $default)
+	protected function prepareElementSortRow(array $params, array $orderRow, array $default): array
 	{
 		$order = (isset($orderRow['ORDER']) ? trim($orderRow['ORDER']) : '');
 		$direction = (isset($orderRow['DIRECTION']) ? trim($orderRow['DIRECTION']) : '');
@@ -211,23 +231,23 @@ abstract class ElementList extends Base
 		}
 		if (empty($params[$order]))
 		{
-			$params[$order] = (isset($default['ORDER']) ? $default['ORDER'] : 'SORT');
+			$params[$order] = $default['ORDER'] ?? 'SORT';
 		}
-		$params[$order] = mb_strtoupper($params[$order]);
+		$params[$order] = strtoupper($params[$order]);
 
 		if ($params[$order] === 'ID' && !empty($params[$direction]) && is_array($params[$direction]))
 		{
 			Collection::normalizeArrayValuesByInt($params[$direction], false);
 			if (empty($params[$direction]))
 			{
-				$params[$direction] = (isset($default['DIRECTION']) ? $default['DIRECTION'] : 'desc');
+				$params[$direction] = $default['DIRECTION'] ?? 'desc';
 			}
 		}
 		else
 		{
 			if (empty($params[$direction]) || !preg_match(self::SORT_ORDER_MASK, $params[$direction]))
 			{
-				$params[$direction] = (isset($default['DIRECTION']) ? $default['DIRECTION'] : 'desc');
+				$params[$direction] = $default['DIRECTION'] ?? 'desc';
 			}
 		}
 
@@ -351,7 +371,7 @@ abstract class ElementList extends Base
 
 		$params['PROPERTY_CODE'] = array();
 		$params['CART_PROPERTIES'] = array();
-		$params['SHOW_PRODUCTS'] = isset($params['SHOW_PRODUCTS']) ? $params['SHOW_PRODUCTS'] : array();
+		$params['SHOW_PRODUCTS'] = $params['SHOW_PRODUCTS'] ?? array();
 
 		foreach ($params as $name => $prop)
 		{
@@ -441,7 +461,7 @@ abstract class ElementList extends Base
 
 				// product iblock parameters
 				$parameters[$iblockId] = array(
-					'PROPERTY_CODE' => isset($params['PROPERTY_CODE'][$iblockId]) ? $params['PROPERTY_CODE'][$iblockId] : array(),
+					'PROPERTY_CODE' => $params['PROPERTY_CODE'][$iblockId] ?? array(),
 					'CART_PROPERTIES' => (!$usePropertyFeatures && isset($params['CART_PROPERTIES'][$iblockId])
 						? $params['CART_PROPERTIES'][$iblockId]
 						: array()
@@ -452,9 +472,7 @@ abstract class ElementList extends Base
 				if (!empty($catalog))
 				{
 					$parameters[$iblockId]['OFFERS_FIELD_CODE'] = array('ID', 'CODE', 'NAME', 'SORT', 'PREVIEW_PICTURE', 'DETAIL_PICTURE');
-					$parameters[$iblockId]['OFFERS_PROPERTY_CODE'] = isset($params['PROPERTY_CODE'][$catalog['IBLOCK_ID']])
-						? $params['PROPERTY_CODE'][$catalog['IBLOCK_ID']]
-						: array();
+					$parameters[$iblockId]['OFFERS_PROPERTY_CODE'] = $params['PROPERTY_CODE'][$catalog['IBLOCK_ID']] ?? array();
 					$parameters[$iblockId]['OFFERS_CART_PROPERTIES'] = (!$usePropertyFeatures && isset($params['CART_PROPERTIES'][$catalog['IBLOCK_ID']])
 						? $params['CART_PROPERTIES'][$catalog['IBLOCK_ID']]
 						: array()
@@ -623,8 +641,11 @@ abstract class ElementList extends Base
 	protected function isEmptyStartLoad(): bool
 	{
 		return (
-			$this->arParams['LAZY_LOAD'] === 'Y'
+			isset($this->arParams['LAZY_LOAD'])
+			&& $this->arParams['LAZY_LOAD'] === 'Y'
+			&& isset($this->arParams['LOAD_ON_SCROLL'])
 			&& $this->arParams['LOAD_ON_SCROLL'] === 'Y'
+			&& isset($this->arParams['DEFERRED_LOAD'])
 			&& $this->arParams['DEFERRED_LOAD'] === 'Y'
 		);
 	}
@@ -816,6 +837,11 @@ abstract class ElementList extends Base
 			{
 				if (\CProductQueryBuilder::isCatalogFilterField($key))
 				{
+					//TODO: remove this hack after new catalog.section filter
+					if ($key === '=PRODUCT_UF_PRODUCT_MAPPING')
+					{
+						continue;
+					}
 					$catalogFilter[$key] = $value;
 					unset($this->globalFilter[$key]);
 				}
@@ -847,6 +873,7 @@ abstract class ElementList extends Base
 				$this->storage['SUB_FILTER']['IBLOCK_ID'] = $iblock['IBLOCK_ID'];
 				$this->storage['SUB_FILTER']['ACTIVE_DATE'] = 'Y';
 				$this->storage['SUB_FILTER']['ACTIVE'] = 'Y';
+
 				$this->filterFields[] = array(
 					'LOGIC' => 'OR',
 					array($catalogFilter),
@@ -865,7 +892,6 @@ abstract class ElementList extends Base
 
 		if (!empty($elementIterator))
 		{
-			/** @var \CIBlockResult $elementIterator */
 			while ($element = $elementIterator->GetNext())
 			{
 				$this->processElement($element);
@@ -924,6 +950,7 @@ abstract class ElementList extends Base
 								if (
 									($isArr && !empty($prop['VALUE']))
 									|| (!$isArr && (string)$prop['VALUE'] !== '')
+									|| Tools::isCheckboxProperty($prop)
 								)
 								{
 									$element['DISPLAY_PROPERTIES'][$pid] = \CIBlockFormatProperties::GetDisplayValue($element, $prop, 'catalog_out');
@@ -959,16 +986,7 @@ abstract class ElementList extends Base
 		$filterFields = parent::getFilter();
 		$filterFields['ACTIVE'] = 'Y';
 
-		if (
-			(
-				$this->isIblockCatalog
-				|| (
-					$this->isMultiIblockMode()
-					|| (!$this->isMultiIblockMode() && $this->offerIblockExist($this->arParams['IBLOCK_ID']))
-				)
-			)
-			&& $this->arParams['HIDE_NOT_AVAILABLE'] === 'Y'
-		)
+		if ($this->arParams['HIDE_NOT_AVAILABLE'] === 'Y')
 		{
 			$filterFields['AVAILABLE'] = 'Y';
 		}
@@ -1005,13 +1023,13 @@ abstract class ElementList extends Base
 				$sortFields['AVAILABLE'] = 'desc,nulls';
 			}
 
-			$field = mb_strtoupper($this->arParams['ELEMENT_SORT_FIELD']);
+			$field = strtoupper($this->arParams['ELEMENT_SORT_FIELD']);
 			if (!isset($sortFields[$field]))
 			{
 				$sortFields[$field] = $this->arParams['ELEMENT_SORT_ORDER'];
 			}
 
-			$field = mb_strtoupper($this->arParams['ELEMENT_SORT_FIELD2']);
+			$field = strtoupper($this->arParams['ELEMENT_SORT_FIELD2']);
 			if (!isset($sortFields[$field]))
 			{
 				$sortFields[$field] = $this->arParams['ELEMENT_SORT_ORDER2'];
@@ -1034,19 +1052,31 @@ abstract class ElementList extends Base
 		{
 			foreach ($this->arParams['CUSTOM_ELEMENT_SORT'] as $field => $value)
 			{
-				if (!is_string($value))
-				{
-					continue;
-				}
 				$field = strtoupper($field);
 				if (isset($result[$field]))
 				{
 					continue;
 				}
-				if (!preg_match(self::SORT_ORDER_MASK, $value))
+				if ($field === 'ID' && !empty($value) && is_array($value))
 				{
-					continue;
+					Collection::normalizeArrayValuesByInt($value, false);
+					if (empty($value))
+					{
+						continue;
+					}
 				}
+				else
+				{
+					if (!is_string($value))
+					{
+						continue;
+					}
+					if (!preg_match(self::SORT_ORDER_MASK, $value))
+					{
+						continue;
+					}
+				}
+
 				$result[$field] = $value;
 			}
 			unset($field, $value);
@@ -1356,12 +1386,6 @@ abstract class ElementList extends Base
 		parent::prepareTemplateParams();
 		$params =& $this->arParams;
 
-		if (!isset($params['LINE_ELEMENT_COUNT']))
-		{
-			$params['LINE_ELEMENT_COUNT'] = 3;
-		}
-
-		$params['LINE_ELEMENT_COUNT'] = (int)$params['LINE_ELEMENT_COUNT'];
 		if ($params['LINE_ELEMENT_COUNT'] < 2)
 		{
 			$params['LINE_ELEMENT_COUNT'] = 2;
@@ -1556,29 +1580,17 @@ abstract class ElementList extends Base
 				}
 
 				// product iblock parameters
-				$this->storage['IBLOCK_PARAMS'][$iblockId]['ADD_PICT_PROP'] = isset($params['ADDITIONAL_PICT_PROP'][$iblockId])
-					? $params['ADDITIONAL_PICT_PROP'][$iblockId]
-					: '';
-				$this->storage['IBLOCK_PARAMS'][$iblockId]['LABEL_PROP'] = isset($params['LABEL_PROP'][$iblockId])
-					? $params['LABEL_PROP'][$iblockId]
-					: array();
-				$this->storage['IBLOCK_PARAMS'][$iblockId]['LABEL_PROP_MOBILE'] = isset($params['LABEL_PROP_MOBILE'][$iblockId])
-					? $params['LABEL_PROP_MOBILE'][$iblockId]
-					: array();
-				$this->storage['IBLOCK_PARAMS'][$iblockId]['PROPERTY_CODE_MOBILE'] = isset($params['PROPERTY_CODE_MOBILE'][$iblockId])
-					? $params['PROPERTY_CODE_MOBILE'][$iblockId]
-					: array();
-				$this->storage['IBLOCK_PARAMS'][$iblockId]['ENLARGE_PROP'] = isset($params['ENLARGE_PROP'][$iblockId])
-					? $params['ENLARGE_PROP'][$iblockId]
-					: '';
+				$this->storage['IBLOCK_PARAMS'][$iblockId]['ADD_PICT_PROP'] = $params['ADDITIONAL_PICT_PROP'][$iblockId] ?? '';
+				$this->storage['IBLOCK_PARAMS'][$iblockId]['LABEL_PROP'] = $params['LABEL_PROP'][$iblockId] ?? array();
+				$this->storage['IBLOCK_PARAMS'][$iblockId]['LABEL_PROP_MOBILE'] = $params['LABEL_PROP_MOBILE'][$iblockId] ?? array();
+				$this->storage['IBLOCK_PARAMS'][$iblockId]['PROPERTY_CODE_MOBILE'] = $params['PROPERTY_CODE_MOBILE'][$iblockId] ?? array();
+				$this->storage['IBLOCK_PARAMS'][$iblockId]['ENLARGE_PROP'] = $params['ENLARGE_PROP'][$iblockId] ?? '';
 
 				// offers iblock parameters
 				$catalog = \CCatalogSku::GetInfoByProductIBlock($iblockId);
 				if (!empty($catalog))
 				{
-					$this->storage['IBLOCK_PARAMS'][$iblockId]['OFFERS_ADD_PICT_PROP'] = isset($params['ADDITIONAL_PICT_PROP'][$catalog['IBLOCK_ID']])
-						? $params['ADDITIONAL_PICT_PROP'][$catalog['IBLOCK_ID']]
-						: '';
+					$this->storage['IBLOCK_PARAMS'][$iblockId]['OFFERS_ADD_PICT_PROP'] = $params['ADDITIONAL_PICT_PROP'][$catalog['IBLOCK_ID']] ?? '';
 				}
 			}
 
@@ -1756,6 +1768,7 @@ abstract class ElementList extends Base
 			$this->sortItemsByTemplateVariants();
 		}
 
+		$this->arResult['BIG_DATA'] = [];
 		if ($this->request->getRequestMethod() === 'GET')
 		{
 			$this->arResult['BIG_DATA'] = $this->getBigDataInfo();
@@ -1939,7 +1952,7 @@ abstract class ElementList extends Base
 			'js' => array(
 				'cookiePrefix' => \COption::GetOptionString('main', 'cookie_name', 'BITRIX_SM'),
 				'cookieDomain' => Main\Web\Cookie::getCookieDomain(),
-				'serverTime' => time()
+				'serverTime' => $count > 0 ? time() : 0,
 			),
 			'params' => $this->getBigDataServiceRequestParams(($this->arParams['RCM_TYPE'] ?? ''))
 		);
@@ -2217,9 +2230,7 @@ abstract class ElementList extends Base
 						$baseCurrency = Currency\CurrencyManager::getBaseCurrency();
 					}
 
-					$currency = isset($this->arResult['CONVERT_CURRENCY']['CURRENCY_ID'])
-						? $this->arResult['CONVERT_CURRENCY']['CURRENCY_ID']
-						: $baseCurrency;
+					$currency = $this->arResult['CONVERT_CURRENCY']['CURRENCY_ID'] ?? $baseCurrency;
 
 					$item['ITEM_START_PRICE'] = null;
 					$item['ITEM_START_PRICE_SELECTED'] = null;

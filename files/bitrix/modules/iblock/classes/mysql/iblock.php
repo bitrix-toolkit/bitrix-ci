@@ -108,16 +108,26 @@ class CIBlock extends CAllIBlock
 					AND (IBG.PERMISSION='X' OR B.ACTIVE='Y')
 				";
 
-			if ($arFilter["OPERATION"] <> '')
+			if (!empty($arFilter["OPERATION"]))
+			{
 				$operation  = "'".$DB->ForSql($arFilter["OPERATION"])."'";
+			}
 			elseif($min_permission >= "X")
+			{
 				$operation = "'iblock_edit'";
+			}
 			elseif($min_permission >= "U")
+			{
 				$operation = "'element_edit'";
+			}
 			elseif($min_permission >= "S")
+			{
 				$operation = "'iblock_admin_display'";
+			}
 			else
+			{
 				$operation = "'section_read', 'element_read', 'section_element_bind', 'section_section_bind'";
+			}
 
 			if($operation)
 			{
@@ -190,9 +200,9 @@ class CIBlock extends CAllIBlock
 					LEFT JOIN b_iblock_element BE ON (BE.IBLOCK_ID=B.ID
 						AND (
 							(BE.WF_STATUS_ID=1 AND BE.WF_PARENT_ELEMENT_ID IS NULL )
-							".($arFilter["CNT_ALL"]=="Y"? " OR BE.WF_NEW='Y' ":"")."
+							".(($arFilter["CNT_ALL"] ?? 'N') === "Y"? " OR BE.WF_NEW='Y' ":"")."
 						)
-						".($arFilter["CNT_ACTIVE"]=="Y"?
+						".(($arFilter["CNT_ACTIVE"] ?? 'N') === "Y" ?
 						"AND BE.ACTIVE='Y'
 						AND (BE.ACTIVE_TO >= ".$DB->CurrentDateFunction()." OR BE.ACTIVE_TO IS NULL)
 						AND (BE.ACTIVE_FROM <= ".$DB->CurrentDateFunction()." OR BE.ACTIVE_FROM IS NULL)
@@ -232,13 +242,16 @@ class CIBlock extends CAllIBlock
 			}
 		}
 
-		if(count($arSqlOrder) > 0)
-			$strSqlOrder = " ORDER BY ".implode(",", $arSqlOrder);
+		if (!empty($arSqlOrder))
+		{
+			$strSqlOrder = " ORDER BY " . implode(",", $arSqlOrder);
+		}
 		else
+		{
 			$strSqlOrder = "";
+		}
 
-		$res = $DB->Query($strSql.$strSqlOrder, false, "FILE: ".__FILE__."<br> LINE: ".__LINE__);
-		return $res;
+		return $DB->Query($strSql.$strSqlOrder, false, "FILE: ".__FILE__."<br> LINE: ".__LINE__);
 	}
 
 	public static function _Upper($str)

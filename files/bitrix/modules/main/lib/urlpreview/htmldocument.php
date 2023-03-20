@@ -4,6 +4,7 @@ namespace Bitrix\Main\UrlPreview;
 
 use Bitrix\Main\Context;
 use Bitrix\Main\Text\Encoding;
+use Bitrix\Main\Type\DateTime;
 use Bitrix\Main\Web\HttpClient;
 use Bitrix\Main\Web\Uri;
 
@@ -28,7 +29,8 @@ class HtmlDocument
 		"TITLE" => null,
 		"DESCRIPTION" => null,
 		"IMAGE" => null,
-		"EMBED" => null
+		"EMBED" => null,
+		"DATE_EXPIRE" => null,
 	);
 
 	/** @var array  */
@@ -164,7 +166,7 @@ class HtmlDocument
 		if($image <> '')
 		{
 			$imageUrl = $this->normalizeImageUrl($image);
-			if(!is_null($imageUrl) && $this->validateImage($imageUrl))
+			if(!is_null($imageUrl) && $this->validateImage($imageUrl, true))
 				$this->metadata['IMAGE'] = $imageUrl;
 		}
 	}
@@ -236,6 +238,29 @@ class HtmlDocument
 	public function getExtraField($fieldName)
 	{
 		return isset($this->metadata['EXTRA'][$fieldName]) ? $this->metadata['EXTRA'][$fieldName] : null;
+	}
+
+	/**
+	 * Sets Expire date for the metadata.
+	 *
+	 * @param DateTime $dateExpire
+	 */
+	public function setDateExpire(DateTime $dateExpire)
+	{
+		if (!isset($this->metadata['DATE_EXPIRE']) || $this->metadata['DATE_EXPIRE']->getTimestamp() > $dateExpire->getTimestamp())
+		{
+			$this->metadata['DATE_EXPIRE'] = $dateExpire;
+		}
+	}
+
+	/**
+	 * Returns expire date for the metadata.
+	 *
+	 * @return DateTime|null
+	 */
+	public function getDateExpire(): ?DateTime
+	{
+		return $this->metadata['DATE_EXPIRE'];
 	}
 
 	/**
@@ -467,7 +492,7 @@ class HtmlDocument
 	 * @param string $url Absolute image's URL.
 	 * @return bool
 	 */
-	protected function validateImage($url)
+	protected function validateImage($url, $skipForPrivateIp = false)
 	{
 		$httpClient = new HttpClient();
 		$httpClient->setTimeout(5);
@@ -475,7 +500,10 @@ class HtmlDocument
 		$httpClient->setPrivateIp(false);
 		$httpClient->setHeader('User-Agent', UrlPreview::USER_AGENT, true);
 		if(!$httpClient->query('GET', $url))
-			return false;
+		{
+			$errorCode = array_key_first($httpClient->getError());
+			return ($skipForPrivateIp && $errorCode === 'PRIVATE_IP');
+		}
 
 		if($httpClient->getStatus() !== 200)
 			return false;

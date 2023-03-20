@@ -6,6 +6,8 @@
  * @copyright 2001-2013 Bitrix
  */
 
+use Bitrix\Main\IO;
+
 class CBitrixComponent
 {
 	public $__name = "";
@@ -724,6 +726,7 @@ class CBitrixComponent
 				"Cannot find '#NAME#' template with page '#PAGE#'"
 			));
 		}
+		$this->__template->__component = null;
 	}
 	/**
 	 * Function initializes the template of the component. Returns true on success.
@@ -741,7 +744,14 @@ class CBitrixComponent
 		if (!$this->__bInited)
 			return null;
 
-		$this->__templatePage = $templatePage;
+		try
+		{
+			$this->__templatePage = IO\Path::normalize($templatePage);
+		}
+		catch (IO\InvalidPathException $e)
+		{
+			$this->__templatePage = '';
+		}
 
 		$this->__template = new CBitrixComponentTemplate();
 		$this->__template->setLanguageId($this->getLanguageId());
@@ -996,7 +1006,7 @@ class CBitrixComponent
 					}
 				}
 
-				if ($templateCachedData["__editButtons"])
+				if (isset($templateCachedData["__editButtons"]))
 				{
 					foreach ($templateCachedData["__editButtons"] as $button)
 					{
@@ -1007,13 +1017,17 @@ class CBitrixComponent
 					}
 				}
 
-				if ($templateCachedData["__view"])
+				if (isset($templateCachedData["__view"]))
+				{
 					foreach ($templateCachedData["__view"] as $view_id => $target)
 						foreach ($target as $view_content)
 							$APPLICATION->addViewContent($view_id, $view_content[0], $view_content[1]);
+				}
 
 				if (array_key_exists("__NavNum", $templateCachedData))
+				{
 					$GLOBALS["NavNum"]+= $templateCachedData["__NavNum"];
+				}
 
 				if (array_key_exists("__currentCounters", $templateCachedData))
 				{
@@ -1095,7 +1109,7 @@ class CBitrixComponent
 		);
 		if ($this->__template)
 		{
-			$arCache["templateCachedData"] = & $this->__template->getCachedData();
+			$arCache["templateCachedData"] = $this->__template->getCachedData();
 			if ($this->__component_epilog)
 				$arCache["templateCachedData"]["component_epilog"] = $this->__component_epilog;
 		}

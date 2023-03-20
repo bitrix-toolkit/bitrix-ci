@@ -186,13 +186,22 @@ class CSaleOrderProps
 
 			if ($arOrderProp["TYPE"] == "LOCATION" && ($arOrderProp["IS_LOCATION"] == "Y" || $arOrderProp["IS_LOCATION4TAX"] == "Y"))
 			{
-				if ($arOrderProp["IS_LOCATION"] == "Y")
+				$locId ??= null;
+
+				if ($arOrderProp["IS_LOCATION"] === "Y")
+				{
 					$arOrder["DELIVERY_LOCATION"] = $locId;
-				if ($arOrderProp["IS_LOCATION4TAX"] == "Y")
+				}
+
+				if ($arOrderProp["IS_LOCATION4TAX"] === "Y")
+				{
 					$arOrder["TAX_LOCATION"] = $locId;
+				}
 
 				if (!$locId)
+				{
 					$bErrorField = true;
+				}
 			}
 			elseif ($arOrderProp["IS_PROFILE_NAME"] == "Y" || $arOrderProp["IS_PAYER"] == "Y" || $arOrderProp["IS_EMAIL"] == "Y" || $arOrderProp["IS_ZIP"] == "Y")
 			{
@@ -248,7 +257,7 @@ class CSaleOrderProps
 				}
 			}
 
-			if ($bErrorField)
+			if ($bErrorField ?? false)
 			{
 				$arWarnings[] = array("CODE" => "PARAM", "TEXT" => str_replace("#NAME#", htmlspecialcharsbx($arOrderProp["NAME"]), GetMessage("SALE_GOPE_FIELD_EMPTY")));
 				$bErrorField = false;
@@ -996,6 +1005,11 @@ final class CSaleOrderPropsAdapter implements FetchAdapter
 
 	public function adapt(array $newProperty)
 	{
+		if (!isset($newProperty['TYPE']))
+		{
+			$newProperty['TYPE'] = 'STRING';
+		}
+
 		if(is_array($newProperty))
 		{
 			foreach($newProperty as $k => $v)
@@ -1037,70 +1051,79 @@ final class CSaleOrderPropsAdapter implements FetchAdapter
 		if (isset($property['REQUIRED']) && !empty($property['REQUIRED']))
 			$property['REQUIED'] = $property['REQUIRED'];
 
-		$settings = $property['SETTINGS'];
+		$settings = $property['SETTINGS'] ?? [];
 
-		switch ($property['TYPE'])
+		if (isset($property['TYPE']))
 		{
-			case 'STRING':
+			switch ($property['TYPE'])
+			{
+				case 'STRING':
 
-				if ($settings['MULTILINE'] == 'Y')
-				{
-					$property['TYPE'] = 'TEXTAREA';
-					$property['SIZE1'] = $settings['COLS'];
-					$property['SIZE2'] = $settings['ROWS'];
-				}
-				else
-				{
-					$property['TYPE'] = 'TEXT';
-					$property['SIZE1'] = $settings['SIZE'];
-				}
+					if (isset($settings['MULTILINE']) && $settings['MULTILINE'] === 'Y')
+					{
+						$property['TYPE'] = 'TEXTAREA';
+						$property['SIZE1'] = $settings['COLS'] ?? null;
+						$property['SIZE2'] = $settings['ROWS'] ?? null;
+					}
+					else
+					{
+						$property['TYPE'] = 'TEXT';
+						$property['SIZE1'] = $settings['SIZE'] ?? null;
+					}
 
-				break;
+					break;
 
-			case 'Y/N':
+				case 'NUMBER':
 
-				$property['TYPE'] = 'CHECKBOX';
+					$property['TYPE'] = 'NUMBER';
 
-				break;
+					break;
 
-			case 'DATE':
+				case 'Y/N':
 
-				$property['TYPE'] = 'DATE';
+					$property['TYPE'] = 'CHECKBOX';
 
-				break;
+					break;
 
-			case 'FILE':
+				case 'DATE':
 
-				$property['TYPE'] = 'FILE';
+					$property['TYPE'] = 'DATE';
 
-				break;
+					break;
 
-			case 'ENUM':
+				case 'FILE':
 
-				if ($property['MULTIPLE'] == 'Y')
-				{
-					$property['TYPE'] = 'MULTISELECT';
-					$property['SIZE1'] = $settings['SIZE'];
-				}
-				elseif ($settings['MULTIELEMENT'] == 'Y')
-				{
-					$property['TYPE'] = 'RADIO';
-				}
-				else
-				{
-					$property['TYPE'] = 'SELECT';
-					$property['SIZE1'] = $settings['SIZE'];
-				}
+					$property['TYPE'] = 'FILE';
 
-				break;
+					break;
 
-			case 'LOCATION':
+				case 'ENUM':
 
-				$property['SIZE1'] = $settings['SIZE'];
+					if ($property['MULTIPLE'] == 'Y')
+					{
+						$property['TYPE'] = 'MULTISELECT';
+						$property['SIZE1'] = $settings['SIZE'] ?? null;
+					}
+					elseif ($settings['MULTIELEMENT'] == 'Y')
+					{
+						$property['TYPE'] = 'RADIO';
+					}
+					else
+					{
+						$property['TYPE'] = 'SELECT';
+						$property['SIZE1'] = $settings['SIZE'] ?? null;
+					}
 
-				break;
+					break;
 
-			default: $property['TYPE'] = 'TEXT';
+				case 'LOCATION':
+
+					$property['SIZE1'] = $settings['SIZE'] ?? null;
+
+					break;
+
+				default: $property['TYPE'] = 'TEXT';
+			}
 		}
 
 		return $property;
