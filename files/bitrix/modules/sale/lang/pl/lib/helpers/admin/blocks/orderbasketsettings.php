@@ -1,0 +1,3 @@
+<?
+$MESS["SALE_ORDER_BASKET_JS_SETTINGS_APPLY"] = "Zastosuj";
+?>

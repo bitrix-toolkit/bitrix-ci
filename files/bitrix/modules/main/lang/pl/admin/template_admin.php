@@ -1,0 +1,30 @@
+<?
+$MESS["EXPORT_ERROR"] = "Błąd eksportu";
+$MESS["MAIN_ADD_TEMPL"] = "Dodaj szablon";
+$MESS["MAIN_ADD_TEMPL_THEME"] = "Dodaj motyw";
+$MESS["MAIN_ADD_TEMPL_TITLE"] = "Dodaj nowy szablon";
+$MESS["MAIN_ADMIN_LIST_EXPORT"] = "Pobierz";
+$MESS["MAIN_ADMIN_MENU_COPY"] = "Kopiuj";
+$MESS["MAIN_ADMIN_MENU_EDIT"] = "Edytuj";
+$MESS["MAIN_ADMIN_MENU_VIEW"] = "Wyświetl";
+$MESS["MAIN_EDIT_TITLE"] = "Edytuj szablon";
+$MESS["MAIN_LOAD"] = "Ładuj szablon";
+$MESS["MAIN_LOAD_THEME"] = "Załaduj motyw";
+$MESS["MAIN_T_ADMIN_ACTION"] = "Działania";
+$MESS["MAIN_T_ADMIN_COPY"] = "Kopiuj szablon";
+$MESS["MAIN_T_ADMIN_COPY_1"] = "Kopiuj";
+$MESS["MAIN_T_ADMIN_DEL"] = "Usuń";
+$MESS["MAIN_T_ADMIN_DEL_ALT"] = "Usuń szablon";
+$MESS["MAIN_T_ADMIN_DEL_CONF"] = "Czy chcesz usunąć ten szablon?";
+$MESS["MAIN_T_ADMIN_DESCRIPTION"] = "Opis";
+$MESS["MAIN_T_ADMIN_EDIT"] = "Modyfikuj";
+$MESS["MAIN_T_ADMIN_NAME"] = "Nazwa";
+$MESS["MAIN_T_ADMIN_TITLE"] = "Szablony strony";
+$MESS["MAIN_T_ADMIN_TITLE_THEME"] = "Motyw wizualny";
+$MESS["MAIN_T_DOWNLOAD"] = "Pobierz";
+$MESS["MAIN_T_EXPORT"] = "Exportuj szablon";
+$MESS["MAIN_T_IMPORT"] = "Importuj Szablon";
+$MESS["PAGES"] = "Szablony";
+$MESS["site_templ_edit_screen"] = "Zrzut ekranu";
+$MESS["site_templ_edit_sort"] = "Porządek sortowania";
+?>

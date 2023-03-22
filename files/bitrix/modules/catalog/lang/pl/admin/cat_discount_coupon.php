@@ -1,0 +1,30 @@
+<?
+$MESS["DSC_CPN_ACT"] = "Aktywne";
+$MESS["DSC_CPN_ACTIVE"] = "Aktywne";
+$MESS["DSC_CPN_ADD"] = "Nowy kupon";
+$MESS["DSC_CPN_ADD_ALT"] = "Dodaj nowy kupon";
+$MESS["DSC_CPN_ALL"] = "Wszystkie";
+$MESS["DSC_CPN_CPN"] = "Kupon";
+$MESS["DSC_CPN_DATE"] = "Ostatnio użyte";
+$MESS["DSC_CPN_DESCRIPTION"] = "Komentarz";
+$MESS["DSC_CPN_DISC"] = "Upust";
+$MESS["DSC_CPN_NAME"] = "Nazwa upustu";
+$MESS["DSC_CPN_NO"] = "Nie";
+$MESS["DSC_CPN_ORDER"] = "Stosuje się Do Wszystkich Zamówionych Przedmiotów";
+$MESS["DSC_CPN_TIME"] = "Pojedyncze użycie";
+$MESS["DSC_CPN_TIME2"] = "Rodzaj kuponu";
+$MESS["DSC_CPN_TITLE"] = "Kupony zniżkowe";
+$MESS["DSC_CPN_YES"] = "Tak";
+$MESS["DSC_CREATED_BY"] = "Utworzony przez";
+$MESS["DSC_DATE_CREATE"] = "Utworzony";
+$MESS["DSC_DELETE"] = "Usuń";
+$MESS["DSC_DELETE_ALT"] = "Usuń kupon";
+$MESS["DSC_DELETE_CONF"] = "Na pewno chcesz usunąć ten kupon?";
+$MESS["DSC_MODIFIED_BY"] = "Zmodyfikowane przez";
+$MESS["DSC_NAV"] = "Kupony";
+$MESS["DSC_TIMESTAMP_X"] = "Zmodyfikowany";
+$MESS["DSC_UPDATE"] = "Edytuj";
+$MESS["DSC_UPDATE_ALT"] = "Edytuj parametry kuponu";
+$MESS["ERROR_DELETE_DISCOUNT_CPN"] = "Błąd podczas usuwania kuponu #ID#";
+$MESS["ERROR_UPDATE_DISCOUNT_CPN"] = "Błąd aktualizacji parametrów kuponu #ID#";
+?>

@@ -1,0 +1,14 @@
+<?
+$MESS["ROUNDING_ENTITY_ID_FIELD"] = "Ідентифікатор правила округлення";
+$MESS["ROUNDING_ENTITY_CURRENCY_FIELD"] = "Валюта";
+$MESS["ROUNDING_ENTITY_PRICE_FIELD"] = "Мінімальна ціна";
+$MESS["ROUNDING_ENTITY_ROUND_TYPE_FIELD"] = "Тип округлення";
+$MESS["ROUNDING_ENTITY_ROUND_PRECISION_FIELD"] = "Точність";
+$MESS["ROUNDING_ENTITY_CREATED_BY_FIELD"] = "Автор";
+$MESS["ROUNDING_ENTITY_DATE_CREATE_FIELD"] = "Дата створення";
+$MESS["ROUNDING_ENTITY_MODIFIED_BY_FIELD"] = "Ким змінено";
+$MESS["ROUNDING_ENTITY_TIMESTAMP_X_FIELD"] = "Дата зміни";
+$MESS["ROUNDING_TYPE_ROUND_MATH"] = "Математичне";
+$MESS["ROUNDING_TYPE_ROUND_UP"] = "На користь магазину";
+$MESS["ROUNDING_TYPE_ROUND_DOWN"] = "На користь клієнта";
+?>

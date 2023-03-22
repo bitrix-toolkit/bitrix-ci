@@ -1,0 +1,33 @@
+<?
+$MESS["MAIN_RATING_EDIT_RECORD"] = "Edition du classement # #ID#";
+$MESS["MAIN_RATING_NEW_RECORD"] = "Création de la cote de Popularité";
+$MESS["RATING_DEF_NAME"] = "Rang de l'utilisateur";
+$MESS["RATING_EDIT_ADD"] = "Ajouter";
+$MESS["RATING_EDIT_ADD_TITLE"] = "Ajouter un nouveau rating";
+$MESS["RATING_EDIT_CALC_METHOD_AVG"] = "Moyen";
+$MESS["RATING_EDIT_CALC_METHOD_SUM"] = "Dans le montant de";
+$MESS["RATING_EDIT_CAT_RATING_COMPONENT"] = "Critères du classement";
+$MESS["RATING_EDIT_CAT_WHAT_NEW_CALC"] = "Résultats du cote";
+$MESS["RATING_EDIT_DEL"] = "Supprimer";
+$MESS["RATING_EDIT_DEL_CONF"] = "Etes-vous sûr que vous voulez supprimer cette entrée des classements ?";
+$MESS["RATING_EDIT_DEL_TITLE"] = "Supprimer cet enregistrement";
+$MESS["RATING_EDIT_ERROR"] = "Erreur de sauvegarde.";
+$MESS["RATING_EDIT_FRM_ACTIVE"] = "Actif(ve) : ";
+$MESS["RATING_EDIT_FRM_AUTHORITY"] = "Utiliser cette cote pour le calcul d'autorité:";
+$MESS["RATING_EDIT_FRM_CALC_METHOD"] = "Méthode de calcul : ";
+$MESS["RATING_EDIT_FRM_CUR_VAL"] = "Champ supplémentaire pour la valeur actuelle : ";
+$MESS["RATING_EDIT_FRM_NAME"] = "Dénomination : ";
+$MESS["RATING_EDIT_FRM_NEW_CALC"] = "Réinitialiser les résultats de classement précédents après la sauvegarde";
+$MESS["RATING_EDIT_FRM_POSITION"] = "Calculer la place dans le classement";
+$MESS["RATING_EDIT_FRM_PREV_VAL"] = "Champ supplémentaire pour la valeur précédente : ";
+$MESS["RATING_EDIT_FRM_TYPE_ID"] = "Objet évalué:";
+$MESS["RATING_EDIT_SUCCESS"] = "L'enregistrement a été bien sauvegardé.";
+$MESS["RATING_EDIT_TAB_MAIN"] = "Paramètres principaux";
+$MESS["RATING_EDIT_TAB_MAIN_TITLE"] = "Nomination, objet à évaluer et critères d'évaluation";
+$MESS["RATING_FIELDS_DEF_DESC"] = "L'évaluation est donnée selon les résultats du vote.";
+$MESS["RATING_FIELDS_DEF_FORMULA"] = "Total * K";
+$MESS["RATING_FIELDS_DEF_FORMULA_DESC"] = "Total - résultat du vote; K - coefficient pour les résultats du vote définit par l'utilisateur.";
+$MESS["RATING_FIELDS_DEF_NAME"] = "Coefficient : ";
+$MESS["RATING_LIST"] = "Liste de ratings";
+$MESS["RATING_LIST_TITLE"] = "Accéder  à la liste des cotes";
+?>

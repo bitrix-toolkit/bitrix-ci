@@ -1,0 +1,7 @@
+<?
+$MESS["SALE_ORDER_MARKER_BLOCK_ORDER_PROBLEM"] = "Problème de commande";
+$MESS["SALE_ORDER_MARKER_BLOCK_PAYMENT_PROBLEM"] = "Problème de paiement (##ENTITY_ID#)";
+$MESS["SALE_ORDER_MARKER_BLOCK_SHIPMENT_PROBLEM"] = "Problème de livraison (##ENTITY_ID#)";
+$MESS["SALE_ORDER_MARKER_CLOSE"] = "Ne plus marquer";
+$MESS["SALE_ORDER_MARKER_FIX"] = "Corriger";
+?>

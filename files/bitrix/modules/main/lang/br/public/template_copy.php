@@ -1,0 +1,33 @@
+<?
+$MESS["comp_prop_cancel"] = "Cancelar";
+$MESS["comp_prop_cancel_title"] = "Fechar a janela e não salvar as alterações";
+$MESS["comp_prop_close"] = "Fechar janela";
+$MESS["comp_prop_close_w"] = "Fechar";
+$MESS["comp_prop_desc"] = "Descrição";
+$MESS["comp_prop_err_comp"] = "Falha ao localizar um código de chamada de componente.";
+$MESS["comp_prop_err_file"] = "Sem permissões suficientes para acessar o script contendo o componente de chamada.";
+$MESS["comp_prop_err_open"] = "Impossível abrir o script contendo o componente de chamada.";
+$MESS["comp_prop_err_param"] = "Parâmetros de entrada incorretos.";
+$MESS["comp_prop_err_save"] = "Erro ao salvar arquivo de script. As alterações não foram salvas.";
+$MESS["comp_prop_name"] = "Nome";
+$MESS["comp_prop_path"] = "Caminho de chamada do componente";
+$MESS["comp_prop_save"] = "Salvar";
+$MESS["comp_prop_save_title"] = "Salvar parâmetros de componentes";
+$MESS["comp_prop_template"] = "Modelo";
+$MESS["comp_prop_template_sys"] = "Sistema";
+$MESS["comp_templ_cur_site_template"] = "Em uso no modelo de site:";
+$MESS["comp_templ_cur_template"] = "Modelo de componente atual";
+$MESS["comp_templ_def_templ"] = "Modelo padrão";
+$MESS["comp_templ_edit"] = "Editar modelo";
+$MESS["comp_templ_error_copy"] = "Erro ao copiar modelo";
+$MESS["comp_templ_new_template"] = "Copiar para o modelo de site";
+$MESS["comp_templ_new_tpl"] = "Nome do modelo de novo componente";
+$MESS["comp_templ_system"] = "modelo do sistema";
+$MESS["comp_templ_template"] = "Modelo de componente";
+$MESS["comp_templ_use"] = "Aplicar novo modelo de componente";
+$MESS["copy_comp_sys_templ"] = "O modelo de sistema de componentes deve ser copiado para o modelo de site antes de você possa modificá-lo.";
+$MESS["template_copy_cur"] = "atual ";
+$MESS["template_copy_def"] = "por padrão.";
+$MESS["template_copy_sel"] = "selecionado";
+$MESS["template_copy_title"] = "Modelo de componente de cópia";
+?>

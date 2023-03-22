@@ -1,0 +1,37 @@
+<?
+$MESS["admin_index_menu"] = "Меню";
+$MESS["admin_index_perf"] = "Монітор продуктивності";
+$MESS["admin_index_perf_check"] = "Перевірте";
+$MESS["admin_index_perf_current"] = "Поточна оцінка продуктивності:";
+$MESS["admin_index_perf_installed"] = "Встановлений";
+$MESS["admin_index_perf_level"] = "Ви можете протестувати поточний рівень продуктивності у <a href=\"perfmon_panel.php?lang=#LANGUAGE_ID#\">Панелі безпеки</a> модуля.";
+$MESS["admin_index_perf_module_inst"] = "Модуль монітора продуктивності не встановлений.";
+$MESS["admin_index_perf_module_inst_desc"] = "Модуль аналізує і тестує продуктивність вашої системи. Для максимального контролю продуктивності вашого проєкту рекомендується встановити модуль.";
+$MESS["admin_index_perf_no_result"] = "Оцінка продуктивності не проводилася.";
+$MESS["admin_index_perf_no_result_desc"] = "Модуль аналізує і тестує продуктивність вашої системи. Для максимального контролю продуктивності вашого проєкту рекомендується провести тестування.";
+$MESS["admin_index_perf_not_installed"] = "Не встановлений";
+$MESS["admin_index_perf_test"] = "Протестувати";
+$MESS["admin_index_product"] = "Проєкт працює на основі";
+$MESS["admin_index_product_name_1c_bitrix"] = "Бітрікс: Управління сайтом";
+$MESS["admin_index_product_name_1c_bitrix_eduportal"] = "Бітрікс: Внутрішній портал навчального закладу";
+$MESS["admin_index_product_name_1c_bitrix_gosportal"] = "Бітрікс: Внутрішній портал органу влади";
+$MESS["admin_index_product_name_1c_bitrix_gossite"] = "Бітрікс: Офіційний сайт органу влади";
+$MESS["admin_index_product_name_1c_bitrix_portal"] = "Бітрікс: Корпоративний портал";
+$MESS["admin_index_product_name_ua_bitrix_portal"] = "Бітрікс: Корпоративний портал";
+$MESS["admin_index_product_name_bitrix"] = " ";
+$MESS["admin_index_product_name_bitrix_portal"] = " ";
+$MESS["admin_index_project"] = "Ласкаво просимо до адміністративного розділ проєкту";
+$MESS["admin_index_sec"] = "Проактивний захист";
+$MESS["admin_index_sec_check"] = "Перевірте параметри";
+$MESS["admin_index_sec_filter_desc"] = "Проактивний фільтр забезпечує захист від більшості відомих атак на веб-застосунки. У потоці зовнішніх запитів користувачів фільтр розпізнає більшість небезпечних загроз і блокує вторгнення на сайт. Рекомендується увімкнути проактивний фільтр.";
+$MESS["admin_index_sec_filter_off"] = "Проактивний фільтр вимкнений.";
+$MESS["admin_index_sec_filter_on"] = "Проактивний фільтр увімкнений.";
+$MESS["admin_index_sec_filter_turn_on"] = "Увімкнути";
+$MESS["admin_index_sec_level"] = "Ви можете перевірити поточний рівень безпеки в <a href=\"security_panel.php?lang=#LANGUAGE_ID#\">Панелі безпеки</a> модуля.";
+$MESS["admin_index_sec_module"] = "Модуль проактивного захисту не встановлений.";
+$MESS["admin_index_sec_module_desc"] = "Модуль забезпечує захист від більшості відомих атак на веб-застосунки. Для максимального захисту вашого проєкту рекомендується встановити модуль проактивного захисту.";
+$MESS["admin_index_sec_module_install"] = "Встановити";
+$MESS["admin_index_sec_off"] = "Вимкнено";
+$MESS["admin_index_sec_on"] = "Увімкнено";
+$MESS["admin_index_title"] = "Панель управління";
+?>

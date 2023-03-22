@@ -1,0 +1,27 @@
+<?php
+$MESS["ADDRESS"] = "Адреса";
+$MESS["CSTORE_SORT"] = "Сорт.";
+$MESS["DATE_CREATE"] = "Дата створення";
+$MESS["DATE_MODIFY"] = "Дата зміни";
+$MESS["DELETE_STORE_ALT"] = "Видалити";
+$MESS["DELETE_STORE_CONFIRM"] = "Ви впевнені, що бажаєте видалити склад?";
+$MESS["DESCRIPTION"] = "Опис";
+$MESS["EDIT_STORE_ALT"] = "Редагувати";
+$MESS["GPS_N"] = "GPS широта";
+$MESS["GPS_S"] = "GPS довгота";
+$MESS["ISSUING_CENTER"] = "Пункт видачі";
+$MESS["IS_DEFAULT"] = "За замовчуванням";
+$MESS["MODIFIED_BY"] = "Ким змінено";
+$MESS["PHONE"] = "Телефон";
+$MESS["SCHEDULE"] = "Графік роботи";
+$MESS["SHIPPING_CENTER"] = "Для відвантаження";
+$MESS["STORE_ACTIVE"] = "Активний";
+$MESS["STORE_ADD_NEW"] = "Додати";
+$MESS["STORE_ADD_NEW_ALT"] = "Додати новий склад";
+$MESS["STORE_CODE"] = "Символьний код";
+$MESS["STORE_IMAGE"] = "Зображення";
+$MESS["STORE_SITE_ID"] = "Сайт";
+$MESS["STORE_TITLE"] = "Склади";
+$MESS["STORE_XML_ID"] = "Зовнішній код";
+$MESS["TITLE"] = "Назва";
+$MESS["USER_ID"] = "Ким створено";

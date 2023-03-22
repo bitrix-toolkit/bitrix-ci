@@ -1,0 +1,22 @@
+<?php
+$MESS["STAN_ADD_NEW"] = "Aggiungi una nuova transazione";
+$MESS["STA_ALL"] = "(tutto)";
+$MESS["STA_CURRENCY"] = "Valuta";
+$MESS["STA_DESCR"] = "Descrizione";
+$MESS["STA_FROM_ACCOUNT"] = "(dall'account)";
+$MESS["STA_MAILTO"] = "Invia messaggio";
+$MESS["STA_NAV"] = "Transazioni";
+$MESS["STA_ORDER"] = "Ordine";
+$MESS["STA_ORDER_ID"] = "Ordine n.";
+$MESS["STA_SUM"] = "Importo";
+$MESS["STA_TITLE"] = "Transazioni";
+$MESS["STA_TO_ACCOUNT"] = "(all'account)";
+$MESS["STA_TPAY"] = "Pagamento dell'ordine";
+$MESS["STA_TRANS_DATE"] = "Data della transazione";
+$MESS["STA_TRANS_DATE1"] = "Data della transazione";
+$MESS["STA_TYPE"] = "Tipo";
+$MESS["STA_USER"] = "Utente";
+$MESS["STA_USER1"] = "Utente";
+$MESS["STA_USER_ID"] = "ID utente";
+$MESS["STA_USER_INFO"] = "Profilo utente";
+$MESS["STA_USER_LOGIN"] = "Accesso utente";

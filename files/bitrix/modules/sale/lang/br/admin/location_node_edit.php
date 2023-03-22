@@ -1,0 +1,20 @@
+<?php
+$MESS["SALE_LOCATION_E_CANNOT_SAVE_ITEM"] = "Erro ao salvar a localização";
+$MESS["SALE_LOCATION_E_CANNOT_UPDATE_ITEM"] = "Erro ao atualizar a localização";
+$MESS["SALE_LOCATION_E_EXTERNAL_TAB"] = "Dados externos";
+$MESS["SALE_LOCATION_E_EXTERNAL_TAB_TITLE"] = "Tabela de dados externos";
+$MESS["SALE_LOCATION_E_GEODATA"] = "Dados de localização geográfica";
+$MESS["SALE_LOCATION_E_GO_BACK"] = "Voltar";
+$MESS["SALE_LOCATION_E_HEADER_EXT_MORE"] = "Mais...";
+$MESS["SALE_LOCATION_E_HEADER_EXT_REMOVE"] = "Excluir";
+$MESS["SALE_LOCATION_E_HEADING_EXTERNAL"] = "Dados externos";
+$MESS["SALE_LOCATION_E_HEADING_NAME"] = "Títulos dependentes do idioma (#LANGUAGE_ID#)";
+$MESS["SALE_LOCATION_E_HEADING_NAME_ALL"] = "Títulos dependentes do idioma";
+$MESS["SALE_LOCATION_E_ITEM_EDIT"] = "Editar localização: #ITEM_NAME#";
+$MESS["SALE_LOCATION_E_ITEM_NEW"] = "Nova localização";
+$MESS["SALE_LOCATION_E_ITEM_NOT_FOUND"] = "A localização não foi encontrada";
+$MESS["SALE_LOCATION_E_MAIN_TAB"] = "Localização";
+$MESS["SALE_LOCATION_E_MAIN_TAB_TITLE"] = "Parâmetros de localização";
+$MESS["SALE_LOCATION_E_NO_SERVICES"] = "Não há serviços externos. Você pode criar um na";
+$MESS["SALE_LOCATION_E_NO_SERVICES_LIST_PAGE"] = "página de serviços externos";
+$MESS["SALE_MODULE_ACCES_DENIED"] = "O acesso ao módulo foi negado";

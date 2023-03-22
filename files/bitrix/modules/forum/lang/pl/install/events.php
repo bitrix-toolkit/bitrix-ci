@@ -1,0 +1,37 @@
+<?
+$MESS["FORUM_NEW_MESSAGE_MAIL_NAME"] = "Nowa wiadomość na forum (tryb wiadomości e-mail)";
+$MESS["F_EDITM"] = "Zmiana wiadomości forum";
+$MESS["F_FORUM_ID"] = "ID Forum";
+$MESS["F_FORUM_NAME"] = "Nazwa forum";
+$MESS["F_MAIL_FROM_EMAIL"] = "E-Mail dla pola Od E-Maila";
+$MESS["F_MAIL_MAPPROVED"] = "Wiadomość jest zatwierdzona";
+$MESS["F_MAIL_PATH2FORUM"] = "Url Wiadomości";
+$MESS["F_MAIL_RECIPIENT"] = "Odbiorca E-Maila";
+$MESS["F_MAIL_TAPPROVED"] = "Temat wiadomości został zatwierdzony";
+$MESS["F_MESSAGE_AUTHOR"] = "Autor wiadomości";
+$MESS["F_MESSAGE_DATE"] = "Data wiadomości";
+$MESS["F_MESSAGE_ID"] = "ID Wiadomości";
+$MESS["F_MESSAGE_TEXT"] = "Wiadomość Tekstowa";
+$MESS["F_NEW_MESSAGE_ON_FORUM"] = "Nowa wiadomość forum";
+$MESS["F_PRIV"] = "Prywatne wiadomości dla użytkownika forum";
+$MESS["F_PRIVATE"] = "Prywatne wiadomości dla użytkownika forum";
+$MESS["F_PRIVATE_AUTHOR"] = "Nazwa nadawcy";
+$MESS["F_PRIVATE_AUTHOR_EMAIL"] = "E-Mail nadawcy";
+$MESS["F_PRIVATE_AUTHOR_ID"] = "ID nadawcy";
+$MESS["F_PRIVATE_MESSAGE"] = "Wiadomość";
+$MESS["F_PRIVATE_MESSAGE_DATE"] = "Data";
+$MESS["F_PRIVATE_MESSAGE_LINK"] = "Link do wiadomości";
+$MESS["F_PRIVATE_RECIPIENT_EMAIL"] = "E-Mail odbiorcy";
+$MESS["F_PRIVATE_RECIPIENT_ID"] = "ID odbiorcy";
+$MESS["F_PRIVATE_RECIPIENT_NAME"] = "Nazwa odbiorcy";
+$MESS["F_PRIVATE_SUBJECT"] = "Temat";
+$MESS["F_PRIV_AUTHOR"] = "Nazwa nadawcy";
+$MESS["F_PRIV_AUTHOR_EMAIL"] = "E-Mail nadawcy";
+$MESS["F_PRIV_DATE"] = "Data";
+$MESS["F_PRIV_RECIPIENT_EMAIL"] = "E-Mail odbiorcy";
+$MESS["F_PRIV_RECIPIENT_NAME"] = "Nazwa odbiorcy";
+$MESS["F_PRIV_TEXT"] = "Wiadomość";
+$MESS["F_PRIV_TITLE"] = "Temat";
+$MESS["F_TOPIC_ID"] = "ID Tematu";
+$MESS["F_TOPIC_TITLE"] = "Tytuł tematu";
+?>

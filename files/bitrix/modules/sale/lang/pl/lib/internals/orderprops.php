@@ -1,0 +1,9 @@
+<?
+$MESS["ORDER_PROPS_ENTITY_CODE_FIELD"] = "Kod mnemoniczny";
+$MESS["ORDER_PROPS_ENTITY_DEFAULT_VALUE_FIELD"] = "Domyślna wartość";
+$MESS["ORDER_PROPS_ENTITY_DESCRIPTION_FIELD"] = "Opis właściwości";
+$MESS["ORDER_PROPS_ENTITY_NAME_FIELD"] = "Nazwa";
+$MESS["ORDER_PROPS_ENTITY_SORT_FIELD"] = "Rodzaj";
+$MESS["SALE_ORDER_PROPS_DEFAULT_ERROR"] = "wartość #LENGTH# przekracza #MAXLENGTH#";
+$MESS["SALE_ORDER_PROPS_SETTINGS_ERROR"] = "długość parametru typu danych #LENGTH# przekroczyła #MAXLENGTH#";
+?>

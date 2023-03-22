@@ -1,0 +1,34 @@
+<?
+$MESS["SAPE1_ACTIVE"] = "Actif(ve) : ";
+$MESS["SAPE1_ADD"] = "Nouveau plan";
+$MESS["SAPE1_ADD1"] = "Ajouter";
+$MESS["SAPE1_DELETE"] = "Supprimer le plan";
+$MESS["SAPE1_DELETE1"] = "Supprimer";
+$MESS["SAPE1_DELETE1_CONF"] = "tes-vous sûr de vouloir supprimer cette inscription ?";
+$MESS["SAPE1_DELETE_CONF"] = "tes-vous sûr de vouloir supprimer ce plan ?";
+$MESS["SAPE1_DESCR"] = "Description du plan : ";
+$MESS["SAPE1_ERROR_SAVE"] = "Sauver le plan Erreur";
+$MESS["SAPE1_ERROR_SAVE_SECTION"] = "Sauver le groupe de produits de régime erreur";
+$MESS["SAPE1_LIMIT"] = "Le plan est actif pour les ventes plus (pcs.)";
+$MESS["SAPE1_LIMIT_HINT"] = "Le plan est actif pour les ventes avec plus de quantité<br><small>dans la monnaie de base du site</small>";
+$MESS["SAPE1_LIST"] = "Plans";
+$MESS["SAPE1_MODULE"] = "Module";
+$MESS["SAPE1_NAME"] = "Nom du plan : ";
+$MESS["SAPE1_NO"] = "(Non)";
+$MESS["SAPE1_NO_MODULE"] = "Le module de groupe de produits est pas spécifié";
+$MESS["SAPE1_NO_NAME"] = "Le nom du plan est pas spécifié";
+$MESS["SAPE1_NO_RATE_CURRENCY"] = "La devise de taux de plan est non spécifié";
+$MESS["SAPE1_NO_SECTION"] = "Aucun groupe de produits est spécifiée";
+$MESS["SAPE1_NO_SITE"] = "Le site de plan est non spécifié";
+$MESS["SAPE1_PLAN"] = "Le plan";
+$MESS["SAPE1_PLAN_PARAM"] = "paramètres du régime";
+$MESS["SAPE1_RATE"] = "Tarif : ";
+$MESS["SAPE1_RATE1"] = "Tarif";
+$MESS["SAPE1_SECTION"] = "Groupe";
+$MESS["SAPE1_SECTIONS"] = "Groupes de produits";
+$MESS["SAPE1_SECTIONS_ALT"] = "Groupes de produits de taux spéciaux";
+$MESS["SAPE1_SITE"] = "Site : ";
+$MESS["SAPE1_TIMESTAMP_X"] = "Date de la dernière modification : ";
+$MESS["SAPE1_TITLE_ADD"] = "Nouveau plan";
+$MESS["SAPE1_TITLE_UPDATE"] = "Modifier le plan #ID#";
+?>

@@ -1,0 +1,32 @@
+<?
+$MESS["MAIN_RATING_LIST"] = "Classements";
+$MESS["RATING_ACTIVE"] = "Actif(ve)";
+$MESS["RATING_ACTIVE_NO"] = "Non";
+$MESS["RATING_ACTIVE_YES"] = "Oui";
+$MESS["RATING_CREATED"] = "Créé";
+$MESS["RATING_ENTITY_ID"] = "Objet cible";
+$MESS["RATING_LAST_CALCULATED"] = "Calculé";
+$MESS["RATING_LAST_MODIFIED"] = "Modifié";
+$MESS["RATING_LIST_ADD"] = "Création de la cote de Popularité";
+$MESS["RATING_LIST_ADD_TITLE"] = "Ajouter un nouveau rating";
+$MESS["RATING_LIST_DEL"] = "Supprimer la cote de popularité";
+$MESS["RATING_LIST_DEL_CONF"] = "Supprimer les cotes de popularité ?";
+$MESS["RATING_LIST_EDIT"] = "Modifier les paramètres du classement";
+$MESS["RATING_LIST_ERR_CAL"] = "Erreur lors de l'actualisation du classement.";
+$MESS["RATING_LIST_ERR_DEL"] = "Erreur lors de la suppression du classement.";
+$MESS["RATING_LIST_ERR_EDIT"] = "Erreur de mise à jour de l'enregistrement";
+$MESS["RATING_LIST_FLT_ACTIVE"] = "actifs";
+$MESS["RATING_LIST_FLT_ALL"] = "(partout)";
+$MESS["RATING_LIST_FLT_ENTITY_ID"] = "Bloc Highload";
+$MESS["RATING_LIST_FLT_ID"] = "ID";
+$MESS["RATING_LIST_FLT_INACTIVE"] = "démissionné";
+$MESS["RATING_LIST_FLT_NAME"] = "Dénomination";
+$MESS["RATING_LIST_FLT_find"] = "Rechercher : ";
+$MESS["RATING_LIST_NAV"] = "Classements";
+$MESS["RATING_LIST_RECALCULATE"] = "Recalculer l'utilisation du disque. S'il vous plaît réessayer plus tard";
+$MESS["RATING_NAME"] = "Dénomination";
+$MESS["RATING_STATUS"] = "Statut";
+$MESS["RATING_STATUS_DONE"] = "calculé";
+$MESS["RATING_STATUS_WAITING"] = "attend d'être mis(e) à jours";
+$MESS["RATING_STATUS_WORKING"] = "mise à jour en cours";
+?>

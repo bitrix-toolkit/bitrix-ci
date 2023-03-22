@@ -1,0 +1,6 @@
+<?
+$MESS["IBLOCK_PROP_USERID_CURR"] = "Actual";
+$MESS["IBLOCK_PROP_USERID_DESC"] = "Link a usuario";
+$MESS["IBLOCK_PROP_USERID_NONE"] = "(ninguno)";
+$MESS["IBLOCK_PROP_USERID_OTHR"] = "Elegir";
+?>

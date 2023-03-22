@@ -1,0 +1,31 @@
+<?
+$MESS["SAE_ACTIVE"] = "Aktywny:";
+$MESS["SAE_AFFILIATE_REG"] = "Zarejestrowany przez członka:";
+$MESS["SAE_AFF_ADD"] = "Dodaj członka";
+$MESS["SAE_AFF_DELETE"] = "Usuń członka";
+$MESS["SAE_AFF_DELETE_CONF"] = "Na pewno chcesz usunąć tego członka?";
+$MESS["SAE_AFF_DESCRIPTION"] = "Opis członka";
+$MESS["SAE_AFF_LIST"] = "Powiązania";
+$MESS["SAE_AFF_SITE"] = "Strona członka";
+$MESS["SAE_AFF_TAB"] = "Członek";
+$MESS["SAE_AFF_TAB_TITLE"] = "Parametry członka";
+$MESS["SAE_DATE_REG"] = "data rejestracji";
+$MESS["SAE_DATE_UPDATE"] = "Data ostatniej modyfikacji:";
+$MESS["SAE_ERROR_SAVE_AFF"] = "Wystąpił błąd podczas zapisywania członka";
+$MESS["SAE_FIX_PLAN"] = "Plan naprawy";
+$MESS["SAE_LAST_CALC"] = "Data ostatniego obliczenia";
+$MESS["SAE_NO_AFFILIATE"] = "Nie znaleziono członka";
+$MESS["SAE_NO_DATE_CREATE"] = "Data utworzenia nie jest określona";
+$MESS["SAE_NO_PLAN"] = "Plan nie jest określony";
+$MESS["SAE_NO_SITE_PLAN"] = "Strona planu nie jest określona";
+$MESS["SAE_NO_USER"] = "Użytkownik nie jest określony";
+$MESS["SAE_PAYED_SUM"] = "Opłacona kwota:";
+$MESS["SAE_PENDING_SUM"] = "Oczekująca kwota:";
+$MESS["SAE_PLAN"] = "Plan:";
+$MESS["SAE_PROFILE"] = "Profil Użytkownika";
+$MESS["SAE_SITE"] = "Strona:";
+$MESS["SAE_TITLE_ADD_AFF"] = "Nowy członek";
+$MESS["SAE_TITLE_UPDATE_AFF"] = "Edytuj członka #ID#";
+$MESS["SAE_USER"] = "Użytkownik:";
+$MESS["SAE_WAIT"] = "czekaj";
+?>

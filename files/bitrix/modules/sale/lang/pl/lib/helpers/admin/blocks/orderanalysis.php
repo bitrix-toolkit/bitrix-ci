@@ -1,0 +1,5 @@
+<?
+$MESS["SALE_OANALYSIS_CREATED_AT"] = "Utworzone";
+$MESS["SALE_OANALYSIS_ITEM_NAME"] = "Nazwa";
+$MESS["SALE_OANALYSIS_RESPONSIBLE"] = "Osoba odpowiedzialna";
+?>

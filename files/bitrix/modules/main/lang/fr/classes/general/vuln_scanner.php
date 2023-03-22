@@ -1,0 +1,38 @@
+<?
+$MESS["VULNSCAN_CODE_HELP"] = "Un attaquant peut injecter et exécuter du code PHP arbitraire. Lire la suite:: <a href='http://cwe.mitre.org/data/definitions/78.html'>http://cwe.mitre.org/data/definitions/78.html</a>";
+$MESS["VULNSCAN_CODE_HELP_SAFE"] = "Filtrer l'entrée utilisateur, par exemple, au moyen de <b>EscapePHPString</b>";
+$MESS["VULNSCAN_CODE_NAME"] = "Exécution du code arbitraire";
+$MESS["VULNSCAN_DATABASE_HELP"] = "Un attaquant peut injecter des commandes arbitraires SQL dans la requête, ce qui est extrêmement dangereux. Il est recommandé que vous filtrez les données de l'utilisateur avant de les envoyer au serveur. Lire la suite: <a href='https://www.owasp.org/index.php/SQL_Injection'>https://www.owasp.org/index.php/SQL_Injection</a>";
+$MESS["VULNSCAN_DATABASE_HELP_SAFE"] = "Pour des données de types numériques, la valeur est clairement amenée au type approprié (int, float etc.), pour des données de types de chaînes, il faut les traiter à l'aide de mysql_escape_string, \$DB->ForSQL() etc.. Et aussi contrôler la longueur de la chaîne.";
+$MESS["VULNSCAN_DATABASE_NAME"] = "SQL Injection";
+$MESS["VULNSCAN_DYNAMIC_FUNCTION"] = "Appel de la fonction dynamique !";
+$MESS["VULNSCAN_EXEC_HELP"] = "Un attaquant peut injecter et exécuter du code arbitraire ou de commandes. Il est extrêmement dangereux. Lire la suite: <a href='https://www.owasp.org/index.php/Code_Injection'>https://www.owasp.org/index.php/Code_Injection</a>";
+$MESS["VULNSCAN_EXEC_HELP_SAFE"] = "Effectuer une vérification explicite de la validité des valeurs des variables de l'ensemble des valeurs fixes autorisées. Par exemple, ne permettre que des lettres latines et des chiffres, etc. L'ensemble doit être défini en fonction des tâches assignées. De même, vous pouvez utiliser des fonctions telles que escapeshellcmd et escapeshellarg.";
+$MESS["VULNSCAN_EXEC_NAME"] = "Exécution d'ordres arbitraires";
+$MESS["VULNSCAN_EXTRACT"] = "Les variables précédemment initialisées peuvent être revues !";
+$MESS["VULNSCAN_FILE"] = "Fichier";
+$MESS["VULNSCAN_FIULECHECKED"] = "Nombre de fichiers vérifiés : ";
+$MESS["VULNSCAN_HEADER_HELP"] = "Un attaquant peut utiliser l'injection d'en-tête de réponse HTTP pour effectuer la redirection ou insérer du code HTML malveillant / JS. Il est recommandé que vous filtrez les retours à la ligne avant la sortie de l'en-tête de réponse. Réelle pour PHP antérieures à la 5.4. Lire la suite: <a href='http://www.infosecwriters.com/text_resources/pdf/HTTP_Response.pdf'>http://www.infosecwriters.com/text_resources/pdf/HTTP_Response.pdf</a>";
+$MESS["VULNSCAN_HEADER_HELP_SAFE"] = "Il est recommandé de filtrer les fins de lignes avant l'affichage dans l'en-tête de la réponse.";
+$MESS["VULNSCAN_HEADER_NAME"] = "HTTP Response Splitting";
+$MESS["VULNSCAN_HELP_FUNCTION"] = "Fonction / methode";
+$MESS["VULNSCAN_HELP_INPUT"] = "Chemin";
+$MESS["VULNSCAN_HELP_SAFE"] = "Comment se protéger";
+$MESS["VULNSCAN_HELP_VULNTYPE"] = "Type de vulnérabilité";
+$MESS["VULNSCAN_INCLUDE_HELP"] = "Un attaquant peut monter des fichiers locaux et / ou distants, ou lire des fichiers du site. Il est recommandé que vous canoniser chemins de données de l'utilisateur avant de les utiliser. Lire la suite: <a href='https://rdot.org/forum/showthread.php?t=343'>https://rdot.org/forum/showthread.php?t=343</a>";
+$MESS["VULNSCAN_INCLUDE_HELP_SAFE"] = "Il est recommandé d'effectuer au moins la normalisation de chemin avant de les utiliser.";
+$MESS["VULNSCAN_INCLUDE_NAME"] = "File Inclusion";
+$MESS["VULNSCAN_OTHER_HELP"] = "la description manque.";
+$MESS["VULNSCAN_OTHER_NAME"] = "Changement de potentiel dans la logique du travail";
+$MESS["VULNSCAN_POP_HELP"] = "Désérialisation des données de l'utilisateur peut devenir une vulnérabilité sérieuse. Lire la suite: <a href='https://rdot.org/forum/showthread.php?t=950'>https://rdot.org/forum/showthread.php?t=950</a>";
+$MESS["VULNSCAN_POP_NAME"] = "Sérialisation de données";
+$MESS["VULNSCAN_REQUIRE"] = "Conditions nécessaires";
+$MESS["VULNSCAN_SIMILAR"] = "Par analogie";
+$MESS["VULNSCAN_TOKENIZER_NOT_INSTALLED"] = "L'extension PHP tokinezer n'est pas activée. Veuillez l'activer pour achever le test.";
+$MESS["VULNSCAN_UNKNOWN"] = "Soupçon sur la vulnérabilité";
+$MESS["VULNSCAN_UNKNOWN_HELP"] = "la description manque.";
+$MESS["VULNSCAN_VULNCOUNTS"] = "Problèmes potentiels trouvés : ";
+$MESS["VULNSCAN_XSS_HELP"] = "Un attaquant peut exécuter du code arbitraire malveillants HTML/JS dans le contexte du navigateur de la victime. Il est recommandé que vous filtrez les variables avant la sortie au format HTML/JS.<br>Lire la suite: <a href='https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)'>https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)</a>";
+$MESS["VULNSCAN_XSS_HELP_SAFE"] = "Utiliser <b>htmlspecialcharsbx</b>. Placer entre doubles guillemets les paramètres des tags aux valeurs dynamiques. Forcer l'ajout du protocole (http), là où cela est nécessaire, pour les valeurs des paramètres de tags telles que href ou src.";
+$MESS["VULNSCAN_XSS_NAME"] = "Cross-Site Scripting";
+?>

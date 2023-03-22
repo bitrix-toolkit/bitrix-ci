@@ -1,0 +1,32 @@
+<?
+$MESS["DISCOUNT_COUPON_ENTITY_ACTIVE_FIELD"] = "Activo";
+$MESS["DISCOUNT_COUPON_ENTITY_ACTIVE_FROM_FIELD"] = "Activo del";
+$MESS["DISCOUNT_COUPON_ENTITY_ACTIVE_TO_FIELD"] = "Activo hasta";
+$MESS["DISCOUNT_COUPON_ENTITY_COUPON_FIELD"] = "Cupón";
+$MESS["DISCOUNT_COUPON_ENTITY_CREATED_BY_FIELD"] = "Creado por";
+$MESS["DISCOUNT_COUPON_ENTITY_DATE_APPLY_FIELD"] = "Utilizado por última vez en";
+$MESS["DISCOUNT_COUPON_ENTITY_DATE_CREATE_FIELD"] = "Creado el";
+$MESS["DISCOUNT_COUPON_ENTITY_DESCRIPTION_FIELD"] = "Comentario";
+$MESS["DISCOUNT_COUPON_ENTITY_DISCOUNT_ID_FIELD"] = "Regla de descuento por la compra";
+$MESS["DISCOUNT_COUPON_ENTITY_ID_FIELD"] = "ID del cupón";
+$MESS["DISCOUNT_COUPON_ENTITY_MAX_USE_FIELD"] = "Usos máximos";
+$MESS["DISCOUNT_COUPON_ENTITY_MODIFIED_BY_FIELD"] = "Modificado por";
+$MESS["DISCOUNT_COUPON_ENTITY_TIMESTAMP_X_FIELD"] = "Modificado el";
+$MESS["DISCOUNT_COUPON_ENTITY_TYPE_FIELD"] = "Tipo de descuento";
+$MESS["DISCOUNT_COUPON_ENTITY_USER_ID_FIELD"] = "Propietario del cupón";
+$MESS["DISCOUNT_COUPON_ENTITY_USE_COUNT_FIELD"] = "Tiempos usados";
+$MESS["DISCOUNT_COUPON_PACKET_COUNT_ERR"] = "No se especifica el número de cupones.";
+$MESS["DISCOUNT_COUPON_PACKET_DISCOUNT_ERR"] = "La regla con la que los nuevos cupones están asociados no fue encontrada.";
+$MESS["DISCOUNT_COUPON_PACKET_EMPTY"] = "No hay parámetros para los nuevos cupones especificados.";
+$MESS["DISCOUNT_COUPON_PACKET_GENERATE_COUPON_COUNT_ERR"] = "Creado #RESULT# cupones de #COUNT# en #ALL# run(s).";
+$MESS["DISCOUNT_COUPON_PACKET_GENERATE_COUPON_ZERO_ERR"] = "No se puede crear cupones";
+$MESS["DISCOUNT_COUPON_PACKET_NEW_GENERATE_COUPON_ZERO_ERR"] = "No se puede crear cupones. Se recomienda desactivar la regla y vuelva a intentarlo.";
+$MESS["DISCOUNT_COUPON_TABLE_TYPE_BASKET_ROW"] = "Para el elemento del pedido individual";
+$MESS["DISCOUNT_COUPON_TABLE_TYPE_MULTI_ORDER"] = "Multiuso";
+$MESS["DISCOUNT_COUPON_TABLE_TYPE_ONE_ORDER"] = "De un solo uso";
+$MESS["DISCOUNT_COUPON_VALIDATOR_COUPON_EMPTY"] = "Cupón no especificado";
+$MESS["DISCOUNT_COUPON_VALIDATOR_COUPON_EXIST"] = "Este cupón ya existe";
+$MESS["DISCOUNT_COUPON_VALIDATOR_DISCOUNT_ID"] = "ID de la regla del carrito de compras es incorrecto (menor o igual a cero)";
+$MESS["DISCOUNT_COUPON_VALIDATOR_PERIOD"] = "El período de tiempo activo es incorrecto.";
+$MESS["DISCOUNT_COUPON_VALIDATOR_TYPE"] = "Tipo cupón inválido";
+?>

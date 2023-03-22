@@ -1,0 +1,35 @@
+<?
+$MESS["Address"] = "Adresse";
+$MESS["Amount"] = "Dans le montant de";
+$MESS["Article"] = "Article";
+$MESS["Catalog"] = "Catalogue";
+$MESS["Comment"] = "Commentaire";
+$MESS["CommerceInfo"] = "Information Commerciale";
+$MESS["Company"] = "Entreprise";
+$MESS["CompanyInDocument"] = "EntrepriseDansDocument";
+$MESS["Contact"] = "Client";
+$MESS["ContactMan"] = "Personne de contact";
+$MESS["Currency"] = "Devises";
+$MESS["DateDoc"] = "DateDoc";
+$MESS["Description"] = "Description";
+$MESS["DisplayName"] = "Nom d'affichage";
+$MESS["Document"] = "Document";
+$MESS["E-mail"] = "E-mail";
+$MESS["ID"] = "ID";
+$MESS["IncludedInSum"] = "IncluDansSomme";
+$MESS["JuridicAddress"] = "JuridicAddress";
+$MESS["Name"] = "Dénomination";
+$MESS["NumberDoc"] = "NuméroDoc";
+$MESS["Operation"] = "Opération";
+$MESS["PaymentDate"] = "Date de paiement";
+$MESS["Price"] = "Prix";
+$MESS["Product"] = "Article";
+$MESS["Role"] = "Rôle";
+$MESS["Sum"] = "Somme";
+$MESS["Tax"] = "Impôt";
+$MESS["TaxRate"] = "Taux";
+$MESS["TaxSum"] = "SommeTaux";
+$MESS["TimeDoc"] = "TempsDoc";
+$MESS["Unit"] = "Unité";
+$MESS["WWW"] = "Site";
+?>

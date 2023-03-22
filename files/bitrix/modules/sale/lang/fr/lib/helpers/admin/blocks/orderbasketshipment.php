@@ -1,0 +1,29 @@
+<?
+$MESS["SALE_ORDER_BASKET_ROW_SETTINGS"] = "Personnaliser les colonnes";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_ADD"] = "Ajouter";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_ADD_NEW_STORE"] = "Ajouter entrepôt";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_ALL_PRODUCTS_DEL"] = "Voulez-vous vraiment supprimer tous les produits de cette expédition ?";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_APPLY"] = "Applique l'action à tous les enregistrements de la grille";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_APPLY_FOR_ALL"] = "Pour tous";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_BARCODE"] = "Codes barre";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_BARCODE_ALREADY_USED"] = "Ce code barre est déjà utilisé";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_BARCODE_CLOSE"] = "Fermer";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_BARCODE_EMPTY"] = "Aucun code-barre lu";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_BARCODE_ENTER"] = "Saisir les codes barre";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_BASKET_ITEM_NOT_FOUND"] = "L'article du panier d'achat ##BASKET_ITEM_ID# lié à la livraison est introuvable.";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_CLOSE"] = "Fermer";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_COMPOSITION"] = "Liste d'expédition";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_DELETE_ITEMS"] = "Supprimer enregistrements";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_ERROR_ALREADY_SHIPPED"] = "Expédition terminée. Le panier ne peut être modifié.";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_ERROR_NOT_FOUND"] = "Aucun produit associé à ce code barre n'a été trouvé.";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_ERROR_QUANTITY"] = "#BASKET_ITEM# : quantité spécifiée incorrecte";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_FIND"] = "Trouver";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_FIND_BY_BARCODE"] = "Trouver par code barre";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_GOODS_ALL"] = "Total des produits";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_GOODS_SELECTED"] = "Sélectionné";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_NO_PRODUCTS"] = "Aucun produit disponible à expédier";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_PAGE"] = "Page #CURRENT_PAGE# sur #COUNT_PAGE#";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_SELECTED_PRODUCTS_DEL"] = "Voulez-vous vraiment supprimer tous les produits sélectionnés de cette expédition ?";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_WRONG_BASKET_ITEM"] = "Objet du panier incorrect";
+$MESS["SALE_ORDER_SHIPMENT_VIEW_BASKET_NO_PRODUCTS"] = "Aucun produit à expédier";
+?>

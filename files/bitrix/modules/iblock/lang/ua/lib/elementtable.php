@@ -1,0 +1,37 @@
+<?
+$MESS["ELEMENT_ENTITY_ID_FIELD"] = "Ідентифікатор";
+$MESS["ELEMENT_ENTITY_TIMESTAMP_X_FIELD"] = "Дата зміни";
+$MESS["ELEMENT_ENTITY_MODIFIED_BY_FIELD"] = "Хто змінив";
+$MESS["ELEMENT_ENTITY_DATE_CREATE_FIELD"] = "Дата створення";
+$MESS["ELEMENT_ENTITY_CREATED_BY_FIELD"] = "Хто створив";
+$MESS["ELEMENT_ENTITY_IBLOCK_ID_FIELD"] = "Ідентифікатор інфоблока";
+$MESS["ELEMENT_ENTITY_IBLOCK_SECTION_ID_FIELD"] = "Основний розділ";
+$MESS["ELEMENT_ENTITY_ACTIVE_FIELD"] = "Активність";
+$MESS["ELEMENT_ENTITY_ACTIVE_FROM_FIELD"] = "Дата початку активності";
+$MESS["ELEMENT_ENTITY_ACTIVE_TO_FIELD"] = "Дата закінчення активності";
+$MESS["ELEMENT_ENTITY_SORT_FIELD"] = "Індекс сортування";
+$MESS["ELEMENT_ENTITY_NAME_FIELD"] = "Найменування";
+$MESS["ELEMENT_ENTITY_PREVIEW_PICTURE_FIELD"] = "Картинка анонсу";
+$MESS["ELEMENT_ENTITY_PREVIEW_TEXT_FIELD"] = "Опис для анонсу";
+$MESS["ELEMENT_ENTITY_PREVIEW_TEXT_TYPE_FIELD"] = "Тип опису для анонсу";
+$MESS["ELEMENT_ENTITY_DETAIL_PICTURE_FIELD"] = "Детальна картинка";
+$MESS["ELEMENT_ENTITY_DETAIL_TEXT_FIELD"] = "Детальний опис";
+$MESS["ELEMENT_ENTITY_DETAIL_TEXT_TYPE_FIELD"] = "Тип детального опису";
+$MESS["ELEMENT_ENTITY_SEARCHABLE_CONTENT_FIELD"] = "Пошуковий індекс";
+$MESS["ELEMENT_ENTITY_WF_STATUS_ID_FIELD"] = "Статус в документообігу";
+$MESS["ELEMENT_ENTITY_WF_PARENT_ELEMENT_ID_FIELD"] = "Елемент-батько";
+$MESS["ELEMENT_ENTITY_WF_NEW_FIELD"] = "Прапор публікації чернетки";
+$MESS["ELEMENT_ENTITY_WF_LOCKED_BY_FIELD"] = "Хто заблокував";
+$MESS["ELEMENT_ENTITY_WF_DATE_LOCK_FIELD"] = "Дата блокування";
+$MESS["ELEMENT_ENTITY_WF_COMMENTS_FIELD"] = "Коментар документообігу";
+$MESS["ELEMENT_ENTITY_IN_SECTIONS_FIELD"] = "Входить в розділи інфоблока";
+$MESS["ELEMENT_ENTITY_XML_ID_FIELD"] = "Зовнішній код";
+$MESS["ELEMENT_ENTITY_CODE_FIELD"] = "Символьний код";
+$MESS["ELEMENT_ENTITY_TAGS_FIELD"] = "Теги";
+$MESS["ELEMENT_ENTITY_TMP_ID_FIELD"] = "Тимчасовий код";
+$MESS["ELEMENT_ENTITY_SHOW_COUNTER_FIELD"] = "Кількість показів";
+$MESS["ELEMENT_ENTITY_SHOW_COUNTER_START_FIELD"] = "Дата першого показу";
+$MESS["ELEMENT_ENTITY_MESS_ADD_BLOCKED"] = "Для додавання елементів інфоблоків використовуйте виклик CIBlockElement::Add()";
+$MESS["ELEMENT_ENTITY_MESS_UPDATE_BLOCKED"] = "Для зміни елементів інфоблоків використовуйте виклик CIBlockElement::Update()";
+$MESS["ELEMENT_ENTITY_MESS_DELETE_BLOCKED"] = "Для видалення елементів інфоблоків використовуйте виклик CIBlockElement::Delete()";
+?>

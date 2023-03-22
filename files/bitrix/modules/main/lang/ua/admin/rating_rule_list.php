@@ -1,0 +1,33 @@
+<?
+$MESS["RATING_RULE_LIST_FLT_ALL"] = "(всі)";
+$MESS["RATING_RULE_LIST_FLT_ID"] = "ID";
+$MESS["RATING_RULE_ACTIVE"] = "Активний";
+$MESS["RATING_RULE_LIST_FLT_ACTIVE_Y"] = "активні";
+$MESS["RATING_RULE_LIST_FLT_ACTIVE"] = "Активність";
+$MESS["RATING_RULE_LIST_DEL_CONF"] = "Ви впевнені, що бажаєте видалити це правило?";
+$MESS["RATING_RULE_LIST_DEL"] = "Видалити";
+$MESS["RATING_RULE_LIST_REAPPLY"] = "Виконати правило";
+$MESS["RATING_RULE_STATUS_WORKING"] = "виконується застосування";
+$MESS["RATING_RULE_LAST_APPLIED"] = "Застосований";
+$MESS["RATING_RULE_STATUS_DONE"] = "застосований";
+$MESS["RATING_RULE_LIST_EDIT"] = "Змінити параметри";
+$MESS["RATING_RULE_LIST_FLT_find"] = "Знайти:";
+$MESS["RATING_RULE_LAST_MODIFIED"] = "Модифікований";
+$MESS["RATING_RULE_NAME"] = "Назва";
+$MESS["RATING_RULE_LIST_FLT_NAME"] = "Назва";
+$MESS["RATING_RULE_ENTITY_TYPE_ID"] = "Належить";
+$MESS["RATING_RULE_LIST_FLT_ENTITY_TYPE_ID"] = "Належність";
+$MESS["RATING_RULE_LIST_FLT_ACTIVE_N"] = "неактивні";
+$MESS["RATING_RULE_ACTIVE_NO"] = "Ні";
+$MESS["RATING_RULE_LIST_ADD"] = "Нове правило";
+$MESS["RATING_RULE_STATUS_WAITING"] = "очікує застосування";
+$MESS["RATING_RULE_LIST_ERR_DEL"] = "Помилка при видаленні правила.";
+$MESS["RATING_RULE_LIST_ERR_APP"] = "Помилка при застосуванні правила.";
+$MESS["RATING_RULE_LIST_ERR_EDIT"] = "Помилка при редагуванні правила.";
+$MESS["MAIN_RATING_RULE_LIST"] = "Правила обробки";
+$MESS["RATING_RULE_LIST_NAV"] = "Правила обробки";
+$MESS["RATING_RULE_STATUS"] = "Стан";
+$MESS["RATING_RULE_CREATED"] = "Створений";
+$MESS["RATING_RULE_LIST_ADD_TITLE"] = "Створити нове правило обробки";
+$MESS["RATING_RULE_ACTIVE_YES"] = "Так";
+?>

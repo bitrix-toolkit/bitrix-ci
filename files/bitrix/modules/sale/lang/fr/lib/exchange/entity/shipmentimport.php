@@ -1,0 +1,5 @@
+<?
+$MESS["SALE_EXCHANGE_ENTITY_SHIPMENT_DELIVERY_SERVICE_IS_NOT_AVAILABLE_ERROR"] = "Le service de livraison est indisponible";
+$MESS["SALE_EXCHANGE_ENTITY_SHIPMENT_ORDER_IS_NOT_LOADED_ERROR"] = "Objet de commande non chargé";
+$MESS["SALE_EXCHANGE_ENTITY_SHIPMENT_SYNCHRONIZE_QUANTITY_ERROR"] = "Pas assez de produit pour une livraison.";
+?>

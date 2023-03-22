@@ -1,0 +1,17 @@
+<?
+$MESS["EVENTLIST_HEADER_EVENT_NAME"] = "Evento";
+$MESS["EVENTLIST_HEADER_IP"] = "IP";
+$MESS["EVENTLIST_HEADER_NAME"] = "Utente";
+$MESS["EVENTLIST_HEADER_TIME"] = "Ora";
+$MESS["EVENT_LIST_DATE_FILTER_DAYS"] = "giorni";
+$MESS["EVENT_LIST_FILTER_CREATED_BY"] = "Creato da";
+$MESS["EVENT_LIST_FILTER_DATE"] = "Data";
+$MESS["EVENT_LIST_FILTER_FEATURES_TITLE"] = "Eventi";
+$MESS["EVENT_LIST_FILTER_HIDE"] = "nascondi";
+$MESS["EVENT_LIST_FILTER_SHOW"] = "mostra";
+$MESS["EVENT_LIST_FILTER_TITLE"] = "Imposta filtro";
+$MESS["EVENT_LIST_NO_ACTIVE_FEATURES_ERROR"] = "Nessun evento selezionato nel filtro.";
+$MESS["EVENT_LIST_NO_UPDATES"] = "Nessun aggiornamento.";
+$MESS["EVENT_LIST_PAGE_NAV"] = "Visualizzazione record";
+$MESS["EVENT_LIST_SUBMIT"] = "Seleziona";
+?>

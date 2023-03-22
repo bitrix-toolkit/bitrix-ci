@@ -1,0 +1,6 @@
+<?php
+$MESS["STOCK_FILTER_DEFAULT_STORE_PRESET_TITLE"] = "Depósitos: #STORE_TITLE#";
+$MESS["STOCK_FILTER_PRODUCTS_STUB"] = "Comece a digitar o nome ou SKU do produto";
+$MESS["STOCK_FILTER_PRODUCTS_TITLE"] = "Produtos";
+$MESS["STOCK_FILTER_REPORT_INTERVAL_TITLE"] = "Período de relatório";
+$MESS["STOCK_FILTER_STORES_TITLE"] = "Depósitos";

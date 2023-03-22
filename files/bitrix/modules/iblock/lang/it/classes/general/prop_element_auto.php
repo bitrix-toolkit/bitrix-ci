@@ -1,0 +1,22 @@
+<?php
+$MESS["BT_UT_AUTOCOMPLETE_SYM_GRID"] = "#";
+$MESS["BT_UT_AUTOCOMPLETE_SYM_OTHER"] = "Altro";
+$MESS["BT_UT_AUTOCOMPLETE_SYM_SPACE"] = "Spazio";
+$MESS["BT_UT_AUTOCOMPLETE_SYM_STAR"] = "*";
+$MESS["BT_UT_AUTOCOMPLETE_SYM_UNDERLINE"] = "_";
+$MESS["BT_UT_EAUTOCOMPLETE_DESCR"] = "Casella di testo per il completamento automatico del collegamento all'elemento";
+$MESS["BT_UT_EAUTOCOMPLETE_MESS_SEARCH_ELEMENT"] = "...";
+$MESS["BT_UT_EAUTOCOMPLETE_SEARCH_CHANGE_QUERY"] = "Prova una ricerca diversa.";
+$MESS["BT_UT_EAUTOCOMPLETE_SEARCH_ENTER_QUERY"] = "Inserisci testo di ricerca";
+$MESS["BT_UT_EAUTOCOMPLETE_SEARCH_ENTER_QUERY_SUBTITLE"] = "Ricerca in corso negli elementi del blocco di informazioni";
+$MESS["BT_UT_EAUTOCOMPLETE_SEARCH_NOT_FOUND"] = "La tua richiesta di ricerca non ha restituito alcun risultato.";
+$MESS["BT_UT_EAUTOCOMPLETE_SETTING_COMMENT_MAX_HEIGHT"] = "px";
+$MESS["BT_UT_EAUTOCOMPLETE_SETTING_COMMENT_MAX_WIDTH"] = "px";
+$MESS["BT_UT_EAUTOCOMPLETE_SETTING_COMMENT_MIN_HEIGHT"] = "px";
+$MESS["BT_UT_EAUTOCOMPLETE_SETTING_IBLOCK_MESS"] = "Usa il titolo dell'elemento del blocco informazioni per il testo del pulsante";
+$MESS["BT_UT_EAUTOCOMPLETE_SETTING_MAX_HEIGHT"] = "Altezza max. campo di immissione (per più proprietà)";
+$MESS["BT_UT_EAUTOCOMPLETE_SETTING_MAX_WIDTH"] = "Larghezza massima campo di immissione, pix. (0 - illimitato)";
+$MESS["BT_UT_EAUTOCOMPLETE_SETTING_MIN_HEIGHT"] = "Altezza min. campo di immissione (per più proprietà)";
+$MESS["BT_UT_EAUTOCOMPLETE_SETTING_SHOW_ADD"] = "Mostra il pulsante Aggiungi articolo";
+$MESS["BT_UT_EAUTOCOMPLETE_SETTING_TITLE"] = "Parametro di completamento automatico";
+$MESS["BT_UT_EAUTOCOMPLETE_SETTING_VIEW"] = "Controlli dell'interfaccia utente";

@@ -1,0 +1,32 @@
+<?
+$MESS["HTTPS_PROMO__ADMIN_TITLE"] = "Підготувати сайт до переходу на HTTPS";
+$MESS["HTTPS_PROMO__SUBTITLE"] = "HTTPS – захист ваших даних та безпека";
+$MESS["HTTPS_PROMO__TITLE"] = "Налаштування HTTPS-з'єднання для Вашого сайту";
+$MESS["HTTPS_PROMO__PREPARE_SITE"] = "Підготувати сайт до переходу на HTTPS";
+$MESS["HTTPS_PROMO__CHANGE_LINKS_NEW"] = "Змінити посилання, які використовуються у проєкті, з абсолютних на відносні.";
+$MESS["HTTPS_PROMO__CHECK_PROTOCOL_NEW"] = "Перевірити і змінити для контенту (відео, картинки), що завантажується зі сторонніх ресурсів, протокол, за яким проєкт запитує контент.";
+$MESS["HTTPS_PROMO__EXTERNAL_SCRIPTS"] = "Змінити підключення зовнішніх скриптів з абсолютних на відносні.";
+$MESS["HTTPS_PROMO__CERTIFICATE_INSTALL_NEW"] = "Встановити SSL-сертифікат";
+$MESS["HTTPS_PROMO__CERTIFICATE_CHOICE_NEW"] = "Вибрати і отримати сертифікат.";
+$MESS["HTTPS_PROMO__CERTIFICATES_FEATURES"] = "Особливості сертифікатів, про які варто знати";
+$MESS["HTTPS_PROMO__CERTIFICATE_REGULAR"] = "Звичайний сертифікат";
+$MESS["HTTPS_PROMO__CERTIFICATE_REGULAR_ALT"] = "на один піддомен";
+$MESS["HTTPS_PROMO__TO_MOST_SITES"] = "– підійде для більшості проєктів.";
+$MESS["HTTPS_PROMO__WILDCART"] = "Wildcard";
+$MESS["HTTPS_PROMO__TO_SEVERAL_DOMAINS"] = "для кількох субдоменів одного домену";
+$MESS["HTTPS_PROMO__TO_SEVERAL_DOMAINS_ALT"] = "– необхідний, якщо у вашого сайту є субдомени.";
+$MESS["HTTPS_PROMO__CERTIFICATE_IDN"] = "З підтримкою IDN";
+$MESS["HTTPS_PROMO__CERTIFICATE_IDN_ALT"] = "– для доменів з кирилицею в написання.";
+$MESS["HTTPS_PROMO__MULTIDOMAINS_CERTIFICATE"] = "Мультидоменний сертифікат";
+$MESS["HTTPS_PROMO__MULTIDOMAINS_CERTIFICATE_ALT"] = "– необхідний у випадку, якщо у вашої організації кілька різних доменів.";
+$MESS["HTTPS_PROMO__CERTIFICATE_VENDORS"] = "Основні постачальники сертифікатів";
+$MESS["HTTPS_PROMO__INSTALL_CERTIFICATE_NEW"] = "Встановити отриманий сертифікат на хостинг.";
+$MESS["HTTPS_PROMO__CHECK_ACTIVE_NEW"] = "Перевірити доступність сайту через HTTPS-протокол.";
+$MESS["HTTPS_PROMO__SITE_SETTINGS_NEW"] = "Виконати важливі зміни на сайті";
+$MESS["HTTPS_PROMO__HOST_AND_ROBOTS_NEW"] = "Встановити директиву Host у файлі robots.txt на протокол HTTPS.";
+$MESS["HTTPS_PROMO__REDIRECT_NEW"] = "Встановити 301 редирект з HTTP HTTPS.";
+$MESS["HTTPS_PROMO__SITEMAP_NEW"] = "Змінити посилання у файлі sitemap.xml.";
+$MESS["HTTPS_PROMO__SEARCHERS_NEW"] = "Оповістити пошуковики про зміни";
+$MESS["HTTPS_PROMO__GOOGLE"] = "Додати HTTPS-версію сайту в панель для вебмайстрів Google Search Console.";
+$MESS["HTTPS_PROMO__YANDEX_NEW"] = "Змінити адресу в панелі Яндекс Вебмастера і Google Search Console.";
+?>

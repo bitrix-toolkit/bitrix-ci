@@ -1,0 +1,27 @@
+<?php
+$MESS["IBEL_CATALOG_EMPTY_VALUE"] = "non sélectionné";
+$MESS["IBEL_CATALOG_MEASURE"] = "Unité de mesure";
+$MESS["IBEL_CATALOG_MEASURE_TITLE"] = "Unité de mesure";
+$MESS["IBEL_CATALOG_QUANTITY_RESERVED"] = "Réservé";
+$MESS["IBEL_CATALOG_TYPE"] = "Type de marchandise";
+$MESS["IBEL_CATALOG_TYPE_MESS_OFFER"] = "offre";
+$MESS["IBEL_CATALOG_VAT_ID"] = "Taux de TVA";
+$MESS["IBLOCK_FIELD_SUBSCRIPTIONS"] = "Nombre d'abonnements";
+$MESS["IBSEL_A_ACTIVATE"] = "Activer";
+$MESS["IBSEL_A_CLEAR_COUNTER"] = "Réinitialiser views counter";
+$MESS["IBSEL_A_CLEAR_COUNTER_CONFIRM"] = "Voulez-vous vraiment réinitialiser le compteur et la date de première vue ?";
+$MESS["IBSEL_A_CLEAR_COUNTER_TITLE"] = "Réinitialiser le compteur de vues et la première date de vue";
+$MESS["IBSEL_A_DEACTIVATE"] = "Désactiver";
+$MESS["IBSEL_CATALOG_EXTRA_DESCRIPTION"] = "Marge #VALUE# au prix de base";
+$MESS["IB_SE_L_ADD_NEW_ELEMENT"] = "Ajouter une nouvelle offre";
+$MESS["IB_SE_L_ADD_NEW_ELEMENT_DESCR"] = "Ajouter une UGS pour le produit";
+$MESS["IB_SE_L_ADD_NEW_ELEMENT_WITH_GROUP"] = "Ajouter l'UGS avec bundle";
+$MESS["IB_SE_L_ADD_NEW_ELEMENT_WITH_GROUP_DESCR"] = "Ajoute un SKU contenant un faisceau";
+$MESS["IB_SE_L_EDIT_ELEMENT"] = "Modifier UGS";
+$MESS["IB_SE_L_ENTER_PRODUCT_NAME"] = "Indiquer le nom du produit";
+$MESS["IB_SE_L_GENERATE"] = "Générer";
+$MESS["IB_SE_L_GENERATE_ELEMENTS"] = "Générer les offres commerciales";
+$MESS["IB_SE_L_REFRESH_ELEMENTS"] = "Recalculer";
+$MESS["IB_SE_L_REFRESH_ELEMENTS_DESCR"] = "Mettre à jour la liste des offres commerciales";
+$MESS["IB_SE_L_REQUIRED_FIELDS_FIND"] = "Désélectionnez les champs obligatoires du bloc d'information qui empêchent le fonctionnement du 'Générateur des offres commerciales'";
+$MESS["IB_SE_L_SHOW_PRICES_AFTER_COPY"] = "Pour éditer les offres commerciales, il faut enregistrer la marchandise copiée.";

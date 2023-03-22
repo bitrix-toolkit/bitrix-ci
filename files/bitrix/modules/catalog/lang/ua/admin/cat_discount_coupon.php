@@ -1,0 +1,30 @@
+<?
+$MESS["ERROR_UPDATE_DISCOUNT_CPN"] = "Помилка відновлення параметрів купона з кодом #ID#";
+$MESS["ERROR_DELETE_DISCOUNT_CPN"] = "Помилка видалення купона з кодом #ID#";
+$MESS["DSC_NAV"] = "Купони";
+$MESS["DSC_DELETE_ALT"] = "Видалити купон";
+$MESS["DSC_DELETE"] = "Видалити";
+$MESS["DSC_UPDATE_ALT"] = "Змінити параметри купона";
+$MESS["DSC_UPDATE"] = "Змінити";
+$MESS["DSC_DELETE_CONF"] = "Ви впевнені, що хочете видалити цей купон?";
+$MESS["DSC_CPN_NAME"] = "Назва знижки";
+$MESS["DSC_CPN_ACTIVE"] = "Активність";
+$MESS["DSC_CPN_CPN"] = "Купон";
+$MESS["DSC_CPN_DATE"] = "Дата застосування купона";
+$MESS["DSC_CPN_TIME"] = "Одноразовий";
+$MESS["DSC_CPN_TIME2"] = "Тип купона";
+$MESS["DSC_CPN_ORDER"] = "Застосовується до всіх товарів замовлення";
+$MESS["DSC_CPN_ADD"] = "Додати купон";
+$MESS["DSC_CPN_ADD_ALT"] = "Додати новий купон";
+$MESS["DSC_CPN_TITLE"] = "Купони на знижки";
+$MESS["DSC_CPN_ACT"] = "Активність";
+$MESS["DSC_CPN_DISC"] = "Знижка";
+$MESS["DSC_CPN_ALL"] = "Всі";
+$MESS["DSC_CPN_YES"] = "Так";
+$MESS["DSC_CPN_NO"] = "Ні";
+$MESS["DSC_CPN_DESCRIPTION"] = "Коментар";
+$MESS["DSC_CREATED_BY"] = "Ким створений";
+$MESS["DSC_DATE_CREATE"] = "Дата створення";
+$MESS["DSC_MODIFIED_BY"] = "Ким змінений";
+$MESS["DSC_TIMESTAMP_X"] = "Дата зміни";
+?>

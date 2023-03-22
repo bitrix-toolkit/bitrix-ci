@@ -1,0 +1,37 @@
+<?
+$MESS["ERROR_ADD_REC"] = "Erro ao adicionar um registro";
+$MESS["ERROR_LID_REC"] = "O campo \"Site\" não está configurado no registro";
+$MESS["ERROR_NAME_REC"] = "O campo \"Nome\" não está configurado no registro";
+$MESS["ERROR_UPDATE_REC"] = "Erro ao atualizar o registro";
+$MESS["LANG_ALL"] = "Todos os sites";
+$MESS["LANG_FILTER_BTN"] = "Ajustar filtro";
+$MESS["LANG_FILTER_NAME"] = "Site";
+$MESS["PERSON_TYPE_TITLE"] = "Tipo de pagador";
+$MESS["PERS_ACTIVE"] = "Ativo";
+$MESS["PERS_PROPS"] = "Propriedades";
+$MESS["PERS_TYPE_DEL"] = "Deletar";
+$MESS["PERS_TYPE_DEL_CONF"] = "A exclusão do tipo de cliente irá remover também todas as propriedades e configurações. Se este tipo de cliente tiver pedidos, não será excluído.";
+$MESS["PERS_TYPE_ID"] = "ID";
+$MESS["PERS_TYPE_LID"] = "Site";
+$MESS["PERS_TYPE_NAME"] = "Nome";
+$MESS["PERS_TYPE_NAV"] = "Tipos de clientes";
+$MESS["PERS_TYPE_RESET"] = "Resetar";
+$MESS["PERS_TYPE_SORT"] = "Classificação";
+$MESS["PERS_TYPE_UPD"] = "Salvar";
+$MESS["SALE_ALL"] = "todos";
+$MESS["SALE_FIELD_ACTIVE"] = "Ativo";
+$MESS["SALE_F_DEL"] = "Remover filtro";
+$MESS["SALE_F_FILTER"] = "Filtro";
+$MESS["SALE_NO"] = "Não";
+$MESS["SALE_PROPS"] = "Propriedades";
+$MESS["SALE_YES"] = "Sim";
+$MESS["SPTAN_ADD_NEW"] = "Novo tipo de pagador";
+$MESS["SPTAN_ADD_NEW_ALT"] = "Clique para adicionar um novo tipo de cliente";
+$MESS["SPTAN_DELETE_ALT1"] = "Deletar tipo de cliente";
+$MESS["SPTAN_ERROR_DELETE"] = "Erro ao deletar o registro";
+$MESS["SPTAN_ERROR_UPDATE"] = "Erro ao modificar o registro";
+$MESS["SPTAN_UPDATE_ALT"] = "Editar tipo de cliente";
+$MESS["SPTAN_VIEW_PROPS"] = "Ir para a lista de propriedades";
+$MESS["SPT_ALL"] = "(todos)";
+$MESS["SPT_UNSET"] = "Resetar";
+?>

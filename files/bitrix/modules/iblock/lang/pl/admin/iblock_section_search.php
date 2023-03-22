@@ -1,0 +1,20 @@
+<?php
+$MESS["IBLOCK_SECSEARCH_ACTIVE"] = "Aktywne";
+$MESS["IBLOCK_SECSEARCH_CHOOSE_IBLOCK"] = "Wybierz blok informacji";
+$MESS["IBLOCK_SECSEARCH_CODE"] = "Kod symboliczny";
+$MESS["IBLOCK_SECSEARCH_CREATED_BY"] = "Utworzony przez";
+$MESS["IBLOCK_SECSEARCH_DATE_CREATE"] = "Utworzony";
+$MESS["IBLOCK_SECSEARCH_ELEMENT_CNT"] = "Elementy";
+$MESS["IBLOCK_SECSEARCH_ID"] = "ID Sekcji";
+$MESS["IBLOCK_SECSEARCH_LIST"] = "Zobacz listę subsekcji";
+$MESS["IBLOCK_SECSEARCH_MODIFIED_BY"] = "Zmodyfikowane przez";
+$MESS["IBLOCK_SECSEARCH_NAME"] = "Nazwa";
+$MESS["IBLOCK_SECSEARCH_PARENT"] = "Sekcja nadrzędna";
+$MESS["IBLOCK_SECSEARCH_SECTIONS"] = "Sekcje";
+$MESS["IBLOCK_SECSEARCH_SECTION_CNT"] = "Podsekcje";
+$MESS["IBLOCK_SECSEARCH_SELECT"] = "wybierz";
+$MESS["IBLOCK_SECSEARCH_SORT"] = "Sortuj";
+$MESS["IBLOCK_SECSEARCH_TIMESTAMP"] = "Zmodyfikowany";
+$MESS["IBLOCK_SECSEARCH_TITLE"] = "Szukaj elementu";
+$MESS["IBLOCK_SECSEARCH_USERINFO"] = "Wyświetl informacje użytkownika";
+$MESS["IBLOCK_SECSEARCH_XML_ID"] = "Kod zewnętrzny";

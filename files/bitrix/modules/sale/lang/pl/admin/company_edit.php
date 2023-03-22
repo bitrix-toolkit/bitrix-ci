@@ -1,0 +1,10 @@
+<?
+$MESS["COMPANY_DATE_CREATE"] = "Utworzone:";
+$MESS["COMPANY_DELETE"] = "Usuń";
+$MESS["COMPANY_DELETE_DESCR"] = "Usuń";
+$MESS["COMPANY_EDIT"] = "Edytuj";
+$MESS["COMPANY_EDIT_DESCR"] = "Edytuj";
+$MESS["COMPANY_TAB_DESCR"] = "Firma";
+$MESS["SALE_COMPANY_LINK_NOT"] = "Brak";
+$MESS["SALE_COMPANY_RULE_SAVE"] = "Zapisz";
+?>

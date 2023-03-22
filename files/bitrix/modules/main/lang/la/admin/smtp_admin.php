@@ -1,0 +1,20 @@
+<?php
+$MESS["smtp_configuration_admin_add"] = "Agregar conexión SMTP";
+$MESS["smtp_configuration_admin_add_title"] = "Agregar una nueva conexión";
+$MESS["smtp_configuration_admin_all"] = "(todo)";
+$MESS["smtp_configuration_admin_copy"] = "Crear una copia";
+$MESS["smtp_configuration_admin_del"] = "Eliminar";
+$MESS["smtp_configuration_admin_del_conf"] = "¿Seguro que desea eliminar la conexión?";
+$MESS["smtp_configuration_admin_edit"] = "Editar la conexión";
+$MESS["smtp_configuration_admin_edit1"] = "Editar";
+$MESS["smtp_configuration_admin_email"] = "Correo electrónico del remitente";
+$MESS["smtp_configuration_admin_find"] = "Buscar por:";
+$MESS["smtp_configuration_admin_host"] = "Host";
+$MESS["smtp_configuration_admin_is_confirmed"] = "Confirmado";
+$MESS["smtp_configuration_admin_is_public"] = "Ponerlo a disposición de todos";
+$MESS["smtp_configuration_admin_nav"] = "Parámetros SMTP";
+$MESS["smtp_configuration_admin_no"] = "No";
+$MESS["smtp_configuration_admin_sites"] = "Sitios web";
+$MESS["smtp_configuration_admin_title"] = "Parámetros de la conexión SMTP";
+$MESS["smtp_configuration_admin_username"] = "Nombre";
+$MESS["smtp_configuration_admin_yes"] = "Sí";

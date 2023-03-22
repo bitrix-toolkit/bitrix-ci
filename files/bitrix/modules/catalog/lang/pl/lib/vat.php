@@ -1,0 +1,7 @@
+<?php
+$MESS["VAT_ENTITY_ACTIVE_FIELD"] = "Aktywne";
+$MESS["VAT_ENTITY_ID_FIELD"] = "ID Znacznika";
+$MESS["VAT_ENTITY_NAME_FIELD"] = "Nazwa";
+$MESS["VAT_ENTITY_RATE_FIELD"] = "Wartość";
+$MESS["VAT_ENTITY_SORT_FIELD"] = "Sortuj";
+$MESS["VAT_ENTITY_TIMESTAMP_X_FIELD"] = "Zmodyfikowany";

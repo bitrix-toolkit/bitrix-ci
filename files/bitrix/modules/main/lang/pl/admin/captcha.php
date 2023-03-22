@@ -1,0 +1,36 @@
+<?
+$MESS["MAIN_ADM_CAPTCHA_PAGE_TITLE"] = "Ustawienia CAPTCHA";
+$MESS["MAIN_ADM_CAPTCHA_PARAM1"] = "Przeźroczystość tekstu (procent, 0-100)";
+$MESS["MAIN_ADM_CAPTCHA_PARAM10"] = "Najwyższa linia przypadkowa wartość koloru";
+$MESS["MAIN_ADM_CAPTCHA_PARAM11"] = "Odstęp tekstu od lewej";
+$MESS["MAIN_ADM_CAPTCHA_PARAM12"] = "Rozmiar czcionki";
+$MESS["MAIN_ADM_CAPTCHA_PARAM13"] = "Najniższa czcionka przypadkowa wartość koloru";
+$MESS["MAIN_ADM_CAPTCHA_PARAM14"] = "Najwyższa czcionka przypadkowa wartość koloru";
+$MESS["MAIN_ADM_CAPTCHA_PARAM15"] = "Minimalny pionowy rotacji kąt (w stopniach)";
+$MESS["MAIN_ADM_CAPTCHA_PARAM16"] = "Maksymalny pionowy rotacji kąt (w stopniach)";
+$MESS["MAIN_ADM_CAPTCHA_PARAM17"] = "Minimalna odległość między niższym lewym kątem liter (wartość ujemna znaczy maksymalną odległość symboli nakładających)";
+$MESS["MAIN_ADM_CAPTCHA_PARAM18"] = "Maksymalna odległość między niższym lewym kątem liter (wartość ujemna znaczy maksymalną odległość symboli nakładających)";
+$MESS["MAIN_ADM_CAPTCHA_PARAM19"] = "Nieliniowe spaczenie";
+$MESS["MAIN_ADM_CAPTCHA_PARAM2"] = "Najniższe tło przypadkowa wartość koloru";
+$MESS["MAIN_ADM_CAPTCHA_PARAM20"] = "Kolor obramowania";
+$MESS["MAIN_ADM_CAPTCHA_PARAM21"] = "Używane czcionki";
+$MESS["MAIN_ADM_CAPTCHA_PARAM22"] = "Dozwolone symbole (rekomendowane symbole do wpisu: ABCDEFGHJKLMNPQRSTWXYZ23456789)";
+$MESS["MAIN_ADM_CAPTCHA_PARAM23"] = "Pokazuj krawędzie znaków";
+$MESS["MAIN_ADM_CAPTCHA_PARAM3"] = "Wyższe tło przypadkowa wartość koloru";
+$MESS["MAIN_ADM_CAPTCHA_PARAM4"] = "Liczba kół";
+$MESS["MAIN_ADM_CAPTCHA_PARAM5"] = "Najniższe koło przypadkowa wartość koloru";
+$MESS["MAIN_ADM_CAPTCHA_PARAM6"] = "Najwyższe koło przypadkowa wartość koloru";
+$MESS["MAIN_ADM_CAPTCHA_PARAM7"] = "Linie ponad tekstem";
+$MESS["MAIN_ADM_CAPTCHA_PARAM8"] = "Ilość linii";
+$MESS["MAIN_ADM_CAPTCHA_PARAM9"] = "Najniższa linia przypadkowa wartość koloru";
+$MESS["MAIN_ADM_CAPTCHA_PRESETS"] = "Wstępnie wyznaczony";
+$MESS["MAIN_ADM_CAPTCHA_PRESET_0"] = "Użytkownik";
+$MESS["MAIN_ADM_CAPTCHA_PRESET_1"] = "Stary styl";
+$MESS["MAIN_ADM_CAPTCHA_PRESET_2"] = "Fale";
+$MESS["MAIN_ADM_CAPTCHA_PRESET_3"] = "linie";
+$MESS["MAIN_ADM_CAPTCHA_PRESET_4"] = "Negative";
+$MESS["MAIN_ADM_CAPTCHA_PRESET_5"] = "Zielony";
+$MESS["MAIN_ADM_CAPTCHA_PRESET_6"] = "Krawędzie";
+$MESS["MAIN_ADM_CAPTCHA_TAB"] = "Parametry";
+$MESS["MAIN_ADM_CAPTCHA_TAB_TITLE"] = "Edycja ustawień CAPTCHA";
+?>

@@ -1,0 +1,36 @@
+<?
+$MESS["SALE_DH_CPCR_BIZON_DESCRIPTION"] = "Ofrece paquetes de hasta 150 libras.";
+$MESS["SALE_DH_CPCR_BIZON_TITLE"] = "Squirrel Cargo";
+$MESS["SALE_DH_CPCR_COLIBRI_DESCRIPTION"] = "Entregas Puerta a Puerta de envíos de peso ligero.";
+$MESS["SALE_DH_CPCR_COLIBRI_TITLE"] = "Sparrow Courier";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY"] = "Categoría de carga";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_1"] = "documentos";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_2"] = "teléfonos móviles";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_3"] = "equipos de hogar y de oficina";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_4"] = "valores";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_5"] = "joyas";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_6"] = "productos cosméticos";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_7"] = "ropa";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_8"] = "otros";
+$MESS["SALE_DH_CPCR_CONFIG_TITLE"] = "Parámetros";
+$MESS["SALE_DH_CPCR_DAYS"] = "días";
+$MESS["SALE_DH_CPCR_DESCRIPTION"] = "servicio de correo expreso";
+$MESS["SALE_DH_CPCR_DESCRIPTION_INNER"] = "Servicios CPCR. Basado en la <a href=\"http://www.cpcr.ru/calculator.html\" target=\"_blank\">Calculadora de tarifas CPCR</a>. La dirección de e-Store se debe especificar en los <a href=\"/bitrix/admin/settings.php?mid=sale&lang=en\">ajustes del módulo</a>.<br/> Sólo destinos de Rusia.";
+$MESS["SALE_DH_CPCR_ECONOM_DESCRIPTION"] = "La solución más económica para la entrega de paquetes y envíos pesados dentro de Rusia";
+$MESS["SALE_DH_CPCR_ECONOM_TITLE"] = "CPCR-Econom";
+$MESS["SALE_DH_CPCR_ERROR_CONNECT"] = "No se puede calcular el costo de entrega: error de conexión";
+$MESS["SALE_DH_CPCR_ERROR_RESPONSE"] = "No se puede calcular el costo de entrega: Respuesta incorrecta del servidor";
+$MESS["SALE_DH_CPCR_FRAXT_DESCRIPTION"] = "Servicios de carga a medida para objetos pesados o de gran tamaño.";
+$MESS["SALE_DH_CPCR_FRAXT_TITLE"] = "Icebreaker Freight";
+$MESS["SALE_DH_CPCR_NAME"] = "CPCR";
+$MESS["SALE_DH_CPCR_NEXT_STEP"] = "Editar ubicaciones ";
+$MESS["SALE_DH_CPCR_PELICAN_DESCRIPTION"] = "Envío terrestre o aéreo para paquetes de hasta 70 libras.";
+$MESS["SALE_DH_CPCR_PELICAN_TITLE"] = "Pelican Express";
+$MESS["SALE_DH_CPCR_SIMPLE13_DESCRIPTION"] = "Puerta a puerta - entrega express antes de 1:00PM al siguiente día laborable.";
+$MESS["SALE_DH_CPCR_SIMPLE13_TITLE"] = "Express 1:00 PM";
+$MESS["SALE_DH_CPCR_SIMPLE18_DESCRIPTION"] = "Puerta a puerta - entrega express antes de 6:00PM al siguiente día laborable.";
+$MESS["SALE_DH_CPCR_SIMPLE18_TITLE"] = "Express 6:00 PM";
+$MESS["SALE_DH_CPCR_SIMPLE_DESCRIPTION"] = "Tiempo limite de entrega para paquetes com peso máximo (hasta 35kg)";
+$MESS["SALE_DH_CPCR_SIMPLE_TITLE"] = "CPCR-Express";
+$MESS["SALE_DH_DEPRECATED_MESSAGE"] = "Este controlador de servicio de entrega está desactualizado y ya no es compatible. Por favor, utilice el #A1#nuevo controlador SPSR#A2#.";
+?>

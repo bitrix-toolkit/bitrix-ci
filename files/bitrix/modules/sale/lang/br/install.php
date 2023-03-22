@@ -1,0 +1,36 @@
+<?
+$MESS["SALE_INSTALL_BACK"] = "Voltar para o gerenciamento do módulo";
+$MESS["SALE_INSTALL_BASKET"] = "Carrinho de compras";
+$MESS["SALE_INSTALL_COMPLETE_ERROR"] = "Instalação concluída com erros";
+$MESS["SALE_INSTALL_COMPLETE_OK"] = "Instalação concluída. Por favor, vá à seção de Ajuda para mais informações.";
+$MESS["SALE_INSTALL_CURRENCY"] = "O módulo de e-Store requer a instalação do módulo de Moeda.<br /> Por favor, instale o módulo de Moeda primeiro.";
+$MESS["SALE_INSTALL_DEFAULT"] = "Por favor, selecione os arquivos de demonstração do módulo de e-Store para instalação.";
+$MESS["SALE_INSTALL_DESCRIPTION"] = "Fornece as funcionalidades da e-Store para vender produtos para todos os visitantes do site";
+$MESS["SALE_INSTALL_ERROR"] = "Erros de instalação";
+$MESS["SALE_INSTALL_NAME"] = "e-Store";
+$MESS["SALE_INSTALL_PERSON"] = "Seção pessoal";
+$MESS["SALE_INSTALL_PUBLIC"] = "Pasta pública de instalação";
+$MESS["SALE_INSTALL_PUBLIC_DIR"] = "Pasta pública";
+$MESS["SALE_INSTALL_PUBLIC_REW"] = "Sobrescrever arquivos públicos";
+$MESS["SALE_INSTALL_PUBLIC_SETUP"] = "Instalar";
+$MESS["SALE_INSTALL_SETUP"] = "Instalar";
+$MESS["SALE_INSTALL_TITLE"] = "Instalação do módulo de e-Store";
+$MESS["SALE_INST_PUB_VAR"] = "Versões de arquivos públicos";
+$MESS["SALE_UNINSTALL_COMPLETE"] = "Desinstalação concluída.";
+$MESS["SALE_UNINSTALL_DEL"] = "Desinstalar";
+$MESS["SALE_UNINSTALL_ERROR"] = "Erros ao desinstalar:";
+$MESS["SALE_UNINSTALL_SAVECURRENCY"] = "Salvar as tabelas de moeda (utilizadas tanto pelo módulo de Catálogo Comercial quanto pelo de e-Store)";
+$MESS["SALE_UNINSTALL_SAVEDATA"] = "Para salvar os dados armazenados nas tabelas de banco de dados, verifique a caixa &quot;Salvar Tabelas&quot";
+$MESS["SALE_UNINSTALL_SAVETABLE"] = "Salvar tabelas";
+$MESS["SALE_UNINSTALL_WARNING"] = "Atenção! Este módulo será removido do sistema.";
+$MESS["SALE_VARIANT1_DESCR"] = "Recomendado. Scripts universais.";
+$MESS["SALE_VARIANT2_DESCR"] = "Pedido em duas etapas. É necessário para sincronizar manualmente este script antes de utilizá-lo (veja detalhes no script pedido.php).";
+$MESS["SALE_VARIANT_NUM"] = "Versão";
+$MESS["SIM_COPY_FOLDER"] = "Pasta de destino (relativa à raiz do site):";
+$MESS["SIM_COPY_PUBLIC_FILES"] = "Copiar arquivos públicos";
+$MESS["SIM_REWRITE_ADD"] = "Sobrescrever arquivos auxiliares";
+$MESS["SINS_PERM_D"] = "Negado";
+$MESS["SINS_PERM_R"] = "Ler somente";
+$MESS["SINS_PERM_U"] = "Gerenciar pedidos";
+$MESS["SINS_PERM_W"] = "Acesso completo";
+?>

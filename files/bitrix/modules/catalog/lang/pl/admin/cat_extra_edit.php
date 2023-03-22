@@ -1,0 +1,23 @@
+<?php
+$MESS["CEEN_2FLIST"] = "Narzuty";
+$MESS["CEEN_ADDING"] = "Dodaj nowy narzut";
+$MESS["CEEN_APPLY"] = "Zastosuj";
+$MESS["CEEN_CANCEL"] = "Anuluj";
+$MESS["CEEN_DELETE_DISCOUNT"] = "Usuń narzut";
+$MESS["CEEN_DELETE_DISCOUNT_CONFIRM"] = "Na pewno chcesz usunąć ten narzut?";
+$MESS["CEEN_DISCOUNT_VALUE"] = "Wartość";
+$MESS["CEEN_ERROR_SAVING_EXTRA"] = "Błąd podczas zapisywania narzutu";
+$MESS["CEEN_NAME"] = "Nazwa";
+$MESS["CEEN_NEW_DISCOUNT"] = "Nowy narzut";
+$MESS["CEEN_NO_DISCOUNT"] = "Nie znaleziono narzutu ##ID#";
+$MESS["CEEN_NO_PERMS2ADD"] = "Nie masz wystarczających uprawnień, aby dodać nowy narzut";
+$MESS["CEEN_PERCENTAGE"] = "Wartość";
+$MESS["CEEN_RECALC"] = "Przelicz ceny";
+$MESS["CEEN_SAVE"] = "Zapisz";
+$MESS["CEEN_SAVE_ADD"] = "Dodawanie";
+$MESS["CEEN_SORT"] = "Indeks sortowania";
+$MESS["CEEN_TAB_DISCOUNT"] = "Narzut";
+$MESS["CEEN_TAB_DISCOUNT_DESCR"] = "Edytuj parametry";
+$MESS["CEEN_TIMESTAMP"] = "Data ostatniej modyfikacji:";
+$MESS["CEEN_TO_LIST"] = "Narzuty";
+$MESS["CEEN_UPDATING"] = "Edytuj narzut";

@@ -1,0 +1,32 @@
+<?
+$MESS["SALE_DH_CPCR_BIZON_DESCRIPTION"] = "Doręcza paczki do 150 funtów.";
+$MESS["SALE_DH_CPCR_BIZON_TITLE"] = "Squirrel Cargo";
+$MESS["SALE_DH_CPCR_COLIBRI_DESCRIPTION"] = "Dostawa door to door lekkich przesyłek.";
+$MESS["SALE_DH_CPCR_COLIBRI_TITLE"] = "Sparrow Kurier";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY"] = "Kategoria ładunku";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_1"] = "Dokumenty";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_2"] = "telefony komórkowe";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_3"] = "domowy i biurowy sprzęt";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_4"] = "zabezpieczenia";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_5"] = "biżuteria";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_6"] = "kosmetyki";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_7"] = "ubrania";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_8"] = "inne";
+$MESS["SALE_DH_CPCR_CONFIG_TITLE"] = "Parametry";
+$MESS["SALE_DH_CPCR_DESCRIPTION"] = "ekspresowa usługa pocztowa";
+$MESS["SALE_DH_CPCR_ECONOM_TITLE"] = "CPCR-Econom";
+$MESS["SALE_DH_CPCR_ERROR_CONNECT"] = "Nie można obliczyć kosztów dostawy: błąd połączenia";
+$MESS["SALE_DH_CPCR_ERROR_RESPONSE"] = "Nie można obliczyć kosztów dostawy: zła odpowiedź serwera";
+$MESS["SALE_DH_CPCR_FRAXT_DESCRIPTION"] = "Niestandardowe usługi towarowe dla ponadgabarytowych przedmiotów.";
+$MESS["SALE_DH_CPCR_FRAXT_TITLE"] = "Icebreaker Freight";
+$MESS["SALE_DH_CPCR_NAME"] = "CPCR";
+$MESS["SALE_DH_CPCR_NEXT_STEP"] = "edytuj lokalizacje";
+$MESS["SALE_DH_CPCR_PELICAN_DESCRIPTION"] = "Lądowa lub lotnicza wysyłka paczek do 70 funtów.";
+$MESS["SALE_DH_CPCR_PELICAN_TITLE"] = "Pelican Express";
+$MESS["SALE_DH_CPCR_SIMPLE13_DESCRIPTION"] = "Dostawa ekspresowa door-to-door do 1:00PM następnego dnia roboczego.";
+$MESS["SALE_DH_CPCR_SIMPLE13_TITLE"] = "Express 1:00 PM";
+$MESS["SALE_DH_CPCR_SIMPLE18_DESCRIPTION"] = "Dostawa ekspresowa door-to-door do 6:00PM następnego dnia roboczego.";
+$MESS["SALE_DH_CPCR_SIMPLE18_TITLE"] = "Express 6:00 PM";
+$MESS["SALE_DH_CPCR_SIMPLE_DESCRIPTION"] = "Dostawa ładunku w maksymalnie krótkim terminie (do 35 kg)";
+$MESS["SALE_DH_CPCR_SIMPLE_TITLE"] = "CPCR-Express";
+?>

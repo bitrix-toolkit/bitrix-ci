@@ -1,0 +1,29 @@
+<?
+$MESS["ERROR_ADD_REC"] = "Erro ao adicionar um registro";
+$MESS["ERROR_NAME_REC"] = "O campo \"Nome\" é obrigatório";
+$MESS["ERROR_PERSON_TYPE_ID_REC"] = "O campo \"Tipo de cliente\" é obrigatório";
+$MESS["ERROR_UPDATE_REC"] = "Erro ao atualizar um registro";
+$MESS["LANG_FILTER_BTN"] = "Ajustar filtro";
+$MESS["PERS_TYPE_DEL"] = "Deletar";
+$MESS["PERS_TYPE_DEL_CONF"] = "Todas as propriedades deste grupo serão deletadas. Você tem certeza que deseja continuar?";
+$MESS["PERS_TYPE_ID"] = "ID";
+$MESS["PERS_TYPE_NAME"] = "Nome";
+$MESS["PERS_TYPE_NAV"] = "Grupos de propriedades";
+$MESS["PERS_TYPE_RESET"] = "Resetar";
+$MESS["PERS_TYPE_SORT"] = "Classificação";
+$MESS["PERS_TYPE_TYPE"] = "Tipo de cliente";
+$MESS["PERS_TYPE_UPD"] = "Salvar";
+$MESS["PROPS_TYPE_TITLE"] = "Grupos de propriedades";
+$MESS["PT_FILTER_NAME"] = "Tipo de cliente";
+$MESS["SALE_ALL"] = "todos";
+$MESS["SALE_F_DEL"] = "Remover filtro";
+$MESS["SALE_F_FILTER"] = "Ajustar filtro";
+$MESS["SALE_PROPS"] = "Propriedades";
+$MESS["SOPGAN_ADD_NEW"] = "Novo grupo";
+$MESS["SOPGAN_ADD_NEW_ALT"] = "Clique para adicionar um novo grupo de propriedades";
+$MESS["SOPGAN_DELETE_ERROR"] = "Erro ao deletar um registro";
+$MESS["SOPGAN_DELETE_PROMT"] = "Deletar grupo";
+$MESS["SOPGAN_DELETE_PROMT_CONF"] = "Você tem certeza que desejar deletar este grupo de propriedades?";
+$MESS["SOPGAN_EDIT_PROMT"] = "Modificar grupo";
+$MESS["SOPGAN_PROPS"] = "Propriedades";
+?>

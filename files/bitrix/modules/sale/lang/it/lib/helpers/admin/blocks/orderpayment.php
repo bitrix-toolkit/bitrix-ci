@@ -1,0 +1,3 @@
+<?php
+$MESS["SALE_ORDER_PAYMENT_TOGGLE_DOWN"] = "Espandi";
+$MESS["SALE_ORDER_PAYMENT_TOGGLE_UP"] = "Comprimi";

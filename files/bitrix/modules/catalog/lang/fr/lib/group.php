@@ -1,0 +1,11 @@
+<?
+$MESS["GROUP_ENTITY_BASE_FIELD"] = "Type de base";
+$MESS["GROUP_ENTITY_CREATED_BY_FIELD"] = "Créé par";
+$MESS["GROUP_ENTITY_DATE_CREATE_FIELD"] = "Créé le";
+$MESS["GROUP_ENTITY_ID_FIELD"] = "Type de prix ID";
+$MESS["GROUP_ENTITY_MODIFIED_BY_FIELD"] = "Modifié(e)s par";
+$MESS["GROUP_ENTITY_NAME_FIELD"] = "ID";
+$MESS["GROUP_ENTITY_SORT_FIELD"] = "Classification";
+$MESS["GROUP_ENTITY_TIMESTAMP_X_FIELD"] = "Date de modification";
+$MESS["GROUP_ENTITY_XML_ID_FIELD"] = "ID externe";
+?>

@@ -1,0 +1,30 @@
+<?
+$MESS["ADD"] = "Agregar plantilla de email";
+$MESS["EDIT_TITLE"] = "Editar evento #TYPE#";
+$MESS["ERROR_LANG_EMPTY"] = "Ningún parámetro de idioma fue espefificado";
+$MESS["EVENT_DESCR_LANG"] = "Descripción";
+$MESS["EVENT_NAME_LANG"] = "Nombre";
+$MESS["EVENT_NAME_TITLE"] = "Tipo de evento";
+$MESS["EVENT_SORT_LANG"] = "Clasificación";
+$MESS["LANGUAGE_PARAMS"] = "Idioms-dependiendo de parámetros";
+$MESS["LANG_FIELDS"] = "Usted debe llenar en la lista al menos un campo de idioma";
+$MESS["LANG_PARAMS"] = "Idioma dependiendo de los parámetros";
+$MESS["MAIN_DELETE_RECORD"] = "Borrar un tipo";
+$MESS["MAIN_DELETE_RECORD_CONF"] = "¿Está usted seguro que desea borrar el tipo actual inclusive las plantillas?";
+$MESS["MAIN_DELETE_RECORD_TITLE"] = "Borrar un tipo incluídas plantillas";
+$MESS["MAIN_ERROR_SAVING"] = "Guardar error";
+$MESS["MAIN_NEW_RECORD"] = "Agregar tipo";
+$MESS["MAIN_NEW_RECORD_TITLE"] = "Agregar un nuevo tipo de evento de email";
+$MESS["MAIN_NEW_TEMPLATE"] = "Agregar una plantilla";
+$MESS["MAIN_NEW_TEMPLATE_TITLE"] = "Agregar una plantilla para este tipo de evento";
+$MESS["NEW_TITLE"] = "Agregar un nuevo evento";
+$MESS["RECORD_LIST"] = "Tipo de lista";
+$MESS["RECORD_LIST_TITLE"] = "Ir a la lista de eventos de email";
+$MESS["RESET"] = "Resetear";
+$MESS["SAVE"] = "Guardar cambios";
+$MESS["TEMPLATES_DESCR"] = "Plantillas de Email";
+$MESS["TEMPLATES_TITLE"] = "Plantillas";
+$MESS["TEMPLATE_LIST"] = "Lista de plantillas";
+$MESS["TEMPLATE_LIST_TITLE"] = "Ir a la lista de las plantillas";
+$MESS["type_edit_add_message_template"] = "Añadir plantilla de mensaje";
+?>

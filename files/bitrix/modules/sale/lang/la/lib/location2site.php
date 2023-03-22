@@ -1,0 +1,4 @@
+<?
+$MESS["LOCATION2SITE_ENTITY_LOCATION_ID_FIELD"] = "ID de ubicación";
+$MESS["LOCATION2SITE_ENTITY_SITE_ID_FIELD"] = "ID de sitio web";
+?>

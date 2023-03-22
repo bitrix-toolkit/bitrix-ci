@@ -1,0 +1,12 @@
+<?
+$MESS["JS_AVATAR_EDITOR_CAMERA"] = "Aparat";
+$MESS["JS_AVATAR_EDITOR_CANCEL_BUTTON"] = "Anuluj";
+$MESS["JS_AVATAR_EDITOR_DROP_FILES_INTO_THIS_AREA"] = "Przeciągnij i upuść obraz tutaj";
+$MESS["JS_AVATAR_EDITOR_ERROR"] = "Błąd: ";
+$MESS["JS_AVATAR_EDITOR_ERROR_IMAGE_DEPLOYING"] = "Błąd wyświetlania obrazu";
+$MESS["JS_AVATAR_EDITOR_FILE"] = "Plik";
+$MESS["JS_AVATAR_EDITOR_PICK_UP_THE_FILE"] = "Załaduj z dysku...";
+$MESS["JS_AVATAR_EDITOR_SAVE_BUTTON"] = "Zapisz";
+$MESS["JS_AVATAR_EDITOR_TITLE_BAR"] = "Ładowanie pliku";
+$MESS["JS_AVATAR_EDITOR_TRY_AGAIN"] = "Spróbuj ponownie";
+?>

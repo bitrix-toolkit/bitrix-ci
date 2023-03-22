@@ -1,0 +1,34 @@
+<?
+$MESS["SALE_DH_CPCR_BIZON_DESCRIPTION"] = "Entrega de pacotes de até 70kg.";
+$MESS["SALE_DH_CPCR_BIZON_TITLE"] = "Carga";
+$MESS["SALE_DH_CPCR_COLIBRI_DESCRIPTION"] = "Entrega expressa para envio de cargas leves.";
+$MESS["SALE_DH_CPCR_COLIBRI_TITLE"] = "Correio";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY"] = "Categoria da carga";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_1"] = "documentos";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_2"] = "telefones celulares";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_3"] = "equipamentos home &office";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_4"] = "seguranças";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_5"] = "jóias";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_6"] = "cosméticos";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_7"] = "roupas";
+$MESS["SALE_DH_CPCR_CONFIG_CATEGORY_8"] = "outros";
+$MESS["SALE_DH_CPCR_CONFIG_TITLE"] = "Parâmetros.";
+$MESS["SALE_DH_CPCR_DESCRIPTION"] = "serviço postal expresso";
+$MESS["SALE_DH_CPCR_DESCRIPTION_INNER"] = "Gerenciador CPCR. Baseado em <a href=\"http://www.cpcr.ru/calculator.html\" target=\"_blank\">calculadora de tarifas CPCR</a>. O endereço da loja virtual deve ser especificado em <a href=\"/bitrix/admin/settings.php?mid=sale&lang=en\">configurações do módulo</a>. <br /> Destinos Russo também.";
+$MESS["SALE_DH_CPCR_ECONOM_DESCRIPTION"] = "Solução mais econômica de entrega para entrega de parcelas pesadas e remessas para a Rússia.";
+$MESS["SALE_DH_CPCR_ECONOM_TITLE"] = "CPCR-Econom";
+$MESS["SALE_DH_CPCR_ERROR_CONNECT"] = "Não foi possível calcular o custo de envio: ero de conexão";
+$MESS["SALE_DH_CPCR_ERROR_RESPONSE"] = "Não foi possível calcular o custo de envio: falha na resposta do servidos";
+$MESS["SALE_DH_CPCR_FRAXT_DESCRIPTION"] = "Serviços personalizados de frete para itens pesados ou de grandes dimensões.";
+$MESS["SALE_DH_CPCR_FRAXT_TITLE"] = "Frete quebra gelo";
+$MESS["SALE_DH_CPCR_NAME"] = "CPRC";
+$MESS["SALE_DH_CPCR_NEXT_STEP"] = "Editar locais";
+$MESS["SALE_DH_CPCR_PELICAN_DESCRIPTION"] = "Envio terrestre ou aéreo para pacotes de até 30 kg.";
+$MESS["SALE_DH_CPCR_PELICAN_TITLE"] = "Expresso pelicano";
+$MESS["SALE_DH_CPCR_SIMPLE13_DESCRIPTION"] = "Serviço de entrega expresso até as 13:00h do próximo dia útil.";
+$MESS["SALE_DH_CPCR_SIMPLE13_TITLE"] = "Expresso: 13:00H";
+$MESS["SALE_DH_CPCR_SIMPLE18_DESCRIPTION"] = "Serviço de entrega expresso até as 18:00h do próximo dia útil.";
+$MESS["SALE_DH_CPCR_SIMPLE18_TITLE"] = "Expresso 18:00h";
+$MESS["SALE_DH_CPCR_SIMPLE_DESCRIPTION"] = "Entrega da carga com a agenda ajustada ao máximo (até 35 kg)";
+$MESS["SALE_DH_CPCR_SIMPLE_TITLE"] = "CPCR-Express";
+?>

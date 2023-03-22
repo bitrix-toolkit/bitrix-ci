@@ -1,0 +1,3 @@
+<?
+$MESS["DefaultColor"] = "Por defecto";
+?>

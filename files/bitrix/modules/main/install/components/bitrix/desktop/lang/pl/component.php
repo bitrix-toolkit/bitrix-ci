@@ -1,0 +1,32 @@
+<?
+$MESS["CMDESKTOP_AUTH_ERR"] = "Błąd autoryzacji";
+$MESS["CMDESKTOP_GROUP_ADMIN_CONTENT"] = "Zawartość";
+$MESS["CMDESKTOP_GROUP_ADMIN_CONTENT_DESCR"] = "Gadżety panelu sterowania zawartości";
+$MESS["CMDESKTOP_GROUP_ADMIN_SERVICES"] = "Usługi";
+$MESS["CMDESKTOP_GROUP_ADMIN_SERVICES_DESCR"] = "Gadżety panelu sterowania usług";
+$MESS["CMDESKTOP_GROUP_ADMIN_SETTINGS"] = "Ustawienia";
+$MESS["CMDESKTOP_GROUP_ADMIN_SETTINGS_DESCR"] = "Gadżety panelu sterowania kontroli";
+$MESS["CMDESKTOP_GROUP_ADMIN_STATISTICS"] = "Analityka Sieciowa";
+$MESS["CMDESKTOP_GROUP_ADMIN_STATISTICS_DESCR"] = "Gadżety panelu sterowania statystyk";
+$MESS["CMDESKTOP_GROUP_ADMIN_STORE"] = "e-Sklep";
+$MESS["CMDESKTOP_GROUP_ADMIN_STORE_DESCR"] = "Gadżety panelu sterowania e-Sklepu";
+$MESS["CMDESKTOP_GROUP_COMMUN"] = "Komunikacja";
+$MESS["CMDESKTOP_GROUP_COMMUN_DESCR"] = "Blogi, fora, udostępnione dokumenty";
+$MESS["CMDESKTOP_GROUP_COMPANY"] = "Firma";
+$MESS["CMDESKTOP_GROUP_COMPANY_DESCR"] = "Życie firmy";
+$MESS["CMDESKTOP_GROUP_CRM"] = "CRM";
+$MESS["CMDESKTOP_GROUP_CRM_DESCR"] = "Leady, kontakty, firmy, deale";
+$MESS["CMDESKTOP_GROUP_EMPL"] = "Personel";
+$MESS["CMDESKTOP_GROUP_EMPL_DESCR"] = "Struktura firmy, pracownicy";
+$MESS["CMDESKTOP_GROUP_OTHER"] = "inne";
+$MESS["CMDESKTOP_GROUP_OTHER_DESCR"] = "Gadżety bez kategori";
+$MESS["CMDESKTOP_GROUP_PERSONAL"] = "Własne";
+$MESS["CMDESKTOP_GROUP_PERSONAL_DESCR"] = "Gadżety najwięcej używane, osobiste narzędzia";
+$MESS["CMDESKTOP_GROUP_SERVICES"] = "Usługi zewnętrzne";
+$MESS["CMDESKTOP_GROUP_SERVICES_DESCR"] = "Internetowe serwisy informacyjne";
+$MESS["CMDESKTOP_GROUP_SONET_GROUP"] = "Informacje o grupie";
+$MESS["CMDESKTOP_GROUP_SONET_GROUP_DESCR"] = "Informacje o grupie roboczej dla sieci społecznościowej";
+$MESS["CMDESKTOP_GROUP_SONET_USER"] = "Informacje użytkownika";
+$MESS["CMDESKTOP_GROUP_SONET_USER_DESCR"] = "Informacja o profilu użytkownika dla sieci społecznościowej";
+$MESS["CMDESKTOP_NAME_TEMPLATE_DEFAULT"] = "#NAME# #LAST_NAME#";
+?>

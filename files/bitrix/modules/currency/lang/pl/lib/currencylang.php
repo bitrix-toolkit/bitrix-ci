@@ -1,0 +1,15 @@
+<?
+$MESS["CURRENCY_LANG_ENTITY_CREATED_BY_FIELD"] = "Utworzony przez";
+$MESS["CURRENCY_LANG_ENTITY_CURRENCY_FIELD"] = "Waluta";
+$MESS["CURRENCY_LANG_ENTITY_DATE_CREATE_FIELD"] = "Utworzony";
+$MESS["CURRENCY_LANG_ENTITY_DECIMALS_FIELD"] = "Liczba cyfr dziesiętnych";
+$MESS["CURRENCY_LANG_ENTITY_DEC_POINT_FIELD"] = "Punkt dziesiętny na wyjściu";
+$MESS["CURRENCY_LANG_ENTITY_FORMAT_STRING_FIELD"] = "String formatu waluty";
+$MESS["CURRENCY_LANG_ENTITY_FULL_NAME_FIELD"] = "Nazwa";
+$MESS["CURRENCY_LANG_ENTITY_HIDE_ZERO_FIELD"] = "Przytnij końcowe zera z cen ułamkowych (w przestrzeni publicznej)";
+$MESS["CURRENCY_LANG_ENTITY_LID_FIELD"] = "Język";
+$MESS["CURRENCY_LANG_ENTITY_MODIFIED_BY_FIELD"] = "Zmodyfikowane przez";
+$MESS["CURRENCY_LANG_ENTITY_THOUSANDS_SEP_FIELD"] = "Użyj niestandardowego separatora tysięcy";
+$MESS["CURRENCY_LANG_ENTITY_THOUSANDS_VARIANT_FIELD"] = "Separator tysięcy";
+$MESS["CURRENCY_LANG_ENTITY_TIMESTAMP_X_FIELD"] = "Zmodyfikowany";
+?>

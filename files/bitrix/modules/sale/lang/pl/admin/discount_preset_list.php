@@ -1,0 +1,4 @@
+<?php
+$MESS["SALE_DISCOUNT_PRESET_LIST_ITEM_CREATE_BY_PRESET"] = "Utwórz";
+$MESS["SALE_DISCOUNT_PRESET_LIST_ITEM_LIST_BY_PRESET"] = "Lista";
+$MESS["SALE_DISCOUNT_PRESET_LIST_TITLE"] = "Wstępnie zainstalowane deale marketingowe";

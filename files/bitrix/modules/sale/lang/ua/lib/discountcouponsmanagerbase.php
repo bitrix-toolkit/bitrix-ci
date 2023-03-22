@@ -19,6 +19,7 @@ $MESS["BX_SALE_DCM_ERR_BAD_USER_ID"] = "Не вказаний ID покупця"
 $MESS["BX_SALE_DCM_ERR_ORDER_ID_ABSENT"] = "Не вказаний ID замовлення для режиму редагування замовлення";
 $MESS["BX_SALE_DCM_ERR_ORDER_ID_EXIST"] = "Для режиму створення замовлення вказаний ID замовлення";
 $MESS["BX_SALE_DCM_ERR_SAVE_APPLIED"] = "Не вдалося зберегти використані купони";
+$MESS["BX_SALE_DCM_ERR_SESSION_NOT_ACCESSIBLE"] = "Сесія недоступна.";
 $MESS["BX_SALE_DCM_STATUS_APPLYED"] = "застосований";
 $MESS["BX_SALE_DCM_STATUS_ENTERED"] = "доданий";
 $MESS["BX_SALE_DCM_STATUS_FREEZE"] = "не може бути використаний";

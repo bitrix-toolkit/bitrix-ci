@@ -1,0 +1,34 @@
+<?
+$MESS["NEWO_CONFIRM_DEL_MESSAGE"] = "¿Está seguro de que quiere eliminar este pedido? Esta acción no se puede deshacer.";
+$MESS["NEWO_ORDER_DELETE"] = "Eliminar el pedido";
+$MESS["NEWO_ORDER_DELETE_TITLE"] = "Eliminar el pedido";
+$MESS["NEWO_TITLE_EDIT"] = "Editar el pedido ID (#ID#), # #NUM#, creado #DATE#";
+$MESS["NEWO_TO_PRINT"] = "Imprimir el pedido";
+$MESS["NEWO_TO_PRINT_TITLE"] = "Imprimir el pedido";
+$MESS["SALE_ACCESS_DENIED"] = "Acceso denegado";
+$MESS["SALE_BLOCK_TITLE_ADDITIONAL"] = "Información adicional";
+$MESS["SALE_BLOCK_TITLE_BASKET"] = "Pedido";
+$MESS["SALE_BLOCK_TITLE_BIGDATA"] = "Información del cliente [BIG DATA]";
+$MESS["SALE_BLOCK_TITLE_BUYER"] = "Cliente";
+$MESS["SALE_BLOCK_TITLE_DELIVERY"] = "Cumplimiento";
+$MESS["SALE_BLOCK_TITLE_PAYMENT"] = "Pago";
+$MESS["SALE_BLOCK_TITLE_STATUSORDER"] = "Estado del pedido";
+$MESS["SALE_TAB_ANALYSIS"] = "Análisis del pedido";
+$MESS["SALE_TAB_HISTORY"] = "Revisión del historial";
+$MESS["SALE_TAB_ORDER"] = "Pedido";
+$MESS["SALE_TAB_ORDER_NEW_TITLE"] = "Nuevo pedido";
+$MESS["SALE_TAB_ORDER_TITLE"] = "Editar pedido";
+$MESS["SOE_ORDER_LOCKED2"] = "El pedido ha sido temporalmente retenido por el cliente ##ID# (#DATE#).";
+$MESS["SOE_ORDER_REFRESH"] = "Recalcular el pedido";
+$MESS["SOE_ORDER_REFRESH_CONFIRM"] = "El pedido será recalculado, completado y guardado. ¿Desea continuar?";
+$MESS["SOE_ORDER_REFRESH_TITLE"] = "Conseguir el último producto, descuento y otros datos, recalcular y guardar el pedido";
+$MESS["SOE_ORDER_UPDATE_ERROR"] = "Error de actualización del pedido";
+$MESS["SOE_ORDER_VIEW"] = "Ver pedido";
+$MESS["SOE_ORDER_VIEW_TITLE"] = "Ver detalles del pedido";
+$MESS["SOE_STATUS"] = "Estado del pedido";
+$MESS["SOE_TO_ACTION"] = "Acciones";
+$MESS["SOE_TO_ACTION_TITLE"] = "Seleccionar acción de la lista";
+$MESS["SOE_TO_LIST"] = "Pedidos";
+$MESS["SOE_TO_LIST_TITLE"] = "Ir a la lista de pedidos";
+$MESS["SOE_TO_UNLOCK"] = "Desbloquear el pedido";
+?>

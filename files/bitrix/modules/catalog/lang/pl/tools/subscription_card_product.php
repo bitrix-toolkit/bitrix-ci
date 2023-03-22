@@ -1,0 +1,3 @@
+<?
+$MESS["CSD_LIST_SUBSCRIPTIONS_TEXT"] = "Widok";
+?>

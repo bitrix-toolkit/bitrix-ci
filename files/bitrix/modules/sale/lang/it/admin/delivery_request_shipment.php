@@ -1,0 +1,3 @@
+<?
+$MESS["SALE_DELIVERY_REQ_DRS_F_ID"] = "ID";
+?>

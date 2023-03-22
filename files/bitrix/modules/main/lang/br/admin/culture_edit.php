@@ -1,0 +1,37 @@
+<?
+$MESS["ADD"] = "Adiciona um novo idioma";
+$MESS["CHARSET"] = "Charset:";
+$MESS["DAY_OF_WEEK_0"] = "Domingo";
+$MESS["DAY_OF_WEEK_1"] = "Segunda-feira";
+$MESS["DAY_OF_WEEK_2"] = "Terça-feira";
+$MESS["DAY_OF_WEEK_3"] = "Quarta-feira";
+$MESS["DAY_OF_WEEK_4"] = "Quinta-feira";
+$MESS["DAY_OF_WEEK_5"] = "Sexta-feira";
+$MESS["DAY_OF_WEEK_6"] = "Sábado";
+$MESS["DIRECTION"] = "Direção do texto:";
+$MESS["DIRECTION_LTR"] = "Esquerda para a direita";
+$MESS["DIRECTION_RTL"] = "Direita para a esquerda";
+$MESS["EDIT_LANG_TITLE"] = "Editar configurações regionais";
+$MESS["FORMAT_DATE"] = "Formato de data: <br> <small> (por exemplo DD/MM/YYYY) </small>";
+$MESS["FORMAT_DATETIME"] = "Formato de data e hora:<br><small>(por exemplo DD/MM/YYYY HH:MI:SS)</small>";
+$MESS["FORMAT_NAME"] = "Formato do nome:";
+$MESS["LANG_EDIT_WEEK_START"] = "Primeiro dia da semana:";
+$MESS["LANG_EDIT_WEEK_START_DEFAULT"] = "1";
+$MESS["MAIN_COPY_RECORD"] = "Adicionar cópia";
+$MESS["MAIN_COPY_RECORD_TITLE"] = "Copiar configurações regionais";
+$MESS["MAIN_DELETE_RECORD"] = "Excluir";
+$MESS["MAIN_DELETE_RECORD_CONF"] = "Tem certeza de que deseja excluir as configurações regionais?";
+$MESS["MAIN_DELETE_RECORD_TITLE"] = "Excluir configurações atuais";
+$MESS["MAIN_NEW_RECORD"] = "Adicionar";
+$MESS["MAIN_NEW_RECORD_TITLE"] = "Adicionar novas configurações regionais";
+$MESS["MAIN_PARAM"] = "Parâmetros";
+$MESS["MAIN_PARAM_TITLE"] = "Configurações regionais";
+$MESS["NAME"] = "Nome:";
+$MESS["NEW_LANG_TITLE"] = "Novas configurações regionais";
+$MESS["RECORD_LIST"] = "Lista";
+$MESS["RECORD_LIST_TITLE"] = "Visualizar lista";
+$MESS["RESET"] = "Redefinir";
+$MESS["SAVE"] = "Salvar Alterações";
+$MESS["culture_code"] = "Código simbólico:";
+$MESS["culture_id"] = "ID:";
+?>

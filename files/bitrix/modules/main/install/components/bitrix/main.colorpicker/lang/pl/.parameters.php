@@ -1,0 +1,7 @@
+<?
+$MESS["COMP_MAIN_COLORPICKER_ID"] = "ID";
+$MESS["COMP_MAIN_COLORPICKER_NAME"] = "Nazwa";
+$MESS["COMP_MAIN_COLORPICKER_NAME_DEFAULT"] = "Wybierz kolor";
+$MESS["COMP_MAIN_COLORPICKER_ONSELECT"] = "Wybór kolorów obsługi wydarzeń";
+$MESS["COMP_MAIN_COLORPICKER_SHOW_BUTTON"] = "Pokaż przycisk";
+?>

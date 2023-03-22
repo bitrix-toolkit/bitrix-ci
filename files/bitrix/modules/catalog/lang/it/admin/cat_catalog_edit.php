@@ -1,0 +1,19 @@
+<?php
+$MESS["CAT_CEDIT_EDIT_TITLE"] = "Impostazioni per: #IBLOCK_NAME#";
+$MESS["CAT_CEDIT_MAIN_TAB"] = "Catalogo";
+$MESS["CAT_CEDIT_MAIN_TAB_TITLE"] = "Impostazioni catalogo";
+$MESS["CAT_CEDIT_PROPERTY_TAB"] = "Proprietà elemento";
+$MESS["CAT_CEDIT_PROPERTY_TAB_TITLE"] = "Parametri di visualizzazione proprietà elemento";
+$MESS["CAT_CEDIT_PROP_SELECT_CHOOSE"] = "<Select>";
+$MESS["CAT_CEDIT_PROP_SELECT_CREATE"] = "[Create]";
+$MESS["CAT_CEDIT_PROP_TABLE_ACTION"] = "Azioni";
+$MESS["CAT_CEDIT_PROP_TABLE_ACTION_ADD"] = "Aggiungi";
+$MESS["CAT_CEDIT_PROP_TABLE_ACTION_HIDE"] = "Nascondi";
+$MESS["CAT_CEDIT_PROP_TABLE_DISPLAY_EXPANDED"] = "Mostra espanso";
+$MESS["CAT_CEDIT_PROP_TABLE_DISPLAY_TYPE"] = "Visualizzazione filtro avanzato";
+$MESS["CAT_CEDIT_PROP_TABLE_EMPTY"] = "-nessun dato-";
+$MESS["CAT_CEDIT_PROP_TABLE_FILTER_HINT"] = "Suggerimento per l'utente";
+$MESS["CAT_CEDIT_PROP_TABLE_NAME"] = "Nome";
+$MESS["CAT_CEDIT_PROP_TABLE_SMART_FILTER"] = "Mostra nel filtro avanzato";
+$MESS["CAT_CEDIT_PROP_TABLE_TYPE"] = "Tipo";
+$MESS["CAT_CEDIT_SECTION_PROPERTY_FIELD"] = "Proprietà elemento";

@@ -1,0 +1,36 @@
+<?
+$MESS["ERROR_ADD_SMILE"] = "Error al agregar smiley";
+$MESS["ERROR_BAD_SESSID"] = "Su sesión ha expirado. Por favor, inténtelo de nuevo.";
+$MESS["ERROR_COPY_IMAGE"] = "Error al cargar imagen (permiso de escritura insuficientes?)";
+$MESS["ERROR_EDIT_SMILE"] = "Error en la edición de smiley";
+$MESS["ERROR_EXISTS_IMAGE"] = "El archivo #FILE# ya existe en el disco. <br> Puede ser utilizado por uno de los smileys.";
+$MESS["SMILE_BTN_BACK"] = "Smileys";
+$MESS["SMILE_BTN_DELETE"] = "Eliminar";
+$MESS["SMILE_BTN_DELETE_CONFIRM"] = "¿Está seguro que desea eliminar este smiley?";
+$MESS["SMILE_BTN_NEW"] = "Agregar nuevo";
+$MESS["SMILE_EDIT_RECORD"] = "Editar Smiley";
+$MESS["SMILE_HIDDEN"] = "Emoticonos ocultos";
+$MESS["SMILE_IMAGE"] = "Imagen";
+$MESS["SMILE_IMAGE_HD"] = "De alta definición (HD)";
+$MESS["SMILE_IMAGE_HR"] = "Alta resolución";
+$MESS["SMILE_IMAGE_HR_TITLE"] = "La imagen será más nítida debido al aumento de la densidad de píxeles.";
+$MESS["SMILE_IMAGE_HR_TITLE_2"] = "Sube imágenes de alta definición y Ultra HD. Se verá mucho mejor en monitores HD.";
+$MESS["SMILE_IMAGE_NAME"] = "Nombre del smiley";
+$MESS["SMILE_IMAGE_NAME_DE"] = "Alemán";
+$MESS["SMILE_IMAGE_NAME_EN"] = "Inglés";
+$MESS["SMILE_IMAGE_NAME_RU"] = "Rusia";
+$MESS["SMILE_IMAGE_NOTE_2"] = "Tamaño recomendado de smiley: 20 por 20 o 40 por 40 para imágenes HR<br>tamaños de icono: 15 por 15 o 30 por 30 para iconos de HR.";
+$MESS["SMILE_IMAGE_SD"] = "Definición estándar (SD)";
+$MESS["SMILE_IMAGE_UHD"] = "Ultra alta definición (Ultra HD)";
+$MESS["SMILE_IMAGE_UPLOAD"] = "Nueva imagen";
+$MESS["SMILE_NEW_RECORD"] = "Agregar Smiley";
+$MESS["SMILE_SET_ID"] = "Fijar";
+$MESS["SMILE_SORT"] = "Clasificar";
+$MESS["SMILE_TAB_SMILE"] = "Parámetros";
+$MESS["SMILE_TAB_SMILE_DESCR"] = "Parámetros de Smiley";
+$MESS["SMILE_TYPE"] = "Tipo";
+$MESS["SMILE_TYPE_ICON"] = "Icono";
+$MESS["SMILE_TYPE_SMILE"] = "Smiley";
+$MESS["SMILE_TYPING"] = "Tipear (código de smiley)";
+$MESS["SMILE_TYPING_NOTE"] = "Separa las tipificaciones con un espacio";
+?>

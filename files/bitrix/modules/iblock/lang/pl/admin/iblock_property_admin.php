@@ -1,0 +1,30 @@
+<?
+$MESS["IBLOCK_ALL"] = "(jakikolwiek)";
+$MESS["IBLOCK_NO"] = "Nie";
+$MESS["IBLOCK_YES"] = "Tak";
+$MESS["IBP_ADM_ACTIVE"] = "Aktywne";
+$MESS["IBP_ADM_CODE"] = "Kod symboliczny";
+$MESS["IBP_ADM_CONFIRM_DEL_MESSAGE"] = "Ta opcja usunie wszystkie wartości właściwości. Kontynuować?";
+$MESS["IBP_ADM_DELETE_ERROR"] = "Wystąpił błąd podczas usuwania obiektu.";
+$MESS["IBP_ADM_FILTRABLE"] = "Pokaż we filtrze";
+$MESS["IBP_ADM_HINT"] = "Wskazówka";
+$MESS["IBP_ADM_ID"] = "ID";
+$MESS["IBP_ADM_IS_REQUIRED"] = "Wymagane";
+$MESS["IBP_ADM_MULTIPLE"] = "Wielokrotne";
+$MESS["IBP_ADM_NAME"] = "Nazwa";
+$MESS["IBP_ADM_PAGER"] = "Właściwości";
+$MESS["IBP_ADM_PROPERTY_TYPE"] = "Rodzaj";
+$MESS["IBP_ADM_SAVE_ERROR"] = "Błąd zapisu rekordu ##ID#: #ERROR_TEXT#";
+$MESS["IBP_ADM_SEARCHABLE"] = "Szukaj";
+$MESS["IBP_ADM_SORT"] = "Sortowanie";
+$MESS["IBP_ADM_TITLE"] = "#IBLOCK_NAME#: Właściwości";
+$MESS["IBP_ADM_TO_ADD"] = "Add property";
+$MESS["IBP_ADM_TO_ADD_TITLE"] = "Add a new property";
+$MESS["IBP_ADM_WITH_DESCRIPTION"] = "Ma opis";
+$MESS["IBP_ADM_XML_ID"] = "Zewnętrzne ID";
+$MESS["MAIN_ADMIN_LIST_ACTIVATE"] = "aktywuj";
+$MESS["MAIN_ADMIN_LIST_CHECKED"] = "Zaznaczone:";
+$MESS["MAIN_ADMIN_LIST_DEACTIVATE"] = "deaktywuj";
+$MESS["MAIN_ADMIN_LIST_DELETE"] = "Usuń";
+$MESS["MAIN_ADMIN_LIST_SELECTED"] = "Wybrany:";
+?>

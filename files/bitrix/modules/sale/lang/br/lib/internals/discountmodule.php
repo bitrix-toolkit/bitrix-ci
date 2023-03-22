@@ -1,0 +1,3 @@
+<?
+$MESS["DISCOUNT_MODULE_ENTITY_ID_FIELD"] = "ID";
+?>

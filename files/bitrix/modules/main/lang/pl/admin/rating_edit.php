@@ -1,0 +1,32 @@
+<?
+$MESS["MAIN_RATING_EDIT_RECORD"] = "Rdytuj ocenę # #ID#";
+$MESS["MAIN_RATING_NEW_RECORD"] = "Nowa ocena";
+$MESS["RATING_DEF_NAME"] = "Ocena użytkownika";
+$MESS["RATING_EDIT_ADD"] = "Dodawanie";
+$MESS["RATING_EDIT_ADD_TITLE"] = "Dodaj nową ocenę";
+$MESS["RATING_EDIT_CALC_METHOD_AVG"] = "średnia";
+$MESS["RATING_EDIT_CALC_METHOD_SUM"] = "Kwota";
+$MESS["RATING_EDIT_CAT_RATING_COMPONENT"] = "Kryteria oceny";
+$MESS["RATING_EDIT_CAT_WHAT_NEW_CALC"] = "Aktualny wynik";
+$MESS["RATING_EDIT_DEL"] = "Usuń";
+$MESS["RATING_EDIT_DEL_CONF"] = "Czy na pewno chcesz usunąć tę opinię?";
+$MESS["RATING_EDIT_DEL_TITLE"] = "Usuń ocenę";
+$MESS["RATING_EDIT_ERROR"] = "Błąd przy zapisie.";
+$MESS["RATING_EDIT_FRM_ACTIVE"] = "Aktywny:";
+$MESS["RATING_EDIT_FRM_AUTHORITY"] = "Użyj tej oceny aby obliczyć autorytet";
+$MESS["RATING_EDIT_FRM_CALC_METHOD"] = "Metoda obliczania:";
+$MESS["RATING_EDIT_FRM_CUR_VAL"] = "Dodatkowe pola dla aktualnej wartości:";
+$MESS["RATING_EDIT_FRM_NAME"] = "Tytuł:";
+$MESS["RATING_EDIT_FRM_NEW_CALC"] = "Usuń obecną ocenę wyników na zapisz";
+$MESS["RATING_EDIT_FRM_POSITION"] = "Obliczanie oceny pozycji";
+$MESS["RATING_EDIT_FRM_PREV_VAL"] = "Dodatkowe pola dla poprzedniej wartości:";
+$MESS["RATING_EDIT_FRM_TYPE_ID"] = "Objekt oceniany:";
+$MESS["RATING_EDIT_SUCCESS"] = "Rekord został zapisany pomyślnie.";
+$MESS["RATING_EDIT_TAB_MAIN"] = "Główne parametry";
+$MESS["RATING_EDIT_TAB_MAIN_TITLE"] = "Nazwa objektu ocenianego i pól dla wartości";
+$MESS["RATING_FIELDS_DEF_DESC"] = "Wartość zależy od wyników głosowania.";
+$MESS["RATING_FIELDS_DEF_FORMULA"] = "Razem * K";
+$MESS["RATING_FIELDS_DEF_NAME"] = "Współczynnik:";
+$MESS["RATING_LIST"] = "Wszystkie oceny";
+$MESS["RATING_LIST_TITLE"] = "Zobacz wszystkie oceny";
+?>

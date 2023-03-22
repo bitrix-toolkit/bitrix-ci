@@ -1,0 +1,30 @@
+<?
+$MESS["BASE_CURRENCY"] = "Waluta podstawowa:";
+$MESS["COP_SYS_ROU"] = "Operacje serwisu";
+$MESS["CO_TAB_RIGHTS"] = "Uprawnienia";
+$MESS["CO_TAB_RIGHTS_TITLE"] = "Moduł Uprawnień Dostępu";
+$MESS["CURRENCY_AGENTS"] = "Agenci";
+$MESS["CURRENCY_AGENTS_ACTIVATE"] = "Aktywuj agenta";
+$MESS["CURRENCY_AGENTS_ACTIVE_NO"] = "Nie";
+$MESS["CURRENCY_AGENTS_ACTIVE_YES"] = "Tak";
+$MESS["CURRENCY_AGENTS_CREATE_AGENT"] = "Utwórz agenta";
+$MESS["CURRENCY_AGENTS_DEACTIVATE"] = "Deaktywuj agenta";
+$MESS["CURRENCY_AGENTS_LAST_EXEC"] = "Ostatnie uruchomienie";
+$MESS["CURRENCY_AGENTS_NEXT_EXEC"] = "Następne Uruchomienie";
+$MESS["CURRENCY_AGENTS_PLANNED_NEXT_EXEC"] = "Pierwszy zaplanowany przebieg";
+$MESS["CURRENCY_AGENTS_TITLE"] = "Informacje o agentach modułu";
+$MESS["CURRENCY_BASE_RATE"] = "Bieżący podstawowy wskaźnik";
+$MESS["CURRENCY_BASE_RATE_AGENT"] = "Agent obliczenia kursu wymiany waluty do podstawowej";
+$MESS["CURRENCY_BASE_RATE_AGENT_ABSENT"] = "Uwaga! Brakuje agenta obliczenia kursu wymiany waluty do podstawowej";
+$MESS["CURRENCY_BASE_RATE_AGENT_ACTIVE"] = "Aktywne";
+$MESS["CURRENCY_BASE_RATE_TITLE"] = "Aktualne kursy wymiany dla waluty podstawowej";
+$MESS["CURRENCY_PROCEDURES"] = "Operacje serwisu";
+$MESS["CURRENCY_SETTINGS"] = "Ustawienia Ogólne";
+$MESS["CURRENCY_SETTINGS_TITLE"] = "Podstawowe parametry dla modułu";
+$MESS["CUR_OPTIONS_BTN_HINT_RESTORE_DEFAULT"] = "Ustaw domyślne wartości";
+$MESS["CUR_OPTIONS_BTN_HINT_RESTORE_DEFAULT_WARNING"] = "Uwaga! Wszystkie parametry zostaną zresetowane do ich domyślnych wartości. Czy chcesz kontynuować?";
+$MESS["CUR_OPTIONS_BTN_RESET"] = "Wyczyść";
+$MESS["CUR_OPTIONS_BTN_RESTORE_DEFAULT"] = "domyślne";
+$MESS["CUR_OPTIONS_BTN_SAVE"] = "Zapisz";
+$MESS["CUR_PROCEDURES_BTN_RECALC"] = "Przelicz";
+?>

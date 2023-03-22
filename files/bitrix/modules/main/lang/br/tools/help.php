@@ -1,0 +1,34 @@
+<?
+$MESS["HELP_ACCESS_DENIED"] = "Acesso negado";
+$MESS["HELP_BACK"] = "Voltar";
+$MESS["HELP_CLOSE"] = "Fechar";
+$MESS["HELP_COLLAPSE_ALL"] = "Ocultar Todos";
+$MESS["HELP_CONFIRM_DELETE"] = "Tem certeza de que deseja excluir o arquivo e/ou pasta?";
+$MESS["HELP_CREATE"] = "Criar";
+$MESS["HELP_CREATE_FOLDER_ERROR"] = "Erro ao criar uma pasta";
+$MESS["HELP_CURRENT_FOLDER"] = "Pasta atual:";
+$MESS["HELP_DELETE"] = "Excluir";
+$MESS["HELP_DELETE_ERROR"] = "Erro ao excluir arquivo";
+$MESS["HELP_EDIT"] = "Editar";
+$MESS["HELP_ERROR_DELETE_FOLDER"] = "Erro ao excluir a pasta #FOLDER#";
+$MESS["HELP_EXPAND_ALL"] = "Expandir tudo";
+$MESS["HELP_FILENAME"] = "Nome do arquivo:";
+$MESS["HELP_FILE_EXISTS"] = "Arquivo ou pasta com o nome especificado já existe";
+$MESS["HELP_FILE_NOT_EXIST"] = "O arquivo #FILE# não existe";
+$MESS["HELP_FILE_NOT_FOUND"] = "Arquivo de ajuda não encontrado";
+$MESS["HELP_FILE_SAVE_ERROR"] = "Erro ao salvar o arquivo";
+$MESS["HELP_FOLDER_NOT_EMPTY"] = "Erro ao excluir a pasta #FOLDER# (nãoestá vazia)";
+$MESS["HELP_FOLDER_NOT_EXIST"] = "A pasta #FOLDER# não existe";
+$MESS["HELP_FORGOT_FILENAME"] = "Por favor, informe o nome do arquivo (\"Nome do arquivo\")";
+$MESS["HELP_HEADER"] = "Cabeçalho:";
+$MESS["HELP_HIDE"] = "Ocultar";
+$MESS["HELP_IS_FOLDER"] = "Criando pasta:";
+$MESS["HELP_KERNEL"] = "Núcleo";
+$MESS["HELP_MOVE_DOWN"] = "Mover para baixo";
+$MESS["HELP_MOVE_UP"] = "Mover para cima";
+$MESS["HELP_RESET"] = "Redefinir";
+$MESS["HELP_SEARCH"] = "Buscar";
+$MESS["HELP_SORT"] = "Classificação:";
+$MESS["HELP_TITLE"] = "Ajuda";
+$MESS["HELP_TREE"] = "Sincronizar com lista de tópicos";
+?>

@@ -1,0 +1,36 @@
+<?
+$MESS["JS_CORE_FILE_APPLY"] = "Aplicar";
+$MESS["JS_CORE_FILE_CLOUD"] = "Carregar do armazenamento em nuvem";
+$MESS["JS_CORE_FILE_DESCRIPTION"] = "Descrição";
+$MESS["JS_CORE_FILE_INFO_DIM"] = "Dimensões";
+$MESS["JS_CORE_FILE_INFO_LINK"] = "Link";
+$MESS["JS_CORE_FILE_INFO_SIZE"] = "Tamanho";
+$MESS["JS_CORE_FILE_INSERT_PATH"] = "Inserir o caminho do arquivo";
+$MESS["JS_CORE_FILE_MEDIALIB"] = "Selecione um item da Biblioteca de Mídia";
+$MESS["JS_CORE_FILE_SITE"] = "Selecione do site Explorer";
+$MESS["JS_CORE_FILE_UPLOAD"] = "Carregar do computador";
+$MESS["JS_CORE_FI_ADD"] = "Adicionar";
+$MESS["JS_CORE_FI_ADD_LINK"] = "Adicionar link";
+$MESS["JS_CORE_FI_ADD_PRESET"] = "Adicionar predefinição";
+$MESS["JS_CORE_FI_CANCEL"] = "Cancelar";
+$MESS["JS_CORE_FI_CANCEL_PRESET"] = "Cancelar<br> ação";
+$MESS["JS_CORE_FI_CLEAR"] = "Limpar";
+$MESS["JS_CORE_FI_EDIT_PRESET"] = "Editar predefinição";
+$MESS["JS_CORE_FI_FRAME_IS_LOADING"] = "Por favor aguarde, carregando imagens agora. Cancelar recorte?";
+$MESS["JS_CORE_FI_FRAME_IS_LOADING_CANCEL"] = "Sim";
+$MESS["JS_CORE_FI_FRAME_Y"] = "Usar recorte";
+$MESS["JS_CORE_FI_FRAMING"] = "Recorte: ";
+$MESS["JS_CORE_FI_HEIGHT"] = "Altura";
+$MESS["JS_CORE_FI_LINK"] = "Link:";
+$MESS["JS_CORE_FI_PIN_DESCRIPTION"] = "Campo de descrição do marcador";
+$MESS["JS_CORE_FI_PRESET_IS_TOO_BIG"] = "O tamanho da imagem é menor que o pré-selecionado. Você quer ampliar a imagem?";
+$MESS["JS_CORE_FI_SAVE_PRESET"] = "Salvar predefinição";
+$MESS["JS_CORE_FI_SCALE"] = "Ampliar";
+$MESS["JS_CORE_FI_TITLE"] = "Nome";
+$MESS["JS_CORE_FI_TOO_MANY_FILES"] = "O número de arquivos excede o máximo permitido de #amount#.";
+$MESS["JS_CORE_FI_TOO_MANY_FILES2"] = "Cota de arquivo alcançada.";
+$MESS["JS_CORE_FI_TOO_MANY_FILES3"] = "Cota de arquivo excedida.";
+$MESS["JS_CORE_FI_UPLOAD_DENIED"] = "Carregamento negado";
+$MESS["JS_CORE_FI_USE_PRESET"] = "Usar predefinição";
+$MESS["JS_CORE_FI_WIDTH"] = "Largura";
+?>

@@ -1,0 +1,11 @@
+<?
+$MESS["BX_SALE_DISCOUNT_PRESET_ABSENT"] = "No se ha encontrado preestablecido";
+$MESS["BX_SALE_DISCOUNT_PRESET_CONTEXT_DELETE"] = "Eliminar regla";
+$MESS["BX_SALE_DISCOUNT_PRESET_CONTEXT_DELETE_CONFIRM"] = "¿Usted está seguro que quieres eliminar esta regla?";
+$MESS["BX_SALE_DISCOUNT_PRESET_CONTEXT_DISCOUNT_LIST"] = "Lista de reglas";
+$MESS["BX_SALE_DISCOUNT_PRESET_CONTEXT_NEW"] = "Crear nueva regla";
+$MESS["BX_SALE_DISCOUNT_PRESET_FORM_EDIT_TAB_NAME_COMMON"] = "Parámetros";
+$MESS["BX_SALE_DISCOUNT_PRESET_FORM_EDIT_TAB_TITLE_COMMON"] = "Parámetros de la regla";
+$MESS["BX_SALE_DISCOUNT_PRESET_TITLE_ADD_DISCOUNT"] = "Crear nueva regla";
+$MESS["BX_SALE_DISCOUNT_PRESET_TITLE_EDIT_DISCOUNT"] = "ID #ID# del cambio de la regla";
+?>

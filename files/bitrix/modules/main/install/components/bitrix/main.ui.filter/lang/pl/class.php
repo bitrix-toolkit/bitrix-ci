@@ -1,0 +1,41 @@
+<?
+$MESS["MAIN_UI_FILTER__AFTER"] = "Po";
+$MESS["MAIN_UI_FILTER__AND"] = "i";
+$MESS["MAIN_UI_FILTER__BEFORE"] = "Przed";
+$MESS["MAIN_UI_FILTER__CONFIRM_APPLY_FOR_ALL"] = "Zapisz dla wszystkich";
+$MESS["MAIN_UI_FILTER__CONFIRM_MESSAGE_FOR_ALL"] = "Działanie spowoduje aktualizację preferencji filtrowania dla wszystkich użytkowników. <br>Obecnie 
+zapisane filtry i pola także zostaną zmienione.";
+$MESS["MAIN_UI_FILTER__DATE_NEXT_DAYS_LABEL"] = "Kolejne dni: #N#";
+$MESS["MAIN_UI_FILTER__DATE_PREV_DAYS_LABEL"] = "Ostatnie dni: #N#";
+$MESS["MAIN_UI_FILTER__DEFAULT_FILTER_NAME"] = "Filtr";
+$MESS["MAIN_UI_FILTER__DEFAULT_FILTER_TITLE"] = "Filtr";
+$MESS["MAIN_UI_FILTER__DRAG_FIELD_TITLE"] = "Przeciągnij, aby uporządkować listę pól";
+$MESS["MAIN_UI_FILTER__DRAG_TITLE"] = "Przeciągnij, aby uporządkować listę filtrów";
+$MESS["MAIN_UI_FILTER__EDIT_PRESET_TITLE"] = "Edytuj nazwę filtra";
+$MESS["MAIN_UI_FILTER__FILTER_ID_NOT_SET"] = "Nie określono wymaganego parametru FILTER_ID.";
+$MESS["MAIN_UI_FILTER__IS_SET_AS_DEFAULT_PRESET"] = "Domyślny filtr";
+$MESS["MAIN_UI_FILTER__LAST_MONTH"] = "Ostatni miesiąc";
+$MESS["MAIN_UI_FILTER__LAST_WEEK"] = "Ostatni tydzień";
+$MESS["MAIN_UI_FILTER__MORE"] = "więcej";
+$MESS["MAIN_UI_FILTER__NO"] = "Nie";
+$MESS["MAIN_UI_FILTER__NONE"] = "Dowolna data";
+$MESS["MAIN_UI_FILTER__NOT_SET"] = "Nieokreślony";
+$MESS["MAIN_UI_FILTER__NUMBER_LESS"] = "Mniej niż";
+$MESS["MAIN_UI_FILTER__NUMBER_MORE"] = "Więcej niż";
+$MESS["MAIN_UI_FILTER__NUMBER_RANGE"] = "Zakres";
+$MESS["MAIN_UI_FILTER__NUMBER_SINGLE"] = "Dokładna wartość";
+$MESS["MAIN_UI_FILTER__PLACEHOLDER"] = "Filtr";
+$MESS["MAIN_UI_FILTER__PLACEHOLDER_DEFAULT"] = "Filtrowanie i wyszukiwanie";
+$MESS["MAIN_UI_FILTER__PLACEHOLDER_WITH_FILTER"] = "wyszukiwanie";
+$MESS["MAIN_UI_FILTER__QUARTER"] = "Kwartał";
+$MESS["MAIN_UI_FILTER__RANGE"] = "Ustal zakres";
+$MESS["MAIN_UI_FILTER__REMOVE_FIELD"] = "Ukryj pole";
+$MESS["MAIN_UI_FILTER__REMOVE_PRESET"] = "Usuń filtr";
+$MESS["MAIN_UI_FILTER__SET_AS_DEFAULT_PRESET"] = "Ustaw jako domyślny filtr";
+$MESS["MAIN_UI_FILTER__SINGLE"] = "Dokładna data";
+$MESS["MAIN_UI_FILTER__THIS_MONTH"] = "Bieżący miesiąc";
+$MESS["MAIN_UI_FILTER__THIS_WEEK"] = "Bieżący tydzień";
+$MESS["MAIN_UI_FILTER__TODAY"] = "Dzisiaj";
+$MESS["MAIN_UI_FILTER__YES"] = "Tak";
+$MESS["MAIN_UI_FILTER__YESTERDAY"] = "Wczoraj";
+?>

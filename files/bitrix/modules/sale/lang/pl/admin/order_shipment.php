@@ -1,0 +1,9 @@
+<?
+$MESS["DELETE_SHIPMENT_ALT"] = "Usuń";
+$MESS["EDIT_SHIPMENT_ALT"] = "Edytuj";
+$MESS["SALE_ORDER_ALL"] = "Wszystko";
+$MESS["SALE_ORDER_COMPANY_ID"] = "Firma";
+$MESS["SALE_ORDER_DELIVERY_RESPONSIBLE_ID"] = "Osoba odpowiedzialna";
+$MESS["SHIPMENT_ORDER_NO"] = "Nie";
+$MESS["SHIPMENT_ORDER_YES"] = "Tak";
+?>

@@ -1,0 +1,10 @@
+<?php
+$MESS["NEW_COLUMN_BARCODE"] = "Kod kreskowy";
+$MESS["NEW_COLUMN_COLOR"] = "Kolor";
+$MESS["NEW_COLUMN_IMAGE"] = "Obraz";
+$MESS["NEW_COLUMN_NAME"] = "Nazwa";
+$MESS["SALE_F_STORE_BARCODE"] = "Kod kreskowy";
+$MESS["SOPE_SHIPMENT_DELETE"] = "Usuń";
+$MESS["SOPE_SHIPMENT_DELETE_TITLE"] = "Usuń";
+$MESS["SOPE_SHIPMENT_PRINT"] = "Drukuj";
+$MESS["SOPE_SHIPMENT_PRINT_TITLE"] = "Drukuj";

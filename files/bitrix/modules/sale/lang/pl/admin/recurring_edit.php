@@ -1,0 +1,36 @@
+<?
+$MESS["SREN_2FLIST"] = "Lista rekordów";
+$MESS["SREN_DELETE_RECURR"] = "Usuń Zapis";
+$MESS["SREN_DELETE_RECURR_CONFIRM"] = "Na pewno chcesz usunąć to wznowienie subskrybcji?";
+$MESS["SREN_NEW_RECURR"] = "Dodaj nowy rekord";
+$MESS["SREN_TAB_RECURR"] = "Odnowienie subskrypcji";
+$MESS["SREN_TAB_RECURR_DESCR"] = "Parametry subskrybcji wznowienia";
+$MESS["SRE_ADD"] = "Dodawanie";
+$MESS["SRE_APPLY"] = "Zastosuj";
+$MESS["SRE_BASE_ORDER"] = "ID podstawowego zamówienia:";
+$MESS["SRE_CALLBACK"] = "Funkcja zwrotna:";
+$MESS["SRE_CANCEL"] = "Anuluj";
+$MESS["SRE_CANCELED"] = "Anulowane:";
+$MESS["SRE_CANCEL_REASON"] = "Powód anulowania:";
+$MESS["SRE_DESCRIPTION"] = "Opis:";
+$MESS["SRE_ERROR"] = "Błąd zapisu!";
+$MESS["SRE_ERROR_SAVING"] = "Błąd zapisywania wznowienia";
+$MESS["SRE_LAST_DATE"] = "Data ostatniego wznowienia";
+$MESS["SRE_LAST_SUCCESS"] = "Ostatnia próba wykonania powiodła się:";
+$MESS["SRE_MODULE"] = "Moduł:";
+$MESS["SRE_MODULE_CATALOG"] = "Katalog produktów";
+$MESS["SRE_NEXT_DATE"] = "Data następnego wznowienia";
+$MESS["SRE_NO_PERMS2ADD"] = "Nie masz wystarczających uprawnień dla wznowienia";
+$MESS["SRE_OR"] = "lub";
+$MESS["SRE_PRODUCT"] = "Produkt:";
+$MESS["SRE_PRODUCT_NAME"] = "Nazwa produktu:";
+$MESS["SRE_PRODUCT_URL"] = "URL produktu:";
+$MESS["SRE_SAVE"] = "Zapisz";
+$MESS["SRE_STEPS"] = "Pozostało prób wznowienia:";
+$MESS["SRE_TIMESTAMP"] = "Data ostatniej modyfikacji:";
+$MESS["SRE_TITLE_ADD"] = "Nowa subskrybcja wznowienia";
+$MESS["SRE_TITLE_UPDATE"] = "Parametry subskrybcji wznowienia";
+$MESS["SRE_TO_LIST"] = "Wznowienia";
+$MESS["SRE_USER1"] = "Użytkownik:";
+$MESS["SRE_USER_PROFILE"] = "Profil Użytkownika";
+?>

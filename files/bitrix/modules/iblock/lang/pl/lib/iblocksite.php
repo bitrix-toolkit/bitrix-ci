@@ -1,0 +1,4 @@
+<?
+$MESS["IBLOCK_SITE_ENTITY_IBLOCK_ID_FIELD"] = "ID Bloku Informacji";
+$MESS["IBLOCK_SITE_ENTITY_SITE_ID_FIELD"] = "ID Strony";
+?>

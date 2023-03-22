@@ -1,0 +1,3 @@
+<?
+$MESS["SALE_BASE_PRESET_CALENDAR_PERIOD_EMPTY"] = "Nieograniczone";
+?>

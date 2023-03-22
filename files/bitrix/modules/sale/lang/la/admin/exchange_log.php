@@ -1,0 +1,29 @@
+<?
+$MESS["LOG_DATE_INSERT"] = "Creado el";
+$MESS["LOG_ENTITY_DATE_UPDATE"] = "Entidad actualizada por última vez el";
+$MESS["LOG_ENTITY_ID"] = "ID de la Entidad";
+$MESS["LOG_ENTITY_TYPE_ID"] = "Tipo de Entidad";
+$MESS["LOG_ID"] = "ID";
+$MESS["LOG_MARKED"] = "Marcado";
+$MESS["LOG_MARKED_Y"] = "Si";
+$MESS["LOG_MESSAGE"] = "Texto completo de consulta / respuesta";
+$MESS["LOG_NOTES1"] = "El registro incluye entidades creadas al exportar o importar";
+$MESS["LOG_OWNER_ENTITY_ID"] = "ID de la entidad principal";
+$MESS["LOG_PARENT_ID"] = "ID de Contenedor";
+$MESS["LOG_REPORT_DATE_INSERT"] = "Creado el";
+$MESS["LOG_REPORT_DIRECTION_EXPORT"] = "Exportar";
+$MESS["LOG_REPORT_DIRECTION_ID"] = "Dirección";
+$MESS["LOG_REPORT_DIRECTION_IMPORT"] = "Importar";
+$MESS["LOG_REPORT_ENTITY_ID"] = "ID de la entidad";
+$MESS["LOG_REPORT_FROM"] = "desde";
+$MESS["LOG_REPORT_PARENT_ENTITY_ID"] = "ID del contenedor";
+$MESS["LOG_REPORT_TO"] = "hasta";
+$MESS["LOG_REPORT_TYPES"] = "Tipo de entidad";
+$MESS["LOG_REPORT_XML_ID"] = "ID externo";
+$MESS["LOG_TITLE"] = "Registro de intercambio de entidad";
+$MESS["LOG_XML_ID"] = "ID externo";
+$MESS["REPORT_ALL"] = "todo";
+$MESS["REPORT_HIDE_SET"] = "Ocultar";
+$MESS["REPORT_SHOW_SET"] = "Expandir";
+$MESS["group_admin_nav"] = "Entidades";
+?>

@@ -1,0 +1,20 @@
+<?php
+$MESS["CVAT_ACTIVE"] = "Att.";
+$MESS["CVAT_ADD_NEW"] = "Aggiungi";
+$MESS["CVAT_ADD_NEW_ALT"] = "Aggiungi aliquota fiscale";
+$MESS["CVAT_ALL"] = "tutto";
+$MESS["CVAT_DELETE_ALT"] = "Elimina";
+$MESS["CVAT_DELETE_CONF"] = "Eliminare questa aliquota fiscale?";
+$MESS["CVAT_EDIT_ALT"] = "Modifica";
+$MESS["CVAT_FILTER_ACTIVE"] = "Attività";
+$MESS["CVAT_FILTER_NAME"] = "Nome";
+$MESS["CVAT_FILTER_RATE"] = "Tasso";
+$MESS["CVAT_NAME"] = "Nome";
+$MESS["CVAT_NAV"] = "Aliquote fiscali";
+$MESS["CVAT_NO"] = "inattivo";
+$MESS["CVAT_PAGE_TITLE"] = "Aliquote IVA";
+$MESS["CVAT_RATE"] = "Tasso";
+$MESS["CVAT_SORT"] = "Ordinam.";
+$MESS["CVAT_YES"] = "attivo";
+$MESS["ERROR_DELETE_VAT"] = "Errore durante l'eliminazione dell'aliquota fiscale ##ID#";
+$MESS["ERROR_UPDATE_VAT"] = "Errore durante l'aggiornamento dell'aliquota fiscale ##ID#";

@@ -1,0 +1,35 @@
+<?
+$MESS["ADD"] = "Dodawanie";
+$MESS["DEFAULT"] = "< domyślne >";
+$MESS["DESCRIPTION"] = "Opis:";
+$MESS["EDIT_TASK_TITLE"] = "Edytuj poziomy dostępu do # #ID#";
+$MESS["KERNEL"] = "Moduł Kernel";
+$MESS["LETTER"] = "List";
+$MESS["MAIN_COPY_RECORD"] = "Kopiuj";
+$MESS["MAIN_COPY_RECORD_TITLE"] = "Duplikat aktualnego poziomu dostępu";
+$MESS["MAIN_DELETE_RECORD"] = "Usuń";
+$MESS["MAIN_DELETE_RECORD_CONF"] = "Czy napewno chcesz usunąć ten poziom dostępu";
+$MESS["MAIN_DELETE_RECORD_TITLE"] = "Usuń aktualny poziom dostępu";
+$MESS["MAIN_NEW_RECORD"] = "Dodawanie";
+$MESS["MAIN_NEW_RECORD_TITLE"] = "Dodaje nowy poziom dostępu";
+$MESS["MAIN_YES"] = "Tak";
+$MESS["MODULE_ID"] = "Moduł:";
+$MESS["NAME"] = "Nazwa:";
+$MESS["NEW_TASK_TITLE"] = "Dodaj poziom dostępu";
+$MESS["RECORD_LIST"] = "Uprawnienia";
+$MESS["RECORD_LIST_TITLE"] = "Pokazują wszystkie poziomy dostępu";
+$MESS["RESET"] = "Wyczyść";
+$MESS["SAVE"] = "Zapisz zmiany";
+$MESS["STRING_ID"] = "Symboliczny ID:";
+$MESS["SYS_TITLE"] = "Is system";
+$MESS["TAB_1"] = "Parametry";
+$MESS["TAB_1_TITLE"] = "Parametry poziomu dostępu";
+$MESS["TAB_2"] = "Operacje";
+$MESS["TAB_2_TITLE"] = "Operacje, które będą pod kontrolą tego poziomu dostępu";
+$MESS["TASK_BINDING"] = "Powiązania";
+$MESS["TASK_BINDING_FILE"] = "Plik/Folder";
+$MESS["TASK_BINDING_MODULE"] = "Moduł";
+$MESS["TASK_NAME_WARNING"] = "Symboliczny ID nie jest podany albo już istnieje w systemie";
+$MESS["TASK_SAVE_ERROR"] = "Błąd zapisu zadania";
+$MESS["TBL_GROUP_DATE"] = "Okres aktywności";
+?>

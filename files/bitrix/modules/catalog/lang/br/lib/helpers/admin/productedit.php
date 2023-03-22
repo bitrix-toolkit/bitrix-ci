@@ -1,0 +1,2 @@
+<?php
+$MESS["BX_CATALOG_HELPER_PRODUCTEDIT_PRODUCT_TAB_BARCODES"] = "Código de barras";

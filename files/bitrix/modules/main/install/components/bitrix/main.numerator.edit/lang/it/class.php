@@ -1,0 +1,4 @@
+<?
+$MESS["NUMERATOR_EDIT_BTN_CANCEL"] = "Annulla";
+$MESS["NUMERATOR_EDIT_BTN_SAVE"] = "Salva";
+?>

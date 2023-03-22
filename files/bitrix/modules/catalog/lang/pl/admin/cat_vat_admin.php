@@ -1,0 +1,20 @@
+<?php
+$MESS["CVAT_ACTIVE"] = "Akt.";
+$MESS["CVAT_ADD_NEW"] = "Dodaj";
+$MESS["CVAT_ADD_NEW_ALT"] = "Dodaj stawkę podatku";
+$MESS["CVAT_ALL"] = "Wszystkie";
+$MESS["CVAT_DELETE_ALT"] = "Usuń";
+$MESS["CVAT_DELETE_CONF"] = "Na pewno chcesz usunąć tę stawkę podatku?";
+$MESS["CVAT_EDIT_ALT"] = "Edytuj";
+$MESS["CVAT_FILTER_ACTIVE"] = "Aktywność";
+$MESS["CVAT_FILTER_NAME"] = "Nazwa";
+$MESS["CVAT_FILTER_RATE"] = "Stawka";
+$MESS["CVAT_NAME"] = "Nazwa";
+$MESS["CVAT_NAV"] = "Stawka podatku";
+$MESS["CVAT_NO"] = "nieaktywne";
+$MESS["CVAT_PAGE_TITLE"] = "Stawki VAT";
+$MESS["CVAT_RATE"] = "Stawka";
+$MESS["CVAT_SORT"] = "Sortowanie";
+$MESS["CVAT_YES"] = "Aktywne";
+$MESS["ERROR_DELETE_VAT"] = "Błąd usuwania stawki podatku ##ID#";
+$MESS["ERROR_UPDATE_VAT"] = "Błąd aktualizacji stawki podatku ##ID#";

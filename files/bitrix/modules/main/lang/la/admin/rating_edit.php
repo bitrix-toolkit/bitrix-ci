@@ -1,0 +1,33 @@
+<?
+$MESS["MAIN_RATING_EDIT_RECORD"] = "Editar Calificación # #ID#";
+$MESS["MAIN_RATING_NEW_RECORD"] = "Nueva Calificación";
+$MESS["RATING_DEF_NAME"] = "Calificación del Usuario";
+$MESS["RATING_EDIT_ADD"] = "Agregar";
+$MESS["RATING_EDIT_ADD_TITLE"] = "Agregar Nueva Calificación";
+$MESS["RATING_EDIT_CALC_METHOD_AVG"] = "Promedio";
+$MESS["RATING_EDIT_CALC_METHOD_SUM"] = "Monto";
+$MESS["RATING_EDIT_CAT_RATING_COMPONENT"] = "Criterio de Calificación";
+$MESS["RATING_EDIT_CAT_WHAT_NEW_CALC"] = "Resultado Actual";
+$MESS["RATING_EDIT_DEL"] = "Borrar";
+$MESS["RATING_EDIT_DEL_CONF"] = "Está seguro que desea borrar esta calificación?";
+$MESS["RATING_EDIT_DEL_TITLE"] = "Borrar esta calificación";
+$MESS["RATING_EDIT_ERROR"] = "Error al guardar el registro.";
+$MESS["RATING_EDIT_FRM_ACTIVE"] = "Activo:";
+$MESS["RATING_EDIT_FRM_AUTHORITY"] = "Usar esta Calificación para Calcular Autorización";
+$MESS["RATING_EDIT_FRM_CALC_METHOD"] = "Método de Cálculo:";
+$MESS["RATING_EDIT_FRM_CUR_VAL"] = "Campo Adicional para el Valor Actual:";
+$MESS["RATING_EDIT_FRM_NAME"] = "Título:";
+$MESS["RATING_EDIT_FRM_NEW_CALC"] = "Borrar el Resultado de la Calificación Actual una vez Guardados";
+$MESS["RATING_EDIT_FRM_POSITION"] = "Calcular Puesto de la Calificación";
+$MESS["RATING_EDIT_FRM_PREV_VAL"] = "Campo Adicional para el Valor Anterior:";
+$MESS["RATING_EDIT_FRM_TYPE_ID"] = "Objeto Evaluado:";
+$MESS["RATING_EDIT_SUCCESS"] = "El registro ha sido guardado exitosamente.";
+$MESS["RATING_EDIT_TAB_MAIN"] = "Parámetros Principales";
+$MESS["RATING_EDIT_TAB_MAIN_TITLE"] = "El nombre, el objeto evaluado y los campos del cliente para los valores";
+$MESS["RATING_FIELDS_DEF_DESC"] = "El valor depende de los resultados de la votación.";
+$MESS["RATING_FIELDS_DEF_FORMULA"] = "Total * K";
+$MESS["RATING_FIELDS_DEF_FORMULA_DESC"] = "Total - resultado de la votación; K - el usuario define el factor.";
+$MESS["RATING_FIELDS_DEF_NAME"] = "Factor:";
+$MESS["RATING_LIST"] = "Todas las Calificaciones";
+$MESS["RATING_LIST_TITLE"] = "Ver todas las calificaciones";
+?>

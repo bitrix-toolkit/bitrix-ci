@@ -1,0 +1,7 @@
+<?
+$MESS["MAIN_FIELD_CONFIG_DETAIL_DEFAULT_LABEL"] = "Нове поле";
+$MESS["MAIN_FIELD_CONFIG_DETAIL_FIELD_NOT_FOUND_ERROR"] = "Поле користувача не знайдено";
+$MESS["MAIN_FIELD_CONFIG_DETAIL_NO_ENTITY_ID_ERROR"] = "Не вказаний тип сутності";
+$MESS["MAIN_FIELD_CONFIG_DETAIL_TITLE_ADD"] = "Нове поле";
+$MESS["MAIN_FIELD_CONFIG_DETAIL_TITLE_EDIT"] = "Редагування поля";
+?>

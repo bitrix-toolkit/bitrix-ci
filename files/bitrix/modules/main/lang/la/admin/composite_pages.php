@@ -1,0 +1,6 @@
+<?
+$MESS["MAIN_COMPOSITE_DELETE_ALL_CACHE"] = "Purga de caché";
+$MESS["MAIN_COMPOSITE_PAGES_PAGE"] = "Página";
+$MESS["MAIN_COMPOSITE_PAGES_PAGES"] = "Páginas";
+$MESS["MAIN_COMPOSITE_PAGES_TITLE"] = "Páginas compuestas";
+?>

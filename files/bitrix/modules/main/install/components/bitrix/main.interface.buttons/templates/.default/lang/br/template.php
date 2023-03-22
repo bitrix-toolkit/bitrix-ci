@@ -1,0 +1,22 @@
+<?php
+$MESS["MIB_APPLY_SETTING_MENU_ITEM"] = "Finalizar personalização";
+$MESS["MIB_CANCEL_BUTTON"] = "Cancelar";
+$MESS["MIB_DROPZONE_TEXT"] = "Ocultar item";
+$MESS["MIB_HIDDEN"] = "Oculto";
+$MESS["MIB_LICENSE_BUY_BUTTON"] = "Comprar";
+$MESS["MIB_LICENSE_TRIAL_BUTTON"] = "Experimente grátis";
+$MESS["MIB_LICENSE_WINDOW_HEADER_TEXT"] = "Obtenha acesso";
+$MESS["MIB_LICENSE_WINDOW_TEXT"] = "Compre uma licença ou experimente grátis";
+$MESS["MIB_MAIN_BUTTONS_LOADING"] = "Carregando...";
+$MESS["MIB_MAIN_BUTTONS_MORE"] = "Mais";
+$MESS["MIB_MANAGE"] = "Configurações";
+$MESS["MIB_NO_HIDDEN"] = "Arraste aqui para ocultar";
+$MESS["MIB_PIN_HINT"] = "Mover para o menu superior";
+$MESS["MIB_RESET_ALERT"] = "Redefinir menu para visualização padrão?";
+$MESS["MIB_RESET_BUTTON"] = "Redefinir";
+$MESS["MIB_RESET_SETTINGS"] = "Redefinir menu";
+$MESS["MIB_SETTING_MENU_ITEM"] = "Configurar menu";
+$MESS["MIB_SET_HIDE"] = "Ocultar";
+$MESS["MIB_SET_HOME"] = "Definir como página inicial da seção";
+$MESS["MIB_SET_SHOW"] = "Mostrar";
+$MESS["MIB_UNPIN_ITEM"] = "Voltar para \"#NAME#\"";

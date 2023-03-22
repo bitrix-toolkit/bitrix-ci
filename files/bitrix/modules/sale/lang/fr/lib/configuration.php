@@ -1,0 +1,10 @@
+<?
+$MESS["SALE_CONFIGURATION_ON_FULL_PAY"] = "Complet";
+$MESS["SALE_CONFIGURATION_ON_PAY"] = "Partiel";
+$MESS["SALE_CONFIGURATION_RESERVE_ON_ALLOW_DELIVERY"] = "Lors de l'expédition de presse";
+$MESS["SALE_CONFIGURATION_RESERVE_ON_CREATE"] = "Lors de la commande";
+$MESS["SALE_CONFIGURATION_RESERVE_ON_FULL_PAY"] = "Sur paiement intégral";
+$MESS["SALE_CONFIGURATION_RESERVE_ON_FULL_PAY_OLD"] = "Lors du paiement";
+$MESS["SALE_CONFIGURATION_RESERVE_ON_PAY"] = "Sur paiement partiel";
+$MESS["SALE_CONFIGURATION_RESERVE_ON_SHIP"] = "Lors de l'expédition réelle";
+?>

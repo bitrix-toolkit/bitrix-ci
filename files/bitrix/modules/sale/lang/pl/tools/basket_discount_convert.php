@@ -1,0 +1,3 @@
+<?
+$MESS["SALE_BASKET_DISCOUNT_STOP_BTN"] = "Zatrzymaj";
+?>

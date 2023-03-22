@@ -1,0 +1,6 @@
+<?
+$MESS["IBLOCK_ENTITY_NODE_VALUE_FIELD"] = "Plantilla del campo";
+$MESS["IBLOCK_RSS_ENTITY_IBLOCK_ID_FIELD"] = "ID del block de información";
+$MESS["IBLOCK_RSS_ENTITY_ID_FIELD"] = "ID";
+$MESS["IBLOCK_RSS_ENTITY_NODE_FIELD"] = "Campo RSS";
+?>

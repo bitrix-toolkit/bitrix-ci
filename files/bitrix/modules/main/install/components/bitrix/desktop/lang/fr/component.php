@@ -1,0 +1,32 @@
+<?
+$MESS["CMDESKTOP_AUTH_ERR"] = "Erreur d'autorisation";
+$MESS["CMDESKTOP_GROUP_ADMIN_CONTENT"] = "Contenu";
+$MESS["CMDESKTOP_GROUP_ADMIN_CONTENT_DESCR"] = "Gadgets de la section Contenu du panneau de commande";
+$MESS["CMDESKTOP_GROUP_ADMIN_SERVICES"] = "De services";
+$MESS["CMDESKTOP_GROUP_ADMIN_SERVICES_DESCR"] = "Gadgets de la section Service du panneau de commande";
+$MESS["CMDESKTOP_GROUP_ADMIN_SETTINGS"] = "Paramètres";
+$MESS["CMDESKTOP_GROUP_ADMIN_SETTINGS_DESCR"] = "Gadgets de la rubrique 'Réglages de la barre de commande'";
+$MESS["CMDESKTOP_GROUP_ADMIN_STATISTICS"] = "Du web-analyste";
+$MESS["CMDESKTOP_GROUP_ADMIN_STATISTICS_DESCR"] = "Les gadgets de la section de l'Analytique web du panneau de commande";
+$MESS["CMDESKTOP_GROUP_ADMIN_STORE"] = "Boutique en ligne";
+$MESS["CMDESKTOP_GROUP_ADMIN_STORE_DESCR"] = "Gadgets de la section Boutique du panneau de commande";
+$MESS["CMDESKTOP_GROUP_COMMUN"] = "Communications";
+$MESS["CMDESKTOP_GROUP_COMMUN_DESCR"] = "Blogs, Forums, Documents communs";
+$MESS["CMDESKTOP_GROUP_COMPANY"] = "Entreprise";
+$MESS["CMDESKTOP_GROUP_COMPANY_DESCR"] = "Actualités";
+$MESS["CMDESKTOP_GROUP_CRM"] = "CRM";
+$MESS["CMDESKTOP_GROUP_CRM_DESCR"] = "Prospects, contacts, entreprises, transactions";
+$MESS["CMDESKTOP_GROUP_EMPL"] = "Personnel";
+$MESS["CMDESKTOP_GROUP_EMPL_DESCR"] = "Structure de la entreprise, collaborateurs";
+$MESS["CMDESKTOP_GROUP_OTHER"] = "Autre";
+$MESS["CMDESKTOP_GROUP_OTHER_DESCR"] = "Gadgets non inclus dans les groupe précédents";
+$MESS["CMDESKTOP_GROUP_PERSONAL"] = "Personnel";
+$MESS["CMDESKTOP_GROUP_PERSONAL_DESCR"] = "Gadgets pour le travail avec les outils personnels";
+$MESS["CMDESKTOP_GROUP_SERVICES"] = "Services extérieurs";
+$MESS["CMDESKTOP_GROUP_SERVICES_DESCR"] = "Les services d'obtention d'informations de l'Internet";
+$MESS["CMDESKTOP_GROUP_SONET_GROUP"] = "Information du groupe";
+$MESS["CMDESKTOP_GROUP_SONET_GROUP_DESCR"] = "Information du groupe de service du réseau social";
+$MESS["CMDESKTOP_GROUP_SONET_USER"] = "Information de l'utilisateur";
+$MESS["CMDESKTOP_GROUP_SONET_USER_DESCR"] = "Information du profil utilisateur du réseau social";
+$MESS["CMDESKTOP_NAME_TEMPLATE_DEFAULT"] = "#NAME# #LAST_NAME#";
+?>

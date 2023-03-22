@@ -1,0 +1,4 @@
+<?php
+$MESS["MAIN_MAIL_BLACKLIST_COLUMN_CODE"] = "Correo electrónico";
+$MESS["MAIN_MAIL_BLACKLIST_COLUMN_DATE"] = "Fecha";
+$MESS["MAIN_MAIL_BLACKLIST_PERIOD"] = "Periodo";

@@ -1,0 +1,5 @@
+<?
+$MESS["SALE_USER_CONSENT_DATA_PROVIDER_NAME"] = "Informações da empresa";
+$MESS["SALE_USER_CONSENT_PROVIDER_ITEM_NAME"] = "Pedido #%id%";
+$MESS["SALE_USER_CONSENT_PROVIDER_NAME"] = "Pedido";
+?>

@@ -1,0 +1,25 @@
+<?php
+$MESS["smtp_configuration_edit_add"] = "Додавання SMTP підключення";
+$MESS["smtp_configuration_edit_add_btn"] = "Додати";
+$MESS["smtp_configuration_edit_add_btn_title"] = "Додати нове SMTP підключення";
+$MESS["smtp_configuration_edit_copy"] = "Копіювати";
+$MESS["smtp_configuration_edit_copy_title"] = "Копіювати підключення";
+$MESS["smtp_configuration_edit_del"] = "Видалити";
+$MESS["smtp_configuration_edit_del_conf"] = "Ви впевнені, що хочете видалити підключення?";
+$MESS["smtp_configuration_edit_del_title"] = "Видалити SMTP підключення";
+$MESS["smtp_configuration_edit_encrypted"] = "Використовувати захищене з'єднання";
+$MESS["smtp_configuration_edit_err_site"] = "Потрібно вказати принаймні один сайт.";
+$MESS["smtp_configuration_edit_fields"] = "Доступні поля:";
+$MESS["smtp_configuration_edit_host"] = "Сервер";
+$MESS["smtp_configuration_edit_insert"] = "Вставити в текст";
+$MESS["smtp_configuration_edit_list"] = "Список підключень SMTP";
+$MESS["smtp_configuration_edit_list_title"] = "Перейти до списку підключень SMTP";
+$MESS["smtp_configuration_edit_login"] = "Логін";
+$MESS["smtp_configuration_edit_not_set"] = "(не встановлено)";
+$MESS["smtp_configuration_edit_password"] = "Пароль";
+$MESS["smtp_configuration_edit_port"] = "Порт";
+$MESS["smtp_configuration_edit_sites"] = "Сайти:";
+$MESS["smtp_configuration_edit_tab"] = "Параметри";
+$MESS["smtp_configuration_edit_tab_title"] = "Параметри SMTP підключення";
+$MESS["smtp_configuration_edit_title"] = "Редагування SMTP підключення";
+$MESS["smtp_configuration_wrong_field_value"] = "Неправильне значення для поля %FIELD_NAME%";

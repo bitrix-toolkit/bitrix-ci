@@ -1,0 +1,13 @@
+<?
+$MESS["PRICE_ENTITY_CATALOG_GROUP_ID_FIELD"] = "ID del tipo de precio";
+$MESS["PRICE_ENTITY_CURRENCY_FIELD"] = "Moneda";
+$MESS["PRICE_ENTITY_EXTRA_ID_FIELD"] = "ID de recargo";
+$MESS["PRICE_ENTITY_ID_FIELD"] = "ID del precio";
+$MESS["PRICE_ENTITY_PRICE_FIELD"] = "Precio";
+$MESS["PRICE_ENTITY_PRICE_SCALE_FIELD"] = "Moneda de precio base";
+$MESS["PRICE_ENTITY_PRODUCT_ID_FIELD"] = "ID del producto";
+$MESS["PRICE_ENTITY_QUANTITY_FROM_FIELD"] = "Cantidad mínima";
+$MESS["PRICE_ENTITY_QUANTITY_TO_FIELD"] = "Cantidad máxima";
+$MESS["PRICE_ENTITY_TIMESTAMP_X_FIELD"] = "Modifiado el";
+$MESS["PRICE_ENTITY_TMP_ID_FIELD"] = "ID temporal";
+?>

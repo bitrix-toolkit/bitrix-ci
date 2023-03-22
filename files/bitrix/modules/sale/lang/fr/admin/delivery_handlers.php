@@ -1,0 +1,32 @@
+<?
+$MESS["SALE_DH_ACTIVATE_DESCR"] = "activer";
+$MESS["SALE_DH_CONFIRM_UNINSTALL"] = "tes-vous sûr que vous souhaitez désinstaller ce gestionnaire de service de livraison ? Cette opération va supprimer tous les paramètres de gestionnaire.";
+$MESS["SALE_DH_DEACTIVATE_DESCR"] = "Désactiver";
+$MESS["SALE_DH_DELETE_DESCR"] = "Annuler";
+$MESS["SALE_DH_EDIT_DESCR"] = "Éditer";
+$MESS["SALE_DH_HINT_ADD"] = "Pour ajouter un script de service de livraison personnalisé utiliser l'annuaire";
+$MESS["SALE_DH_HINT_SHOP_ADDRESS"] = "Adresse de la boutique en ligne";
+$MESS["SALE_DH_HINT_SHOP_ADDRESS_ERROR"] = "Non précisé.";
+$MESS["SALE_DH_HINT_SHOP_ADDRESS_ZIP"] = "Adresse postale de la boutique";
+$MESS["SALE_DH_HINT_SHOP_ADDRESS_ZIP_ERROR"] = "Non précisé.";
+$MESS["SALE_DH_INSTALL_DESCR"] = "Installation";
+$MESS["SALE_DH_LOCATIONS_CITY_STATS"] = "villes";
+$MESS["SALE_DH_LOCATIONS_COUNTRY_STATS"] = "Choix du pays";
+$MESS["SALE_DH_LOCATIONS_GROUP_STATS"] = "groupe de sites";
+$MESS["SALE_DH_LOCATIONS_IMPORT_LINK"] = "Importer des emplacements";
+$MESS["SALE_DH_LOCATIONS_LINK"] = "modifier les emplacements";
+$MESS["SALE_DH_LOCATIONS_LOC_STATS"] = "total des emplacements";
+$MESS["SALE_DH_LOCATIONS_STATS"] = "Lieu statistiques";
+$MESS["SALE_DH_NAV_TITLE"] = "Services de livraison";
+$MESS["SALE_DH_ORDINARY"] = "Services configurables";
+$MESS["SALE_DH_ORDINARY_ALT"] = "Services de livraison configurables ouvertes pour l'édition";
+$MESS["SALE_DH_RESET_DESCR"] = "paramètres clairs";
+$MESS["SALE_DH_SHOP_ADDRESS_CHANGE"] = "Éditer";
+$MESS["SALE_DH_TABLE_ACTIVE"] = "Actif(ve)";
+$MESS["SALE_DH_TABLE_ISCONFIG"] = "Désuet";
+$MESS["SALE_DH_TABLE_NAME"] = "Dénomination";
+$MESS["SALE_DH_TABLE_PATH"] = "Maître";
+$MESS["SALE_DH_TABLE_SORT"] = "Classification";
+$MESS["SALE_DH_TITLE"] = "Services de livraison automatisés";
+$MESS["SALE_EDIT_DESCR"] = "Modifier les paramètres du service de la livraison";
+?>

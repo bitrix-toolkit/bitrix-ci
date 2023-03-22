@@ -1,0 +1,24 @@
+<?php
+$MESS["BT_UT_AUTOCOMPLETE_SYM_GRID"] = "#";
+$MESS["BT_UT_AUTOCOMPLETE_SYM_OTHER"] = "Altro";
+$MESS["BT_UT_AUTOCOMPLETE_SYM_SPACE"] = "Spazio";
+$MESS["BT_UT_AUTOCOMPLETE_SYM_STAR"] = "*";
+$MESS["BT_UT_AUTOCOMPLETE_SYM_UNDERLINE"] = "_";
+$MESS["BT_UT_SAUTOCOMPLETE_DESCR"] = "Associa a sezioni con completamento automatico";
+$MESS["BT_UT_SAUTOCOMPLETE_MESS_LIST_INVITE"] = "(inserisci nome)";
+$MESS["BT_UT_SAUTOCOMPLETE_MESS_NEW_ELEMENT"] = "Aggiungi sezione";
+$MESS["BT_UT_SAUTOCOMPLETE_MESS_SEARCH_ELEMENT"] = "...";
+$MESS["BT_UT_SAUTOCOMPLETE_SETTING_BAN_SYMBOLS"] = "Sostituisci caratteri riservati";
+$MESS["BT_UT_SAUTOCOMPLETE_SETTING_COMMENT_MAX_HEIGHT"] = "px";
+$MESS["BT_UT_SAUTOCOMPLETE_SETTING_COMMENT_MAX_WIDTH"] = "px";
+$MESS["BT_UT_SAUTOCOMPLETE_SETTING_COMMENT_MIN_HEIGHT"] = "px";
+$MESS["BT_UT_SAUTOCOMPLETE_SETTING_IBLOCK_MESS"] = "Usa il titolo dell'elemento del blocco informazioni per il testo del pulsante";
+$MESS["BT_UT_SAUTOCOMPLETE_SETTING_MAX_HEIGHT"] = "Altezza max. campo di immissione (per più proprietà)";
+$MESS["BT_UT_SAUTOCOMPLETE_SETTING_MAX_WIDTH"] = "Larghezza massima campo di immissione, pix. (0 - illimitato)";
+$MESS["BT_UT_SAUTOCOMPLETE_SETTING_MIN_HEIGHT"] = "Altezza min. campo di immissione (per più proprietà)";
+$MESS["BT_UT_SAUTOCOMPLETE_SETTING_REP_SYMBOL"] = "Mostra questo carattere al posto dei caratteri riservati";
+$MESS["BT_UT_SAUTOCOMPLETE_SETTING_SHOW_ADD"] = "Mostra il pulsante \"Aggiungi sezione\"";
+$MESS["BT_UT_SAUTOCOMPLETE_SETTING_TITLE"] = "Impostazioni per il completamento automatico dei campi";
+$MESS["BT_UT_SAUTOCOMPLETE_SETTING_VIEW"] = "Controlli dell'interfaccia utente";
+$MESS["BT_UT_SAUTOCOMPLETE_VIEW_AUTO"] = "Completamento automatico casella di testo";
+$MESS["BT_UT_SAUTOCOMPLETE_VIEW_ELEMENT"] = "Completamento automatico casella di testo e finestra di ricerca";

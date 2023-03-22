@@ -1,0 +1,5 @@
+<?
+$MESS["SALE_LOCATION_NAME_NAME_ENTITY_CANNOT_ADD_NAMES_EXCEPTION"] = "Erreur ajoutant le nom de l'entité";
+$MESS["SALE_LOCATION_NAME_NAME_ENTITY_CANNOT_DELETE_NAMES_EXCEPTION"] = "Erreur de suppression nom de l'entité";
+$MESS["SALE_LOCATION_NAME_NAME_ENTITY_CANNOT_UPDATE_NAMES_EXCEPTION"] = "Erreur mise à jour nom de l'entité";
+?>

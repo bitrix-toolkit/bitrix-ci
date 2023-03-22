@@ -1,0 +1,29 @@
+<?
+$MESS["SALE_INSTALL_BACK"] = "Powród do zarządzania modułem";
+$MESS["SALE_INSTALL_BASKET"] = "Koszyk";
+$MESS["SALE_INSTALL_COMPLETE_ERROR"] = "Instalacja zakończona z błędami";
+$MESS["SALE_INSTALL_COMPLETE_OK"] = "Instalacja zakończona. Proszę zapoznać się z sekcją Pomocy dla uzyskania dalszych informacji.";
+$MESS["SALE_INSTALL_DEFAULT"] = "Proszę wybierz moduł e-sklepu i zainstaluj przykładowe pliki";
+$MESS["SALE_INSTALL_ERROR"] = "Błędy instalacji";
+$MESS["SALE_INSTALL_NAME"] = "e-Sklep";
+$MESS["SALE_INSTALL_PERSON"] = "Sekcja personalna";
+$MESS["SALE_INSTALL_PUBLIC_DIR"] = "Folder publiczny";
+$MESS["SALE_INSTALL_PUBLIC_REW"] = "Nadpisz publiczne pliki";
+$MESS["SALE_INSTALL_PUBLIC_SETUP"] = "Instaluj";
+$MESS["SALE_INSTALL_SETUP"] = "Instaluj";
+$MESS["SALE_INSTALL_TITLE"] = "Instalacja modułu e-Sklep";
+$MESS["SALE_INST_PUB_VAR"] = "Wersje publicznych plików";
+$MESS["SALE_UNINSTALL_COMPLETE"] = "Odinstalowywanie zakończone";
+$MESS["SALE_UNINSTALL_DEL"] = "Dezinstalacja";
+$MESS["SALE_UNINSTALL_ERROR"] = "Błędy deinstalacji:";
+$MESS["SALE_UNINSTALL_SAVETABLE"] = "Zabisz Tabele";
+$MESS["SALE_UNINSTALL_WARNING"] = "Ostrzeżenie! Moduł zostanie usunięty z systemu.";
+$MESS["SALE_VARIANT1_DESCR"] = "Zalecane. Uniwersalne skrypty.";
+$MESS["SALE_VARIANT_NUM"] = "Wersja";
+$MESS["SIM_COPY_FOLDER"] = "Folder docelowy (w zależności do strony głównej):";
+$MESS["SIM_COPY_PUBLIC_FILES"] = "Kopiuj publiczne pliki";
+$MESS["SINS_PERM_D"] = "odmówiono";
+$MESS["SINS_PERM_R"] = "Tylko do odczytu";
+$MESS["SINS_PERM_U"] = "Zarządzaj zamówieniami";
+$MESS["SINS_PERM_W"] = "Pełny dostęp";
+?>

@@ -1,0 +1,4 @@
+<?
+$MESS["SALE_LOCATION_GROUP_ENTITY_CODE_FIELD"] = "Código simbólico";
+$MESS["SALE_LOCATION_GROUP_ENTITY_SORT_FIELD"] = "Classificar";
+?>

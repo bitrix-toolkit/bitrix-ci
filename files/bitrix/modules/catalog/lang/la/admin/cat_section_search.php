@@ -1,0 +1,25 @@
+<?
+$MESS["BX_MOD_CATALOG_ADMIN_CSS_BAD_BLOCK_TYPE_ID"] = "Tipo de bloque de información no válida";
+$MESS["BX_MOD_CATALOG_ADMIN_CSS_BAD_IBLOCK"] = "Bloque de información no válida";
+$MESS["BX_MOD_CATALOG_ADMIN_CSS_HEAD_ACTIVE"] = "Activo";
+$MESS["BX_MOD_CATALOG_ADMIN_CSS_HEAD_CODE"] = "Código simbólico";
+$MESS["BX_MOD_CATALOG_ADMIN_CSS_HEAD_CREATED_BY"] = "Creado por";
+$MESS["BX_MOD_CATALOG_ADMIN_CSS_HEAD_DATE_CREATE"] = "Creado el";
+$MESS["BX_MOD_CATALOG_ADMIN_CSS_HEAD_ELEMENT_CNT"] = "Elementos";
+$MESS["BX_MOD_CATALOG_ADMIN_CSS_HEAD_IBLOCK_ID"] = "Bloque de información";
+$MESS["BX_MOD_CATALOG_ADMIN_CSS_HEAD_ID"] = "ID de la sección";
+$MESS["BX_MOD_CATALOG_ADMIN_CSS_HEAD_MODIFIED_BY"] = "Modificado por";
+$MESS["BX_MOD_CATALOG_ADMIN_CSS_HEAD_NAME"] = "Nombre de sección";
+$MESS["BX_MOD_CATALOG_ADMIN_CSS_HEAD_SECTION_CNT"] = "Subsecciones";
+$MESS["BX_MOD_CATALOG_ADMIN_CSS_HEAD_SORT"] = "Tipo";
+$MESS["BX_MOD_CATALOG_ADMIN_CSS_HEAD_TIMESTAMP"] = "Por última vez";
+$MESS["BX_MOD_CATALOG_ADMIN_CSS_HEAD_USERINFO"] = "Ver la información de usuario";
+$MESS["BX_MOD_CATALOG_ADMIN_CSS_HEAD_XML_ID"] = "ID externo";
+$MESS["BX_MOD_CATALOG_ADMIN_CSS_IBLOCK"] = "Seleccione el bloque de información";
+$MESS["BX_MOD_CATALOG_ADMIN_CSS_LIST"] = "Subsecciones de vista";
+$MESS["BX_MOD_CATALOG_ADMIN_CSS_SECTIONS"] = "Secciones";
+$MESS["BX_MOD_CATALOG_ADMIN_CSS_SELECT"] = "Seleccione";
+$MESS["BX_MOD_CATALOG_ADMIN_CSS_TITLE"] = "Seleccione la sección";
+$MESS["IBLOCK_SECSEARCH_PARENT"] = "Sección principal";
+$MESS["IBLOCK_SECSEARCH_SECTIONS"] = "Secciones";
+?>

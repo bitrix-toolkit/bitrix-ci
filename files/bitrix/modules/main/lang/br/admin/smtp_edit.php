@@ -1,0 +1,23 @@
+<?php
+$MESS["smtp_configuration_edit_add"] = "Adicionar conexão SMTP";
+$MESS["smtp_configuration_edit_add_btn"] = "Adicionar";
+$MESS["smtp_configuration_edit_add_btn_title"] = "Adicionar uma nova SMTP";
+$MESS["smtp_configuration_edit_copy"] = "Copiar";
+$MESS["smtp_configuration_edit_copy_title"] = "Fazer uma cópia desta conexão";
+$MESS["smtp_configuration_edit_del"] = "Excluir";
+$MESS["smtp_configuration_edit_del_conf"] = "Você tem certeza que deseja excluir a conexão?";
+$MESS["smtp_configuration_edit_del_title"] = "Excluir conexão SMTP";
+$MESS["smtp_configuration_edit_encrypted"] = "usar criptografia";
+$MESS["smtp_configuration_edit_err_site"] = "Especificar pelo menos um site.";
+$MESS["smtp_configuration_edit_fields"] = "Campos disponíveis:";
+$MESS["smtp_configuration_edit_host"] = "Servidor";
+$MESS["smtp_configuration_edit_insert"] = "Inserir no texto";
+$MESS["smtp_configuration_edit_list"] = "Conexões SMTP";
+$MESS["smtp_configuration_edit_list_title"] = "Ver todas as conexões SMTP";
+$MESS["smtp_configuration_edit_not_set"] = "(não configurado)";
+$MESS["smtp_configuration_edit_password"] = "Senha";
+$MESS["smtp_configuration_edit_port"] = "Porta";
+$MESS["smtp_configuration_edit_sites"] = "Sites:";
+$MESS["smtp_configuration_edit_tab"] = "Parâmetros";
+$MESS["smtp_configuration_edit_tab_title"] = "Parâmetros de conexão SMTP";
+$MESS["smtp_configuration_edit_title"] = "Editar conexão SMTP";

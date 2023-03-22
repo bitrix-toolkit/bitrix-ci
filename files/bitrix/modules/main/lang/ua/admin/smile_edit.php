@@ -1,0 +1,36 @@
+<?
+$MESS["SMILE_EDIT_RECORD"] = "Зміна смайла";
+$MESS["SMILE_NEW_RECORD"] = "Додавання смайла";
+$MESS["ERROR_EDIT_SMILE"] = "Помилка зміни смайла";
+$MESS["ERROR_ADD_SMILE"] = "Помилка додавання смайла";
+$MESS["ERROR_BAD_SESSID"] = "Ваша сесія скінчилася. Будь-ласка, повторіть дію ще раз.";
+$MESS["ERROR_COPY_IMAGE"] = "Помилка завантаження зображення. Можливо недостатньо прав на запис.";
+$MESS["ERROR_EXISTS_IMAGE"] = "Фізичний файл #FILE# вже існує на диску. <br> Можливо, що один зі смайлів використовує цей файл.";
+$MESS["SMILE_SET_ID"] = "Набір";
+$MESS["SMILE_IMAGE_HR"] = "Висока роздільна здатність (HR)";
+$MESS["SMILE_IMAGE_HR_TITLE"] = "Завантажене зображення буде відображатися в два рази чіткіше, за рахунок збільшення щільності пікселів";
+$MESS["SMILE_SORT"] = "Сортування";
+$MESS["SMILE_TYPE"] = "Тип";
+$MESS["SMILE_TYPING"] = "Написання (код смайла)";
+$MESS["SMILE_TYPING_NOTE"] = "Можна перелічити кілька варіантів через пробіл";
+$MESS["SMILE_IMAGE"] = "Зображення";
+$MESS["SMILE_IMAGE_UPLOAD"] = "Нове зображення";
+$MESS["SMILE_IMAGE_NOTE_2"] = "Рекомендований розмір для смайлів: 20x20, 40x40 для HR <br> для іконок: 15x15, 30х30 для HR";
+$MESS["SMILE_IMAGE_NAME"] = "Назва смайла";
+$MESS["SMILE_IMAGE_NAME_EN"] = "Англійська";
+$MESS["SMILE_IMAGE_NAME_DE"] = "Німецька";
+$MESS["SMILE_IMAGE_NAME_RU"] = "Російська";
+$MESS["SMILE_TYPE_SMILE"] = "Смайл";
+$MESS["SMILE_TYPE_ICON"] = "Іконка";
+$MESS["SMILE_BTN_BACK"] = "Список смайлів";
+$MESS["SMILE_BTN_NEW"] = "Додати новий";
+$MESS["SMILE_BTN_DELETE"] = "Видалити";
+$MESS["SMILE_BTN_DELETE_CONFIRM"] = "Ви впевнені, що хочете видалити цей смайл?";
+$MESS["SMILE_TAB_SMILE"] = "Параметри";
+$MESS["SMILE_TAB_SMILE_DESCR"] = "Параметри смайла";
+$MESS["SMILE_IMAGE_SD"] = "Стандартне розширення (SD)";
+$MESS["SMILE_IMAGE_HD"] = "Високе розширення (HD)";
+$MESS["SMILE_IMAGE_UHD"] = "Дуже високе розширення (Ultra HD)";
+$MESS["SMILE_IMAGE_HR_TITLE_2"] = "Завантажене зображення у форматі HD і Ultra HD буде відображатися чіткіше на екранах з високим розширенням, за рахунок збільшення щільності пікселів";
+$MESS["SMILE_HIDDEN"] = "Прихований смайл";
+?>

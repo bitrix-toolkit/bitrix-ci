@@ -1,0 +1,19 @@
+<?php
+$MESS["SALE_A_NEWORDER"] = "Nuovo ordine";
+$MESS["SALE_F_IS_SYNC_B24"] = "Sincronizzazione di Bitrix24";
+$MESS["SALE_ORDE_QUERIED2"] = "Ordini";
+$MESS["SALE_O_CONTEXT_B_IS_SYNC_B24_REGISTRY_CLOSE"] = "Chiudi";
+$MESS["SALE_O_CONTEXT_B_IS_SYNC_B24_REGISTRY_CREATE"] = "Apri";
+$MESS["SALE_O_CONTEXT_B_IS_SYNC_B24_REGISTRY_SENDED"] = "Impossibile selezionare gli ordini perché sono già stati esportati.\n\r ID ordine";
+$MESS["SALE_O_CONTEXT_B_IS_SYNC_B24_REGISTRY_SEND_YES"] = "Sì";
+$MESS["SALE_O_CONTEXT_B_IS_SYNC_B24_REGISTRY_TEXT_CREATE"] = "Aprire un nuovo modulo d'ordine?";
+$MESS["SALE_O_CONTEXT_B_IS_SYNC_B24_SELECTION_MORE_ONE"] = "L'ordine selezionato sarà collegato a un'offerta, motivo per cui è possibile selezionare un solo ordine";
+$MESS["SALE_O_CONTEXT_B_IS_SYNC_B24_SELECTION_MORE_THREE"] = "Non puoi esportare più di tre ordini";
+$MESS["SALE_O_CONTEXT_B_IS_SYNC_B24_SELECTION_NEEDED"] = "Seleziona un ordine";
+$MESS["SALE_O_CONTEXT_B_IS_SYNC_B24_TITLE"] = "Messaggio";
+$MESS["SALE_PRLIST"] = "Ordini";
+$MESS["SALE_SECTION_TITLE"] = "Ordini";
+$MESS["SOAN_UPLOAD_FROM_REGISTRY_LINK"] = "Sincronizza con Bitrix24";
+$MESS["SOAN_UPLOAD_FROM_REGISTRY_TITLE"] = "Importa in Bitrix24 dall'elenco degli ordini";
+$MESS["SOA_BASKET_VAT_RATE"] = "Aliquota fiscale";
+$MESS["SOA_SHOW_SET"] = "Espandi";

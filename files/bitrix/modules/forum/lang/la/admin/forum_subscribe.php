@@ -1,0 +1,37 @@
+<?
+$MESS["FM_ACT_DELETE"] = "Borrar";
+$MESS["FM_ACT_DEL_CONFIRM"] = "Está usted usted seguro que desea borrar Todos las suscripciones de los usuarios?";
+$MESS["FM_ACT_EDIT"] = "Editar";
+$MESS["FM_ALL_MESSAGE"] = "Todos los mensajes del foro";
+$MESS["FM_FLT_EMAIL"] = "E-Mail";
+$MESS["FM_FLT_FIO"] = "Apellido, nombre, segundo nombre";
+$MESS["FM_FLT_FORUM"] = "Foro";
+$MESS["FM_FLT_FORUM_ALT"] = "Foro";
+$MESS["FM_FLT_LOGIN"] = "Conexión";
+$MESS["FM_FLT_SEARCH"] = "Buscar";
+$MESS["FM_FLT_SEARCH_TITLE"] = "Ingeesar su cadena de búsqueda";
+$MESS["FM_FLT_START_DATE"] = "Fecha de inicio de la suscripción";
+$MESS["FM_FLT_START_DATE_ALT"] = "Fecha de inicio de la suscripción";
+$MESS["FM_FLT_SUBSCR_TYPE"] = "Tipo de suscripción";
+$MESS["FM_FLT_SUBSCR_TYPE_ALT"] = "Tipo de suscripción";
+$MESS["FM_HEAD_EMAIL"] = "E-Mail";
+$MESS["FM_HEAD_FORUM_USER_ID"] = "FID";
+$MESS["FM_HEAD_LAST_NAME"] = "Apellido";
+$MESS["FM_HEAD_LOGIN"] = "Conexión";
+$MESS["FM_HEAD_NAME"] = "Nombre";
+$MESS["FM_HEAD_START_DATE"] = "Fecha de inicio de la suscripción";
+$MESS["FM_HEAD_SUBSC"] = "Número de suscripciones";
+$MESS["FM_HEAD_USER_ID"] = "ID";
+$MESS["FM_MAIN_EDIT_TITLE"] = "Editar el Perfil de usuario";
+$MESS["FM_NEW_TOPIC_ONLY"] = "Sólo nuevos temas";
+$MESS["FM_NO"] = "No";
+$MESS["FM_SPACE"] = "No hay ningún seleccionado";
+$MESS["FM_TITLE"] = "Administración de la suscripción";
+$MESS["FM_TITLE_PAGE"] = "Usuarios del foro";
+$MESS["FM_TYPICAL"] = "Nuevos mensajes del foro";
+$MESS["FM_WRONG_DATE_FROM"] = "Por favor ingrese la fecha correcta \"desde\" para la fecha de creación";
+$MESS["FM_WRONG_DATE_TO"] = "Por favor ingrese la fecha correcta \"hasta\" para la fecha de creación";
+$MESS["FM_WRONG_PERIOD"] = "Período se especificó incorrectamente";
+$MESS["MAIN_ADMIN_LIST_CHECKED"] = "Marcado:";
+$MESS["MAIN_ADMIN_LIST_SELECTED"] = "Seleccionado:";
+?>

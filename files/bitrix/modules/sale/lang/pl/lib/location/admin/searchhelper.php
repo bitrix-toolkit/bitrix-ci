@@ -1,0 +1,3 @@
+<?php
+$MESS["SALE_LOCATION_ADMIN_SEARCH_HELPER_ENTITY_INVALID_DBINDEX"] = "Brakuje jednego lub więcej indeksów w tabelach baz danych powiązanych z lokalizacjami. To może obniżyć wydajność lokalizacji. Zaleca się #ANCHOR_INDEX_RESTORE#ręczne przywrócenie indeksów baz danych#ANCHOR_END#.";
+$MESS["SALE_LOCATION_ADMIN_SEARCH_HELPER_ENTITY_INVALID_SINDEX"] = "Indeks wyszukiwania lokalizacji nie jest już istotny. Jeśli użyjesz wyszukiwania, aby wybrać lokalizację, jego działanie może być powolne, a wynik nieistotny. Zalecamy #ANCHOR_INDEX_RESTORE# ręcznie przywrócić indeks wyszukiwania #ANCHOR_END#.";

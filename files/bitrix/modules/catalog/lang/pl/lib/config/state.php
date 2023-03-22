@@ -1,0 +1,3 @@
+<?php
+$MESS["CATALOG_STATE_ERR_PRODUCT_IN_SECTION_LIMIT"] = "Po przeniesieniu sekcji liczba produktów do wykorzystania na stronach docelowych będzie wynosić #COUNT#. Przekroczysz maksymalną liczbę produktów dozwoloną na stronach docelowych (#LIMIT#).";
+$MESS["CATALOG_STATE_ERR_PRODUCT_LIMIT_1"] = "Ta sekcja jest skonfigurowana do wyświetlania produktów na stronie docelowej. Osiągnięto maksymalną liczbę takich produktów dozwoloną w bieżącym planie. Możesz utworzyć produkt w innej sekcji, pod warunkiem, że nie jest ona powiązana ze stroną docelową. Możesz też cofnąć publikację produktu w tej sekcji, aby zrobić miejsce na nowy. Twój katalog zawiera obecnie #COUNT# produktów do wyświetlenia, a ich maksymalna liczba wynosi #LIMIT#.";

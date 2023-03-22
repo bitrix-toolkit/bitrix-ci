@@ -1,0 +1,31 @@
+<?
+$MESS["RDB_CHECK_RESULT"] = "Résultat de la vérification";
+$MESS["RDB_CHECK_TABLES"] = "Vérifiez / tables de réparation";
+$MESS["RDB_CONNECT_ERROR"] = "Impossible de se connecter à la base de données";
+$MESS["RDB_DATABASE_ERROR"] = "Vérifiez / réparation de tables peut être effectuée pour la base de données MySQL seulement";
+$MESS["RDB_EXEC_TIME"] = "Temps d'exécution : ";
+$MESS["RDB_OPTIMIZE_ALL_DONE"] = "L'optimisation et l'analyse des tableaux sont terminées.";
+$MESS["RDB_OPTIMIZE_ANALYZE"] = "analyse";
+$MESS["RDB_OPTIMIZE_BTN_CONTINUE"] = "Continuer";
+$MESS["RDB_OPTIMIZE_BTN_PAUSE"] = "arrêter";
+$MESS["RDB_OPTIMIZE_BTN_START"] = "Optimiser";
+$MESS["RDB_OPTIMIZE_CHECK_FIRST"] = "Lors d'optimisation un tableau (#table_name#) a été détécté  ue vous souhaitez restaurer. Tout d'abord, effectuez la vérification/récupération tableaux.";
+$MESS["RDB_OPTIMIZE_DONE"] = "A pris connaissance";
+$MESS["RDB_OPTIMIZE_ERROR"] = "Erreur !";
+$MESS["RDB_OPTIMIZE_INIT"] = "Initialisation";
+$MESS["RDB_OPTIMIZE_OPTIMIZE"] = "optimisation";
+$MESS["RDB_OPTIMIZE_PROGRESS"] = "#done# du #todo#";
+$MESS["RDB_OPTIMIZE_TABLE_NOT_FOUND"] = "Tableau inconnu.";
+$MESS["RDB_OPTIMIZE_TIP"] = "Sur cette page vous pouvez optimiser et analyser les tableaux de la base de données. Cela augmentera l'efficacité du traitement des requêtes par le serveur de la base de données.";
+$MESS["RDB_OPTIMIZE_WARNING_DETAILS"] = "N'ouvrez pas simultanément cette page en plusieurs exemplaires, cela peut endommager votre base de données. L'opération peut durer un certain temps. Il est souhaitable de l'effectuer lorsque le site est le moins chargé.";
+$MESS["RDB_OPTIMIZE_WARNING_TITLE"] = "Attention !";
+$MESS["RDB_REPAIR_DATABASE"] = "Vérifiez / tables de réparation";
+$MESS["RDB_REPAIR_RESULT"] = "Résultat de la restauration";
+$MESS["RDB_ROWS_COUNT"] = "Rangées comptent";
+$MESS["RDB_SEC"] = "(sec.)";
+$MESS["RDB_TABLE_NAME"] = "Nom du tableau";
+$MESS["RDB_TABLE_SIZE"] = "La taille de la table (octets)";
+$MESS["RDB_TIP_1"] = "Ce formulaire vous aidera à vérifier et de récupérer tables de base de données. La reprise de la table de base de données peut être peformed uniquement avec les tables MyISAM de bases de données MySQL.";
+$MESS["RDB_TIP_2"] = "Attention !";
+$MESS["RDB_TIP_3"] = "Ne jamais ouvrir cette page dans plusieurs fenêtres simultanément, car cela pourrait endommager votre base de données. Pour les grandes bases de données, la récupération peut prendre un temps considérable !";
+?>

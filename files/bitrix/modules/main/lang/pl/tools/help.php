@@ -1,0 +1,33 @@
+<?
+$MESS["HELP_ACCESS_DENIED"] = "Odmowa dostępu";
+$MESS["HELP_BACK"] = "Wstecz";
+$MESS["HELP_CLOSE"] = "Zamknij";
+$MESS["HELP_COLLAPSE_ALL"] = "Zwiń wszystko";
+$MESS["HELP_CONFIRM_DELETE"] = "Czy napewno chcesz usunąć ten plik i/lub folder?";
+$MESS["HELP_CREATE"] = "Utwórz";
+$MESS["HELP_CREATE_FOLDER_ERROR"] = "Błąd tworzenia folderu";
+$MESS["HELP_CURRENT_FOLDER"] = "Bieżący folder:";
+$MESS["HELP_DELETE"] = "Usuń";
+$MESS["HELP_DELETE_ERROR"] = "Błąd usuwania pliku";
+$MESS["HELP_EDIT"] = "Edytuj";
+$MESS["HELP_ERROR_DELETE_FOLDER"] = "Błąd usuwania folderu #FOLDER#";
+$MESS["HELP_EXPAND_ALL"] = "Rozszerz wszystko";
+$MESS["HELP_FILENAME"] = "Nazwa pliku:";
+$MESS["HELP_FILE_EXISTS"] = "Plik lub folder o takiej nazwie już istnieje";
+$MESS["HELP_FILE_NOT_EXIST"] = "Plik #FILE# nie istnieje";
+$MESS["HELP_FILE_NOT_FOUND"] = "Nie znaleziono pliku pomocy";
+$MESS["HELP_FILE_SAVE_ERROR"] = "Błąd zapisu pliku";
+$MESS["HELP_FOLDER_NOT_EMPTY"] = "Błąd usuwania folderu #FOLDER# (nie pusty)";
+$MESS["HELP_FOLDER_NOT_EXIST"] = "Folder #FOLDER# nie istnieje";
+$MESS["HELP_HEADER"] = "Nagłówek:";
+$MESS["HELP_HIDE"] = "Ukryj";
+$MESS["HELP_IS_FOLDER"] = "Utwórz folder:";
+$MESS["HELP_KERNEL"] = "Rdzeń";
+$MESS["HELP_MOVE_DOWN"] = "Przenieś w Dół";
+$MESS["HELP_MOVE_UP"] = "Przenieś w Górę";
+$MESS["HELP_RESET"] = "Wyczyść";
+$MESS["HELP_SEARCH"] = "Szukaj";
+$MESS["HELP_SORT"] = "Sortowanie:";
+$MESS["HELP_TITLE"] = "Pomoc";
+$MESS["HELP_TREE"] = "Synchronizacja z listą tematu";
+?>

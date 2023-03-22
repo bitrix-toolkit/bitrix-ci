@@ -1,0 +1,35 @@
+<?
+$MESS["SALE_ORDER_GENERATE_ACCOUNT_NUMBER_ORDER_NUMBER_IS_NOT_SET"] = "Nie można ustawić ID zamówienia";
+$MESS["SALE_ORDER_GENERATE_ACCOUNT_NUMBER_ORDER_NUMBER_IS_NOT_SET_AS_ID"] = "Nie można ustawić ID jako numeru zamówienia";
+$MESS["SALE_ORDER_GENERATE_ACCOUNT_NUMBER_ORDER_NUMBER_WRONG_ID"] = "Błędne ID zamówienia";
+$MESS["SKGO_CALC_PARAM_ERROR"] = "Błąd połączenia DoCalculateOrder: ID stony sieciowej nie zostało określone.";
+$MESS["SKGO_CANCEL_ERROR"] = "Błąd anulowania zamówienia. #MESSAGE#";
+$MESS["SKGO_DELETE_ERROR"] = "Błąd usuwania zamówienia. #MESSAGE#";
+$MESS["SKGO_DUB_CANCEL"] = "Do zamówienia ##ID# jest już przypisana flaga anulowane";
+$MESS["SKGO_DUB_DEDUCTION"] = "Zamówienie ##ID# już uzyskało wymaganą wartość \"Wysłane\".";
+$MESS["SKGO_DUB_DELIVERY"] = "Do zamówienia ##ID# jest już przypisana flaga dostawa";
+$MESS["SKGO_DUB_PAY"] = "Do zamówienia ##ID# jest już przypisana flaga opłacone";
+$MESS["SKGO_DUB_RESERVATION"] = "Zamówienie ##ID# już uzyskało wymaganą wartość \"Zarezerwowane\".";
+$MESS["SKGO_DUB_STATUS"] = "Zamówienie ##ID# już uzyskało wymagany status";
+$MESS["SKGO_EMPTY_ACCOUNT_NUMBER"] = "Numer zamówienia nie może być pusty";
+$MESS["SKGO_EMPTY_CURRENCY"] = "Waluta nie jest określona";
+$MESS["SKGO_EMPTY_PERS_TYPE"] = "Nie określono typu płatnika";
+$MESS["SKGO_EMPTY_SITE"] = "Nie określono strony zamawiania";
+$MESS["SKGO_EMPTY_USER_ID"] = "Nie określono ID klienta";
+$MESS["SKGO_ERROR_ORDERS"] = "Użytkownik ##USER_ID# już ma zamówienia w e-Sklepie i nie może być usunięty.";
+$MESS["SKGO_ERROR_ORDERS_ARCHIVE"] = "Użytkownik ##USER_ID# uzyskał zamówienia w module e-Sklep i nie może zostać usunięty.";
+$MESS["SKGO_ERROR_ORDERS_ARCHIVE_CURRENCY"] = "W systemie są zarchiwizowane zamówienia w których zastosowano walutę \"#CURRENCY#\".";
+$MESS["SKGO_ERROR_ORDERS_CURRENCY"] = "System zawiera zmaówienia w #CURRENCY#.";
+$MESS["SKGO_EXISTING_ACCOUNT_NUMBER"] = "Wprowadzony numer zamówienia jest już w użyciu dla innego zamówienia";
+$MESS["SKGO_NO_ORDER"] = "Nie można znaleźć zamówienia ##ID#";
+$MESS["SKGO_NO_ORDER_ID"] = "ID zamówienia nie jest określone";
+$MESS["SKGO_NO_ORDER_ID1"] = "ID zamówienia nie jest określone";
+$MESS["SKGO_SHOPPING_CART_EMPTY"] = "Koszyk jest pusty";
+$MESS["SKGO_WRONG_CURRENCY"] = "Nie można znaleźć waluty ##ID#";
+$MESS["SKGO_WRONG_DELIVERY"] = "Nie można znaleźć usługi dostawy ##ID#";
+$MESS["SKGO_WRONG_PERSON_TYPE"] = "Nie można znaleźć typu płatnika ##ID#";
+$MESS["SKGO_WRONG_PS"] = "Nie można znaleźć systemu płatności ##ID#";
+$MESS["SKGO_WRONG_SITE"] = "Nie można znaleźć strony ##ID#";
+$MESS["SKGO_WRONG_STATUS"] = "Nie można znaleźć statusu ##ID#";
+$MESS["SKGO_WRONG_USER"] = "Nie można znaleźć użytkownika ##ID#";
+?>

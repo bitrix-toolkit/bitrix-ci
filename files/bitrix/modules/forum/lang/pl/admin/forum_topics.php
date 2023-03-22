@@ -1,0 +1,36 @@
+<?
+$MESS["FM_ACT_DELETE"] = "Usuń";
+$MESS["FM_ACT_MOVE"] = "Przenieś";
+$MESS["FM_FROM_TILL_TIMESTAMP"] = "Ostatnia data musi być późniejsza od pierwszej.";
+$MESS["FM_TITLE_APPROVED"] = "Moderacja";
+$MESS["FM_TITLE_AUTHOR"] = "Autor";
+$MESS["FM_TITLE_DATE_CREATE"] = "Utworzony";
+$MESS["FM_TITLE_DATE_LAST_POST"] = "Zmodyfikowany";
+$MESS["FM_TITLE_DESCRIPTION"] = "Opis";
+$MESS["FM_TITLE_FORUM"] = "Forum";
+$MESS["FM_TITLE_LAST_MESSAGE"] = "Ostatnia wiadomość";
+$MESS["FM_TITLE_MESSAGES"] = "wiadomości";
+$MESS["FM_TITLE_NAME"] = "Nazwa";
+$MESS["FM_TITLE_SORT"] = "Sortowanie";
+$MESS["FM_TITLE_STATE"] = "Stan";
+$MESS["FM_TITLE_USER_START_ID"] = "ID Autora";
+$MESS["FM_TITLE_VIEWS"] = "Widoki";
+$MESS["FM_TOPICS"] = "wiadomości";
+$MESS["FM_WRONG_DATE_CREATE_FROM"] = "Proszę wpisać poprawnie dolną granicę zakresu dat utworzenia";
+$MESS["FM_WRONG_DATE_CREATE_TILL"] = "Proszę poprawić wartość ostatniej daty dla daty utworzenia.";
+$MESS["FM_WRONG_DATE_FROM"] = "Proszę poprawić wartość pierwszej daty dla daty utworzenia ostatniego postu.";
+$MESS["FM_WRONG_DATE_TILL"] = "Proszę poprawić wartość ostatniej daty dla daty utworzenia ostatniego postu.";
+$MESS["FM_WRONG_FORUM_ID"] = "Cel forum jest niepoprawny";
+$MESS["FM_WRONG_UPDATE"] = "Aktualizacja nie powiodła się";
+$MESS["FORUM_TOPICS"] = "Zarządzaj tematami";
+$MESS["F_ALL"] = "Wszystkie";
+$MESS["F_CLOSE"] = "Zamknięte";
+$MESS["F_HIDE"] = "Nie zatwierdzone";
+$MESS["F_LINK"] = "Link";
+$MESS["F_OPEN"] = "Otwarte";
+$MESS["F_PINN"] = "Przypięte";
+$MESS["F_SHOW"] = "Zatwierdzone";
+$MESS["F_UNPINN"] = "Odpięty";
+$MESS["MAIN_ADMIN_LIST_CHECKED"] = "Zaznaczone:";
+$MESS["MAIN_ADMIN_LIST_SELECTED"] = "Wybrany:";
+?>

@@ -1,0 +1,7 @@
+<?php
+$MESS["MAIN_UI_SELECTOR_DIRECTOR_DESCRIPTION"] = "Zarząd Firmy.";
+$MESS["MAIN_UI_SELECTOR_DIRECTOR_NAME"] = "Moja firma: przełożeni";
+$MESS["MAIN_UI_SELECTOR_EMPLOYEE_DESCRIPTION"] = "Wszyscy pracownicy firmy";
+$MESS["MAIN_UI_SELECTOR_EMPLOYEE_NAME"] = "Moja firma: Pracownicy";
+$MESS["MAIN_UI_SELECTOR_TAB_USERGROUPS"] = "Grupy robocze";
+$MESS["MAIN_UI_SELECTOR_TITLE_USERGROUPS"] = "Grupy robocze:";

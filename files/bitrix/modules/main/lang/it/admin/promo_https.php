@@ -1,0 +1,26 @@
+<?php
+$MESS["HTTPS_PROMO__CERTIFICATES_FEATURES"] = "Informazioni importanti sul certificato";
+$MESS["HTTPS_PROMO__CERTIFICATE_CHOICE_NEW"] = "Scegli e acquista un certificato.";
+$MESS["HTTPS_PROMO__CERTIFICATE_IDN"] = "Con supporto IDN";
+$MESS["HTTPS_PROMO__CERTIFICATE_IDN_ALT"] = " - per domini in cirillico.";
+$MESS["HTTPS_PROMO__CERTIFICATE_INSTALL_NEW"] = "Installa un certificato SSL su un server";
+$MESS["HTTPS_PROMO__CERTIFICATE_REGULAR"] = "Singolo certificato";
+$MESS["HTTPS_PROMO__CERTIFICATE_REGULAR_ALT"] = "Singolo certificato";
+$MESS["HTTPS_PROMO__CERTIFICATE_VENDORS"] = "Provider certificati SSL generali";
+$MESS["HTTPS_PROMO__CHANGE_LINKS_NEW"] = "Modifica tutti i link ipertestuali assoluti del sito web in relativi.";
+$MESS["HTTPS_PROMO__CHECK_ACTIVE_NEW"] = "Controlla la disponibilità di un sito web tramite HTTPS.";
+$MESS["HTTPS_PROMO__CHECK_PROTOCOL_NEW"] = "Controlla le impostazioni protocollo per contenuti da risorse esterne (video, immagini).";
+$MESS["HTTPS_PROMO__EXTERNAL_SCRIPTS"] = "Modifica i link per tutti gli script esterni da assoluti a relativi.";
+$MESS["HTTPS_PROMO__GOOGLE"] = "Aggiungi una versione del sito web HTTPS a Google Search Console.";
+$MESS["HTTPS_PROMO__HOST_AND_ROBOTS_NEW"] = "Configura la direttiva Host nel file robots.txt per HTTPS.";
+$MESS["HTTPS_PROMO__INSTALL_CERTIFICATE_NEW"] = "Installa un certificato SSL sul tuo hosting.";
+$MESS["HTTPS_PROMO__MULTIDOMAINS_CERTIFICATE"] = "Certificato multidominio";
+$MESS["HTTPS_PROMO__MULTIDOMAINS_CERTIFICATE_ALT"] = " - per più origini sicure e note.";
+$MESS["HTTPS_PROMO__PREPARE_SITE"] = "Aggiorna il tuo sito web per utilizzare HTTPS";
+$MESS["HTTPS_PROMO__REDIRECT_NEW"] = "Configura il redirect 301 da HTTP a HTTPS.";
+$MESS["HTTPS_PROMO__SEARCHERS_NEW"] = "Aggiorna l'indice di ricerca globale";
+$MESS["HTTPS_PROMO__SITEMAP_NEW"] = "Modifica i link nel file sitemap.xml.";
+$MESS["HTTPS_PROMO__SITE_SETTINGS_NEW"] = "Esegui tutte le modifiche importanti al sito web";
+$MESS["HTTPS_PROMO__TO_MOST_SITES"] = " - si adatta alla maggior parte dei siti web.";
+$MESS["HTTPS_PROMO__TO_SEVERAL_DOMAINS"] = "sottodomini dinamici";
+$MESS["HTTPS_PROMO__TO_SEVERAL_DOMAINS_ALT"] = " - per un'origine sicura con molti sottodomini dinamici.";

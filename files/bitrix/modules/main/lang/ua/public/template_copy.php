@@ -1,0 +1,33 @@
+<?
+$MESS["comp_templ_cur_site_template"] = "Використовується в шаблоні сайту";
+$MESS["template_copy_def"] = "за умовчанням";
+$MESS["comp_prop_close_w"] = "Закрити";
+$MESS["comp_prop_close"] = "Закрити вікно";
+$MESS["comp_prop_cancel_title"] = "Закрити вікно без збереження змін";
+$MESS["comp_templ_use"] = "Застосувати новий шаблон компонента";
+$MESS["comp_prop_save"] = "Зберегти";
+$MESS["comp_prop_save_title"] = "Зберегти параметри компонента";
+$MESS["template_copy_sel"] = "інший:";
+$MESS["template_copy_title"] = "Копіювання шаблону компонента";
+$MESS["comp_templ_new_template"] = "Копіювати в шаблон сайту";
+$MESS["comp_prop_name"] = "Назва";
+$MESS["comp_templ_new_tpl"] = "Назва нового шаблону компонента";
+$MESS["comp_prop_err_comp"] = "Не вдалося виявити код виклику компонента.";
+$MESS["comp_prop_err_param"] = "Невірні вхідні параметри.";
+$MESS["comp_prop_err_file"] = "Недостатні права доступу до скрипта, який містить виклик компонента.";
+$MESS["comp_prop_err_open"] = "Неможливо відкрити скрипт, що містить виклик компонента.";
+$MESS["comp_prop_desc"] = "Опис";
+$MESS["comp_templ_edit"] = "Перейти до редагування шаблону";
+$MESS["comp_templ_error_copy"] = "Помилка копіювання шаблону";
+$MESS["comp_prop_err_save"] = "Помилка при збереженні файлу скрипта. Зміни не збережено.";
+$MESS["template_copy_cur"] = "поточний";
+$MESS["comp_templ_cur_template"] = "Поточний шаблон компонента";
+$MESS["comp_prop_template_sys"] = "Системний";
+$MESS["comp_templ_system"] = "системний шаблон";
+$MESS["copy_comp_sys_templ"] = "Системний шаблон компонента перед зміною необхідно скопіювати в шаблон сайту.";
+$MESS["comp_prop_cancel"] = "Скасувати";
+$MESS["comp_prop_template"] = "Шаблон";
+$MESS["comp_templ_template"] = "Шаблон компонента";
+$MESS["comp_prop_path"] = "Шлях, звідки підключений компонент";
+$MESS["comp_templ_def_templ"] = "Загальний шаблон";
+?>

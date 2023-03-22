@@ -1,0 +1,34 @@
+<?
+$MESS["SAPE1_ACTIVE"] = "Activo:";
+$MESS["SAPE1_ADD"] = "Nuevo plan";
+$MESS["SAPE1_ADD1"] = "Agregar";
+$MESS["SAPE1_DELETE"] = "Eliminar plan";
+$MESS["SAPE1_DELETE1"] = "Eliminar";
+$MESS["SAPE1_DELETE1_CONF"] = "¿Está seguro que desea eliminar este registro? ";
+$MESS["SAPE1_DELETE_CONF"] = "¿Está seguro que desea eliminar este plan?";
+$MESS["SAPE1_DESCR"] = "Descripción del plan:";
+$MESS["SAPE1_ERROR_SAVE"] = "Error al guardar el plan";
+$MESS["SAPE1_ERROR_SAVE_SECTION"] = "Error al guarar el grupo de productos del plan";
+$MESS["SAPE1_LIMIT"] = "El plan está activo para ventas superiores a (pza.)";
+$MESS["SAPE1_LIMIT_HINT"] = "The plan is active for sales with amount over<br><small>in the site base currency</small>";
+$MESS["SAPE1_LIST"] = "Planes";
+$MESS["SAPE1_MODULE"] = "Módulo";
+$MESS["SAPE1_NAME"] = "Nombre del plan:";
+$MESS["SAPE1_NO"] = "(no)";
+$MESS["SAPE1_NO_MODULE"] = "El módulo del grupo de producto no se escpecifica";
+$MESS["SAPE1_NO_NAME"] = "El nombre del plan no está especificdo";
+$MESS["SAPE1_NO_RATE_CURRENCY"] = "El tipo de cambio del plan no está especificdo";
+$MESS["SAPE1_NO_SECTION"] = "No se especifica ningún grupo de producto ";
+$MESS["SAPE1_NO_SITE"] = "El sitio web del plan no está especificado";
+$MESS["SAPE1_PLAN"] = "Plan";
+$MESS["SAPE1_PLAN_PARAM"] = "Parámetros del plan";
+$MESS["SAPE1_RATE"] = "Tarifa:";
+$MESS["SAPE1_RATE1"] = "Tarifa";
+$MESS["SAPE1_SECTION"] = "Grupo";
+$MESS["SAPE1_SECTIONS"] = "Grupos de productos";
+$MESS["SAPE1_SECTIONS_ALT"] = "Grupos de porductos con tarífas especiales";
+$MESS["SAPE1_SITE"] = "Sitio:";
+$MESS["SAPE1_TIMESTAMP_X"] = "Última fecha de modificaión:";
+$MESS["SAPE1_TITLE_ADD"] = "Nuevo plan";
+$MESS["SAPE1_TITLE_UPDATE"] = "Editar plan #ID#";
+?>

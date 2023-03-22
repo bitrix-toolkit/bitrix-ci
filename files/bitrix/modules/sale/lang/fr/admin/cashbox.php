@@ -1,0 +1,30 @@
+<?
+$MESS["SALE_CASHBOX_COMPLIES_FZ"] = "Restez conforme FZ-54 en utilisant les solutions Bitrix";
+$MESS["SALE_CASHBOX_CONNECT_INSTRUCTION"] = "Vous devez utiliser la caisse enregistreuse pour recevoir des paiements en espèces ou par carte de crédit.";
+$MESS["SALE_CASHBOX_CONNECT_INSTRUCTION_2_TITLE"] = "Configurer l'application";
+$MESS["SALE_CASHBOX_CONNECT_INSTRUCTION_APP_STEP_1"] = "Spécifiez cette URL dans les paramètres de l'application : ";
+$MESS["SALE_CASHBOX_CONNECT_INSTRUCTION_APP_STEP_2"] = "Démarrez l'application de bureau de la caisse enregistreuse";
+$MESS["SALE_CASHBOX_CONNECT_INSTRUCTION_APP_STEP_3"] = "Pour configurer et activer la caisse enregistreuse, passez au <a href=\"/bitrix/admin/sale_cashbox_list.php?lang=ru\">formulaire de la liste</a>";
+$MESS["SALE_CASHBOX_CONNECT_INSTRUCTION_STEP_1"] = "Devenir un entrepreneur en transmission de données OFD";
+$MESS["SALE_CASHBOX_CONNECT_INSTRUCTION_STEP_2"] = "Achetez une caisse enregistreuse comprenant un lecteur fiscal";
+$MESS["SALE_CASHBOX_CONNECT_INSTRUCTION_STEP_3"] = "Inscrivez votre caisse enregistreuse auprès de la direction des impôts";
+$MESS["SALE_CASHBOX_CONNECT_INSTRUCTION_STEP_4"] = "Connectez votre caisse enregistreuse à l'OFD";
+$MESS["SALE_CASHBOX_CONNECT_INSTRUCTION_STEP_5"] = "Installez les pilotes de la caisse enregistreuse sur un ordinateur local";
+$MESS["SALE_CASHBOX_CONNECT_INSTRUCTION_STEP_5_HELP_DRIVER_1"] = "Pilote de caisse enregistreuse pour l'impression de reçus";
+$MESS["SALE_CASHBOX_CONNECT_INSTRUCTION_STEP_5_HELP_DRIVER_1_DESC"] = "Ce pilote est nécessaire pour activer les ports COM virtuels. Le pack de pilotes comprend une application de test de pilote (fptr_t.exe dans le répertoire nt-x86-mingw) nécessaire pour tester et visualiser les ports.";
+$MESS["SALE_CASHBOX_CONNECT_INSTRUCTION_STEP_5_HELP_DRIVER_2"] = "Le pilote de la caisse enregistreuse pour envoyer les données à l'OFD";
+$MESS["SALE_CASHBOX_CONNECT_INSTRUCTION_STEP_5_HELP_DRIVER_2_DESC"] = "Ce pilote est requis par le service \"Ethernet sur USB\". Utilisez l'application DTOintegrator.exe dans \"\\Program Files (x86)\\ATOL\\Drivers8\\Bin\\\" pour le configurer. L'application a besoin des permissions d'administrateur.";
+$MESS["SALE_CASHBOX_CONNECT_INSTRUCTION_STEP_6"] = "Passez BSM en version 17.xx";
+$MESS["SALE_CASHBOX_CONNECT_INSTRUCTION_STEP_7"] = "Passez BSM en version 17.xx";
+$MESS["SALE_CASHBOX_CONNECT_INSTRUCTION_STEP_8"] = "Cochez l'option \"Activer l'impression de reçus\" <a class=\"adm-cashbox-list-load-link\" href=\"/bitrix/admin/sale_pay_system.php?lang=en\" target=\"_blank\">dans les options du système de paiement</a> si les reçus sont demandés.";
+$MESS["SALE_CASHBOX_CONNECT_INSTRUCTION_TITLE"] = "Comment connecter la caisse enregistreuse";
+$MESS["SALE_CASHBOX_CONNECT_TO_ESHOP"] = "Connectez la caisse enregistreuse à votre boutique en ligne";
+$MESS["SALE_CASHBOX_LOAD"] = "Télécharger";
+$MESS["SALE_CASHBOX_LOAD_HERE"] = "Télécharger ici";
+$MESS["SALE_CASHBOX_PAGE_TITLE"] = "Connecter la caisse enregistreuse";
+$MESS["SALE_CASHBOX_SOLUTION_ITEM_1"] = "Connexion simple";
+$MESS["SALE_CASHBOX_SOLUTION_ITEM_2"] = "Utiliser un OFD pratique";
+$MESS["SALE_CASHBOX_SOLUTION_ITEM_3"] = "Conformité FZ-54";
+$MESS["SALE_CASHBOX_TITLE"] = "Caisse enregistreuse Bitrix";
+$MESS["SALE_CASHBOX_TITLE_FZ"] = "Conformité FZ-54";
+?>
