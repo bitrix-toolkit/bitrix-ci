@@ -1,0 +1,34 @@
+<?
+$MESS["CAT_1C_CREATE"] = "Créer au besoin";
+$MESS["CAT_1C_CURRENT"] = "Actuel";
+$MESS["CAT_1C_DEACTIVATE"] = "Désactiver";
+$MESS["CAT_1C_DELETE"] = "supprimer";
+$MESS["CAT_1C_DETAIL_HEIGHT"] = "Hauteur maximale admissible de l'image détaillée";
+$MESS["CAT_1C_DETAIL_RESIZE"] = "Modifier l'image détaillée";
+$MESS["CAT_1C_DETAIL_WIDTH"] = "Largeur admissible maximale de l'image détaillée";
+$MESS["CAT_1C_DISABLE_CHANGE_PRICE_NAME"] = "Ne changez pas le nom du type de prix si une ID externe est utilisée (XML_ID)";
+$MESS["CAT_1C_ELEMENT_ACTION_2"] = "Actions avec des groupes qui manquent dans le fichier d'importation";
+$MESS["CAT_1C_EXTENDED_SETTINGS"] = "Paramètres avancés";
+$MESS["CAT_1C_FILE_SIZE_LIMIT"] = "Volume de la partie de fichier dont le chargement s'effectue en une seule fois dans le même temps (en bytes)";
+$MESS["CAT_1C_FORCE_OFFERS_2"] = "Les prix sont uniquement au bloc info des offres commerciales";
+$MESS["CAT_1C_GENERATE_PREVIEW"] = "Générer automatiquement l'image de l'annonce";
+$MESS["CAT_1C_GROUP_PERMISSIONS"] = "Permettre le chargement aux groupes des utilisateurs";
+$MESS["CAT_1C_IBLOCK_TYPE"] = "Type de bloc d'information";
+$MESS["CAT_1C_INTERVAL"] = "longueur de l'étape, sec.";
+$MESS["CAT_1C_NONE"] = "rien";
+$MESS["CAT_1C_PICTURE"] = "Image de l'annonce";
+$MESS["CAT_1C_PREVIEW_HEIGHT"] = "Hauteur maximale admissible de l'image de l'annonce";
+$MESS["CAT_1C_PREVIEW_WIDTH"] = "Largeur maximum admissible de l'image de l'annonce.";
+$MESS["CAT_1C_SECTION_ACTION_2"] = "Actions avec des groupes qui manquent dans le fichier d'importation";
+$MESS["CAT_1C_SETTINGS_SAVE_DENIED"] = "Il vous faut les droits d'accès \"Éditer le code PHP\" (edit_php) du module noyau (principal) pour éditer les paramètres de cet onglet.";
+$MESS["CAT_1C_SITE_LIST"] = "Les sites auxquels lier les blocs d'information lors de création";
+$MESS["CAT_1C_SKIP_ROOT_SECTION_2"] = "N'importez pas le niveau supérieur du groupe de produits, s'il est unique";
+$MESS["CAT_1C_TRANSLIT_ON_ADD_2"] = "Translittérer le code du caractère à partir du nom lors d'ajout d'élément (marchandise) ou section (groupes de marchandises)";
+$MESS["CAT_1C_TRANSLIT_ON_UPDATE_2"] = "Translittérer le code de symboles de la dénomination lors du renouvellement de l'élément (de la marchandise) ou de la section (des groupes de marchandises)";
+$MESS["CAT_1C_TRANSLIT_REPLACE_CHAR"] = "Remplacement pour les caractères non alphabétiques";
+$MESS["CAT_1C_USE_CRC"] = "Utiliser des totaux de contrôle d'éléments pour l'optimisation de la mise à jour du catalogue";
+$MESS["CAT_1C_USE_IBLOCK_PICTURE_SETTINGS"] = "Utiliser les réglages du bloc d'information pour le traitement des images";
+$MESS["CAT_1C_USE_IBLOCK_TYPE_ID"] = "Tenir compte du type du bloc info au cours du déchargement";
+$MESS["CAT_1C_USE_OFFERS_2"] = "Importer des offres commerciales (caractéristiques) dans un bloc d'informations séparé";
+$MESS["CAT_1C_USE_ZIP"] = "Utiliser la compression zip, si c'est disponible";
+?>

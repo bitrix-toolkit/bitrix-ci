@@ -1,0 +1,27 @@
+<?php
+$MESS["BX_SALE_DCM_COUPONS_VERIFY_ERR"] = "Błąd weryfikacji kuponu";
+$MESS["BX_SALE_DCM_COUPON_CHECK_ALREADY_MAX_USED"] = "osiągnięto maksymalną liczbę użyć";
+$MESS["BX_SALE_DCM_COUPON_CHECK_BAD_USER_ID"] = "nieprawidłowy właściciel kuponu";
+$MESS["BX_SALE_DCM_COUPON_CHECK_CORRUPT_DATA"] = "nieprawidłowe dane kuponu";
+$MESS["BX_SALE_DCM_COUPON_CHECK_NOT_APPLIED"] = "kupon jest nieużywany";
+$MESS["BX_SALE_DCM_COUPON_CHECK_NOT_FOUND"] = "nie znaleziono";
+$MESS["BX_SALE_DCM_COUPON_CHECK_NO_ACTIVE"] = "nieaktywny";
+$MESS["BX_SALE_DCM_COUPON_CHECK_NO_ACTIVE_DISCOUNT"] = "reguła nieaktywna";
+$MESS["BX_SALE_DCM_COUPON_CHECK_OK"] = "aktywny i ważny";
+$MESS["BX_SALE_DCM_COUPON_CHECK_RANGE_ACTIVE_FROM"] = "data rozpoczęcia uruchomienia kuponu jest późniejsza niż obecna";
+$MESS["BX_SALE_DCM_COUPON_CHECK_RANGE_ACTIVE_FROM_DISCOUNT"] = "data początkowa uruchomienia reguły jest późniejsza niż obecna";
+$MESS["BX_SALE_DCM_COUPON_CHECK_RANGE_ACTIVE_TO"] = "data zakończenia uruchomienia kuponu jest późniejsza niż obecna";
+$MESS["BX_SALE_DCM_COUPON_CHECK_RANGE_ACTIVE_TO_DISCOUNT"] = "data zakończenia uruchomienia reguły jest późniejsza niż obecna";
+$MESS["BX_SALE_DCM_COUPON_CHECK_UNKNOWN_TYPE"] = "nieznany typ kuponu";
+$MESS["BX_SALE_DCM_ERR_BAD_FUSER_ID"] = "Nie można zainicjować identyfikatora klienta";
+$MESS["BX_SALE_DCM_ERR_BAD_MODE"] = "Zły tryb menedżera";
+$MESS["BX_SALE_DCM_ERR_BAD_USER_ID"] = "Brakuje ID klienta";
+$MESS["BX_SALE_DCM_ERR_ORDER_ID_ABSENT"] = "W trybie edycji nie określono identyfikatora zamówienia";
+$MESS["BX_SALE_DCM_ERR_ORDER_ID_EXIST"] = "Identyfikator zamówienia określono w trybie tworzenia nowego zamówienia";
+$MESS["BX_SALE_DCM_ERR_SAVE_APPLIED"] = "Nie można zapisać użytych kuponów";
+$MESS["BX_SALE_DCM_ERR_SESSION_NOT_ACCESSIBLE"] = "Sesja niedostępna.";
+$MESS["BX_SALE_DCM_STATUS_APPLYED"] = "użyto";
+$MESS["BX_SALE_DCM_STATUS_ENTERED"] = "dodano";
+$MESS["BX_SALE_DCM_STATUS_FREEZE"] = "nie można użyć";
+$MESS["BX_SALE_DCM_STATUS_NOT_APPLYED"] = "nigdy nie użyto";
+$MESS["BX_SALE_DCM_STATUS_NOT_FOUND"] = "nie znaleziono";

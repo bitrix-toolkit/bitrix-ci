@@ -1,0 +1,2 @@
+<?php
+$MESS["DISCOUNT_COUPON_ENTITY_ONE_TIME_FIELD"] = "Tipo de cupom";

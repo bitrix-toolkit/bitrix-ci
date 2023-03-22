@@ -1,0 +1,36 @@
+<?
+$MESS["JS_CORE_FILE_UPLOAD"] = "Завантажити з комп'ютера";
+$MESS["JS_CORE_FILE_INSERT_PATH"] = "Вставити шлях до файлу";
+$MESS["JS_CORE_FILE_MEDIALIB"] = "Вибрати з медіабібліотеки";
+$MESS["JS_CORE_FILE_SITE"] = "Вибрати зі структури";
+$MESS["JS_CORE_FILE_CLOUD"] = "Завантажити з хмар";
+$MESS["JS_CORE_FI_UPLOAD_DENIED"] = "Завантаження заборонене";
+$MESS["JS_CORE_FI_TOO_MANY_FILES"] = "Кількість файлів перевищує допустиму кількість #amount#";
+$MESS["JS_CORE_FI_TOO_MANY_FILES2"] = "Досягнуто ліміт кількості файлів";
+$MESS["JS_CORE_FI_TOO_MANY_FILES3"] = "Перевищено ліміт кількості файлів";
+$MESS["JS_CORE_FI_FRAME_Y"] = "Використовувати кадрування";
+$MESS["JS_CORE_FI_PIN_DESCRIPTION"] = "Закріпити поле описання";
+$MESS["JS_CORE_FI_CLEAR"] = "Очистити";
+$MESS["JS_CORE_FI_FRAME_IS_LOADING"] = "Триває завантаження картинок. Зачекайте будь ласка. Скасувати кадрування?";
+$MESS["JS_CORE_FI_FRAME_IS_LOADING_CANCEL"] = "Так, скасувати.";
+$MESS["JS_CORE_FI_LINK"] = "Посилання:";
+$MESS["JS_CORE_FI_ADD_LINK"] = "Додати посилання";
+$MESS["JS_CORE_FI_ADD"] = "Додати";
+$MESS["JS_CORE_FI_CANCEL"] = "Скасувати";
+$MESS["JS_CORE_FI_TITLE"] = "Назва";
+$MESS["JS_CORE_FI_WIDTH"] = "Ширина";
+$MESS["JS_CORE_FI_HEIGHT"] = "Висота";
+$MESS["JS_CORE_FI_ADD_PRESET"] = "Додати пресет";
+$MESS["JS_CORE_FI_SAVE_PRESET"] = "Зберегти як пресет";
+$MESS["JS_CORE_FI_CANCEL_PRESET"] = "Скасувати <br> дію";
+$MESS["JS_CORE_FI_FRAMING"] = "Кадрування:";
+$MESS["JS_CORE_FI_USE_PRESET"] = "Використовувати пресет";
+$MESS["JS_CORE_FI_EDIT_PRESET"] = "Редагувати пресет";
+$MESS["JS_CORE_FI_PRESET_IS_TOO_BIG"] = "Розмір картинки менше обраного пресета. Збільшити картинку?";
+$MESS["JS_CORE_FI_SCALE"] = "Збільшити";
+$MESS["JS_CORE_FILE_INFO_SIZE"] = "Об'єм";
+$MESS["JS_CORE_FILE_INFO_DIM"] = "Розмір";
+$MESS["JS_CORE_FILE_INFO_LINK"] = "Посилання";
+$MESS["JS_CORE_FILE_DESCRIPTION"] = "Описання";
+$MESS["JS_CORE_FILE_APPLY"] = "Застосувати";
+?>

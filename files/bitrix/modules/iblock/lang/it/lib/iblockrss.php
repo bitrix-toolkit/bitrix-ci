@@ -1,0 +1,3 @@
+<?
+$MESS["IBLOCK_RSS_ENTITY_ID_FIELD"] = "ID";
+?>

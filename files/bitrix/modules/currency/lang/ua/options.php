@@ -1,0 +1,32 @@
+<?
+$MESS["CO_TAB_RIGHTS"] = "Доступ";
+$MESS["CURRENCY_SETTINGS"] = "Основні налаштування";
+$MESS["CURRENCY_SETTINGS_TITLE"] = "Основні налаштування модуля";
+$MESS["BASE_CURRENCY"] = "Базова валюта:";
+$MESS["CO_TAB_RIGHTS_TITLE"] = "Рівень доступу до модуля";
+$MESS["COP_SYS_ROU"] = "Службові процедури";
+$MESS["CUR_OPTIONS_BTN_SAVE"] = "Зберегти";
+$MESS["CUR_OPTIONS_BTN_RESET"] = "Скинути";
+$MESS["CUR_OPTIONS_BTN_RESTORE_DEFAULT"] = "За замовчуванням";
+$MESS["CUR_OPTIONS_BTN_HINT_RESTORE_DEFAULT"] = "Встановити значення за замовчуванням";
+$MESS["CUR_OPTIONS_BTN_HINT_RESTORE_DEFAULT_WARNING"] = "Увага! Всі налаштування будуть перезаписані значеннями за замовчуванням. Продовжити?";
+$MESS["CURRENCY_PROCEDURES"] = "Службові процедури";
+$MESS["CURRENCY_BASE_RATE"] = "Поточні базові курси";
+$MESS["CURRENCY_BASE_RATE_TITLE"] = "Поточні курси валют по відношенню до базової";
+$MESS["CUR_PROCEDURES_BTN_RECALC"] = "Перерахувати";
+$MESS["CURRENCY_AGENTS"] = "Агенти";
+$MESS["CURRENCY_AGENTS_TITLE"] = "Інформація про роботу агентів модуля";
+$MESS["CURRENCY_BASE_RATE_AGENT"] = "Агент розрахунку курсів валют по відношенню до базової";
+$MESS["CURRENCY_BASE_RATE_AGENT_ACTIVE"] = "Активний";
+$MESS["CURRENCY_AGENTS_ACTIVE_YES"] = "так";
+$MESS["CURRENCY_AGENTS_ACTIVE_NO"] = "ні";
+$MESS["CURRENCY_AGENTS_LAST_EXEC"] = "Останній запуск";
+$MESS["CURRENCY_AGENTS_NEXT_EXEC"] = "Наступний запуск";
+$MESS["CURRENCY_AGENTS_PLANNED_NEXT_EXEC"] = "Перший запуск";
+$MESS["CURRENCY_AGENTS_ACTIVATE"] = "Активувавти агента";
+$MESS["CURRENCY_AGENTS_DEACTIVATE"] = "Відключити агента";
+$MESS["CURRENCY_BASE_RATE_AGENT_ABSENT"] = "Увага! Агент розрахунку курсів валют по відношенню до базової відсутня!";
+$MESS["CURRENCY_AGENTS_CREATE_AGENT"] = "Додати агента";
+$MESS["CUR_OPTIONS_BTN_SAVE_TITLE"] = "Зберегти зміни";
+$MESS["CUR_OPTIONS_BTN_RESET_TITLE"] = "Скасувати всі незбережені зміни";
+?>

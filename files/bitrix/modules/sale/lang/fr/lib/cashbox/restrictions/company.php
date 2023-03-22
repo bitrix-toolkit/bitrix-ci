@@ -1,0 +1,5 @@
+<?
+$MESS["SALE_CASHBOX_RSTR_BY_COMPANY"] = "Sociétés";
+$MESS["SALE_CASHBOX_RSTR_BY_COMPANY_DESC"] = "par sociétés";
+$MESS["SALE_CASHBOX_RSTR_BY_COMPANY_TITLE"] = "par sociétés";
+?>

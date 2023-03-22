@@ -1,0 +1,20 @@
+<?php
+$MESS["CVAT_ACTIVE"] = "Activo";
+$MESS["CVAT_ADD_NEW"] = "Agregar";
+$MESS["CVAT_ADD_NEW_ALT"] = "Agregar tasa de IVA";
+$MESS["CVAT_ALL"] = "todo";
+$MESS["CVAT_DELETE_ALT"] = "Eliminar";
+$MESS["CVAT_DELETE_CONF"] = "Está seguro que desea eliminar esta tasa de IVA?";
+$MESS["CVAT_EDIT_ALT"] = "Editar";
+$MESS["CVAT_FILTER_ACTIVE"] = "Actividad";
+$MESS["CVAT_FILTER_NAME"] = "Nombre";
+$MESS["CVAT_FILTER_RATE"] = "Tasa";
+$MESS["CVAT_NAME"] = "Nombre";
+$MESS["CVAT_NAV"] = "Tasas de IVA";
+$MESS["CVAT_NO"] = "inactivo";
+$MESS["CVAT_PAGE_TITLE"] = "Tasas de IVA";
+$MESS["CVAT_RATE"] = "Tasa";
+$MESS["CVAT_SORT"] = "Ordenar";
+$MESS["CVAT_YES"] = "activos";
+$MESS["ERROR_DELETE_VAT"] = "Error al eliminar la tasa de IVA ##ID#";
+$MESS["ERROR_UPDATE_VAT"] = "Error al actualizar la tasa de IVA ##ID#";

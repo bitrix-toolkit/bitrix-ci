@@ -1,0 +1,11 @@
+<?
+$MESS["DELETE_PAYMENT_ALT"] = "Usuń";
+$MESS["EDIT_PAYMENT_ALT"] = "Edytuj";
+$MESS["PAYMENT_CURRENCY_ALL"] = "wszystko";
+$MESS["PAYMENT_ORDER_PAID_ALL"] = "Wszystko";
+$MESS["PAYMENT_ORDER_PAID_NO"] = "Nie";
+$MESS["PAYMENT_ORDER_PAID_YES"] = "Tak";
+$MESS["SALE_ORDER_COMPANY_BY"] = "Firma";
+$MESS["SALE_ORDER_DATE_BILL"] = "Utworzone";
+$MESS["SALE_ORDER_RESPONSIBLE_BY"] = "Osoba odpowiedzialna";
+?>

@@ -1,0 +1,29 @@
+<?
+$MESS["FM_ACT_DELETE"] = "Excluir";
+$MESS["FM_ACT_DEL_CONFIRM"] = "Tem certeza que quer excluir esta assinatura?";
+$MESS["FM_ALL_MESSAGE"] = "Todas as mensagens do fórum";
+$MESS["FM_FLT_FORUM"] = "Fórum";
+$MESS["FM_FLT_SEARCH"] = "Pesquisar";
+$MESS["FM_FLT_SEARCH_TITLE"] = "Digite o texto a procurar";
+$MESS["FM_FLT_START_DATE"] = "Data de início da inscrição";
+$MESS["FM_FLT_START_DATE_ALT"] = "Data de início da inscrição";
+$MESS["FM_FLT_SUBSCR_TYPE"] = "Tipo de inscrição";
+$MESS["FM_FLT_SUBSCR_TYPE_ALT"] = "Tipo de inscrição";
+$MESS["FM_FLT_TOPIC"] = "Tópicos";
+$MESS["FM_HEAD_FORUM"] = "Fórum";
+$MESS["FM_HEAD_ID"] = "ID";
+$MESS["FM_HEAD_LAST_SEND"] = "Última mensagem";
+$MESS["FM_HEAD_START_DATE"] = "Data de início da inscrição";
+$MESS["FM_HEAD_TOPIC"] = "Tópicos";
+$MESS["FM_LIST_USER"] = "Lista de Usuários";
+$MESS["FM_NEW_TOPIC_ONLY"] = "Somente novos tópicos";
+$MESS["FM_SPACE"] = "Não selecionado";
+$MESS["FM_TITLE"] = "Inscrições do usuário";
+$MESS["FM_TITLE_PAGE"] = "Inscrições do usuário";
+$MESS["FM_TYPICAL"] = "Novas mensagens do tópico";
+$MESS["FM_WRONG_DATE_FROM"] = "Por favor insira a data correta \"De\" para a data de criação";
+$MESS["FM_WRONG_DATE_TO"] = "Por favor insira a data correta \"Até\" para a data de criação";
+$MESS["FM_WRONG_PERIOD"] = "O período está especificado incorretamente";
+$MESS["FM_WRONG_USER_ID"] = "ID de usuário errado";
+$MESS["FSUBSC_NO_SPERMS"] = "Permissão insuficiente para editar inscrição.";
+?>

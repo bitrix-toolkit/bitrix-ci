@@ -1,0 +1,10 @@
+<?
+$MESS["SALE_BIGDATA_TARGET_CONNECTOR_NAME"] = "Ofertas de produtos pessoais";
+$MESS["SALE_BIGDATA_TARGET_CONNECTOR_PRODUCTS_DESC"] = "Produtos recomendados para um cliente individual";
+$MESS["SALE_BIGDATA_TARGET_CONNECTOR_PRODUCTS_TITLE"] = "Produtos";
+$MESS["SALE_BIGDATA_TARGET_CONNECTOR_SELECT_DEL"] = "excluir";
+$MESS["SALE_BIGDATA_TARGET_CONNECTOR_SELECT_LIMIT_CLOSE"] = "Fechar";
+$MESS["SALE_BIGDATA_TARGET_CONNECTOR_SELECT_LIMIT_MSG"] = "#LIMIT# itens máximos podem ser selecionados para o boletim informativo.";
+$MESS["SALE_BIGDATA_TARGET_CONNECTOR_SELECT_LIMIT_TITLE"] = "Quantidade de produto";
+$MESS["SALE_BIGDATA_TARGET_CONNECTOR_SELECT_TITLE"] = "Selecionar produtos";
+?>

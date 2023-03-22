@@ -1,0 +1,4 @@
+<?
+$MESS["USER_TYPE_MONEY_DEFAULT_VALUE"] = "Valeur par défaut";
+$MESS["USER_TYPE_MONEY_DESCRIPTION"] = "Argent";
+?>

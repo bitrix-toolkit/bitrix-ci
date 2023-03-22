@@ -1,0 +1,32 @@
+<?
+$MESS["SAE_ACTIVE"] = "Actif(ve) : ";
+$MESS["SAE_AFFILIATE_ALREADY_EXISTS"] = "Une société affiliée pour l'utilisateur #USER_ID# existe déjà sur le site #SITE_ID#";
+$MESS["SAE_AFFILIATE_REG"] = "Enregistré par affiliation : ";
+$MESS["SAE_AFF_ADD"] = "Ajouter l'affiliate";
+$MESS["SAE_AFF_DELETE"] = "Supprimer affiliation";
+$MESS["SAE_AFF_DELETE_CONF"] = "tes-vous sûr de vouloir supprimer cette affiliation ?";
+$MESS["SAE_AFF_DESCRIPTION"] = "Description d'affiliation";
+$MESS["SAE_AFF_LIST"] = "Affiliations";
+$MESS["SAE_AFF_SITE"] = "Site affilié";
+$MESS["SAE_AFF_TAB"] = "Affiliale";
+$MESS["SAE_AFF_TAB_TITLE"] = "Paramètres d'affiliation";
+$MESS["SAE_DATE_REG"] = "Date d'enregistrement";
+$MESS["SAE_DATE_UPDATE"] = "Date de la dernière modification : ";
+$MESS["SAE_ERROR_SAVE_AFF"] = "Une erreur est survenue lors de l'enregistrement de la société affiliée";
+$MESS["SAE_FIX_PLAN"] = "plan de Fix";
+$MESS["SAE_LAST_CALC"] = "Dernière date de calcul";
+$MESS["SAE_NO_AFFILIATE"] = "Affilié n'a pas été trouvé";
+$MESS["SAE_NO_DATE_CREATE"] = "La date de création est pas spécifié";
+$MESS["SAE_NO_PLAN"] = "Plan est pas spécifié";
+$MESS["SAE_NO_SITE_PLAN"] = "Le site de plan est non spécifié";
+$MESS["SAE_NO_USER"] = "Un utilisateur n'est pas indiqué";
+$MESS["SAE_PAYED_SUM"] = "Montant payé:";
+$MESS["SAE_PENDING_SUM"] = "En attendant montant : ";
+$MESS["SAE_PLAN"] = "Régime : ";
+$MESS["SAE_PROFILE"] = "Evènements du profil utilisateur";
+$MESS["SAE_SITE"] = "Site : ";
+$MESS["SAE_TITLE_ADD_AFF"] = "Nouvelle affiliation";
+$MESS["SAE_TITLE_UPDATE_AFF"] = "Modifier affiliation #ID#";
+$MESS["SAE_USER"] = "Utilisateur : ";
+$MESS["SAE_WAIT"] = "attendre";
+?>

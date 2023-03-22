@@ -1,0 +1,34 @@
+<?
+$MESS["SALE_ACTION"] = "Ações";
+$MESS["SALE_ACTIVE"] = "Ativo";
+$MESS["SALE_ALL"] = "(todos)";
+$MESS["SALE_CLOSE"] = "Fechar";
+$MESS["SALE_EMAIL"] = "E-mail";
+$MESS["SALE_FROM_TILL_LAST_LOGIN"] = "A data da última autorização \"até\" deverá ser maior que a data \"de\" ";
+$MESS["SALE_FROM_TILL_TIMESTAMP"] = "A data de modificação \"até\" deverá ser maior que \"de\" no filtro";
+$MESS["SALE_F_ACTIVE"] = "Ativo:";
+$MESS["SALE_F_DEL_FILTER"] = "Remover filtro";
+$MESS["SALE_F_EMAIL"] = "E-mail:";
+$MESS["SALE_F_GROUP"] = "Grupos:";
+$MESS["SALE_F_ID"] = "ID:";
+$MESS["SALE_F_KEYWORDS"] = "Campos do perfil:";
+$MESS["SALE_F_LAST_LOGIN"] = "Última autorização";
+$MESS["SALE_F_LOGIN"] = "Login:";
+$MESS["SALE_F_NAME"] = "Nome:";
+$MESS["SALE_F_SET_FILTER"] = "Ajustar filtro";
+$MESS["SALE_F_TIMESTAMP"] = "Modificado";
+$MESS["SALE_LAST_NAME"] = "Sobrenome";
+$MESS["SALE_LOGIN"] = "Login";
+$MESS["SALE_NAME"] = "Nome";
+$MESS["SALE_NO"] = "Não";
+$MESS["SALE_PAGES"] = "Usuários";
+$MESS["SALE_PAGE_TITLE"] = "Pesquisa de usuários";
+$MESS["SALE_SELECT"] = "Selecionar";
+$MESS["SALE_TIMESTAMP"] = "Modificado";
+$MESS["SALE_TOTAL"] = "Total";
+$MESS["SALE_WRONG_LAST_LOGIN_FROM"] = "Forneça a data correta da última autorização \"de\"";
+$MESS["SALE_WRONG_LAST_LOGIN_TILL"] = "Forneça a data correta da última autorização \"até\"";
+$MESS["SALE_WRONG_TIMESTAMP_FROM"] = "Forneça a data correta de modificação \"de\" para o filtro.";
+$MESS["SALE_WRONG_TIMESTAMP_TILL"] = "Forneça a data correta de modificação \"até\" para o filtro.";
+$MESS["SALE_YES"] = "Sim";
+?>

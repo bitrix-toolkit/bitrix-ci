@@ -1,0 +1,35 @@
+<?
+$MESS["COPY_FOLDER"] = "Pasta em que os arquivos serão copiados:";
+$MESS["COPY_PUBLIC_FILES"] = "Copiar arquivos públicos";
+$MESS["INSTALL_PUBLIC_REW"] = "Sobrescrever os arquivos existentes";
+$MESS["MOD_ACTION"] = "Ação";
+$MESS["MOD_BACK"] = "Voltar à lista";
+$MESS["MOD_DATE_UPDATE"] = "Atualizar data";
+$MESS["MOD_DELETE"] = "Excluir";
+$MESS["MOD_DEMO_DIR"] = "Usar os links abaixo para ler os componentes em ação no setor público:";
+$MESS["MOD_DEMO_LINK"] = "Link";
+$MESS["MOD_DEMO_SITE"] = "site";
+$MESS["MOD_INSTALL"] = "Instalar";
+$MESS["MOD_INSTALLED"] = "Instalado";
+$MESS["MOD_INSTALL_BUTTON"] = "Instalar";
+$MESS["MOD_INST_ERR"] = "Erros de instalação:";
+$MESS["MOD_INST_OK"] = "O módulo foi instalado com sucesso";
+$MESS["MOD_MAIN_DESCRIPTION"] = "O núcleo de produto com tecnologia #A1# \"SiteUpdate\" #A2#.";
+$MESS["MOD_MAIN_MODULE"] = "Módulo principal";
+$MESS["MOD_NAME"] = "Nome";
+$MESS["MOD_NOT_INSTALLED"] = "Não instalado";
+$MESS["MOD_PARTNER_NAME"] = "Empresa <a target='_blank' href='#URI#'>#NAME#</a>";
+$MESS["MOD_SETUP"] = "Status";
+$MESS["MOD_UNINST_DEL"] = "Excluir módulo";
+$MESS["MOD_UNINST_DEN"] = "Este módulo não pode ser desinstalado.";
+$MESS["MOD_UNINST_ERR"] = "Erros de desinstalação:";
+$MESS["MOD_UNINST_OK"] = "O módulo foi removido com sucesso";
+$MESS["MOD_UNINST_SAVE"] = "Manter as tabelas do banco de dados:";
+$MESS["MOD_UNINST_SAVE_EVENTS"] = "Manter tipos e modelos de mensagens";
+$MESS["MOD_UNINST_SAVE_TABLES"] = "Manter tabelas";
+$MESS["MOD_UNINST_WARN"] = "<br> Aviso! O módulo será removido do sistema";
+$MESS["MOD_VERSION"] = "Versão";
+$MESS["RESET"] = "Redefinir";
+$MESS["SAVE"] = "Salvar alterações";
+$MESS["TITLE"] = "Gerenciamento de Módulos";
+?>

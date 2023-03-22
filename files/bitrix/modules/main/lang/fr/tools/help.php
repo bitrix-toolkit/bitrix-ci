@@ -1,0 +1,34 @@
+<?
+$MESS["HELP_ACCESS_DENIED"] = "Accès interdit";
+$MESS["HELP_BACK"] = "Précédent";
+$MESS["HELP_CLOSE"] = "Fermer";
+$MESS["HELP_COLLAPSE_ALL"] = "Réduire tout";
+$MESS["HELP_CONFIRM_DELETE"] = "Etes-vous sûr que vous voulez supprimer le fichier et / ou dossier ?";
+$MESS["HELP_CREATE"] = "Ajouter";
+$MESS["HELP_CREATE_FOLDER_ERROR"] = "Erreur de création d'un dossier";
+$MESS["HELP_CURRENT_FOLDER"] = "Dossier en cours : ";
+$MESS["HELP_DELETE"] = "Supprimer";
+$MESS["HELP_DELETE_ERROR"] = "Erreur de suppression du fichier";
+$MESS["HELP_EDIT"] = "Éditer";
+$MESS["HELP_ERROR_DELETE_FOLDER"] = "Erreur de suppression du dossier #FOLDER#";
+$MESS["HELP_EXPAND_ALL"] = "Développer tout";
+$MESS["HELP_FILENAME"] = "Nom de fichier : ";
+$MESS["HELP_FILE_EXISTS"] = "Fichier ou un dossier avec le nom spécifié existe déjà";
+$MESS["HELP_FILE_NOT_EXIST"] = "Le fichier #FILE# ne existe pas";
+$MESS["HELP_FILE_NOT_FOUND"] = "Fichier d'aide introuvable";
+$MESS["HELP_FILE_SAVE_ERROR"] = "L'enregistrement du fichier erreur";
+$MESS["HELP_FOLDER_NOT_EMPTY"] = "Erreur de suppression du dossier #FOLDER# (non vide)";
+$MESS["HELP_FOLDER_NOT_EXIST"] = "Le dossier #FOLDER# ne existe pas";
+$MESS["HELP_FORGOT_FILENAME"] = "S'il vous plaît fournir le nom de fichier ('Nom de fichier')";
+$MESS["HELP_HEADER"] = "Titre : ";
+$MESS["HELP_HIDE"] = "Cacher";
+$MESS["HELP_IS_FOLDER"] = "Création du dossier : ";
+$MESS["HELP_KERNEL"] = "Module principal";
+$MESS["HELP_MOVE_DOWN"] = "Déplacer vers le bas";
+$MESS["HELP_MOVE_UP"] = "Déplacer plus haut sur la liste";
+$MESS["HELP_RESET"] = "Annuler";
+$MESS["HELP_SEARCH"] = "Recherche";
+$MESS["HELP_SORT"] = "Ordre de triage : ";
+$MESS["HELP_TITLE"] = "Aide";
+$MESS["HELP_TREE"] = "Synchronisation avec la liste des sujets";
+?>

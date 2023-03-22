@@ -1,0 +1,3 @@
+<?
+$MESS["GROUP_LANG_ENTITY_ID_FIELD"] = "ID";
+?>

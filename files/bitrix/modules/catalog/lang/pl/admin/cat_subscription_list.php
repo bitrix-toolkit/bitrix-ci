@@ -1,0 +1,26 @@
+<?php
+$MESS["PSL_ACCESS_DENIED"] = "Odmowa dostępu";
+$MESS["PSL_ACTION_ACTIVATE"] = "Aktywuj";
+$MESS["PSL_ACTION_DEACTIVATE"] = "Deaktywuj";
+$MESS["PSL_ACTION_DELETE"] = "Usuń";
+$MESS["PSL_ACTIVE"] = "Aktywny";
+$MESS["PSL_CONTACT_TYPE"] = "Typ kontaktu";
+$MESS["PSL_DATE_FROM"] = "Subskrypcja aktywna od";
+$MESS["PSL_DATE_TO"] = "Subskrypcja aktywna do";
+$MESS["PSL_DELETE_SUBSCRIBE"] = "Usuń";
+$MESS["PSL_FILTER_ACTIVE"] = "Aktywny";
+$MESS["PSL_FILTER_CONTACT_TYPE"] = "Typ kontaktu";
+$MESS["PSL_FILTER_DATE_FROM"] = "Subskrypcja aktywna od";
+$MESS["PSL_FILTER_DATE_TO"] = "Subskrypcja aktywna do";
+$MESS["PSL_FILTER_ID"] = "ID";
+$MESS["PSL_FILTER_ITEM_ID"] = "ID Produktu";
+$MESS["PSL_FILTER_NO"] = "Nie";
+$MESS["PSL_FILTER_USER_CONTACT"] = "Kontakt z użytkownikiem";
+$MESS["PSL_FILTER_USER_ID"] = "Użytkownik";
+$MESS["PSL_FILTER_YES"] = "Tak";
+$MESS["PSL_ITEM_ID"] = "ID produktu";
+$MESS["PSL_PAGE_TITLE"] = "Subskrypcje";
+$MESS["PSL_PRODUCT_NAME"] = "Nazwa produktu";
+$MESS["PSL_SITE_ID"] = "ID witryny";
+$MESS["PSL_USER"] = "Użytkownik";
+$MESS["PSL_USER_CONTACT"] = "Kontakt z użytkownikiem";

@@ -1,0 +1,4 @@
+<?php
+$MESS["SALE_ORDER_SHIPMENT_BASKET_BARCODE_CLOSE"] = "Fechar";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_CLOSE"] = "Fechar";
+$MESS["SALE_ORDER_SHIPMENT_BASKET_WRONG_BASKET_ITEM"] = "Objeto do carrinho de compras incorreto";

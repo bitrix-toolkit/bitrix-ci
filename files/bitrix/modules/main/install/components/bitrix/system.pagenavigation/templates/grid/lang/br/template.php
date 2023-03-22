@@ -1,0 +1,7 @@
+<?
+$MESS["MAIN_UI_PAGINATION__ALL"] = "Todas";
+$MESS["MAIN_UI_PAGINATION__NEXT"] = "Próximo";
+$MESS["MAIN_UI_PAGINATION__PAGED"] = "Paginado";
+$MESS["MAIN_UI_PAGINATION__PAGES"] = "Páginas";
+$MESS["MAIN_UI_PAGINATION__PREV"] = "Anterior";
+?>

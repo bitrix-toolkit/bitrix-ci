@@ -1,0 +1,3 @@
+<?php
+$MESS["STORE_SELECTOR_EMPTY_TITLE"] = "Sin título";
+$MESS["STORE_SELECTOR_STORE_AMOUNT"] = "En existencias: #STORE_AMOUNT#";

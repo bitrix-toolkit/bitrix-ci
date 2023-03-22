@@ -1,0 +1,5 @@
+<?
+$MESS["DELIVERY_PAYSYSTEM_ENTITY_DELIVERY_ID_FIELD"] = "ID du service de livraison";
+$MESS["DELIVERY_PAYSYSTEM_ENTITY_LINK_DIRECTION"] = "Direction du lien";
+$MESS["DELIVERY_PAYSYSTEM_ENTITY_PAYSYSTEM_ID_FIELD"] = "ID du système de paiement";
+?>

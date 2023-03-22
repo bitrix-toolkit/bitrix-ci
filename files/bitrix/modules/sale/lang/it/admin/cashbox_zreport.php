@@ -1,0 +1,3 @@
+<?
+$MESS["SALE_CASHBOX_ZREPORT_ID"] = "ID";
+?>

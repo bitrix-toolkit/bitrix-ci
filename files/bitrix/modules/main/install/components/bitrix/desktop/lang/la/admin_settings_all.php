@@ -1,0 +1,11 @@
+<?
+$MESS["CMDESKTOP_ADMIN_SETTINGS_ALL_DIALOG_DESKTOP"] = "Escritorio";
+$MESS["CMDESKTOP_ADMIN_SETTINGS_ALL_DIALOG_TITLE"] = "Administrar desktops";
+$MESS["CMDESKTOP_ADMIN_SETTINGS_ALL_DRAG"] = "Usar el mouse para arrastrar el desktops";
+$MESS["CMDESKTOP_ADMIN_SETTINGS_ALL_JS_NONAME"] = "--- no hay valores ---";
+$MESS["CMDESKTOP_ADMIN_SETTINGS_ALL_NAME"] = "Nombre";
+$MESS["CMDESKTOP_ADMIN_SETTINGS_ALL_TOOLTIP_DELETE"] = "Eliminar escritorio";
+$MESS["CMDESKTOP_ADMIN_SETTINGS_ALL_TOOLTIP_DOWN"] = "Mover el escritorio abajo";
+$MESS["CMDESKTOP_ADMIN_SETTINGS_ALL_TOOLTIP_TEXT_EDIT"] = "Oprimir para editar el nombre del desktop";
+$MESS["CMDESKTOP_ADMIN_SETTINGS_ALL_TOOLTIP_UP"] = "Mover el desktop arriba";
+?>

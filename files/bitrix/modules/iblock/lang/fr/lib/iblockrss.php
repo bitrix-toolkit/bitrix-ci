@@ -1,0 +1,6 @@
+<?
+$MESS["IBLOCK_ENTITY_NODE_VALUE_FIELD"] = "Modèle de champ";
+$MESS["IBLOCK_RSS_ENTITY_IBLOCK_ID_FIELD"] = "Code du bloc d'information";
+$MESS["IBLOCK_RSS_ENTITY_ID_FIELD"] = "ID";
+$MESS["IBLOCK_RSS_ENTITY_NODE_FIELD"] = "RSS champ";
+?>

@@ -1,0 +1,2 @@
+<?php
+$MESS["BT_CAT_DISCOUNT_EDIT_FIELDS_COUPON_TYPE"] = "Tipo coupon";

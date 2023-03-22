@@ -1,0 +1,20 @@
+<?php
+$MESS["SALE_LOCATION_E_CANNOT_SAVE_ITEM"] = "Errore durante il salvataggio della sede";
+$MESS["SALE_LOCATION_E_CANNOT_UPDATE_ITEM"] = "Errore durante l'aggiornamento della sede";
+$MESS["SALE_LOCATION_E_EXTERNAL_TAB"] = "Dati esterni";
+$MESS["SALE_LOCATION_E_EXTERNAL_TAB_TITLE"] = "Tabella dati esterna";
+$MESS["SALE_LOCATION_E_GEODATA"] = "Dati posizione geografica";
+$MESS["SALE_LOCATION_E_GO_BACK"] = "Indietro";
+$MESS["SALE_LOCATION_E_HEADER_EXT_MORE"] = "Altro...";
+$MESS["SALE_LOCATION_E_HEADER_EXT_REMOVE"] = "Canc.";
+$MESS["SALE_LOCATION_E_HEADING_EXTERNAL"] = "Dati esterni";
+$MESS["SALE_LOCATION_E_HEADING_NAME"] = "Titoli dipendenti dalla lingua (#LANGUAGE_ID#)";
+$MESS["SALE_LOCATION_E_HEADING_NAME_ALL"] = "Titoli dipendenti dalla lingua";
+$MESS["SALE_LOCATION_E_ITEM_EDIT"] = "Modifica sede: #ITEM_NAME#";
+$MESS["SALE_LOCATION_E_ITEM_NEW"] = "Nuova sede";
+$MESS["SALE_LOCATION_E_ITEM_NOT_FOUND"] = "La sede non è stata trovata";
+$MESS["SALE_LOCATION_E_MAIN_TAB"] = "Sede";
+$MESS["SALE_LOCATION_E_MAIN_TAB_TITLE"] = "Parametri sede";
+$MESS["SALE_LOCATION_E_NO_SERVICES"] = "Non sono presenti servizi esterni. Puoi crearne uno sulla";
+$MESS["SALE_LOCATION_E_NO_SERVICES_LIST_PAGE"] = "pagina dei servizi esterni";
+$MESS["SALE_MODULE_ACCES_DENIED"] = "L'accesso al modulo è stato negato";

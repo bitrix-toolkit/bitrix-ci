@@ -1,0 +1,36 @@
+<?
+$MESS['MAIN_SITE_SPEED_CDN'] = "Прискорення сайту (CDN)";
+$MESS['MAIN_SITE_SPEED_CHOOSE_DOMAIN'] = "Виберіть інший домен зі списку.";
+$MESS['MAIN_SITE_SPEED_COMPOSITE_HITS'] = "Композитних хітів";
+$MESS['MAIN_SITE_SPEED_COMPOSITE_SITE'] = "Композитний сайт";
+$MESS['MAIN_SITE_SPEED_CONNECTION_ERROR'] = "Не вдалося з'єднатися з сервером статистики.";
+$MESS['MAIN_SITE_SPEED_DISABLED'] = "вимкнено";
+$MESS['MAIN_SITE_SPEED_DOMAINS_LABEL'] = "Статистика для домену";
+$MESS['MAIN_SITE_SPEED_DOMAIN_NOT_FOUND'] = "Для цього домену немає даних.";
+$MESS['MAIN_SITE_SPEED_ENABLED'] = "включено";
+$MESS['MAIN_SITE_SPEED_GRAPH_TITLE'] = "Останні відвідування сайту";
+$MESS['MAIN_SITE_SPEED_HISTO_TITLE'] = "Розподіл швидкості сайту за часом";
+$MESS['MAIN_SITE_SPEED_HITS_LABEL'] = "Опрацьовано хітів";
+$MESS['MAIN_SITE_SPEED_MAP_EXT_HINT_COMPOSITE'] = "Композитних хітів";
+$MESS['MAIN_SITE_SPEED_MAP_EXT_HINT_HITS'] = "Всього хітів";
+$MESS['MAIN_SITE_SPEED_MAP_EXT_HINT_SPEED'] = "Швидкість сайту";
+$MESS['MAIN_SITE_SPEED_MAP_EXT_HITS_1'] = "Число хітів в регіоні";
+$MESS['MAIN_SITE_SPEED_MAP_EXT_HITS_2'] = "Поточна активність клієнтів сайту";
+$MESS['MAIN_SITE_SPEED_MAP_EXT_MARK_1'] = "дуже швидко";
+$MESS['MAIN_SITE_SPEED_MAP_EXT_MARK_2'] = "швидко";
+$MESS['MAIN_SITE_SPEED_MAP_EXT_MARK_3'] = "не швидко";
+$MESS['MAIN_SITE_SPEED_MAP_EXT_MARK_4'] = "повільно";
+$MESS['MAIN_SITE_SPEED_MAP_EXT_MARK_5'] = "дуже повільно";
+$MESS['MAIN_SITE_SPEED_MAP_EXT_VALUE_1'] = "Швидкість сайту в регіоні";
+$MESS['MAIN_SITE_SPEED_MAP_EXT_VALUE_2'] = "Немає композитних хітів";
+$MESS['MAIN_SITE_SPEED_MAP_EXT_VDOTS_1'] = "Середнє значення в регіоні";
+$MESS['MAIN_SITE_SPEED_MAP_EXT_VDOTS_2'] = "Тип значення";
+$MESS['MAIN_SITE_SPEED_MAP_TITLE'] = "Швидкість сайту з географії відвідувачів (1000 останніх)";
+$MESS['MAIN_SITE_SPEED_NOTES'] = "<b>Відмальовка сторінки</b> &mdash; час від початку переходу на сторінку до появи її на екрані. Саме з цього показники вважається <b>Швидкість сайту</b>.<br><b>DNS</b> &mdash; час виконання запиту DNS для сторінки. <br><b> Підключення до сервера </b> & mdash; скільки часу комп'ютер користувача встановлює з'єднання з сервером.<br><b>Відповідь сервера</b> &mdash; час обробки сервером запиту користувача (включаючи час реакції мережі для місцезнаходження користувача).<br><b>Завантаження HTML</b> &mdash; час завантаження HTML сторінки без ресурсів (картинки, CSS, Javascript).<br><b>Обробка HTML</b> &mdash; час, протягом якого браузер обробляв вміст сторінки (синтаксичний аналіз HTML, CSS, обробка елементів JavaScript і відображення сторінки) після завантаження її з сервера і до початку відмальовки.<br>";
+$MESS['MAIN_SITE_SPEED_PERF'] = "Монітор продуктивності";
+$MESS['MAIN_SITE_SPEED_PERF_NO_RES'] = "оцінка не проводилась";
+$MESS['MAIN_SITE_SPEED_PERIOD_LABEL'] = "За період";
+$MESS['MAIN_SITE_SPEED_SECONDS'] = "сек.";
+$MESS['MAIN_SITE_SPEED_TITLE'] = "Швидкість сайту";
+$MESS['MAIN_SITE_SPEED_TITLE_DESC'] = "комплексний показник комфортності роботи з сайтом для відвідувачів. <br> Враховує якість розробки сайту, якість хостингу та доступність сайту по мережі. Розраховується для 1000 останніх відвідувачів вашого сайту. <br> Швидкість сайту фактично показує, як швидко відобразився ваш сайт для більшості з цих 1000 відвідувачів.";
+?>

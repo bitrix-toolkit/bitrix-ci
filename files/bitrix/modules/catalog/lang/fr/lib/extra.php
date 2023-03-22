@@ -1,0 +1,5 @@
+<?
+$MESS["EXTRA_ENTITY_ID_FIELD"] = "ID de surtaxe";
+$MESS["EXTRA_ENTITY_NAME_FIELD"] = "Nom";
+$MESS["EXTRA_ENTITY_PERCENTAGE_FIELD"] = "Montant";
+?>

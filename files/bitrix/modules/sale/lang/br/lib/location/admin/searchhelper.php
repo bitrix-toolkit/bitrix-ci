@@ -1,0 +1,3 @@
+<?php
+$MESS["SALE_LOCATION_ADMIN_SEARCH_HELPER_ENTITY_INVALID_DBINDEX"] = "Estão faltando um ou mais índices nas tabelas do banco de dados relacionadas às localizações. Isso pode diminuir o desempenho das localizações. É aconselhável que você #ANCHOR_INDEX_RESTORE#restaure os índices do banco de dados manualmente#ANCHOR_END#.";
+$MESS["SALE_LOCATION_ADMIN_SEARCH_HELPER_ENTITY_INVALID_SINDEX"] = "O índice de pesquisa de locais está desatualizado. Se você usar a pesquisa incremental na caixa de entrada, pode ser lento, os resultados podem ser irrelevantes. É recomendável que você #ANCHOR_INDEX_RESTORE# restaure o índice manualmente #ANCHOR_END#.";

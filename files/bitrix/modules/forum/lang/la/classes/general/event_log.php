@@ -1,0 +1,35 @@
+<?
+$MESS["FORUM_FORUM_DELETE"] = "Eliminar foro";
+$MESS["FORUM_FORUM_EDIT"] = "Editar foro";
+$MESS["FORUM_MESSAGE_APPROVE"] = "Aprobar mensaje";
+$MESS["FORUM_MESSAGE_DELETE"] = "Eliminar mensaje";
+$MESS["FORUM_MESSAGE_EDIT"] = "Editar mensaje";
+$MESS["FORUM_MESSAGE_MOVE"] = "Mover mensaje";
+$MESS["FORUM_MESSAGE_SPAM"] = "El envío ha sido borrado como spam";
+$MESS["FORUM_MESSAGE_UNAPPROVE"] = "Ocultar mensaje";
+$MESS["FORUM_TOPIC_APPROVE"] = "Aprobar tema";
+$MESS["FORUM_TOPIC_CLOSE"] = "Cerrar tema";
+$MESS["FORUM_TOPIC_DELETE"] = "Eliminar tema";
+$MESS["FORUM_TOPIC_EDIT"] = "Editar tema";
+$MESS["FORUM_TOPIC_MOVE"] = "Mover tema";
+$MESS["FORUM_TOPIC_OPEN"] = "Abrir tema";
+$MESS["FORUM_TOPIC_SPAM"] = "El tema ha sido borrado como spam";
+$MESS["FORUM_TOPIC_STICK"] = "Clavar tema";
+$MESS["FORUM_TOPIC_UNAPPROVE"] = "Ocultar tema";
+$MESS["FORUM_TOPIC_UNSTICK"] = "Descalvar tema";
+$MESS["LOG_FORUM"] = "Foro";
+$MESS["LOG_FORUM_MESSAGE_APPROVE"] = "El post fue aprobado en #NAME#";
+$MESS["LOG_FORUM_MESSAGE_DELETE"] = "El post fue eliminado en #NAME#";
+$MESS["LOG_FORUM_MESSAGE_EDIT"] = "El post fue aprobado en #NAME#";
+$MESS["LOG_FORUM_MESSAGE_MOVE"] = "El post fue movido a #NAME#";
+$MESS["LOG_FORUM_MESSAGE_UNAPPROVE"] = "El post se ha ocultad en #NAME#";
+$MESS["LOG_FORUM_TOPIC_APPROVE"] = "El tema #NAME# ha sido aprobado";
+$MESS["LOG_FORUM_TOPIC_CLOSE"] = "El tema #NAME# se ha cerrado";
+$MESS["LOG_FORUM_TOPIC_DELETE"] = "El tema #NAME# se ha eliminado";
+$MESS["LOG_FORUM_TOPIC_EDIT"] = "El tema #NAME# ha sido cambiado";
+$MESS["LOG_FORUM_TOPIC_MOVE"] = "El tema #NAME# se ha movido al foro \"#FORUM#\"";
+$MESS["LOG_FORUM_TOPIC_OPEN"] = "El tema #NAME# se ha abierto";
+$MESS["LOG_FORUM_TOPIC_STICK"] = "El tema #NAME# se ha fijado";
+$MESS["LOG_FORUM_TOPIC_UNAPPROVE"] = "El tema #NAME# se ha ocultado";
+$MESS["LOG_FORUM_TOPIC_UNSTICK"] = "El tema #NAME# no se ha fijado";
+?>

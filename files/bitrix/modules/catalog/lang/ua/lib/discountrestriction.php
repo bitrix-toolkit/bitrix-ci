@@ -1,0 +1,7 @@
+<?
+$MESS["DISCOUNT_RESTRICTION_ENTITY_ID_FIELD"] = "Ідентифікатор запису";
+$MESS["DISCOUNT_RESTRICTION_ENTITY_DISCOUNT_ID_FIELD"] = "Ідентифікатор знижки на товар";
+$MESS["DISCOUNT_RESTRICTION_ENTITY_ACTIVE_FIELD"] = "Активність";
+$MESS["DISCOUNT_RESTRICTION_ENTITY_USER_GROUP_ID_FIELD"] = "Ідентифікатор групи користувачів";
+$MESS["DISCOUNT_RESTRICTION_ENTITY_PRICE_TYPE_ID_FIELD"] = "Ідентифікатор типу цін";
+?>

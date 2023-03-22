@@ -1,0 +1,11 @@
+<?php
+$MESS["STORE_BARCODE_ENTITY_BARCODE_FIELD"] = "Код";
+$MESS["STORE_BARCODE_ENTITY_BARCODE_IS_NOT_UNIQUE"] = "Товар зі штрихкодом #VALUE# вже існує.";
+$MESS["STORE_BARCODE_ENTITY_CREATED_BY_FIELD"] = "Ким створено";
+$MESS["STORE_BARCODE_ENTITY_DATE_CREATE_FIELD"] = "Дата створення";
+$MESS["STORE_BARCODE_ENTITY_DATE_MODIFY_FIELD"] = "Дата зміни";
+$MESS["STORE_BARCODE_ENTITY_ID_FIELD"] = "Ідентифікатор штрихкоду";
+$MESS["STORE_BARCODE_ENTITY_MODIFIED_BY_FIELD"] = "Ким змінено";
+$MESS["STORE_BARCODE_ENTITY_ORDER_ID_FIELD"] = "Ідентифікатор замовлення";
+$MESS["STORE_BARCODE_ENTITY_PRODUCT_ID_FIELD"] = "Ідентифікатор товару";
+$MESS["STORE_BARCODE_ENTITY_STORE_ID_FIELD"] = "Ідентифікатор складу";

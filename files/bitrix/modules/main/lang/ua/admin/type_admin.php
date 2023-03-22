@@ -1,0 +1,34 @@
+<?
+$MESS["ACTIVE"] = "Акт.";
+$MESS["ADD_TYPE"] = "Додати тип";
+$MESS["ADD_TYPE_TITLE1"] = "Додати типи події";
+$MESS["CONFIRM_DEL_ALL_MESSAGE"] = "Ви впевнені, що бажаєте видалити поточний тип, включаючи шаблони?";
+$MESS["DELETE_ERROR"] = "Помилка при видаленні типу події. Можливо, він пов'язаний з іншими об'єктами";
+$MESS["DELETE_LANG"] = "Очистити";
+$MESS["EVENT_DESCRIPTION"] = "Опис";
+$MESS["EVENT_NAME"] = "Назва";
+$MESS["EVENT_TEMPLATES"] = "Шаблони";
+$MESS["EVENT_TYPE"] = "Тип";
+$MESS["F_DESCRIPTION"] = "Опис типу";
+$MESS["F_EVENT_NAME1"] = "Тип події";
+$MESS["F_FILTER"] = "Фільтр";
+$MESS["F_ID"] = "Ідентифікатор";
+$MESS["F_NAME"] = "Назва типу";
+$MESS["F_SEARCH"] = "Знайти";
+$MESS["F_SEARCH_TITLE"] = "Введіть рядок для пошуку";
+$MESS["F_TMPL"] = "шаблону";
+$MESS["F_TYPE1"] = "типу події";
+$MESS["LANG"] = "Мова";
+$MESS["MAIN_ADMIN_MENU_DELETE"] = "Видалити";
+$MESS["MAIN_ADMIN_MENU_EDIT"] = "Змінити";
+$MESS["PAGES"] = "Типи подій";
+$MESS["SAVE_ERROR"] = "Помилка при зміненні типу події #";
+$MESS["SORT"] = "Сортування";
+$MESS["TITLE1"] = "Типи поштових та СМС подій";
+$MESS["event_type_admin_type"] = "Вид події";
+$MESS["event_type_admin_type_flt"] = "Вид події";
+$MESS["event_type_admin_type_flt_all"] = "(всі види)";
+$MESS["event_type_admin_type_flt_email"] = "Поштові події";
+$MESS["event_type_admin_type_flt_sms"] = "СМС-події";
+$MESS["type_admin_edit_title1"] = "Редагування події";
+?>

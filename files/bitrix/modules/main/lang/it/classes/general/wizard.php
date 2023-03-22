@@ -1,0 +1,3 @@
+<?php
+$MESS["MAIN_WIZARD_CANCEL_CAPTION"] = "Annulla";
+$MESS["MAIN_WIZARD_MAIN_MODULE_NAME"] = "Kernel";

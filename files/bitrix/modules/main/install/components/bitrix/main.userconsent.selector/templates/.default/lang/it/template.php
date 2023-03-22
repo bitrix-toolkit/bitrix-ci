@@ -1,0 +1,7 @@
+<?php
+$MESS["MAIN_USER_CONSENT_SELECTOR_BTN_CONSENT"] = "Consensi ottenuti";
+$MESS["MAIN_USER_CONSENT_SELECTOR_BTN_CREATE"] = "Crea nuovo consenso";
+$MESS["MAIN_USER_CONSENT_SELECTOR_BTN_CREATE_1"] = "Crea nuovo consenso";
+$MESS["MAIN_USER_CONSENT_SELECTOR_BTN_EDIT"] = "Modifica impostazioni";
+$MESS["MAIN_USER_CONSENT_SELECTOR_CHOOSE"] = "Seleziona consenso";
+$MESS["MAIN_USER_CONSENT_SELECTOR_DEF_NOT_SELECTED"] = "(non selezionato)";

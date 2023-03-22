@@ -1,0 +1,24 @@
+<?php
+$MESS["CATALOG_C_F_DEFAULT"] = "#VALUE# (за замовчуванням)";
+$MESS["CATALOG_C_F_MAIN_SECTION_TITLE"] = "Загальне";
+$MESS["CATALOG_C_F_NEW_PRODUCT_PLACEHOLDER"] = "Новий товар";
+$MESS["CATALOG_C_F_NO"] = "Ні";
+$MESS["CATALOG_C_F_PROPERTIES_SECTION_TITLE"] = "Характеристики";
+$MESS["CATALOG_C_F_STORE_SECTION_TITLE"] = "Параметри";
+$MESS["CATALOG_C_F_VARIATION_SETTINGS_BASE_PRICE"] = "Базова ціна (#PRICE_NAME#)";
+$MESS["CATALOG_C_F_VARIATION_SETTINGS_CATALOG_PARAMETERS_DESC"] = "Використовувати налаштування параметрів обліку товару на складах";
+$MESS["CATALOG_C_F_VARIATION_SETTINGS_CATALOG_PARAMETERS_TITLE"] = "Параметри обліку";
+$MESS["CATALOG_C_F_VARIATION_SETTINGS_MEASUREMENTS_DESC"] = "Використовувати вагу та розміри товарів для розрахунку вартості доставки";
+$MESS["CATALOG_C_F_VARIATION_SETTINGS_MEASUREMENTS_TITLE"] = "Вага та розміри";
+$MESS["CATALOG_C_F_VARIATION_SETTINGS_MEASURE_RATIO_DESC"] = "Використовувати коефіцієнти одиниць виміру в товарах";
+$MESS["CATALOG_C_F_VARIATION_SETTINGS_MEASURE_RATIO_TITLE"] = "Коефіцієнт одиниці виміру";
+$MESS["CATALOG_C_F_VARIATION_SETTINGS_PURCHASING_PRICE_FIELD_DESC"] = "Використовувати закупівельну ціну";
+$MESS["CATALOG_C_F_VARIATION_SETTINGS_PURCHASING_PRICE_FIELD_TITLE"] = "Закупівельна ціна";
+$MESS["CATALOG_C_F_VARIATION_SETTINGS_SEO_TITLE"] = "Налаштування SEO";
+$MESS["CATALOG_C_F_VARIATION_SETTINGS_VAT_INCLUDED_DESC"] = "Використовувати ПДВ";
+$MESS["CATALOG_C_F_VARIATION_SETTINGS_VAT_INCLUDED_TITLE"] = "Ставка ПДВ";
+$MESS["CATALOG_C_F_VARIATION_SETTINGS_WAREHOUSE_HINT"] = "Складський облік включений. Відключити складський облік можна в налаштуваннях";
+$MESS["CATALOG_C_F_VARIATION_SETTINGS_WAREHOUSE_TITLE"] = "Включити складський облік";
+$MESS["CATALOG_C_F_YES"] = "Так";
+$MESS["CATALOG_PRODUCT_CARD_USERFIELD_MESS_EMPTY_VALUE"] = "не вибрано";
+$MESS["CATALOG_PRODUCT_CARD_VARIATION_GRID_NOT_SELECTED"] = "не вибрано";

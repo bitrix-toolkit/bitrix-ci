@@ -1,0 +1,26 @@
+<?php
+$MESS["PSL_ACCESS_DENIED"] = "Acesso negado";
+$MESS["PSL_ACTION_ACTIVATE"] = "ativar";
+$MESS["PSL_ACTION_DEACTIVATE"] = "desativar";
+$MESS["PSL_ACTION_DELETE"] = "deletar";
+$MESS["PSL_ACTIVE"] = "Ativo";
+$MESS["PSL_CONTACT_TYPE"] = "Tipo de contato";
+$MESS["PSL_DATE_FROM"] = "Assinatura ativa desde";
+$MESS["PSL_DATE_TO"] = "Assinatura ativa até";
+$MESS["PSL_DELETE_SUBSCRIBE"] = "Excluir";
+$MESS["PSL_FILTER_ACTIVE"] = "Ativo";
+$MESS["PSL_FILTER_CONTACT_TYPE"] = "Tipo de contato";
+$MESS["PSL_FILTER_DATE_FROM"] = "Assinatura ativa desde";
+$MESS["PSL_FILTER_DATE_TO"] = "Assinatura ativa até";
+$MESS["PSL_FILTER_ID"] = "ID";
+$MESS["PSL_FILTER_ITEM_ID"] = "ID do produto";
+$MESS["PSL_FILTER_NO"] = "Não";
+$MESS["PSL_FILTER_USER_CONTACT"] = "Contato do usuário";
+$MESS["PSL_FILTER_USER_ID"] = "Usuário";
+$MESS["PSL_FILTER_YES"] = "Sim";
+$MESS["PSL_ITEM_ID"] = "ID do produto";
+$MESS["PSL_PAGE_TITLE"] = "Assinaturas";
+$MESS["PSL_PRODUCT_NAME"] = "Nome do produto";
+$MESS["PSL_SITE_ID"] = "ID do site";
+$MESS["PSL_USER"] = "Usuário";
+$MESS["PSL_USER_CONTACT"] = "Contato do usuário";

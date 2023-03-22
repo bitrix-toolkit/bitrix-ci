@@ -1,0 +1,3 @@
+<?
+$MESS["BX_SALE_DISCOUNT_PRESET_ANNOUNCE"] = "opis";
+?>

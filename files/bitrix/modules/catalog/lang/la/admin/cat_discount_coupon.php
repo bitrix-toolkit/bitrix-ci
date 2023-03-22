@@ -1,0 +1,30 @@
+<?
+$MESS["DSC_CPN_ACT"] = "Activo";
+$MESS["DSC_CPN_ACTIVE"] = "Activo";
+$MESS["DSC_CPN_ADD"] = "Nuevo cupon";
+$MESS["DSC_CPN_ADD_ALT"] = "Agregar un nuevo cupón";
+$MESS["DSC_CPN_ALL"] = "Todo";
+$MESS["DSC_CPN_CPN"] = "Cupón";
+$MESS["DSC_CPN_DATE"] = "Último usado";
+$MESS["DSC_CPN_DESCRIPTION"] = "Comentarios";
+$MESS["DSC_CPN_DISC"] = "Descuento";
+$MESS["DSC_CPN_NAME"] = "Nombre del descuento";
+$MESS["DSC_CPN_NO"] = "No";
+$MESS["DSC_CPN_ORDER"] = "Aplicable a Todos los Productos del Pedido";
+$MESS["DSC_CPN_TIME"] = "No reutilizable";
+$MESS["DSC_CPN_TIME2"] = "Tipo de cupon";
+$MESS["DSC_CPN_TITLE"] = "Cupones de descuento";
+$MESS["DSC_CPN_YES"] = "Si";
+$MESS["DSC_CREATED_BY"] = "Creado por";
+$MESS["DSC_DATE_CREATE"] = "Creado en";
+$MESS["DSC_DELETE"] = "Eliminar";
+$MESS["DSC_DELETE_ALT"] = "Eliminar cupón";
+$MESS["DSC_DELETE_CONF"] = "¿Está seguro que desea editar este cupón?";
+$MESS["DSC_MODIFIED_BY"] = "Modificado por";
+$MESS["DSC_NAV"] = "Cupones";
+$MESS["DSC_TIMESTAMP_X"] = "Modificado en";
+$MESS["DSC_UPDATE"] = "Editar";
+$MESS["DSC_UPDATE_ALT"] = "Editar parámetros del cupón";
+$MESS["ERROR_DELETE_DISCOUNT_CPN"] = "Error al eliminar el cupón #ID#";
+$MESS["ERROR_UPDATE_DISCOUNT_CPN"] = "Error al actualizar parámetros del cupón #ID#";
+?>

@@ -1,0 +1,3 @@
+<?php
+$MESS["IBLOCK_SECTION_ENTITY_IBLOCK_ID_FIELD"] = "ID blocco di informazioni";
+$MESS["IBLOCK_SECTION_ENTITY_ID_FIELD"] = "ID";

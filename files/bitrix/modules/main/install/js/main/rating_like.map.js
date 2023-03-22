@@ -1,0 +1,1 @@
+{"version":3,"sources":["rating_like.js"],"names":["BX","Type","isUndefined","window","frameCacheVars","Event","ready","Runtime","loadExtension","EventEmitter","subscribe"],"mappings":"AAAA,GAAIA,GAAGC,KAAKC,YAAYC,OAAOC,gBAC/B,CACCJ,GAAGK,MAAMC,OAAM,KACdN,GAAGO,QAAQC,cAAc,sBAI3B,CACCR,GAAGK,MAAMI,aAAaC,UAAU,uBAAuB,KACtDV,GAAGO,QAAQC,cAAc","file":"rating_like.map.js"}

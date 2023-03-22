@@ -1,0 +1,7 @@
+<?
+$MESS["AREA_FILE_RECURSIVE_TIP"] = "Lorsque la case est cochée, les zones incluses des sections vont se connecter de manière récursive, c'est-à-dire que si un fichier de niveau inférieur possède sa propre zone incluse, alors elle s'affichera. Si la section actuelle n'a pas sa propre zone incluse, alors toutes les sections seront vérifiées de manière récursive jusqu'à la racine du site, et la première zone incluse qui sera rencontrée sera affichée.";
+$MESS["AREA_FILE_SHOW_TIP"] = "Le réglage permet de choisir le domaine d'activité de la zone incorporable : <br /><i>pour la page</i> - la zone incorporable sera incluse seulement dans la page courante; <br /><i>pour la rubrique</i> - la zone sera incorporable pour toute la rubrique.";
+$MESS["AREA_FILE_SUFFIX_TIP"] = "Il faut indiquer le suffixe du nom du fichier qui s'ajoutera à toutes les zones incluses créés ultérieurement. Les pages avec un tel suffixe seront perçues comme des zones incluses.";
+$MESS["EDIT_MODE_TIP"] = "Le régime d'édition sélectionné sera appliqué lors du passage à l'édition d'une zone de la page/rubrique à inclure depuis la partie publique.";
+$MESS["EDIT_TEMPLATE_TIP"] = "Sélectionnez ici le modèle de page requis (qui sont stockées dans /bitrix/templates/.default/page_templates/). Vous pouvez sélectionner <b><i>autre</i> et spécifier le chemin complet vers le modèle requis.";
+?>

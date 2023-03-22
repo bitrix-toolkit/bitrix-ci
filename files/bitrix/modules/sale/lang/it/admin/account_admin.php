@@ -1,0 +1,27 @@
+<?php
+$MESS["SAAN_ADD_NEW"] = "Aggiungi un nuovo account";
+$MESS["SAAN_ADD_NEW_ALT"] = "Fai clic per aggiungere un nuovo account";
+$MESS["SAAN_LOCK_ACCT"] = "Congelato";
+$MESS["SAAN_TRANSACT"] = "Transazioni";
+$MESS["SAAN_UNLOCK_DO"] = "scongela";
+$MESS["SAA_CURRENCY"] = "Valuta";
+$MESS["SAA_DELETE_ALT"] = "Elimina account";
+$MESS["SAA_DELETE_CONFIRM"] = "Sei sicuro di voler eliminare questo account?";
+$MESS["SAA_ERROR_DELETE"] = "Errore durante l'eliminazione dell'account ##ID#";
+$MESS["SAA_ERROR_GET"] = "Errore durante il recupero dei parametri dell'account ##ID#";
+$MESS["SAA_ERROR_MONEY"] = "Errore durante l'addebito dell'account ##ID#";
+$MESS["SAA_ERROR_UNLOCK"] = "Errore durante lo sblocco dell'account ##ID#";
+$MESS["SAA_ITOG"] = "Totale";
+$MESS["SAA_LOCKED"] = "Congelato";
+$MESS["SAA_MAILTO"] = "Invia messaggio";
+$MESS["SAA_NO"] = "No";
+$MESS["SAA_SUM"] = "Importo dell'account";
+$MESS["SAA_TITLE"] = "Account utente interni";
+$MESS["SAA_TRANS_TITLE"] = "Visualizza elenco delle transazioni";
+$MESS["SAA_UPDATE_ALT"] = "Modifica account";
+$MESS["SAA_USER"] = "Utente";
+$MESS["SAA_USER1"] = "Utente";
+$MESS["SAA_USER_ID"] = "ID utente";
+$MESS["SAA_USER_INFO"] = "Profilo utente";
+$MESS["SAA_USER_LOGIN"] = "Accesso utente";
+$MESS["SAA_YES"] = "Sì";

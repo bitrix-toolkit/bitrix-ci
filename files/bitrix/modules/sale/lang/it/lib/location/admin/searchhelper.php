@@ -1,0 +1,3 @@
+<?php
+$MESS["SALE_LOCATION_ADMIN_SEARCH_HELPER_ENTITY_INVALID_DBINDEX"] = "Uno o più indici mancanti nelle tabelle del database relativi alle sedi. Ciò potrebbe ridurre le prestazioni delle sedi. Si consiglia di #ANCHOR_INDEX_RESTORE#ripristinare manualmente gli indici del database#ANCHOR_END#.";
+$MESS["SALE_LOCATION_ADMIN_SEARCH_HELPER_ENTITY_INVALID_SINDEX"] = "L'indice di ricerca delle sedi non è aggiornato. Se utilizzi la ricerca incrementale nella casella di input, il processo potrebbe essere lento e i risultati irrilevanti. Ti consigliamo di #ANCHOR_INDEX_RESTORE#ripristinare manualmente l'indice#ANCHOR_END#.";

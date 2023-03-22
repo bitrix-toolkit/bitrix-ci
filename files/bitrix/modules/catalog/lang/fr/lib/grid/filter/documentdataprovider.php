@@ -1,0 +1,25 @@
+<?php
+$MESS["DOCUMENT_CONTRACTOR_CRM_COMPANY_ID_NAME"] = "Fournisseur : entreprise";
+$MESS["DOCUMENT_CONTRACTOR_CRM_CONTACT_ID_NAME"] = "Fournisseur : contact";
+$MESS["DOCUMENT_CONTRACTOR_ID_NAME"] = "Fournisseur";
+$MESS["DOCUMENT_CREATED_BY_NAME"] = "Créé par";
+$MESS["DOCUMENT_DATE_CREATE_NAME"] = "Date de création";
+$MESS["DOCUMENT_DATE_DOCUMENT_NAME"] = "Date du document d'inventaire";
+$MESS["DOCUMENT_DATE_MODIFY_NAME"] = "Date de modification";
+$MESS["DOCUMENT_DATE_STATUS_NAME"] = "Date de modification du statut";
+$MESS["DOCUMENT_DOC_NUMBER_NAME"] = "Document d'inventaire #";
+$MESS["DOCUMENT_DOC_TYPE_NAME"] = "Type d'objet d'inventaire";
+$MESS["DOCUMENT_ID_NAME"] = "ID";
+$MESS["DOCUMENT_MODIFIED_BY_NAME"] = "Modifié par";
+$MESS["DOCUMENT_PRODUCTS_NAME"] = "Produit";
+$MESS["DOCUMENT_RESPONSIBLE_ID_NAME"] = "Responsable";
+$MESS["DOCUMENT_STATUS_BY_NAME"] = "Statut modifié par";
+$MESS["DOCUMENT_STATUS_NAME"] = "Statut";
+$MESS["DOCUMENT_STORES_FROM_NAME"] = "Entrepôt source";
+$MESS["DOCUMENT_STORES_NAME"] = "Entrepôts";
+$MESS["DOCUMENT_STORES_TO_NAME"] = "Entrepôt de destinataire";
+$MESS["DOCUMENT_TITLE_NAME"] = "Nom";
+$MESS["DOCUMENT_TOTAL_NAME"] = "Total";
+$MESS["DOCUMENT_TYPE_A"] = "Réception en stock";
+$MESS["DOCUMENT_TYPE_NAME"] = "Type";
+$MESS["DOCUMENT_TYPE_S"] = "Ajustement du stock";

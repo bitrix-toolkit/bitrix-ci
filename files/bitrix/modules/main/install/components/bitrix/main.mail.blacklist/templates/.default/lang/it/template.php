@@ -1,0 +1,9 @@
+<?php
+$MESS["MAIN_MAIL_BLACKLIST_BLACKLIST_TITLE"] = "Elenco esclusi";
+$MESS["MAIN_MAIL_BLACKLIST_BTN_REMOVE_FROM_L"] = "Rimuovi da elenco";
+$MESS["MAIN_MAIL_BLACKLIST_BTN_REMOVE_FROM_L_TITLE"] = "Rimuovi da elenco";
+$MESS["MAIN_MAIL_BLACKLIST_DELETE_CONFIRM"] = "Eliminare questo elemento?";
+$MESS["MAIN_MAIL_BLACKLIST_DELETE_CONFIRM_TITLE"] = "Conferma eliminazione";
+$MESS["MAIN_MAIL_BLACKLIST_DELETE_ERROR"] = "Impossibile eliminare gli elementi";
+$MESS["MAIN_MAIL_BLACKLIST_REMOVE_BTN"] = "Elimina";
+$MESS["MAIN_MAIL_BLACKLIST_REMOVE_BTN_TITLE"] = "Elimina";

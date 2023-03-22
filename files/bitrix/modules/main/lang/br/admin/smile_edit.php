@@ -1,0 +1,30 @@
+<?
+$MESS["ERROR_ADD_SMILE"] = "Erro ao adicionar smiley.";
+$MESS["ERROR_BAD_SESSID"] = "Sua sessão expirou. Por favor, tente novamente.";
+$MESS["ERROR_COPY_IMAGE"] = "Erro ao fazer upload da imagem (permissões insuficientes?)";
+$MESS["ERROR_EDIT_SMILE"] = "Erro ao editar smiley.";
+$MESS["ERROR_EXISTS_IMAGE"] = "O arquivo #FILE# já existe no disco. <br> Ele pode estar sendo utilizado por um dos smileys.";
+$MESS["SMILE_BTN_BACK"] = "Smileys";
+$MESS["SMILE_BTN_DELETE"] = "Deletar";
+$MESS["SMILE_BTN_DELETE_CONFIRM"] = "Você tem certeza que deseja deletar este smiley?";
+$MESS["SMILE_BTN_NEW"] = "Adicionar Novo";
+$MESS["SMILE_EDIT_RECORD"] = "Editar Smiley";
+$MESS["SMILE_IMAGE"] = "Imagem";
+$MESS["SMILE_IMAGE_HR"] = "Alta Resolução";
+$MESS["SMILE_IMAGE_HR_TITLE"] = "A imagem será mais nítida devido ao aumento da densidade de pixels.";
+$MESS["SMILE_IMAGE_NAME"] = "Nome do smiley";
+$MESS["SMILE_IMAGE_NAME_DE"] = "Alemão";
+$MESS["SMILE_IMAGE_NAME_EN"] = "Inglês";
+$MESS["SMILE_IMAGE_NAME_RU"] = "Russo";
+$MESS["SMILE_IMAGE_UPLOAD"] = "Nova imagem";
+$MESS["SMILE_NEW_RECORD"] = "Adicionar Smiley";
+$MESS["SMILE_SET_ID"] = "Ajustar";
+$MESS["SMILE_SORT"] = "Classificação";
+$MESS["SMILE_TAB_SMILE"] = "Parâmetros";
+$MESS["SMILE_TAB_SMILE_DESCR"] = "Parâmetros de Smileys";
+$MESS["SMILE_TYPE"] = "Tipo";
+$MESS["SMILE_TYPE_ICON"] = "cone";
+$MESS["SMILE_TYPE_SMILE"] = "Smiley";
+$MESS["SMILE_TYPING"] = "Digitação (código de smiley)";
+$MESS["SMILE_TYPING_NOTE"] = "Separar múltiplas entradas com um espaço";
+?>

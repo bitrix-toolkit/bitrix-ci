@@ -1,0 +1,3 @@
+<?
+$MESS["SALE_DELIVERY_ENTITY_ID_FIELD"] = "ID";
+?>

@@ -1,0 +1,33 @@
+<?
+$MESS["ERROR_NO_HANDLER"] = "No se especifica el controlador de caja registradora";
+$MESS["ERROR_NO_NAME"] = "Nombre de la compañía no especificado";
+$MESS["ERROR_NO_OFD"] = "OFD no especificado";
+$MESS["SALE_ACCESS_DENIED"] = "Acceso denegado.";
+$MESS["SALE_CASHBOX_2FLIST"] = "Volver a la lista";
+$MESS["SALE_CASHBOX_ACTIVE"] = "Activo";
+$MESS["SALE_CASHBOX_EDIT_RECORD"] = "Editar Caja Registradora";
+$MESS["SALE_CASHBOX_ERROR"] = "Se ha producido un error al eliminar un objeto.";
+$MESS["SALE_CASHBOX_EXTERNAL_UUID"] = "ID de caja registradora externa";
+$MESS["SALE_CASHBOX_HANDLER"] = "Manejador";
+$MESS["SALE_CASHBOX_KKM_ID"] = "Marcar caja registradora";
+$MESS["SALE_CASHBOX_KKM_NO_CHOOSE"] = "No seleccionado";
+$MESS["SALE_CASHBOX_NAME"] = "Nombre";
+$MESS["SALE_CASHBOX_NEW_RECORD"] = "Crear Caja Registradora";
+$MESS["SALE_CASHBOX_NO_HANDLER"] = "Seleccionar manejador";
+$MESS["SALE_CASHBOX_OFD"] = "OFD";
+$MESS["SALE_CASHBOX_OTHER_HANDLER"] = "Otro";
+$MESS["SALE_CASHBOX_RDL_RESTRICTION"] = "Restricción";
+$MESS["SALE_CASHBOX_RDL_SAVE"] = "Guardar";
+$MESS["SALE_CASHBOX_RDL_SORT"] = "Clasificar";
+$MESS["SALE_CASHBOX_RESTRICTION"] = "Restricciones";
+$MESS["SALE_CASHBOX_RESTRICTION_DESC"] = "restricciones de caja registradora";
+$MESS["SALE_CASHBOX_SORT"] = "Clasificar";
+$MESS["SALE_CASHBOX_TAB_TITLE_SETTINGS"] = "Configuraciones";
+$MESS["SALE_CASHBOX_TAB_TITLE_SETTINGS_DESC"] = "Parámetros de la caja registradora";
+$MESS["SALE_CASHBOX_USE_OFFLINE"] = "Modo offline";
+$MESS["SALE_DELETE_CASHBOX"] = "Eliminar Caja Registradora";
+$MESS["SALE_NEW_CASHBOX"] = "Agregar Caja Registradora";
+$MESS["SALE_TAB_CASHBOX"] = "Caja registradora";
+$MESS["SALE_TAB_CASHBOX_DESCR"] = "Parámetros de la caja registradora";
+$MESS["SPSN_DELETE_CASHBOX_CONFIRM"] = "¿Seguro que desea eliminar la caja registradora?";
+?>

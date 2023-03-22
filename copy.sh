@@ -50,14 +50,18 @@ cp -r ./public/bitrix/modules/iblock ./files/bitrix/modules/
 rm -rf ./files/bitrix/modules/iblock/admin
 rm -rf ./files/bitrix/modules/iblock/install
 
+# forum
+mkdir -p ./files/bitrix/modules
+cp -r ./public/bitrix/modules/forum ./files/bitrix/modules/
+rm -rf ./files/bitrix/modules/forum/admin
+rm -rf ./files/bitrix/modules/forum/install
+
 # main
 mkdir -p ./files/bitrix/modules
 cp -r ./public/bitrix/modules/main ./files/bitrix/modules/
 rm -rf ./files/bitrix/modules/main/cli
 rm -rf ./files/bitrix/modules/main/fonts
-rm -rf ./files/bitrix/modules/main/install
 rm -rf ./files/bitrix/modules/main/interface
-rm -rf ./files/bitrix/modules/main/public
 
 # php_interface
 mkdir -p ./files/bitrix/php_interface
@@ -76,10 +80,15 @@ mkdir -p ./files/bitrix
 cp ./public/bitrix/license_key.php ./files/bitrix/license_key.php
 cp ./public/bitrix/.settings.php ./files/bitrix/.settings.php
 
+# chmod
+chmod 755 $(find ./files -type d)
+chmod 644 $(find ./files -type f)
+
 # 'host' => getenv('MYSQL_HOST', true) ?: getenv('MYSQL_HOST'),
 # 'database' => getenv('MYSQL_DATABASE', true) ?: getenv('MYSQL_DATABASE'),
 # 'login' => getenv('MYSQL_USER', true) ?: getenv('MYSQL_USER'),
 # 'password' => getenv('MYSQL_PASSWORD', true) ?: getenv('MYSQL_PASSWORD'),
+# 'debug' => boolval(getenv('DEBUG', true) ?: getenv('DEBUG'))
 
 # pstorm ./files/bitrix/modules/main/include.php
 

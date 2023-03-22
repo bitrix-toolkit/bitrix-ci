@@ -1,0 +1,7 @@
+<?
+$MESS["SALE_LOCATION_EXTERNAL_ENTITY_CANNOT_ADD_DATA_EXCEPTION"] = "Errore durante l'aggiunta di dati esterni";
+$MESS["SALE_LOCATION_EXTERNAL_ENTITY_CANNOT_DELETE_DATA_EXCEPTION"] = "Errore durante l'eliminazione di dati esterni";
+$MESS["SALE_LOCATION_EXTERNAL_ENTITY_CANNOT_UPDATE_DATA_EXCEPTION"] = "Errore durante l'aggiornamento di dati esterni";
+$MESS["SALE_LOCATION_EXTERNAL_ENTITY_SERVICE_ID_FIELD"] = "ID servizio";
+$MESS["SALE_LOCATION_EXTERNAL_ENTITY_XML_ID_FIELD"] = "ID esterno";
+?>

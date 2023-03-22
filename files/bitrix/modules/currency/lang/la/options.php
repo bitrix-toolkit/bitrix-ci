@@ -1,0 +1,32 @@
+<?
+$MESS["BASE_CURRENCY"] = "Moneda base:";
+$MESS["COP_SYS_ROU"] = "Operaciones de servicio";
+$MESS["CO_TAB_RIGHTS"] = "Acceso";
+$MESS["CO_TAB_RIGHTS_TITLE"] = "Permisos de acceso del módulo";
+$MESS["CURRENCY_AGENTS"] = "Agentes";
+$MESS["CURRENCY_AGENTS_ACTIVATE"] = "Activar agente";
+$MESS["CURRENCY_AGENTS_ACTIVE_NO"] = "no";
+$MESS["CURRENCY_AGENTS_ACTIVE_YES"] = "si";
+$MESS["CURRENCY_AGENTS_CREATE_AGENT"] = "Crear agente";
+$MESS["CURRENCY_AGENTS_DEACTIVATE"] = "Desactivar agente";
+$MESS["CURRENCY_AGENTS_LAST_EXEC"] = "Última ejecución";
+$MESS["CURRENCY_AGENTS_NEXT_EXEC"] = "Siguiente ejecución";
+$MESS["CURRENCY_AGENTS_PLANNED_NEXT_EXEC"] = "Primera ejecución programada";
+$MESS["CURRENCY_AGENTS_TITLE"] = "Información sobre módulo agentes ";
+$MESS["CURRENCY_BASE_RATE"] = "Tasas básicas actuales";
+$MESS["CURRENCY_BASE_RATE_AGENT"] = "Moneda base y cálculo de tipo de cambio de agente";
+$MESS["CURRENCY_BASE_RATE_AGENT_ABSENT"] = "Atención! Moneda base y cálculo de tipo de cambio de agente ha desaparecido!";
+$MESS["CURRENCY_BASE_RATE_AGENT_ACTIVE"] = "Activar";
+$MESS["CURRENCY_BASE_RATE_TITLE"] = "Tipos de cambio reales a la moneda base";
+$MESS["CURRENCY_PROCEDURES"] = "Operaciones de servicio";
+$MESS["CURRENCY_SETTINGS"] = "Configuración general";
+$MESS["CURRENCY_SETTINGS_TITLE"] = "Parámetros básicos para el módulo";
+$MESS["CUR_OPTIONS_BTN_HINT_RESTORE_DEFAULT"] = "Valores predeterminados establecidos";
+$MESS["CUR_OPTIONS_BTN_HINT_RESTORE_DEFAULT_WARNING"] = "¡Atención! Todos los parámetros se restablecerán a sus valores predeterminados. ¿Quieres continuar?";
+$MESS["CUR_OPTIONS_BTN_RESET"] = "Reiniciar";
+$MESS["CUR_OPTIONS_BTN_RESET_TITLE"] = "Deshacer todos los cambios no guardados";
+$MESS["CUR_OPTIONS_BTN_RESTORE_DEFAULT"] = "Predeterminado";
+$MESS["CUR_OPTIONS_BTN_SAVE"] = "Guardar";
+$MESS["CUR_OPTIONS_BTN_SAVE_TITLE"] = "Guardar cambios";
+$MESS["CUR_PROCEDURES_BTN_RECALC"] = "Recalcular";
+?>

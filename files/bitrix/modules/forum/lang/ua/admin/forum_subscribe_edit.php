@@ -1,0 +1,29 @@
+<?
+$MESS["FM_HEAD_ID"] = "ID";
+$MESS["FM_WRONG_DATE_FROM"] = "Введіть у фільтрі правильну «Дату створення» «з»";
+$MESS["FM_WRONG_DATE_TO"] = "Введіть у фільтрі правильну «Дату створення» «до»";
+$MESS["FM_FLT_SEARCH_TITLE"] = "Введіть рядок для пошуку";
+$MESS["FM_FLT_SUBSCR_TYPE"] = "Вид підписки";
+$MESS["FM_FLT_SUBSCR_TYPE_ALT"] = "Вид підписки";
+$MESS["FM_ALL_MESSAGE"] = "Всі повідомлення форума";
+$MESS["FM_ACT_DEL_CONFIRM"] = "Ви дійсно хoтіте видалити підписку?";
+$MESS["FM_FLT_START_DATE"] = "Дата початку підписки";
+$MESS["FM_FLT_START_DATE_ALT"] = "Дата початку підписки";
+$MESS["FM_FLT_SEARCH"] = "Знайти";
+$MESS["FM_HEAD_START_DATE"] = "Початок підписки";
+$MESS["FM_SPACE"] = "Не вибрано";
+$MESS["FSUBSC_NO_SPERMS"] = "Недостатньо прав для зміни підписки.";
+$MESS["FM_WRONG_PERIOD"] = "Неправильно зазначено період";
+$MESS["FM_WRONG_USER_ID"] = "Немає ID користувача";
+$MESS["FM_TYPICAL"] = "Нові повідомлення теми";
+$MESS["FM_TITLE_PAGE"] = "Підписка користувача";
+$MESS["FM_TITLE"] = "Підписка користувача";
+$MESS["FM_HEAD_LAST_SEND"] = "Останнє повідомлення";
+$MESS["FM_LIST_USER"] = "Список користувачів";
+$MESS["FM_FLT_TOPIC"] = "Тема";
+$MESS["FM_HEAD_TOPIC"] = "Тема";
+$MESS["FM_NEW_TOPIC_ONLY"] = "Тільки нові теми";
+$MESS["FM_ACT_DELETE"] = "Видалити";
+$MESS["FM_FLT_FORUM"] = "Форум";
+$MESS["FM_HEAD_FORUM"] = "Форум";
+?>

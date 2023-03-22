@@ -1,0 +1,5 @@
+<?
+$MESS["IBLOCK_GROUP_ENTITY_GROUP_ID_FIELD"] = "ID użytkownika grupy";
+$MESS["IBLOCK_GROUP_ENTITY_IBLOCK_ID_FIELD"] = "ID Bloku Informacji";
+$MESS["IBLOCK_GROUP_ENTITY_PERMISSION_FIELD"] = "Uprawnienia";
+?>

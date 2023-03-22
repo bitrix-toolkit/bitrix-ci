@@ -1,0 +1,5 @@
+<?
+$MESS["IBLOCK_MESSAGE_ENTITY_IBLOCK_ID_FIELD"] = "Code du bloc d'information";
+$MESS["IBLOCK_MESSAGE_ENTITY_MESSAGE_ID_FIELD"] = "Identifiant du message";
+$MESS["IBLOCK_MESSAGE_ENTITY_MESSAGE_TEXT_FIELD"] = "Message";
+?>

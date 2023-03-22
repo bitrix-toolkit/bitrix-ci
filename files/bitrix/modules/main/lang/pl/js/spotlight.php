@@ -1,0 +1,4 @@
+<?
+$MESS["MAIN_SPOTLIGHT_REMIND_LATER"] = "przypomnij później";
+$MESS["MAIN_SPOTLIGHT_UNDERSTAND"] = "OK";
+?>

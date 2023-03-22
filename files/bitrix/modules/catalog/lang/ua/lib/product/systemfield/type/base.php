@@ -1,0 +1,3 @@
+<?php
+$MESS["BX_CATALOG_PRODUCT_SYSTEMFIELD_BASE_ERR_CREATE_UF_COMMON"] = "Внутрішня помилка при створенні поля користувача \"#FIELD_NAME#\"";
+$MESS["CATALOG_PRODUCT_SYSTEMFIELD_TYPE_BASE_EMPTY_LIST_VALUE"] = "не обрано";

@@ -1,0 +1,36 @@
+<?
+$MESS["JS_CORE_FILE_APPLY"] = "Zastosuj";
+$MESS["JS_CORE_FILE_CLOUD"] = "Załaduj z chmury";
+$MESS["JS_CORE_FILE_DESCRIPTION"] = "Opis";
+$MESS["JS_CORE_FILE_INFO_DIM"] = "Wymiary";
+$MESS["JS_CORE_FILE_INFO_LINK"] = "Odnośnik";
+$MESS["JS_CORE_FILE_INFO_SIZE"] = "Rozmiar";
+$MESS["JS_CORE_FILE_INSERT_PATH"] = "Wstaw ścieżkę pliku";
+$MESS["JS_CORE_FILE_MEDIALIB"] = "Wybierz pozycję bibliteki multimediów";
+$MESS["JS_CORE_FILE_SITE"] = "Wybierz z eksplorera stron";
+$MESS["JS_CORE_FILE_UPLOAD"] = "Prześlij z komputera";
+$MESS["JS_CORE_FI_ADD"] = "Dodaj";
+$MESS["JS_CORE_FI_ADD_LINK"] = "Dodaj link";
+$MESS["JS_CORE_FI_ADD_PRESET"] = "Dodaj ustawienie wstępne";
+$MESS["JS_CORE_FI_CANCEL"] = "Anuluj";
+$MESS["JS_CORE_FI_CANCEL_PRESET"] = "Anuluj<br> działanie";
+$MESS["JS_CORE_FI_CLEAR"] = "Wyczyść";
+$MESS["JS_CORE_FI_EDIT_PRESET"] = "Edytuj ustawienie wstępne";
+$MESS["JS_CORE_FI_FRAME_IS_LOADING"] = "Proszę czekać, trwa przesyłanie obrazów. Anulować przycinanie?";
+$MESS["JS_CORE_FI_FRAME_IS_LOADING_CANCEL"] = "Tak";
+$MESS["JS_CORE_FI_FRAME_Y"] = "Użyj przycinania";
+$MESS["JS_CORE_FI_FRAMING"] = "Przycinanie: ";
+$MESS["JS_CORE_FI_HEIGHT"] = "Wysokość";
+$MESS["JS_CORE_FI_LINK"] = "Link:";
+$MESS["JS_CORE_FI_PIN_DESCRIPTION"] = "Pole opisu przypiętego elementu";
+$MESS["JS_CORE_FI_PRESET_IS_TOO_BIG"] = "Rozmiar zdjęcia jest mniejszy niż wybrane ustawienie wstępne. Czy chcesz powiększyć obraz?";
+$MESS["JS_CORE_FI_SAVE_PRESET"] = "Zapisz ustawienie wstępne";
+$MESS["JS_CORE_FI_SCALE"] = "Powiększ";
+$MESS["JS_CORE_FI_TITLE"] = "Nazwa";
+$MESS["JS_CORE_FI_TOO_MANY_FILES"] = "Liczba plików przekracza dozwolone #amount#.";
+$MESS["JS_CORE_FI_TOO_MANY_FILES2"] = "Osiągnięto limit plików.";
+$MESS["JS_CORE_FI_TOO_MANY_FILES3"] = "Przekroczono dozwolony rozmiar pliku.";
+$MESS["JS_CORE_FI_UPLOAD_DENIED"] = "Odmowa przesyłania";
+$MESS["JS_CORE_FI_USE_PRESET"] = "Użyj ustawienia wstępnego";
+$MESS["JS_CORE_FI_WIDTH"] = "Szerokość";
+?>

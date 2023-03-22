@@ -1,0 +1,3 @@
+<?
+$MESS["SALE_DH_PECOM_LOC_PNU_2"] = "RÉPUBLIQUE";
+?>

@@ -1,0 +1,37 @@
+<?
+$MESS["EDIT_ORDER_SHIPMENT"] = "Éditer l'expédition##ID#";
+$MESS["NEW_COLUMN_BARCODE"] = "Code barre";
+$MESS["NEW_COLUMN_COLOR"] = "Couleur";
+$MESS["NEW_COLUMN_IMAGE"] = "Image";
+$MESS["NEW_COLUMN_NAME"] = "Nom";
+$MESS["NEW_COLUMN_NUMBER"] = "#";
+$MESS["NEW_COLUMN_PRICE"] = "Prix";
+$MESS["NEW_COLUMN_QUANTITY"] = "Quantité expédiée";
+$MESS["NEW_COLUMN_REMAINING_QUANTITY"] = "À expédier";
+$MESS["NEW_COLUMN_SIZE"] = "Taille";
+$MESS["NEW_COLUMN_STORE_AMOUNT"] = "Quantité disponible";
+$MESS["NEW_COLUMN_SUM"] = "Montant";
+$MESS["NEW_ORDER_SHIPMENT"] = "Nouvelle expédition";
+$MESS["SALE_BLOCK_TITLE_ADDITIONAL"] = "Informations supplémentaires";
+$MESS["SALE_BLOCK_TITLE_BUYER"] = "Client";
+$MESS["SALE_BLOCK_TITLE_GOODSLIST"] = "Produits";
+$MESS["SALE_BLOCK_TITLE_SHIPMENT"] = "Expédition";
+$MESS["SALE_BLOCK_TITLE_SHIPMENTSTATUS"] = "Statut de la cargaison";
+$MESS["SALE_F_STORE"] = "Entrepôts";
+$MESS["SALE_F_STORE_AMOUNT"] = "Solde de l'entrepôt";
+$MESS["SALE_F_STORE_BARCODE"] = "Code barre";
+$MESS["SALE_F_STORE_CUR_AMOUNT"] = "Expédition";
+$MESS["SOPE_SHIPMENT_DELETE"] = "Supprimer";
+$MESS["SOPE_SHIPMENT_DELETE_MESSAGE"] = "Voulez-vous vraiment supprimer cette expédition ?";
+$MESS["SOPE_SHIPMENT_DELETE_TITLE"] = "Supprimer";
+$MESS["SOPE_SHIPMENT_ERROR_MESSAGE"] = "Erreur lors de l'enregistrement de l'expédition";
+$MESS["SOPE_SHIPMENT_LIST"] = "Liste des expéditions";
+$MESS["SOPE_SHIPMENT_LIST_TITLE"] = "Liste des expéditions";
+$MESS["SOPE_SHIPMENT_PRINT"] = "Imprimer";
+$MESS["SOPE_SHIPMENT_PRINT_TITLE"] = "Imprimer";
+$MESS["SOPE_SHIPMENT_TRANSITION"] = "Afficher la commande";
+$MESS["SOPE_SHIPMENT_TRANSITION_TITLE"] = "Afficher la commande";
+$MESS["SOP_TAB_ANALYSIS"] = "Documents de la commande";
+$MESS["SOP_TAB_HISTORY"] = "Historique des modifications";
+$MESS["SOP_TAB_SHIPMENT"] = "Expédition";
+?>

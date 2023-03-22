@@ -1,0 +1,5 @@
+<?
+$MESS["IBLOCK_INSTALL_CATALOG"] = "Catálogo";
+$MESS["IBLOCK_INSTALL_NEWS"] = "Notícia";
+$MESS["IBLOCK_INSTALL_PUBLIC_DIR"] = "Pasta pública";
+?>

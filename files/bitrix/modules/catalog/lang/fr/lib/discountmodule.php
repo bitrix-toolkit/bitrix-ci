@@ -1,0 +1,5 @@
+<?
+$MESS["DISCOUNT_MODULE_ENTITY_DISCOUNT_ID_FIELD"] = "ID de la réduction du produit";
+$MESS["DISCOUNT_MODULE_ENTITY_ID_FIELD"] = "ID de l'enregistrement";
+$MESS["DISCOUNT_MODULE_ENTITY_MODULE_ID_FIELD"] = "ID du module";
+?>

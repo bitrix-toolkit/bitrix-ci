@@ -1,0 +1,32 @@
+<?
+$MESS["MAIN_RATING_LIST"] = "Calificaciones";
+$MESS["RATING_ACTIVE"] = "Activar";
+$MESS["RATING_ACTIVE_NO"] = "No";
+$MESS["RATING_ACTIVE_YES"] = "Si";
+$MESS["RATING_CREATED"] = "Creado";
+$MESS["RATING_ENTITY_ID"] = "Obligatorio";
+$MESS["RATING_LAST_CALCULATED"] = "Calculado";
+$MESS["RATING_LAST_MODIFIED"] = "Modificado";
+$MESS["RATING_LIST_ADD"] = "Nueva Calificación";
+$MESS["RATING_LIST_ADD_TITLE"] = "Agregar Nueva Calificación";
+$MESS["RATING_LIST_DEL"] = "Borrar Calificación";
+$MESS["RATING_LIST_DEL_CONF"] = "Borrar Calificación?";
+$MESS["RATING_LIST_EDIT"] = "Editar Parámetros de la Calificación";
+$MESS["RATING_LIST_ERR_CAL"] = "Hubo un error al recalcular la calificación.";
+$MESS["RATING_LIST_ERR_DEL"] = "Hubo un error al borrar la calificación.";
+$MESS["RATING_LIST_ERR_EDIT"] = "Hubo un error al actualizar el registro.";
+$MESS["RATING_LIST_FLT_ACTIVE"] = "activar";
+$MESS["RATING_LIST_FLT_ALL"] = "(todo)";
+$MESS["RATING_LIST_FLT_ENTITY_ID"] = "Entidad";
+$MESS["RATING_LIST_FLT_ID"] = "ID";
+$MESS["RATING_LIST_FLT_INACTIVE"] = "inactivo";
+$MESS["RATING_LIST_FLT_NAME"] = "Nombre";
+$MESS["RATING_LIST_FLT_find"] = "Buscar:";
+$MESS["RATING_LIST_NAV"] = "Calificaciones";
+$MESS["RATING_LIST_RECALCULATE"] = "Recalcular Calificación";
+$MESS["RATING_NAME"] = "Nombre";
+$MESS["RATING_STATUS"] = "Estado";
+$MESS["RATING_STATUS_DONE"] = "calculado";
+$MESS["RATING_STATUS_WAITING"] = "actualización pendiente";
+$MESS["RATING_STATUS_WORKING"] = "se actualiza";
+?>

@@ -1,0 +1,5 @@
+<?
+$MESS["IBLOCK_INSTALL_PUBLIC_DETAIL_PAGER"] = "Strona";
+$MESS["IBLOCK_INSTALL_PUBLIC_PAGER"] = "Wiadomości";
+$MESS["IBLOCK_INSTALL_PUBLIC_TITLE"] = "Wiadomości firmy";
+?>

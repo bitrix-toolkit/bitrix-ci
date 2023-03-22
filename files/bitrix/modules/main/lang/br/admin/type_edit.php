@@ -1,0 +1,30 @@
+<?
+$MESS["ADD"] = "Adicionar modelo de e-mail";
+$MESS["EDIT_TITLE"] = "Editar evento #TYPE#";
+$MESS["ERROR_LANG_EMPTY"] = "Nenhum parâmetro de idioma especificado";
+$MESS["EVENT_DESCR_LANG"] = "Descrição";
+$MESS["EVENT_NAME_LANG"] = "Nome";
+$MESS["EVENT_NAME_TITLE"] = "Tipo de Evento";
+$MESS["EVENT_SORT_LANG"] = "Classificando";
+$MESS["LANGUAGE_PARAMS"] = "Parâmetros dependentes de linguagem";
+$MESS["LANG_FIELDS"] = "Você deve preencher pelo menos um campo de linguagem";
+$MESS["LANG_PARAMS"] = "Parâmetros dependentes de linguagem";
+$MESS["MAIN_DELETE_RECORD"] = "Excluir um tipo";
+$MESS["MAIN_DELETE_RECORD_CONF"] = "Tem certeza de que deseja excluir o tipo atual incluindo modelos?";
+$MESS["MAIN_DELETE_RECORD_TITLE"] = "Excluir um tipo incluindo modelos";
+$MESS["MAIN_ERROR_SAVING"] = "Erro de gravação";
+$MESS["MAIN_NEW_RECORD"] = "Adicionar um tipo";
+$MESS["MAIN_NEW_RECORD_TITLE"] = "Adicionar um novo tipo de evento de e-mail";
+$MESS["MAIN_NEW_TEMPLATE"] = "Adicionar um modelo";
+$MESS["MAIN_NEW_TEMPLATE_TITLE"] = "Adicionar um novo modelo para este tipo de evento";
+$MESS["NEW_TITLE"] = "Adicionar um novo evento";
+$MESS["RECORD_LIST"] = "Tipo de lista";
+$MESS["RECORD_LIST_TITLE"] = "Ir para a lista de eventos de e-mail   ";
+$MESS["RESET"] = "Redefinir";
+$MESS["SAVE"] = "Salvar alterações";
+$MESS["TEMPLATES_DESCR"] = "Modelos de e-mail";
+$MESS["TEMPLATES_TITLE"] = "Modelos";
+$MESS["TEMPLATE_LIST"] = "Lista de modelos";
+$MESS["TEMPLATE_LIST_TITLE"] = "Ir para a lista de modelos";
+$MESS["type_edit_add_message_template"] = "Adicionar template de mensagem";
+?>

@@ -1,0 +1,36 @@
+<?
+$MESS["DEFAULT"] = "< за умовчанням >";
+$MESS["MAIN_DELETE_RECORD_CONF"] = "Ви впевнені, що бажаєте видалити рівень доступу?";
+$MESS["MAIN_DELETE_RECORD"] = "Видалити";
+$MESS["MAIN_DELETE_RECORD_TITLE"] = "Видалити поточний рівень доступу";
+$MESS["NEW_TASK_TITLE"] = "Додавання рівня доступу";
+$MESS["ADD"] = "Додати";
+$MESS["MAIN_NEW_RECORD"] = "Додати";
+$MESS["MAIN_NEW_RECORD_TITLE"] = "Додати новий рівень доступу";
+$MESS["SAVE"] = "Зберегти зміни";
+$MESS["MAIN_COPY_RECORD"] = "Копіювати";
+$MESS["MAIN_COPY_RECORD_TITLE"] = "Копіювати поточний рівень доступу";
+$MESS["LETTER"] = "Літера";
+$MESS["KERNEL"] = "Літера";
+$MESS["TASK_BINDING_MODULE"] = "Модуль";
+$MESS["TASK_NONE_OPERATIONS"] = "Модуль \"#MODULE_ID#\" не містить операцій, що мають прив'язку \"#BINDING#\"";
+$MESS["MODULE_ID"] = "Модуль:";
+$MESS["NAME"] = "Назва:";
+$MESS["TAB_2"] = "Операції, що включаються ";
+$MESS["TAB_2_TITLE"] = "Операції, які містить цей рівень доступу";
+$MESS["DESCRIPTION"] = "Опис:";
+$MESS["TAB_1"] = "Параметри";
+$MESS["TAB_1_TITLE"] = "Параметри рівня доступу";
+$MESS["RECORD_LIST_TITLE"] = "Перейти до списку рівнів доступу";
+$MESS["TBL_GROUP_DATE"] = "Період активності";
+$MESS["TASK_SAVE_ERROR"] = "Помилка при збереженні рівня доступу";
+$MESS["TASK_BINDING"] = "Прив'язка";
+$MESS["EDIT_TASK_TITLE"] = "Редагування рівнів доступу # #ID#";
+$MESS["TASK_NAME_WARNING"] = "Символьний ідентифікатор не введений або вже використовується в системі";
+$MESS["STRING_ID"] = "Символьний ідентифікатор:";
+$MESS["SYS_TITLE"] = "Системний";
+$MESS["RESET"] = "Скинути";
+$MESS["RECORD_LIST"] = "Список рівнів доступу";
+$MESS["TASK_BINDING_FILE"] = "Файл/Папка";
+$MESS["MAIN_YES"] = "так";
+?>

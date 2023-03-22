@@ -1,0 +1,33 @@
+<?
+$MESS["AUTH_CAPTCHA_PROMT"] = "Digite as letras que você vê na imagem";
+$MESS["AUTH_CHANGE"] = "Alterar senha";
+$MESS["AUTH_CHANGE_PASSWORD"] = "Alterar senha";
+$MESS["AUTH_CHANGE_PASSWORD_1"] = "Por favor insira a palavra-chave e sua nova senha";
+$MESS["AUTH_CHANGE_PASSWORD_2"] = "Senha alterada com sucesso.";
+$MESS["AUTH_CHECKWORD"] = "Palavra de verificação.";
+$MESS["AUTH_FORGOT_PASSWORD"] = "Solicitação de senha";
+$MESS["AUTH_FORGOT_PASSWORD_1"] = "Se você não lembra da sua senha, digite o seu login ou e-mail que você usou em seu registro. Uma mensagem contendo a palavra de verificação que você pode usar para alterar a senha será enviada para o seu e-mail.";
+$MESS["AUTH_FORGOT_PASSWORD_2"] = "Esqueceu a senha?";
+$MESS["AUTH_GET_CHECK_STRING"] = "Enviar-me a palavra-chave";
+$MESS["AUTH_GET_CHECK_STRING_SENT"] = "A palavra de verificação foi enviada.";
+$MESS["AUTH_GOTO_AUTH_FORM"] = "Log in";
+$MESS["AUTH_GOTO_AUTH_FORM_1"] = "Login";
+$MESS["AUTH_GOTO_CHANGE_FORM"] = "Alterar senha";
+$MESS["AUTH_GOTO_FORGOT_FORM"] = "Recuperar a senha";
+$MESS["AUTH_LOGIN"] = "Login";
+$MESS["AUTH_NEW_PASSWORD"] = "Nova senha";
+$MESS["AUTH_NEW_PASSWORD_CONFIRM"] = "Confirmar senha";
+$MESS["AUTH_NEW_PASSWORD_CONFIRM_WRONG"] = "As senhas digitadas não conferem.";
+$MESS["AUTH_NW_SECTION"] = "ou faça login usando";
+$MESS["AUTH_OR"] = "ou";
+$MESS["AUTH_OTP_PASS"] = "Senha avulsa";
+$MESS["AUTH_OTP_REMEMBER_ME"] = "Lembrar a senha neste computador.";
+$MESS["AUTH_PASSWORD"] = "Senha";
+$MESS["AUTH_PLEASE_AUTH"] = "Por favor, faça login";
+$MESS["AUTH_REMEMBER_ME"] = "Lembrar de mim";
+$MESS["AUTH_SEND"] = "Enviar";
+$MESS["admin_authorize_error"] = "Falha de autenticação";
+$MESS["admin_authorize_info"] = "Informação";
+$MESS["admin_change_password_error"] = "Erro ao alterar a senha!";
+$MESS["admin_forgot_password_error"] = "Erro ao recuperar senha!";
+?>

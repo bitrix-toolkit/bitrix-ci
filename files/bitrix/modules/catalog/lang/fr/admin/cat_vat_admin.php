@@ -1,0 +1,20 @@
+<?php
+$MESS["CVAT_ACTIVE"] = "Actif(ve)";
+$MESS["CVAT_ADD_NEW"] = "Ajouter";
+$MESS["CVAT_ADD_NEW_ALT"] = "Ajouter un taux d'imposition";
+$MESS["CVAT_ALL"] = "tous";
+$MESS["CVAT_DELETE_ALT"] = "Supprimer";
+$MESS["CVAT_DELETE_CONF"] = "Voulez-vous vraiment supprimer ce taux de TVA ?";
+$MESS["CVAT_EDIT_ALT"] = "Éditer";
+$MESS["CVAT_FILTER_ACTIVE"] = "Activité";
+$MESS["CVAT_FILTER_NAME"] = "Dénomination";
+$MESS["CVAT_FILTER_RATE"] = "Taux";
+$MESS["CVAT_NAME"] = "Dénomination";
+$MESS["CVAT_NAV"] = "Taux d'imposition";
+$MESS["CVAT_NO"] = "inactif";
+$MESS["CVAT_PAGE_TITLE"] = "Taux de TVA";
+$MESS["CVAT_RATE"] = "Taux";
+$MESS["CVAT_SORT"] = "Trier";
+$MESS["CVAT_YES"] = "actifs";
+$MESS["ERROR_DELETE_VAT"] = "Erreur lors de la suppression de taux d'imposition ##ID#";
+$MESS["ERROR_UPDATE_VAT"] = "Erreur de mise à jour de taux d'imposition ##ID#";

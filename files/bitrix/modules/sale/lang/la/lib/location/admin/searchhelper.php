@@ -1,0 +1,4 @@
+<?
+$MESS["SALE_LOCATION_ADMIN_SEARCH_HELPER_ENTITY_INVALID_DBINDEX"] = "Uno o más índices no están presentes en los lugares relacionados con las tablas de bases de datos. Esto puede disminuir el rendimiento de ubicaciones. Se aconseja que usted #ANCHOR_INDEX_RESTORE#restaure los índices de la base de datos manualmente#ANCHOR_END#.";
+$MESS["SALE_LOCATION_ADMIN_SEARCH_HELPER_ENTITY_INVALID_SINDEX"] = "Índice de búsqueda de ubicaciones no está actualizado. Si utiliza la búsqueda incremental en el cuadro de entrada, puede ser lento, y los resultados irrelevantes. Se aconseja que #ANCHOR_INDEX_RESTORE# restaure el índice manualmente#ANCHOR_END#.";
+?>

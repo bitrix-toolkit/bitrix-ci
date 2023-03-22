@@ -1,0 +1,15 @@
+<?php
+$MESS["SALE_CASHBOX_ENTITY_ACTIVE_FIELD"] = "Activité";
+$MESS["SALE_CASHBOX_ENTITY_DATE_CREATE_FIELD"] = "Date de création";
+$MESS["SALE_CASHBOX_ENTITY_DATE_LAST_CHECK_FIELD"] = "Date de la dernière vérification";
+$MESS["SALE_CASHBOX_ENTITY_ENABLED_FIELD"] = "En ligne";
+$MESS["SALE_CASHBOX_ENTITY_HANDLER_FIELD"] = "Gestionnaire";
+$MESS["SALE_CASHBOX_ENTITY_ID_FIELD"] = "ID de la caisse enregistreuse";
+$MESS["SALE_CASHBOX_ENTITY_KKM_ID_FIELD"] = "Marque de la caisse enregistreuse";
+$MESS["SALE_CASHBOX_ENTITY_NAME_FIELD"] = "Nom";
+$MESS["SALE_CASHBOX_ENTITY_NUMBER_KKM_FIELD"] = "ID de la caisse enregistreuse externe";
+$MESS["SALE_CASHBOX_ENTITY_OFD_FIELD"] = "OFD";
+$MESS["SALE_CASHBOX_ENTITY_OFD_TEST_MODE_FIELD"] = "Mode de test OFD";
+$MESS["SALE_CASHBOX_ENTITY_SETTINGS_FIELD"] = "Paramètres de la caisse enregistreuse";
+$MESS["SALE_CASHBOX_ENTITY_SORT_FIELD"] = "Trier";
+$MESS["SALE_CASHBOX_ENTITY_USE_OFFLINE_FIELD"] = "Mode hors ligne";

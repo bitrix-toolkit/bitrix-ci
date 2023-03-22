@@ -1,0 +1,29 @@
+<?
+$MESS["FM_ACT_DELETE"] = "Borrar";
+$MESS["FM_ACT_DEL_CONFIRM"] = "¿Estás seguro que desea eliminar la suscripción?";
+$MESS["FM_ALL_MESSAGE"] = "Todos los mensajes del foro";
+$MESS["FM_FLT_FORUM"] = "Foro";
+$MESS["FM_FLT_SEARCH"] = "búsqueda";
+$MESS["FM_FLT_SEARCH_TITLE"] = "Introduzca su cadena de búsqueda";
+$MESS["FM_FLT_START_DATE"] = "Fecha de inicio de suscripción";
+$MESS["FM_FLT_START_DATE_ALT"] = "Fecha de inicio de suscripción";
+$MESS["FM_FLT_SUBSCR_TYPE"] = "Tipo de suscripción";
+$MESS["FM_FLT_SUBSCR_TYPE_ALT"] = "Tipo de suscripción";
+$MESS["FM_FLT_TOPIC"] = "Tema";
+$MESS["FM_HEAD_FORUM"] = "Foro";
+$MESS["FM_HEAD_ID"] = "ID";
+$MESS["FM_HEAD_LAST_SEND"] = "último mensaje";
+$MESS["FM_HEAD_START_DATE"] = "Fecha de inicio de la suscripción";
+$MESS["FM_HEAD_TOPIC"] = "Tema";
+$MESS["FM_LIST_USER"] = "Lista del usuario";
+$MESS["FM_NEW_TOPIC_ONLY"] = "Sólo nuevos temas";
+$MESS["FM_SPACE"] = "Ningún ha sido seleccionado";
+$MESS["FM_TITLE"] = "Suscripciones de los usuarios";
+$MESS["FM_TITLE_PAGE"] = "Suscripciones de los usuarios";
+$MESS["FM_TYPICAL"] = "Nuevo mensajes del tema ";
+$MESS["FM_WRONG_DATE_FROM"] = "Por favor, introduzca correcta fecha \"desde\" para la fecha de creación";
+$MESS["FM_WRONG_DATE_TO"] = "Por favor, introduzca correcta fecha \"hasta\" para la fecha de creación";
+$MESS["FM_WRONG_PERIOD"] = "Período se especificó incorrectamente";
+$MESS["FM_WRONG_USER_ID"] = "ID del usuario errados";
+$MESS["FSUBSC_NO_SPERMS"] = "Permisos insuficientes para editar la suscripción.";
+?>

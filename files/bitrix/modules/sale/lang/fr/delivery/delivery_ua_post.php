@@ -1,0 +1,29 @@
+<?
+$MESS["SALE_DH_UP_DESCR1"] = "Service postal 'Novaya pochta'";
+$MESS["SALE_DH_UP_DESCR2"] = "Poids jusqu'à 100 kg.";
+$MESS["SALE_DH_UP_DOOR_DESCR"] = "La commande sera livrée à l'adresse indiquée";
+$MESS["SALE_DH_UP_DOOR_TITLE"] = "Livraison à domicile";
+$MESS["SALE_DH_UP_DTP"] = "Moyens de la livraison des commandes à la poste";
+$MESS["SALE_DH_UP_DTP_DOOR"] = "Le courrier postal prend les commandes ('Porte-Entrepôt','Porte-Porte')";
+$MESS["SALE_DH_UP_DTP_WARE"] = "Livraison autonome des commandes jusqu'à la poste ('Entrepôt-Entrepôt','Entrepôt-Porte')";
+$MESS["SALE_DH_UP_FEATURE_ENABLED"] = "Activée";
+$MESS["SALE_DH_UP_FEATURE_VALUE"] = "Colis avec valeur déclarée";
+$MESS["SALE_DH_UP_GROUPS_COMMON"] = "Tarifs communs";
+$MESS["SALE_DH_UP_GROUPS_DOOR"] = "Livraison à la porte du client";
+$MESS["SALE_DH_UP_GROUPS_WARE"] = "Livraison dans les bureaux de poste";
+$MESS["SALE_DH_UP_KG"] = "Kg";
+$MESS["SALE_DH_UP_NAME"] = "Nouveau courrier";
+$MESS["SALE_DH_UP_OVERLOAD"] = "Trop grand poids de la marchandise ou il manque la boîte de la taille nécessaire";
+$MESS["SALE_DH_UP_SHIPPING_HANDLING"] = "Façon de travailler avec l'expédition";
+$MESS["SALE_DH_UP_STNRD_BOX"] = "Dimensions de la boîte, mm";
+$MESS["SALE_DH_UP_TARIF_DD"] = "Tarif pour le service de livraison 'Porte à porte'";
+$MESS["SALE_DH_UP_TARIF_DV"] = "Commission pour la valeur déclarée";
+$MESS["SALE_DH_UP_TARIF_DV_MIN"] = "La somme minimale de la commission";
+$MESS["SALE_DH_UP_TARIF_DV_VALUE"] = "Montant de la commission";
+$MESS["SALE_DH_UP_TARIF_REG"] = "Le coût du dégagement";
+$MESS["SALE_DH_UP_TARIF_T1"] = "Prix pour 1 kg";
+$MESS["SALE_DH_UP_TARIF_WD"] = "Supplément à payer pour le service 'Entrepôt-Entrepôt' pour le service 'Entrepôt-Porte' ou 'Porte-Entrepôt'";
+$MESS["SALE_DH_UP_TARIF_WW"] = "Tarif pour le service de livraison d'après la technologie 'Entrepôt-Entrepôt'";
+$MESS["SALE_DH_UP_WARE_DESCR"] = "La commande sera livrée au service postal le plus proche";
+$MESS["SALE_DH_UP_WARE_TITLE"] = "Livraison dans les bureaux de poste";
+?>

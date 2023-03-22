@@ -1,0 +1,6 @@
+<?php
+$MESS["STORE_BARCODE_ENTITY_BARCODE_FIELD"] = "Kod kreskowy";
+$MESS["STORE_BARCODE_ENTITY_BARCODE_IS_NOT_UNIQUE"] = "Produkt z kodem kreskowym #VALUE# już istnieje.";
+$MESS["STORE_BARCODE_ENTITY_CREATED_BY_FIELD"] = "Stworzone przez";
+$MESS["STORE_BARCODE_ENTITY_DATE_CREATE_FIELD"] = "Utworzone";
+$MESS["STORE_BARCODE_ENTITY_DATE_MODIFY_FIELD"] = "Data modyfikacji";

@@ -1,0 +1,34 @@
+<?
+$MESS["FM_ACT_DELETE"] = "Excluir";
+$MESS["FM_ACT_MOVE"] = "Mover";
+$MESS["FM_FROM_TILL_TIMESTAMP"] = "A última data deverá ser maior que a primeira data.";
+$MESS["FM_TITLE_APPROVED"] = "Moderação";
+$MESS["FM_TITLE_AUTHOR"] = "Autor";
+$MESS["FM_TITLE_DATE_CREATE"] = "Criado";
+$MESS["FM_TITLE_DATE_LAST_POST"] = "Modificado";
+$MESS["FM_TITLE_DESCRIPTION"] = "Descrição";
+$MESS["FM_TITLE_FORUM"] = "Fórum";
+$MESS["FM_TITLE_LAST_MESSAGE"] = "Última mensagem";
+$MESS["FM_TITLE_MESSAGES"] = "Mensagens";
+$MESS["FM_TITLE_NAME"] = "Nome:";
+$MESS["FM_TITLE_SORT"] = "Ordenando";
+$MESS["FM_TITLE_STATE"] = "Estado";
+$MESS["FM_TITLE_USER_START_ID"] = "ID do autor";
+$MESS["FM_TITLE_VIEWS"] = "Visualizações";
+$MESS["FM_TOPICS"] = "Mensagens";
+$MESS["FM_WRONG_DATE_CREATE_FROM"] = "Por favor digite o limite inferior correto para a criação do alcance de data";
+$MESS["FM_WRONG_DATE_CREATE_TILL"] = "Por favor, corrija o valor da última data para a data de criação.";
+$MESS["FM_WRONG_DATE_FROM"] = "Por favor, corrija o valor da primeira data para a data de criação do post mais recente.";
+$MESS["FM_WRONG_DATE_TILL"] = "Por favor, corrija o valor da última data para a data de criação do post mais recente.";
+$MESS["FM_WRONG_FORUM_ID"] = "O fórum destino está incorreto";
+$MESS["FM_WRONG_UPDATE"] = "Falha na atualização";
+$MESS["FORUM_TOPICS"] = "Gerenciar tópicos";
+$MESS["F_ALL"] = "Todos";
+$MESS["F_CLOSE"] = "Fechado";
+$MESS["F_HIDE"] = "Não aprovado";
+$MESS["F_LINK"] = "Link";
+$MESS["F_OPEN"] = "Aberto";
+$MESS["F_PINN"] = "Fixado";
+$MESS["F_SHOW"] = "Aprovado";
+$MESS["F_UNPINN"] = "Desafixado";
+?>

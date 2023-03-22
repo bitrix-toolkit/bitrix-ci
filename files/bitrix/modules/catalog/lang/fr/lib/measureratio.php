@@ -1,0 +1,6 @@
+<?
+$MESS["MEASURE_RATIO_ENTITY_ID_FIELD"] = "ID de l'entité";
+$MESS["MEASURE_RATIO_ENTITY_IS_DEFAULT_FIELD"] = "Ratio par défaut (base)";
+$MESS["MEASURE_RATIO_ENTITY_PRODUCT_ID_FIELD"] = "ID du produit";
+$MESS["MEASURE_RATIO_ENTITY_RATIO_FIELD"] = "Taux de l'unité";
+?>

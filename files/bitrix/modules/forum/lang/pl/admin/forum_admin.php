@@ -1,0 +1,34 @@
+<?
+$MESS["ACTIVE"] = "Aktywne";
+$MESS["DELETE_CONFIRM"] = "Forum zostanie nieodwracalnie usunięte. Kontynuować?";
+$MESS["FA_DELETE_ERROR"] = "Błąd usuwania forum. Niektóre dane są powiązane, co uniemożliwia ich usunięcie.";
+$MESS["FA_DELETE_NO_PERMS"] = "Niewystarczające uprawnienia do usunięcia forum";
+$MESS["FA_ERROR_UPDATE"] = "Błąd aktualizacji forum";
+$MESS["FA_NO_PERMS2UPDATE"] = "Brak wystarczających uprawnień do edytowania forum";
+$MESS["FFAN_ACTIVE"] = "Aktywne";
+$MESS["FFAN_ADD_NEW"] = "Nowe forum";
+$MESS["FFAN_ADD_NEW_ALT"] = "Kliknij, aby dodać nowe forum";
+$MESS["FFAN_ALL"] = "Wszystkie";
+$MESS["FFAN_GROUP_ID"] = "Grupa forum";
+$MESS["FFAN_NO"] = "Nie";
+$MESS["FFAN_SITE_ID"] = "Strona";
+$MESS["FFAN_YES"] = "Tak";
+$MESS["FORUMS"] = "Fora";
+$MESS["FORUM_DELETE"] = "Usuń";
+$MESS["FORUM_EDIT"] = "Edytuj";
+$MESS["FORUM_GROUP_ID"] = "Grupa";
+$MESS["INDEXATION"] = "Indeksowanie";
+$MESS["LAND"] = "Strona";
+$MESS["MAIN_ADMIN_LIST_ACTIVATE"] = "aktywuj";
+$MESS["MAIN_ADMIN_LIST_CHECKED"] = "Zaznaczone:";
+$MESS["MAIN_ADMIN_LIST_CLEAR_HTML"] = "Wyczyść";
+$MESS["MAIN_ADMIN_LIST_DEACTIVATE"] = "deaktywuj";
+$MESS["MAIN_ADMIN_LIST_DELETE"] = "Usuń";
+$MESS["MAIN_ADMIN_LIST_SELECTED"] = "Wybrany:";
+$MESS["MODERATION"] = "Przedmoderowanie";
+$MESS["NAME"] = "Nazwa";
+$MESS["NAV"] = "Fora";
+$MESS["ORDER_BY"] = "Sortowanie według";
+$MESS["ORDER_DIRECTION"] = "Porządek sortowania";
+$MESS["SORT"] = "Sort.";
+?>

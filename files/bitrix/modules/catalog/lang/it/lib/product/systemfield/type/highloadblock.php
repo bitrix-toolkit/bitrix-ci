@@ -1,0 +1,4 @@
+<?php
+$MESS["BX_CATALOG_PRODUCT_SYSTEMFIELD_HIGHLOADBLOCK_ERR_MODULE_IS_ABSENT"] = "Il modulo Blocchi di informazioni Highload non è installato.";
+$MESS["BX_CATALOG_PRODUCT_SYSTEMFIELD_HIGHLOADBLOCK_ERR_TRANFORM_VALUE"] = "Errore nell'aggiornamento dell'ID esterno nel dizionario #DICTIONARY#: #ERROR#";
+$MESS["BX_CATALOG_PRODUCT_SYSTEMFIELD_HIGHLOADBLOCK_MESS_EMPTY_VALUE"] = "non selezionato";

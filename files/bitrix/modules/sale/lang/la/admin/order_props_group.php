@@ -1,0 +1,29 @@
+<?
+$MESS["ERROR_ADD_REC"] = "Error al agregar un registro";
+$MESS["ERROR_NAME_REC"] = "El campo \"Nombre\" es requerido";
+$MESS["ERROR_PERSON_TYPE_ID_REC"] = "El campo \"Tipo de pagador\" es requerido";
+$MESS["ERROR_UPDATE_REC"] = "Error al actualizar un registro";
+$MESS["LANG_FILTER_BTN"] = "Fijar filtro";
+$MESS["PERS_TYPE_DEL"] = "Eliminar";
+$MESS["PERS_TYPE_DEL_CONF"] = "Todas las propiedades en este grupo serán eliminadas, ¿Está seguro que desea continuar?";
+$MESS["PERS_TYPE_ID"] = "ID";
+$MESS["PERS_TYPE_NAME"] = "Nombre";
+$MESS["PERS_TYPE_NAV"] = "Grupos de propiedades";
+$MESS["PERS_TYPE_RESET"] = "Resetear";
+$MESS["PERS_TYPE_SORT"] = "Clasi.";
+$MESS["PERS_TYPE_TYPE"] = "Tipo de pagador";
+$MESS["PERS_TYPE_UPD"] = "Guardar";
+$MESS["PROPS_TYPE_TITLE"] = "Grupos de propiedades";
+$MESS["PT_FILTER_NAME"] = "Tipo de pagador";
+$MESS["SALE_ALL"] = "todo";
+$MESS["SALE_F_DEL"] = "Remover filtro";
+$MESS["SALE_F_FILTER"] = "Fijar filtro";
+$MESS["SALE_PROPS"] = "Propiedades";
+$MESS["SOPGAN_ADD_NEW"] = "Nuevo grupo";
+$MESS["SOPGAN_ADD_NEW_ALT"] = "Clack para gregar un nuevo grupo de propiedades";
+$MESS["SOPGAN_DELETE_ERROR"] = "Error al elimnar un registro";
+$MESS["SOPGAN_DELETE_PROMT"] = "Elimiar grupo";
+$MESS["SOPGAN_DELETE_PROMT_CONF"] = "¿Está seguro que desea eliminar este grupo de propiedades?";
+$MESS["SOPGAN_EDIT_PROMT"] = "Modificar grupo";
+$MESS["SOPGAN_PROPS"] = "Propiedades";
+?>

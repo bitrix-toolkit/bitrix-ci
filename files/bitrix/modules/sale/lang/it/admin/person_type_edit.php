@@ -1,0 +1,24 @@
+<?php
+$MESS["F_ACTIVE"] = "Attivo";
+$MESS["SPTEN_2FLIST"] = "Tipi pagante";
+$MESS["SPTEN_ACTIVE"] = "Attivo";
+$MESS["SPTEN_ADDING"] = "Aggiungi un nuovo tipo di pagante";
+$MESS["SPTEN_CODE"] = "Codice";
+$MESS["SPTEN_DELETE_PERSON_TYPE_CONFIRM"] = "Sei sicuro di voler eliminare questo tipo di pagante?";
+$MESS["SPTEN_DOMAIN_P_TYPE"] = "Tipo entità aziendale";
+$MESS["SPTEN_DOMAIN_P_TYPE_E"] = "Azienda";
+$MESS["SPTEN_DOMAIN_P_TYPE_I"] = "Individuale";
+$MESS["SPTEN_DOMAIN_P_TYPE_NONE"] = "Non specificato";
+$MESS["SPTEN_ERROR_PERSON_TYPE_EXISTS"] = "Un tipo di pagante con questo codice esiste già";
+$MESS["SPTEN_ERROR_SAVING_PERSON_TYPE"] = "Errore durante il salvataggio del tipo di pagante";
+$MESS["SPTEN_NAME"] = "Nome";
+$MESS["SPTEN_NEW_PERSON_TYPE"] = "Crea un nuovo tipo di pagante";
+$MESS["SPTEN_NO_PERMS2ADD"] = "Non disponi di autorizzazioni sufficienti per aggiungere un nuovo tipo di pagante";
+$MESS["SPTEN_NO_PERSON_TYPE"] = "Tipo di pagante ##ID# non trovato";
+$MESS["SPTEN_SITE"] = "Sito";
+$MESS["SPTEN_SORT"] = "Indice di ordinamento";
+$MESS["SPTEN_TAB_PERSON_TYPE"] = "Tipo pagante";
+$MESS["SPTEN_TAB_PERSON_TYPE_DESCR"] = "Parametri tipo pagante";
+$MESS["SPTEN_TO_LIST"] = "Tipi pagante";
+$MESS["SPTEN_UPDATING"] = "Modifica parametri tipo di pagante";
+$MESS["SPTEN_XML_ID"] = "ID esterno";

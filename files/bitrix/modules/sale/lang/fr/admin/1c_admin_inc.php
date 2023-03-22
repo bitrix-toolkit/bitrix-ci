@@ -1,0 +1,29 @@
+<?
+$MESS["SALE_1C_ALL_SITES"] = "Tous les sites";
+$MESS["SALE_1C_CHANGE_STATUS_FROM_1C"] = "Utilisation 1C de données pour définir l'état de la commande ";
+$MESS["SALE_1C_EXPORT_ALLOW_DELIVERY_ORDERS"] = "Décharger uniquement les commandes à la livraison autorisée";
+$MESS["SALE_1C_EXPORT_FINAL_ORDERS"] = "Commandes à l'exportation à partir de l'état";
+$MESS["SALE_1C_EXPORT_PAYED_ORDERS"] = "Ne décharger que les commandes réglées";
+$MESS["SALE_1C_FILE_SIZE_LIMIT"] = "Taille maximale du bloc de fichier d'importation (en bytes)";
+$MESS["SALE_1C_FINAL_STATUS_ON_DELIVERY"] = "Statut, où il faut transférer la commande après la réception d'expédition à partir de 1C";
+$MESS["SALE_1C_GROUP_PERMISSIONS"] = "Les groupes dont les utilisateurs sont autorisés à l'extraction";
+$MESS["SALE_1C_IMPORT_DEFAULT_PS"] = "Système de paiement pour nouvelles commandes";
+$MESS["SALE_1C_IMPORT_DEFAULT_PS_A"] = "Transaction par carte. Système de paiement pour nouvelles commandes";
+$MESS["SALE_1C_IMPORT_DEFAULT_PS_B"] = "Règlement en sans espèces : système de paiement pour nouvelles commandes";
+$MESS["SALE_1C_IMPORT_DEFAULT_PS_C"] = "Règlement en espèces : système de paiement pour nouvelles commandes";
+$MESS["SALE_1C_IMPORT_DEFAULT_PS_ORDER_PAID"] = "Système de paiement pour payer les commandes lors d'une modification du statut de paiement de commande 1C";
+$MESS["SALE_1C_IMPORT_DEFAULT_SHIPMENT_SERVICE"] = "Service de livraison pour nouvelles commandes";
+$MESS["SALE_1C_IMPORT_NEW_ORDERS"] = "Créer les nouvelles commandes et sous-traitants de 1C";
+$MESS["SALE_1C_IMPORT_NEW_ORDER_NEW_SHIPMENT"] = "Créer une nouvelle commande (si elle n'existe pas) à la réception d'une nouvelle livraison de 1C";
+$MESS["SALE_1C_IMPORT_NEW_PAYMENT"] = "Créer de nouveaux documents de paiement dans 1C";
+$MESS["SALE_1C_IMPORT_NEW_SHIPMENT"] = "Créer de nouveaux documents de livraison dans 1C";
+$MESS["SALE_1C_IMPORT_UPDATE_BASKET_QUANTITY"] = "Augmenter la quantité du produit dans le panier si c'est moins que ça dans la livraison de 1C";
+$MESS["SALE_1C_INTERVAL"] = "Durée de l'étape d'importation en secondes. (0 - importer tout à la fois)";
+$MESS["SALE_1C_NO"] = "<Non indiqué>";
+$MESS["SALE_1C_REPLACE_CURRENCY"] = "Changer la devise pendant le déchargement dans '1C: Enterprise'";
+$MESS["SALE_1C_RUB"] = "rub.";
+$MESS["SALE_1C_SALE_ACCOUNT_NUMBER_SHOP_PREFIX"] = "Préfixe du numéro de commande lors du déchargement";
+$MESS["SALE_1C_SITE_LIST"] = "Commandes à l'exportation de ce site à 1C";
+$MESS["SALE_1C_SITE_NEW_ORDERS"] = "Site pour importer de nouvelles commandes et entrepreneurs";
+$MESS["SALE_1C_USE_ZIP"] = "Utiliser la compression zip, si c'est disponible";
+?>

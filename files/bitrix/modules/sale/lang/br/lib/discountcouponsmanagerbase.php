@@ -1,0 +1,27 @@
+<?php
+$MESS["BX_SALE_DCM_COUPONS_VERIFY_ERR"] = "Erro de verificação do cupom";
+$MESS["BX_SALE_DCM_COUPON_CHECK_ALREADY_MAX_USED"] = "atingido o máximo de usos";
+$MESS["BX_SALE_DCM_COUPON_CHECK_BAD_USER_ID"] = "proprietário do cupom incorreto";
+$MESS["BX_SALE_DCM_COUPON_CHECK_CORRUPT_DATA"] = "dados do cupom inválidos";
+$MESS["BX_SALE_DCM_COUPON_CHECK_NOT_APPLIED"] = "cupom não utilizado";
+$MESS["BX_SALE_DCM_COUPON_CHECK_NOT_FOUND"] = "não encontrado";
+$MESS["BX_SALE_DCM_COUPON_CHECK_NO_ACTIVE"] = "inativo";
+$MESS["BX_SALE_DCM_COUPON_CHECK_NO_ACTIVE_DISCOUNT"] = "regra inativa";
+$MESS["BX_SALE_DCM_COUPON_CHECK_OK"] = "ativo e válido";
+$MESS["BX_SALE_DCM_COUPON_CHECK_RANGE_ACTIVE_FROM"] = "a data de início da ativação do cupom é mais tarde do que agora";
+$MESS["BX_SALE_DCM_COUPON_CHECK_RANGE_ACTIVE_FROM_DISCOUNT"] = "a data de início da ativação da regra é mais tarde do que agora";
+$MESS["BX_SALE_DCM_COUPON_CHECK_RANGE_ACTIVE_TO"] = "a data de término da ativação do cupom é mais cedo do que agora";
+$MESS["BX_SALE_DCM_COUPON_CHECK_RANGE_ACTIVE_TO_DISCOUNT"] = "a data de término da ativação da regra é mais cedo do que agora";
+$MESS["BX_SALE_DCM_COUPON_CHECK_UNKNOWN_TYPE"] = "tipo de cupom desconhecido";
+$MESS["BX_SALE_DCM_ERR_BAD_FUSER_ID"] = "Não é possível inicializar o ID de cliente";
+$MESS["BX_SALE_DCM_ERR_BAD_MODE"] = "Modo mau gestor";
+$MESS["BX_SALE_DCM_ERR_BAD_USER_ID"] = "O ID do cliente está faltando";
+$MESS["BX_SALE_DCM_ERR_ORDER_ID_ABSENT"] = "Nenhum ID de pedido especificado no modo de edição";
+$MESS["BX_SALE_DCM_ERR_ORDER_ID_EXIST"] = "ID do pedido especificado no modo de criação do novo pedido";
+$MESS["BX_SALE_DCM_ERR_SAVE_APPLIED"] = "Não é possível salvar cupons usados";
+$MESS["BX_SALE_DCM_ERR_SESSION_NOT_ACCESSIBLE"] = "A sessão não está disponível.";
+$MESS["BX_SALE_DCM_STATUS_APPLYED"] = "usado";
+$MESS["BX_SALE_DCM_STATUS_ENTERED"] = "adicionado";
+$MESS["BX_SALE_DCM_STATUS_FREEZE"] = "não pode ser usado";
+$MESS["BX_SALE_DCM_STATUS_NOT_APPLYED"] = "nunca usado";
+$MESS["BX_SALE_DCM_STATUS_NOT_FOUND"] = "não encontrado";

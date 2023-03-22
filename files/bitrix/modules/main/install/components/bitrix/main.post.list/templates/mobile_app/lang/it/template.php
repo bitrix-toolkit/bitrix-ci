@@ -1,0 +1,19 @@
+<?php
+$MESS["BLOG_C_HIDE"] = "Nascondi commenti";
+$MESS["BLOG_C_LOADING"] = "Caricamento";
+$MESS["BLOG_C_REPLY"] = "Rispondi";
+$MESS["BLOG_C_VIEW"] = "Commenti precedenti";
+$MESS["BPC_MES_COPYLINK"] = "Copia link";
+$MESS["BPC_MES_CREATETASK"] = "Crea incarico";
+$MESS["BPC_MES_DELETE"] = "Elimina";
+$MESS["BPC_MES_EDIT"] = "Modifica";
+$MESS["BPC_MES_HIDE"] = "Nascondi";
+$MESS["BPC_MES_RESULT_V2"] = "Contrassegna come riepilogo stato incarico";
+$MESS["BPC_MES_SHOW"] = "Mostra";
+$MESS["BPC_MES_VOTE1"] = "Mi piace";
+$MESS["BPC_MES_VOTE2"] = "Non mi piace";
+$MESS["B_B_PC_COM_ERROR"] = "Errore:";
+$MESS["INCORRECT_SERVER_RESPONSE_2"] = "Si è verificato un errore. Riprova più tardi.";
+$MESS["MPL_HIDE_COLLAPSED_COMMENTS"] = "Nascondi ping";
+$MESS["MPL_MOBILE_PUBLISHING"] = "Pubblicazione&hellip;";
+$MESS["MPL_SHOW_COLLAPSED_COMMENTS"] = "Mostra ping";

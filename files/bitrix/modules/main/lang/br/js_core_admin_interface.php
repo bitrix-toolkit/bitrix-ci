@@ -1,0 +1,34 @@
+<?
+$MESS["JSADM_CALEND_CURR"] = "Atual";
+$MESS["JSADM_CALEND_CURR_WEEK"] = "Atual";
+$MESS["JSADM_CALEND_NEXT"] = "Próximo";
+$MESS["JSADM_CALEND_NEXT_WEEK"] = "Próximo";
+$MESS["JSADM_CALEND_PREV"] = "Anterior";
+$MESS["JSADM_CALEND_PREV_WEEK"] = "Anterior";
+$MESS["JSADM_FAV_ADD"] = "Adicionar aos favoritos";
+$MESS["JSADM_FAV_ADD_ERR"] = "Erro ao adicionar um link aos favoritos.";
+$MESS["JSADM_FAV_ADD_SUC"] = "O link foi adicionado aos favoritos.";
+$MESS["JSADM_FAV_DEL"] = "Remover dos favoritos";
+$MESS["JSADM_FAV_DEL_ERR"] = "Erro ao remover um link dos favoritos.";
+$MESS["JSADM_FAV_DEL_SUC"] = "O link foi removido dos favoritos.";
+$MESS["JSADM_FILE"] = "Adicionar arquivo";
+$MESS["JSADM_FILE_M"] = "Adicionar Arquivos";
+$MESS["JSADM_FLT_DELETE"] = "Excluir";
+$MESS["JSADM_FLT_DEL_CONFIRM"] = "Tem certeza de que deseja apagar o filtro?";
+$MESS["JSADM_FLT_DEL_ERROR"] = "Erro ao excluir o filtro.";
+$MESS["JSADM_FLT_FOLD"] = "Ocultar filtro";
+$MESS["JSADM_FLT_HIDE_ALL"] = "Ocultar todos os filtros";
+$MESS["JSADM_FLT_NEW_NAME"] = "Novo filtro";
+$MESS["JSADM_FLT_NO_NAME"] = "Sem título";
+$MESS["JSADM_FLT_SAVE"] = "Salvar";
+$MESS["JSADM_FLT_SAVE_AS"] = "Salvar como";
+$MESS["JSADM_FLT_SAVE_ERROR"] = "Erro ao salvar o filtro.";
+$MESS["JSADM_FLT_SAVE_TITLE"] = "Salvar filtro";
+$MESS["JSADM_FLT_SHOW_ALL"] = "Ver todos os filtros";
+$MESS["JSADM_FLT_UNFOLD"] = "Mostrar filtro";
+$MESS["JSADM_LIST_SELECTEDALL"] = "Todos";
+$MESS["JSADM_PIN_OFF"] = "Desafixar barra";
+$MESS["JSADM_PIN_ON"] = "Barra de pinos";
+$MESS["JSADM_TABS_COLLAPSE"] = "Retrair Guias";
+$MESS["JSADM_TABS_EXPAND"] = "Expandir guias";
+?>

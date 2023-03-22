@@ -1,0 +1,20 @@
+<?php
+$MESS["STEN_2FLIST"] = "Elenco delle transazioni";
+$MESS["STEN_2FLIST_TITLE"] = "Visualizza elenco delle transazioni";
+$MESS["STEN_TAB_TRANSACT"] = "Transazione";
+$MESS["STEN_TAB_TRANSACT_DESCR"] = "Transazione";
+$MESS["STE_CURRENCY"] = "Valuta:";
+$MESS["STE_DEBET"] = "accredita account utente";
+$MESS["STE_DESCR"] = "Descrizione:";
+$MESS["STE_EMPTY_CURRENCY"] = "Il campo \"Valuta\" è vuoto";
+$MESS["STE_EMPTY_DATE"] = "Il campo \"Data della transazione\" è vuoto";
+$MESS["STE_EMPTY_SUM"] = "Il campo \"Importo\" è vuoto";
+$MESS["STE_EMPTY_USER"] = "Il campo \"Utente\" è vuoto";
+$MESS["STE_ERROR_SAVE_ACCOUNT"] = "Errore durante il salvataggio dell'account";
+$MESS["STE_KREDIT"] = "addebita account utente";
+$MESS["STE_NOTES"] = "Note:";
+$MESS["STE_ORDER_ID"] = "ID ordine (per transazioni relative all'ordine):";
+$MESS["STE_SUM"] = "Importo:";
+$MESS["STE_TITLE"] = "Nuova transazione";
+$MESS["STE_TYPE"] = "Tipo record:";
+$MESS["STE_USER"] = "Utente:";

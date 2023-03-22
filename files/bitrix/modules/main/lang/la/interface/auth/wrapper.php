@@ -1,0 +1,33 @@
+<?
+$MESS["AUTH_CAPTCHA_PROMT"] = "Escriba las letras que ves en la imagen";
+$MESS["AUTH_CHANGE"] = "Cambiar contraseña";
+$MESS["AUTH_CHANGE_PASSWORD"] = "Cambiar contraseña";
+$MESS["AUTH_CHANGE_PASSWORD_1"] = "Por favor, introduzca la clave y la contraseña nueva";
+$MESS["AUTH_CHANGE_PASSWORD_2"] = "La contraseña se ha cambiado correctamente.";
+$MESS["AUTH_CHECKWORD"] = "palabra clave";
+$MESS["AUTH_FORGOT_PASSWORD"] = "Solicitud de contraseña";
+$MESS["AUTH_FORGOT_PASSWORD_1"] = "Si no recuerda su contraseña, introduzca su usuario o correo electrónico que haya utilizado para el registro. Un mensaje que contiene la palabra de verificación que puede utilizar para cambiar la contraseña se enviará a su correo electrónico.";
+$MESS["AUTH_FORGOT_PASSWORD_2"] = "¿Olvidó su contraseña?";
+$MESS["AUTH_GET_CHECK_STRING"] = "Enviarme palabra clave";
+$MESS["AUTH_GET_CHECK_STRING_SENT"] = "Palabra clave ha sido enviada.";
+$MESS["AUTH_GOTO_AUTH_FORM"] = "Inicia sesión";
+$MESS["AUTH_GOTO_AUTH_FORM_1"] = "Inicio de sesión";
+$MESS["AUTH_GOTO_CHANGE_FORM"] = "Cambiar contraseña";
+$MESS["AUTH_GOTO_FORGOT_FORM"] = "Recuperar contraseña";
+$MESS["AUTH_LOGIN"] = "Inicio de sesión";
+$MESS["AUTH_NEW_PASSWORD"] = "Nueva contraseña";
+$MESS["AUTH_NEW_PASSWORD_CONFIRM"] = "Confirmar contraseña";
+$MESS["AUTH_NEW_PASSWORD_CONFIRM_WRONG"] = "Las contraseñas introducidas no coinciden.";
+$MESS["AUTH_NW_SECTION"] = "o inicia sesión usando";
+$MESS["AUTH_OR"] = "o";
+$MESS["AUTH_OTP_PASS"] = "Contraseña de una sola vez";
+$MESS["AUTH_OTP_REMEMBER_ME"] = "Recordar contraseña en esta maquina";
+$MESS["AUTH_PASSWORD"] = "Contraseña";
+$MESS["AUTH_PLEASE_AUTH"] = "Por favor, iniciar sesión";
+$MESS["AUTH_REMEMBER_ME"] = "Recuérdame";
+$MESS["AUTH_SEND"] = "Enviar";
+$MESS["admin_authorize_error"] = "Error de autenticación";
+$MESS["admin_authorize_info"] = "Información";
+$MESS["admin_change_password_error"] = "Error al cambiar la contraseña!";
+$MESS["admin_forgot_password_error"] = "Error al recuperar la contraseña!";
+?>

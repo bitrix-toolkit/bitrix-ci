@@ -1,0 +1,5 @@
+<?
+$MESS["EXTRA_ENTITY_ID_FIELD"] = "ID de tarifas";
+$MESS["EXTRA_ENTITY_NAME_FIELD"] = "Nombre";
+$MESS["EXTRA_ENTITY_PERCENTAGE_FIELD"] = "Importe";
+?>

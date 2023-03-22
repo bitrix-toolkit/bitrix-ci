@@ -1,0 +1,28 @@
+<?
+$MESS["PRICE_ROUND_HEADER_NAME_CATALOG_GROUP_ID"] = "Тип цін";
+$MESS["PRICE_ROUND_HEADER_TITLE_CATALOG_GROUP_ID"] = "Тип для округлення цін";
+$MESS["PRICE_ROUND_HEADER_NAME_PRICE"] = "Ціна від";
+$MESS["PRICE_ROUND_HEADER_TITLE_PRICE"] = "Мінімальна ціна для округлення";
+$MESS["PRICE_ROUND_HEADER_NAME_ROUND_TYPE"] = "Тип округлення";
+$MESS["PRICE_ROUND_HEADER_TITLE_ROUND_TYPE"] = "Тип округлення";
+$MESS["PRICE_ROUND_HEADER_NAME_ROUND_PRECISION"] = "Точність огругления";
+$MESS["PRICE_ROUND_HEADER_TITLE_ROUND_PRECISION"] = "До якої величини округляти";
+$MESS["PRICE_ROUND_HEADER_NAME_CREATED_BY"] = "Автор";
+$MESS["PRICE_ROUND_HEADER_NAME_DATE_CREATE"] = "Дата створення";
+$MESS["PRICE_ROUND_HEADER_NAME_MODIFIED_BY"] = "Ким змінено";
+$MESS["PRICE_ROUND_HEADER_NAME_DATE_MODIFY"] = "Дата зміни";
+$MESS["PRICE_ROUND_LIST_MESS_NAV"] = "Правила округлення";
+$MESS["PRICE_ROUND_LIST_MESS_EDIT_RULE"] = "Змінити параметри правила";
+$MESS["PRICE_ROUND_LIST_MESS_VIEW_RULE"] = "Переглянути параметри правила";
+$MESS["PRICE_ROUND_LIST_PRICE_TEMPLATE"] = "від #PRICE#";
+$MESS["PRICE_ROUND_LIST_CONTEXT_EDIT"] = "Редагувати";
+$MESS["PRICE_ROUND_LIST_CONTEXT_VIEW"] = "Переглянути";
+$MESS["PRICE_ROUND_LIST_CONTEXT_COPY"] = "Копіювати";
+$MESS["PRICE_ROUND_LIST_CONTEXT_DELETE"] = "Видалити";
+$MESS["PRICE_ROUND_LIST_CONTEXT_DELETE_CONFIRM"] = "Ви впевнені, що хочете видалити це правило?";
+$MESS["PRICE_ROUND_LIST_MESS_NEW_RULE"] = "Додати";
+$MESS["PRICE_ROUND_LIST_MESS_NEW_RULE_TITLE"] = "Додати нове правило";
+$MESS["PRICE_ROUND_LIST_TITLE"] = "Правила округлення цін";
+$MESS["PRICE_ROUND_LIST_FILTER_PRICE_TYPE"] = "Тип цін";
+$MESS["PRICE_ROUND_LIST_FILTER_PRICE_TYPE_ANY"] = "будь-який";
+?>

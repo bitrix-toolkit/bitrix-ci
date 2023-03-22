@@ -1,0 +1,4 @@
+<?
+$MESS["BX_CAT_IBLOCK_CATALOG_BTN_CANCEL"] = "Annulla";
+$MESS["BX_CAT_IBLOCK_CATALOG_BTN_SAVE"] = "Salva";
+?>

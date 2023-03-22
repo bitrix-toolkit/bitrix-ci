@@ -1,0 +1,19 @@
+<?php
+$MESS["BLOG_C_HIDE"] = "Ocultar comentários";
+$MESS["BLOG_C_LOADING"] = "Carregando";
+$MESS["BLOG_C_REPLY"] = "Responder";
+$MESS["BLOG_C_VIEW"] = "Comentários anteriores";
+$MESS["BPC_MES_COPYLINK"] = "Copiar link";
+$MESS["BPC_MES_CREATETASK"] = "Criar tarefa";
+$MESS["BPC_MES_DELETE"] = "Excluir";
+$MESS["BPC_MES_EDIT"] = "Editar";
+$MESS["BPC_MES_HIDE"] = "Ocultar";
+$MESS["BPC_MES_RESULT_V2"] = "Marcar como resumo do status da tarefa";
+$MESS["BPC_MES_SHOW"] = "Exibir";
+$MESS["BPC_MES_VOTE1"] = "Curtiu";
+$MESS["BPC_MES_VOTE2"] = "Descurtir";
+$MESS["B_B_PC_COM_ERROR"] = "Erro:";
+$MESS["INCORRECT_SERVER_RESPONSE_2"] = "Houve um erro. Tente novamente mais tarde.";
+$MESS["MPL_HIDE_COLLAPSED_COMMENTS"] = "Ocultar pings";
+$MESS["MPL_MOBILE_PUBLISHING"] = "Publicação&hellip;";
+$MESS["MPL_SHOW_COLLAPSED_COMMENTS"] = "Mostrar pings";

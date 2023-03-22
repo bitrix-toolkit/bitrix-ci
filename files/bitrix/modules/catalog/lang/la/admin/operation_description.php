@@ -1,0 +1,32 @@
+<?
+$MESS["OP_DESC_CATALOG_DISCOUNT"] = "Usuario puede administrar descuentos";
+$MESS["OP_DESC_CATALOG_EXPORT_EDIT"] = "Usuario puede editar exportación de los parámetros";
+$MESS["OP_DESC_CATALOG_EXPORT_EXEC"] = "Usuario puede iniciar exportación";
+$MESS["OP_DESC_CATALOG_EXTRA"] = "Usuario puede editar valores de margenes";
+$MESS["OP_DESC_CATALOG_GROUP"] = "Usuario puede manejar tipo de precios";
+$MESS["OP_DESC_CATALOG_IMPORT_EDIT"] = "Usuario puede editar parámetros";
+$MESS["OP_DESC_CATALOG_IMPORT_EXEC"] = "Usuario puede iniciar importación";
+$MESS["OP_DESC_CATALOG_MEASURE"] = "Usuario puede administrar unidades de gestión";
+$MESS["OP_DESC_CATALOG_PRICE"] = "Usuario puede administrar precios y marcas";
+$MESS["OP_DESC_CATALOG_PURCHAS_INFO"] = "Un cliente puede ver el precio de compra del producto.";
+$MESS["OP_DESC_CATALOG_READ"] = "Usuario puede leer (vista) parámetros del módulo";
+$MESS["OP_DESC_CATALOG_SETTINGS"] = "Usuario puede manejar los parámetros del módulo";
+$MESS["OP_DESC_CATALOG_STORE"] = "Usuario puede manejar documentos de control de existencias de almacén";
+$MESS["OP_DESC_CATALOG_VAT"] = "Usuario puede manejat tasas de impuestos";
+$MESS["OP_DESC_CATALOG_VIEW"] = "Muestra una visión orientada al gerente de ventas de un producto";
+$MESS["OP_NAME_CATALOG_DISCOUNT"] = "Adminsitrar descuentos";
+$MESS["OP_NAME_CATALOG_EXPORT_EDIT"] = "Editar parámetros de exportación";
+$MESS["OP_NAME_CATALOG_EXPORT_EXEC"] = "Iniciar exportación";
+$MESS["OP_NAME_CATALOG_EXTRA"] = "Administrar márgen";
+$MESS["OP_NAME_CATALOG_GROUP"] = "Administrar tipo de precios";
+$MESS["OP_NAME_CATALOG_IMPORT_EDIT"] = "Editar importación de parámetros";
+$MESS["OP_NAME_CATALOG_IMPORT_EXEC"] = "Iniciar importación";
+$MESS["OP_NAME_CATALOG_MEASURE"] = "Administrar las unidades de medida";
+$MESS["OP_NAME_CATALOG_PRICE"] = "Administrar precios de productos";
+$MESS["OP_NAME_CATALOG_PURCHAS_INFO"] = "Mostrar precio de compra";
+$MESS["OP_NAME_CATALOG_READ"] = "Configuraciones del módulo de lectura";
+$MESS["OP_NAME_CATALOG_SETTINGS"] = "Editar configuraciones del mñodulo";
+$MESS["OP_NAME_CATALOG_STORE"] = "Administrar el stock de los almacenes";
+$MESS["OP_NAME_CATALOG_VAT"] = "ADdministrar tasas de impuestos";
+$MESS["OP_NAME_CATALOG_VIEW"] = "Ver productos";
+?>

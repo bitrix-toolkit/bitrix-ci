@@ -1,0 +1,3 @@
+<?
+$MESS["REGISTER_FIELD_WORK_DEPARTMENT"] = "Reparto";
+?>

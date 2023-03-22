@@ -1,0 +1,33 @@
+<?
+$MESS["MAIN_RATING_EDIT_RECORD"] = "Editar Avaliação # #ID#";
+$MESS["MAIN_RATING_NEW_RECORD"] = "Nova avaliação";
+$MESS["RATING_DEF_NAME"] = "Avaliação do Usuário";
+$MESS["RATING_EDIT_ADD"] = "Adicionar";
+$MESS["RATING_EDIT_ADD_TITLE"] = "Adicionar Nova Avaliação";
+$MESS["RATING_EDIT_CALC_METHOD_AVG"] = "Média";
+$MESS["RATING_EDIT_CALC_METHOD_SUM"] = "Valor";
+$MESS["RATING_EDIT_CAT_RATING_COMPONENT"] = "Critérios de Avaliação";
+$MESS["RATING_EDIT_CAT_WHAT_NEW_CALC"] = "Resultados da avaliação";
+$MESS["RATING_EDIT_DEL"] = "Excluir";
+$MESS["RATING_EDIT_DEL_CONF"] = "Tem certeza de que deseja excluir esta avaliação?";
+$MESS["RATING_EDIT_DEL_TITLE"] = "Excluir essa avaliação";
+$MESS["RATING_EDIT_ERROR"] = "Erro ao salvar o registro.";
+$MESS["RATING_EDIT_FRM_ACTIVE"] = "Ativo:";
+$MESS["RATING_EDIT_FRM_AUTHORITY"] = "Usar essa classificação para calcular a autoridade";
+$MESS["RATING_EDIT_FRM_CALC_METHOD"] = "Método de Cálculo:";
+$MESS["RATING_EDIT_FRM_CUR_VAL"] = "Campo Adicional Para Valor atual:";
+$MESS["RATING_EDIT_FRM_NAME"] = "Título:";
+$MESS["RATING_EDIT_FRM_NEW_CALC"] = "Redefinir resultados da avaliação depois de salvar Parâmetros";
+$MESS["RATING_EDIT_FRM_POSITION"] = "Calcular Posição de Avaliação";
+$MESS["RATING_EDIT_FRM_PREV_VAL"] = "Campo adicional para valor anterior:";
+$MESS["RATING_EDIT_FRM_TYPE_ID"] = "Objeto avaliados:";
+$MESS["RATING_EDIT_SUCCESS"] = "O registro foi salvo com sucesso.";
+$MESS["RATING_EDIT_TAB_MAIN"] = "Parâmetros Principais";
+$MESS["RATING_EDIT_TAB_MAIN_TITLE"] = "nome, Objeto e Critérios de Avaliação";
+$MESS["RATING_FIELDS_DEF_DESC"] = "O valor depende dos resultados da votação.";
+$MESS["RATING_FIELDS_DEF_FORMULA"] = "Total * K";
+$MESS["RATING_FIELDS_DEF_FORMULA_DESC"] = "Total - o resultado da votação; K - fator definido pelo usuário.";
+$MESS["RATING_FIELDS_DEF_NAME"] = "Fator:";
+$MESS["RATING_LIST"] = "Todas as avaliações";
+$MESS["RATING_LIST_TITLE"] = "Visualizar todas as classificações";
+?>

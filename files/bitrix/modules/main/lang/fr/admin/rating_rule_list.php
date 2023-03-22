@@ -1,0 +1,33 @@
+<?
+$MESS["MAIN_RATING_RULE_LIST"] = "Règles du traitement";
+$MESS["RATING_RULE_ACTIVE"] = "Actif(ve)";
+$MESS["RATING_RULE_ACTIVE_NO"] = "Non";
+$MESS["RATING_RULE_ACTIVE_YES"] = "Oui";
+$MESS["RATING_RULE_CREATED"] = "Créé";
+$MESS["RATING_RULE_ENTITY_TYPE_ID"] = "Objet cible";
+$MESS["RATING_RULE_LAST_APPLIED"] = "Dernière autorisation \"jusqu'à\" la date doit être supérieur à 'partir' date";
+$MESS["RATING_RULE_LAST_MODIFIED"] = "Modifié";
+$MESS["RATING_RULE_LIST_ADD"] = "Nouvelle règle";
+$MESS["RATING_RULE_LIST_ADD_TITLE"] = "Créer une nouvelle règle de traitement";
+$MESS["RATING_RULE_LIST_DEL"] = "Supprimer";
+$MESS["RATING_RULE_LIST_DEL_CONF"] = "tes-vous sûr de supprimer cette règle ?";
+$MESS["RATING_RULE_LIST_EDIT"] = "Modifier les paramètres";
+$MESS["RATING_RULE_LIST_ERR_APP"] = "Erreur lors de l'application de la règle.";
+$MESS["RATING_RULE_LIST_ERR_DEL"] = "Erreur lors de la suppression de la règle.";
+$MESS["RATING_RULE_LIST_ERR_EDIT"] = "Erreur lors de la modification de la règle.";
+$MESS["RATING_RULE_LIST_FLT_ACTIVE"] = "Actif(ve)";
+$MESS["RATING_RULE_LIST_FLT_ACTIVE_N"] = "démissionné";
+$MESS["RATING_RULE_LIST_FLT_ACTIVE_Y"] = "actifs";
+$MESS["RATING_RULE_LIST_FLT_ALL"] = "(partout)";
+$MESS["RATING_RULE_LIST_FLT_ENTITY_TYPE_ID"] = "Bloc Highload";
+$MESS["RATING_RULE_LIST_FLT_ID"] = "ID";
+$MESS["RATING_RULE_LIST_FLT_NAME"] = "Dénomination";
+$MESS["RATING_RULE_LIST_FLT_find"] = "Rechercher : ";
+$MESS["RATING_RULE_LIST_NAV"] = "Règles du traitement";
+$MESS["RATING_RULE_LIST_REAPPLY"] = "Exécuter une règle";
+$MESS["RATING_RULE_NAME"] = "Dénomination";
+$MESS["RATING_RULE_STATUS"] = "Statut";
+$MESS["RATING_RULE_STATUS_DONE"] = "Appliqué";
+$MESS["RATING_RULE_STATUS_WAITING"] = "en attente d'application";
+$MESS["RATING_RULE_STATUS_WORKING"] = "application en cours";
+?>

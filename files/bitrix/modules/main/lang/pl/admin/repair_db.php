@@ -1,0 +1,30 @@
+<?
+$MESS["RDB_CHECK_RESULT"] = "Wynik sprawdzania";
+$MESS["RDB_CHECK_TABLES"] = "Kontrola / naprawianie tabel";
+$MESS["RDB_CONNECT_ERROR"] = "Brak połączenia z bazą";
+$MESS["RDB_DATABASE_ERROR"] = "Kontrola / naprawianie tabel może być wykonana tylko dla bazy danych MySQL";
+$MESS["RDB_EXEC_TIME"] = "Czas wykonania:";
+$MESS["RDB_OPTIMIZE_ALL_DONE"] = "Analiza i optymalizacja tabeli została zakończona.";
+$MESS["RDB_OPTIMIZE_ANALYZE"] = "analiza";
+$MESS["RDB_OPTIMIZE_BTN_CONTINUE"] = "Kontynuuj";
+$MESS["RDB_OPTIMIZE_BTN_PAUSE"] = "Pauza";
+$MESS["RDB_OPTIMIZE_BTN_START"] = "Optymalizacja";
+$MESS["RDB_OPTIMIZE_CHECK_FIRST"] = "Zła tabela (#table_name#) została wykryta. Należy wykonać sprawdzenie i naprawę tabeli przed kontynuowaniem.";
+$MESS["RDB_OPTIMIZE_DONE"] = "Gotowe";
+$MESS["RDB_OPTIMIZE_ERROR"] = "Błąd!";
+$MESS["RDB_OPTIMIZE_INIT"] = "Inicjalizacja";
+$MESS["RDB_OPTIMIZE_OPTIMIZE"] = "optymalizacja";
+$MESS["RDB_OPTIMIZE_PROGRESS"] = "#done# z #todo#";
+$MESS["RDB_OPTIMIZE_TABLE_NOT_FOUND"] = "Nieznana tabela.";
+$MESS["RDB_OPTIMIZE_TIP"] = "Tutaj można analizować i optymalizować tabele w bazie danych. Zwiększy to wydajność zapytania.";
+$MESS["RDB_OPTIMIZE_WARNING_TITLE"] = "Uwaga!";
+$MESS["RDB_REPAIR_DATABASE"] = "Kontrola / naprawianie tabel";
+$MESS["RDB_REPAIR_RESULT"] = "Wynik naprawy";
+$MESS["RDB_ROWS_COUNT"] = "Liczba rzędów";
+$MESS["RDB_SEC"] = "sek.";
+$MESS["RDB_TABLE_NAME"] = "Nazwa tabeli";
+$MESS["RDB_TABLE_SIZE"] = "Rozmiar tabeli (bajty)";
+$MESS["RDB_TIP_1"] = "Ten formularz pomoże tobie sprawdzać i odzyskiwać tabele bazy danych. Odzyskiwanie bazy danych może być tylko ze tabelami MyISAM baz danych MySQL.";
+$MESS["RDB_TIP_2"] = "Uwaga!";
+$MESS["RDB_TIP_3"] = "Nigdy nie otwieraj tej strony w wielu oknach równocześnie ponieważ robienie tak może uszkodzić twoją bazę danych. Dla wielkich baz danych, odzyskiwanie może zająć znaczną sumę czasu!";
+?>

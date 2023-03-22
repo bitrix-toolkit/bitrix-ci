@@ -1,0 +1,3 @@
+<?php
+$MESS["STORE_SELECTOR_EMPTY_TITLE"] = "Без назви";
+$MESS["STORE_SELECTOR_STORE_AMOUNT"] = "У наявності #STORE_AMOUNT#";

@@ -1,0 +1,37 @@
+<?
+$MESS["PAGE_NEW_ACCESS_DENIED"] = "Nie masz pozwolenia na tworzenie sekcji.";
+$MESS["PAGE_NEW_ADD_MENU"] = "dodaj pozycję do menu";
+$MESS["PAGE_NEW_BUTTON_CANCEL"] = "Anuluj";
+$MESS["PAGE_NEW_BUTTON_FINISH"] = "Zakończ";
+$MESS["PAGE_NEW_BUTTON_NEXT"] = "Next >";
+$MESS["PAGE_NEW_BUTTON_PREV"] = "< Poprzednia";
+$MESS["PAGE_NEW_CONTENT"] = "Tutaj tekst...";
+$MESS["PAGE_NEW_DEFAULT_TITLE"] = "Nowa sekcja";
+$MESS["PAGE_NEW_EDITORS_DEF"] = "Konfiguracja domyślnych edytorów strony";
+$MESS["PAGE_NEW_EDIT_IN_ADMIN"] = "Utwórz nową sekcję w Panelu Administracyjnym";
+$MESS["PAGE_NEW_EDIT_PAGE"] = "start edycji indexu strony";
+$MESS["PAGE_NEW_FILENAME"] = "Nazwa folderu";
+$MESS["PAGE_NEW_FILE_EXISTS"] = "Plik o tej nazwie już istnieje.";
+$MESS["PAGE_NEW_FILE_NAME_EMPTY"] = "Nazwa folderu jest pusta.";
+$MESS["PAGE_NEW_FILE_NAME_VALID_SYMBOLS"] = "Niedozwolone znaki w nazwie folderu.";
+$MESS["PAGE_NEW_FOLDER_CREATE_ERROR"] = "Błąd tworzący folder. Możliwy powód: Nie masz dość pozwoleń by tworzyć nowy folder.";
+$MESS["PAGE_NEW_FOLDER_EXISTS"] = "Folder o tej nazwie już istnieje.";
+$MESS["PAGE_NEW_FOLDER_NOT_FOUND"] = "Nie możesz tworzyć sekcji w nie-istniejącym folderze.";
+$MESS["PAGE_NEW_INHERIT_TITLE"] = "Ta właściwość jest odziedziczona z nadrzędnej sekcji. Kliknij wejściowe pole by zmodyfikować właściwość.";
+$MESS["PAGE_NEW_LIMIT_ACCESS_EDITORS"] = "Edytorzy strony";
+$MESS["PAGE_NEW_LIMIT_ACCESS_EXTENDED"] = "Parametry przedłóżone...";
+$MESS["PAGE_NEW_LIMIT_ACCESS_LABLE_EX"] = "Ukryj wszystkim oprócz grup:";
+$MESS["PAGE_NEW_LIMIT_ACCESS_SEC"] = "Ogranicz dostęp sekcji (nie publikuj)";
+$MESS["PAGE_NEW_MENU_NAME"] = "Nowa nazwa pozycji menu";
+$MESS["PAGE_NEW_MENU_POSITION"] = "Wstaw przed pozycją";
+$MESS["PAGE_NEW_MENU_TYPE"] = "Typ Menu";
+$MESS["PAGE_NEW_NEW_ITEM"] = "-- ostatnia pozycja menu --";
+$MESS["PAGE_NEW_PAGE_NAME"] = "Tytuł sekcji";
+$MESS["PAGE_NEW_PROPERTIES"] = "Właściwości Sekcji";
+$MESS["PAGE_NEW_SEC_TRANS_LINKED"] = "Użyj nazw sekcji dla folderów: Włączone";
+$MESS["PAGE_NEW_SEC_TRANS_UNLINKED"] = "Użyj nazw sekcji dla folderów: Wyłączone";
+$MESS["PAGE_NEW_SUB_TITLE"] = "Tworzenie nowej sekcji w folderze";
+$MESS["PAGE_NEW_WINDOW_TITLE"] = "Wizard tworzenia nowej sekcji";
+$MESS["page_new_limit_note"] = "Ukryj wszystkim użytkownikom z wyjątkiem edytora strony:";
+$MESS["page_new_limit_settings"] = "Parametry";
+?>

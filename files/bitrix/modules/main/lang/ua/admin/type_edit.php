@@ -1,0 +1,35 @@
+<?
+$MESS["ADD"] = "Додати поштовий шаблон";
+$MESS["EDIT_TITLE"] = "Редагування події #TYPE#";
+$MESS["ERROR_LANG_EMPTY"] = "Не вказано жодного мовного параметру";
+$MESS["EVENT_DESCR_LANG"] = "Опис";
+$MESS["EVENT_NAME1"] = "Тип події";
+$MESS["EVENT_NAME_DESCR1"] = "Тип події";
+$MESS["EVENT_NAME_LANG"] = "Назва";
+$MESS["EVENT_NAME_TITLE"] = "Тип події";
+$MESS["EVENT_SORT_LANG"] = "Сортування";
+$MESS["LANGUAGE_PARAMS"] = "Мовнозалежні параметри";
+$MESS["LANG_FIELDS"] = "Повинно бути заповнено хоча б одне мовне поле";
+$MESS["LANG_PARAMS"] = "Мовнозалежні параметри";
+$MESS["MAIN_DELETE_RECORD"] = "Видалити тип";
+$MESS["MAIN_DELETE_RECORD_CONF"] = "Ви впевнені, що бажаєте видалити поточний тип, включаючи шаблони?";
+$MESS["MAIN_DELETE_RECORD_TITLE"] = "Видалити тип, включаючи шаблони";
+$MESS["MAIN_ERROR_SAVING"] = "Помилка збереження";
+$MESS["MAIN_NEW_RECORD"] = "Додати тип";
+$MESS["MAIN_NEW_RECORD_TITLE"] = "Додати новий тип поштової події";
+$MESS["MAIN_NEW_TEMPLATE"] = "Додати шаблон";
+$MESS["MAIN_NEW_TEMPLATE_TITLE"] = "Додати новий шаблон цього типу подій";
+$MESS["NEW_TITLE"] = "Додавання нової події";
+$MESS["RECORD_LIST"] = "Список типів";
+$MESS["RECORD_LIST_TITLE"] = "Перейти до списку поштових подій";
+$MESS["RESET"] = "Скинути";
+$MESS["SAVE"] = "Зберегти зміни";
+$MESS["TEMPLATES_DESCR"] = "Поштові шаблони";
+$MESS["TEMPLATES_TITLE"] = "Шаблони";
+$MESS["TEMPLATE_LIST"] = "Список шаблонів";
+$MESS["TEMPLATE_LIST_TITLE"] = "Перейти до списку шаблонів";
+$MESS["type_edit_add_message_template"] = "Додати шаблон повідомлення";
+$MESS["type_edit_event_type"] = "Вид події:";
+$MESS["type_edit_event_type_email"] = "Поштова подія";
+$MESS["type_edit_event_type_sms"] = "СМС-подія";
+?>

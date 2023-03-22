@@ -1,0 +1,27 @@
+<?php
+$MESS["ADDRESS"] = "Dirección";
+$MESS["CSTORE_SORT"] = "Clasificación";
+$MESS["DATE_CREATE"] = "Creado el";
+$MESS["DATE_MODIFY"] = "Modificado el";
+$MESS["DELETE_STORE_ALT"] = "Eliminar";
+$MESS["DELETE_STORE_CONFIRM"] = "¿Seguro que desea eliminar el almacén?";
+$MESS["DESCRIPTION"] = "Descripción";
+$MESS["EDIT_STORE_ALT"] = "Editar";
+$MESS["GPS_N"] = "Latitud GPS";
+$MESS["GPS_S"] = "Longitud GPS";
+$MESS["ISSUING_CENTER"] = "Lugar de recolección";
+$MESS["IS_DEFAULT"] = "Predeterminado";
+$MESS["MODIFIED_BY"] = "Modificado por";
+$MESS["PHONE"] = "Teléfono";
+$MESS["SCHEDULE"] = "Horario laboral";
+$MESS["SHIPPING_CENTER"] = "Listo para envío";
+$MESS["STORE_ACTIVE"] = "Activo";
+$MESS["STORE_ADD_NEW"] = "Agregar";
+$MESS["STORE_ADD_NEW_ALT"] = "Agregar nuevo almacén";
+$MESS["STORE_CODE"] = "Código simbólico";
+$MESS["STORE_IMAGE"] = "Imagen";
+$MESS["STORE_SITE_ID"] = "Sitio";
+$MESS["STORE_TITLE"] = "Almacenes";
+$MESS["STORE_XML_ID"] = "ID externo";
+$MESS["TITLE"] = "Nombre";
+$MESS["USER_ID"] = "Creado por";

@@ -1,0 +1,35 @@
+<?
+$MESS["FORUM_FORUM_DELETE"] = "Excluir Fórum";
+$MESS["FORUM_FORUM_EDIT"] = "Editar Fórum";
+$MESS["FORUM_MESSAGE_APPROVE"] = "Aprovar Mensagem";
+$MESS["FORUM_MESSAGE_DELETE"] = "Excluir mensagem";
+$MESS["FORUM_MESSAGE_EDIT"] = "Editar Mensagem";
+$MESS["FORUM_MESSAGE_MOVE"] = "Mover mensagem";
+$MESS["FORUM_MESSAGE_SPAM"] = "O post foi apagado como spam";
+$MESS["FORUM_MESSAGE_UNAPPROVE"] = "Ocultar Mensagem";
+$MESS["FORUM_TOPIC_APPROVE"] = "Aprovar Tópico";
+$MESS["FORUM_TOPIC_CLOSE"] = "Fechar tópicos";
+$MESS["FORUM_TOPIC_DELETE"] = "Excluir Tópico";
+$MESS["FORUM_TOPIC_EDIT"] = "Editar Tópico";
+$MESS["FORUM_TOPIC_MOVE"] = "Mover Tópico";
+$MESS["FORUM_TOPIC_OPEN"] = "Criar um tópico";
+$MESS["FORUM_TOPIC_SPAM"] = "O tópico foi apagado como spam";
+$MESS["FORUM_TOPIC_STICK"] = "Fixar tópico";
+$MESS["FORUM_TOPIC_UNAPPROVE"] = "Ocultar Tópico";
+$MESS["FORUM_TOPIC_UNSTICK"] = "Desafixar Tópico ";
+$MESS["LOG_FORUM"] = "Fórum";
+$MESS["LOG_FORUM_MESSAGE_APPROVE"] = "Um post foi aprovado em #NAME#";
+$MESS["LOG_FORUM_MESSAGE_DELETE"] = "Um post foi apagado #NAME#";
+$MESS["LOG_FORUM_MESSAGE_EDIT"] = "Um post foi alterado em #NAME#";
+$MESS["LOG_FORUM_MESSAGE_MOVE"] = "Um post foi movido para #NAME#";
+$MESS["LOG_FORUM_MESSAGE_UNAPPROVE"] = "Um post foi ocultado em #NAME#";
+$MESS["LOG_FORUM_TOPIC_APPROVE"] = "O tópico #NAME# foi aprovado";
+$MESS["LOG_FORUM_TOPIC_CLOSE"] = "O tópico #NAME# foi fechado";
+$MESS["LOG_FORUM_TOPIC_DELETE"] = "O tópico #NAME# foi excluído";
+$MESS["LOG_FORUM_TOPIC_EDIT"] = "O tópico #NAME# foi alterado";
+$MESS["LOG_FORUM_TOPIC_MOVE"] = "O tópico #NAME# foi movido para o fórum \"#FORUM#\"";
+$MESS["LOG_FORUM_TOPIC_OPEN"] = "O tópico #NAME# foi aberto";
+$MESS["LOG_FORUM_TOPIC_STICK"] = "O tópico #NAME# foi fixado";
+$MESS["LOG_FORUM_TOPIC_UNAPPROVE"] = "O tópico #NAME# foi ocultado";
+$MESS["LOG_FORUM_TOPIC_UNSTICK"] = "O tópico #NAME# foi desfixado";
+?>

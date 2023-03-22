@@ -1,0 +1,3 @@
+<?
+$MESS["SALE_DISCOUNT_REINDEX_STOP_BTN"] = "Zatrzymaj";
+?>

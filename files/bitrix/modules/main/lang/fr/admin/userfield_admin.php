@@ -1,0 +1,30 @@
+<?
+$MESS["MAIN_ADD"] = "Ajouter";
+$MESS["MAIN_ALL"] = "(partout)";
+$MESS["MAIN_DELETE"] = "Supprimer";
+$MESS["MAIN_EDIT"] = "Éditer";
+$MESS["MAIN_YES"] = "oui";
+$MESS["USERTYPE_ADD_TITLE"] = "Ajouter un champ d'utilisateur";
+$MESS["USERTYPE_BACK_URL_BUTTON"] = "Précédent";
+$MESS["USERTYPE_DELETE_CONF"] = "tes-vous sûr de vouloir supprimer l'entité ?";
+$MESS["USERTYPE_DEL_ERROR"] = "Erreur de suppression du champ";
+$MESS["USERTYPE_EDIT_IN_LIST"] = "Éditer";
+$MESS["USERTYPE_ENTITY_ID"] = "Bloc Highload";
+$MESS["USERTYPE_FIELD_NAME"] = "Nom de champ";
+$MESS["USERTYPE_F_FIND"] = "Rechercher";
+$MESS["USERTYPE_IS_SEARCHABLE"] = "Recherche";
+$MESS["USERTYPE_MANDATORY"] = "Oblig.";
+$MESS["USERTYPE_MULTIPLE"] = "Pl.";
+$MESS["USERTYPE_NAV"] = "Propriétés";
+$MESS["USERTYPE_SHOW_FILTER"] = "Filtre";
+$MESS["USERTYPE_SHOW_IN_LIST"] = "Afficher";
+$MESS["USERTYPE_SORT"] = "Classification";
+$MESS["USERTYPE_TITLE"] = "Champs d'utilisateur";
+$MESS["USERTYPE_UPDATE_ERROR"] = "Erreur de mise à jour le champ";
+$MESS["USERTYPE_USER_TYPE_ID"] = "Type de données";
+$MESS["USERTYPE_XML_ID"] = "XML_ID";
+$MESS["USER_TYPE_FILTER_E"] = "recherche générique";
+$MESS["USER_TYPE_FILTER_I"] = "rechercher une coïncidence exacte";
+$MESS["USER_TYPE_FILTER_N"] = "ne pas afficher";
+$MESS["USER_TYPE_FILTER_S"] = "correspondance partielle";
+?>

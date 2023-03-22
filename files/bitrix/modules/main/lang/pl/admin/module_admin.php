@@ -1,0 +1,34 @@
+<?
+$MESS["COPY_FOLDER"] = "Folder do którego będą skopiowane pliki:";
+$MESS["COPY_PUBLIC_FILES"] = "Kopiuj publiczne pliki";
+$MESS["INSTALL_PUBLIC_REW"] = "Zastąp istniejące pliki";
+$MESS["MOD_ACTION"] = "Działanie";
+$MESS["MOD_BACK"] = "Powrót do listy";
+$MESS["MOD_DATE_UPDATE"] = "Aktualizacja danych";
+$MESS["MOD_DELETE"] = "Usuń";
+$MESS["MOD_DEMO_DIR"] = "Używając linków możesz oglądać komponenty w akcji od strony publicznej:";
+$MESS["MOD_DEMO_LINK"] = "Link";
+$MESS["MOD_DEMO_SITE"] = "Strona";
+$MESS["MOD_INSTALL"] = "Instaluj";
+$MESS["MOD_INSTALLED"] = "Zainstalowany";
+$MESS["MOD_INSTALL_BUTTON"] = "Instaluj";
+$MESS["MOD_INST_ERR"] = "Błędy instalacji:";
+$MESS["MOD_INST_OK"] = "Moduł zainstalowany";
+$MESS["MOD_MAIN_MODULE"] = "Mój moduł";
+$MESS["MOD_NAME"] = "Nazwa";
+$MESS["MOD_NOT_INSTALLED"] = "Nie zainstalowane";
+$MESS["MOD_PARTNER_NAME"] = "Firma <a target='_blank' href='#URI#'>#NAME#</a>";
+$MESS["MOD_SETUP"] = "Status";
+$MESS["MOD_UNINST_DEL"] = "Usuń moduł";
+$MESS["MOD_UNINST_DEN"] = "Ten moduł nie może być odinstalowany";
+$MESS["MOD_UNINST_ERR"] = "Błędy odinstalowania:";
+$MESS["MOD_UNINST_OK"] = "Moduł usunięty";
+$MESS["MOD_UNINST_SAVE"] = "Zachowaj tabele bazy danych:";
+$MESS["MOD_UNINST_SAVE_EVENTS"] = "Zachowaj typy i wiadomości szablonów";
+$MESS["MOD_UNINST_SAVE_TABLES"] = "Zachowaj tabele";
+$MESS["MOD_UNINST_WARN"] = "Uwaga!<br>Ten moduł zostanie usunięty z systemu";
+$MESS["MOD_VERSION"] = "Wersja";
+$MESS["RESET"] = "Wyczyść";
+$MESS["SAVE"] = "Zapisz zmiany";
+$MESS["TITLE"] = "Zarządzanie modułami";
+?>

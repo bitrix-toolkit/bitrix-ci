@@ -1,0 +1,25 @@
+<?php
+$MESS["DOCUMENT_CONTRACTOR_CRM_COMPANY_ID_NAME"] = "Proveedor: Empresa";
+$MESS["DOCUMENT_CONTRACTOR_CRM_CONTACT_ID_NAME"] = "Proveedor: Contacto";
+$MESS["DOCUMENT_CONTRACTOR_ID_NAME"] = "Proveedor";
+$MESS["DOCUMENT_CREATED_BY_NAME"] = "Creado por";
+$MESS["DOCUMENT_DATE_CREATE_NAME"] = "Creado el";
+$MESS["DOCUMENT_DATE_DOCUMENT_NAME"] = "Fecha del documento del inventario";
+$MESS["DOCUMENT_DATE_MODIFY_NAME"] = "Modificado el";
+$MESS["DOCUMENT_DATE_STATUS_NAME"] = "Estado modificado el";
+$MESS["DOCUMENT_DOC_NUMBER_NAME"] = "Documento del inventario #";
+$MESS["DOCUMENT_DOC_TYPE_NAME"] = "Tipo de objeto del inventario";
+$MESS["DOCUMENT_ID_NAME"] = "ID";
+$MESS["DOCUMENT_MODIFIED_BY_NAME"] = "Modificado por";
+$MESS["DOCUMENT_PRODUCTS_NAME"] = "Producto";
+$MESS["DOCUMENT_RESPONSIBLE_ID_NAME"] = "Persona responsable";
+$MESS["DOCUMENT_STATUS_BY_NAME"] = "Estado modificado por";
+$MESS["DOCUMENT_STATUS_NAME"] = "Estado";
+$MESS["DOCUMENT_STORES_FROM_NAME"] = "Almacén de origen";
+$MESS["DOCUMENT_STORES_NAME"] = "Almacenes";
+$MESS["DOCUMENT_STORES_TO_NAME"] = "Almacén de destino";
+$MESS["DOCUMENT_TITLE_NAME"] = "Nombre";
+$MESS["DOCUMENT_TOTAL_NAME"] = "Total";
+$MESS["DOCUMENT_TYPE_A"] = "Recibo de existencias";
+$MESS["DOCUMENT_TYPE_NAME"] = "Tipo";
+$MESS["DOCUMENT_TYPE_S"] = "Ajuste de las existencias";

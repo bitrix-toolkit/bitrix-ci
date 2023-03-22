@@ -1,0 +1,32 @@
+<?
+$MESS["OP_DESC_CATALOG_DISCOUNT"] = "L'utilisateur peut gérer les réductions";
+$MESS["OP_DESC_CATALOG_EXPORT_EDIT"] = "L'utilisateur peut modifier les paramètres d'exportation";
+$MESS["OP_DESC_CATALOG_EXPORT_EXEC"] = "L'utilisateur peut lancer l'exportation";
+$MESS["OP_DESC_CATALOG_EXTRA"] = "L'utilisateur peut modifier les valeurs de mark-up";
+$MESS["OP_DESC_CATALOG_GROUP"] = "L'utilisateur peut gérer les types de prix";
+$MESS["OP_DESC_CATALOG_IMPORT_EDIT"] = "L'utilisateur peut modifier les paramètres d'importation";
+$MESS["OP_DESC_CATALOG_IMPORT_EXEC"] = "L'utilisateur peut lancer l'importation";
+$MESS["OP_DESC_CATALOG_MEASURE"] = "L'utilisateur peut gérer des unités de gestion";
+$MESS["OP_DESC_CATALOG_PRICE"] = "L'utilisateur peut gérer des prix de produits";
+$MESS["OP_DESC_CATALOG_PURCHAS_INFO"] = "L'utilisateur a l'accès à l'information sur le prix de revient (prix d'achat) des produits.";
+$MESS["OP_DESC_CATALOG_READ"] = "L'utilisateur peut lire (voir) les paramètres du module";
+$MESS["OP_DESC_CATALOG_SETTINGS"] = "L'utilisateur peut gérer les paramètres du module";
+$MESS["OP_DESC_CATALOG_STORE"] = "L'utilisateur peut gérer l'entrepôt documents de contrôle des stocks";
+$MESS["OP_DESC_CATALOG_VAT"] = "L'utilisateur peut gérer les taux de TVA";
+$MESS["OP_DESC_CATALOG_VIEW"] = "Affiche une vue des produits orientée responsable des ventes";
+$MESS["OP_NAME_CATALOG_DISCOUNT"] = "Gérer réductions";
+$MESS["OP_NAME_CATALOG_EXPORT_EDIT"] = "Réglage des paramètres de l'exportation";
+$MESS["OP_NAME_CATALOG_EXPORT_EXEC"] = "Initier l'exportation";
+$MESS["OP_NAME_CATALOG_EXTRA"] = "Gérer les marges";
+$MESS["OP_NAME_CATALOG_GROUP"] = "Gérer types de prix";
+$MESS["OP_NAME_CATALOG_IMPORT_EDIT"] = "Modifier les paramètres d'importation";
+$MESS["OP_NAME_CATALOG_IMPORT_EXEC"] = "Initier l'importation";
+$MESS["OP_NAME_CATALOG_MEASURE"] = "Gérer les unités de mesure";
+$MESS["OP_NAME_CATALOG_PRICE"] = "Gérer les prix des produits";
+$MESS["OP_NAME_CATALOG_PURCHAS_INFO"] = "Visualisation du prix de revient de la marchandise";
+$MESS["OP_NAME_CATALOG_READ"] = "Lire les paramètres du module";
+$MESS["OP_NAME_CATALOG_SETTINGS"] = "Accès à la modification des réglages du module";
+$MESS["OP_NAME_CATALOG_STORE"] = "La gestion de stock de marchandises";
+$MESS["OP_NAME_CATALOG_VAT"] = "Gérer les taux de TVA";
+$MESS["OP_NAME_CATALOG_VIEW"] = "Afficher les produits";
+?>

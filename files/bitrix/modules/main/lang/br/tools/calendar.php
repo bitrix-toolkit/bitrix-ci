@@ -1,0 +1,31 @@
+<?
+$MESS["calend_apr"] = "Abril ";
+$MESS["calend_aug"] = "Agosto";
+$MESS["calend_curr"] = "Ir para o mês atual";
+$MESS["calend_date"] = "Inserir data";
+$MESS["calend_des"] = "Dezembro";
+$MESS["calend_feb"] = "Fevereiro";
+$MESS["calend_fr"] = "Sex";
+$MESS["calend_jan"] = "Janeiro";
+$MESS["calend_jul"] = "Julho";
+$MESS["calend_jun"] = "Junho";
+$MESS["calend_mar"] = "Março";
+$MESS["calend_may"] = "Novembro";
+$MESS["calend_mo"] = "Seg ";
+$MESS["calend_next_mon"] = "Próximo mês";
+$MESS["calend_next_year"] = "Próximo ano";
+$MESS["calend_nov"] = "Novembro";
+$MESS["calend_okt"] = "Outubro";
+$MESS["calend_per_mon"] = "Período: mês";
+$MESS["calend_per_week"] = "Período: semana";
+$MESS["calend_per_year"] = "Período: ano";
+$MESS["calend_prev_mon"] = "Mês anterior";
+$MESS["calend_prev_year"] = "Ano anterior";
+$MESS["calend_sa"] = "Sáb";
+$MESS["calend_sep"] = "Setembro";
+$MESS["calend_su"] = "Dom";
+$MESS["calend_th"] = "Qui";
+$MESS["calend_title"] = "Calendário";
+$MESS["calend_tu"] = "Ter";
+$MESS["calend_we"] = "Qua";
+?>

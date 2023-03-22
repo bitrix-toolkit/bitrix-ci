@@ -1,0 +1,7 @@
+<?
+$MESS["SALE_ORDER_FINANCEINFO_BALANCE_INNER_BUDGET"] = "Saldo de la cuenta interna";
+$MESS["SALE_ORDER_FINANCEINFO_FOR_PAYMENT"] = "Cantidad pagable";
+$MESS["SALE_ORDER_FINANCEINFO_PAYABLE"] = "Cantidad pagable";
+$MESS["SALE_ORDER_FINANCEINFO_SUM_PAID"] = "Pagado";
+$MESS["SALE_ORDER_FINANCEINFO_USE_INNER_BUDGET"] = "Utilice la cuenta interna";
+?>
