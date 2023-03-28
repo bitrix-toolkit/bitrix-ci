@@ -5,8 +5,12 @@
   "license": "Unlicense",
   "authors": [
     {
-      "name": "Vitalik Sheerockoff",
-      "email": "shirokov@vitalik.pw"
+      "name": "Vitalik Shirokov",
+      "email": "vitalik.shirokov@gmail.com"
+    },
+    {
+      "name": "Anton Filatov",
+      "email": "positron48@gmail.com"
     }
   ],
   "autoload": {
