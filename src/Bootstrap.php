@@ -1,6 +1,6 @@
 <?php
 
-namespace Sheerockoff\BitrixCi;
+namespace BitrixToolkit\BitrixCi;
 
 use InvalidArgumentException;
 use CModule;

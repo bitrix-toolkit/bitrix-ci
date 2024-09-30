@@ -1,14 +1,13 @@
-version: "3"
 services:
   bitrix:
-    image: webdevops/php-apache-dev:${PHP-7.3}
+    image: docker.io/webdevops/php-apache-dev:${PHP-7.3}
     volumes:
       - ./:/app/
     working_dir: /app/
     depends_on:
       - mysql
     ports:
-      - ${HTTP_PORT-80}:80
+      - ${HTTP_PORT-8080}:80
     environment:
       WEB_DOCUMENT_ROOT: /app/public/
       php.short_open_tag: 1
@@ -23,7 +22,7 @@ services:
       DEBUG: 1
       POSTFIX_RELAYHOST: "[mailhog]:1025"
   mysql:
-    image: mysql:5.7
+    image: docker.io/library/mysql:5.7
     volumes:
       - ./var/mysql/:/var/lib/mysql/
     ports:
@@ -39,6 +38,6 @@ services:
       MYSQL_USER: "bitrix-ci"
       MYSQL_PASSWORD: "bitrix-ci"
   mailhog:
-    image: mailhog/mailhog
+    image: docker.io/mailhog/mailhog
     ports:
       - ${MAILHOG_HTTP_PORT-8025}:8025

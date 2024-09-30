@@ -1,6 +1,6 @@
 <?php
 
-namespace Sheerockoff\BitrixCi;
+namespace BitrixToolkit\BitrixCi;
 
 use Generator;
 use InvalidArgumentException;
