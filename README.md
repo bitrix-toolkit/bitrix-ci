@@ -1,7 +1,7 @@
 # Bitrix CI Build
 
-[![PHPUnit](https://github.com/sheerockoff/bitrix-ci/workflows/PHPUnit/badge.svg?branch=master)](https://github.com/sheerockoff/bitrix-ci/actions)
-[![Code Size](https://img.shields.io/github/languages/code-size/sheerockoff/bitrix-ci.svg)](https://packagist.org/packages/sheerockoff/bitrix-ci)
+[![PHPUnit](https://github.com/bitrix-toolkit/bitrix-ci/actions/workflows/php-unit.yml/badge.svg?branch=dev%2Fv20.0)](https://github.com/bitrix-toolkit/bitrix-ci/actions/workflows/php-unit.yml)
+[![Code Size](https://img.shields.io/github/languages/code-size/bitrix-toolkit/bitrix-ci.svg)](https://packagist.org/packages/bitrix-toolkit/bitrix-ci)
 
 Минимальный сборка [Bitrix](https://www.1c-bitrix.ru/products/cms/index.php) для использования в тестировании.
 
@@ -10,7 +10,7 @@
 Устанавливаем.
 
 ```bash
-composer require --dev sheerockoff/bitrix-ci
+composer require --dev bitrix-toolkit/bitrix-ci
 ```
 
 Подключаем зависимости.
@@ -34,13 +34,13 @@ putenv('MYSQL_PASSWORD=password');
 Разворачиваем дамп MySQL.
 
 ```php
-\Sheerockoff\BitrixCi\Bootstrap::migrate();
+\BitrixToolkit\BitrixCi\Bootstrap::migrate();
 ```
 
 Подключаем Bitrix.
 
 ```php
-\Sheerockoff\BitrixCi\Bootstrap::bootstrap();
+\BitrixToolkit\BitrixCi\Bootstrap::bootstrap();
 ```
 
 Тестируем код, который зависит от API Bitrix.
