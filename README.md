@@ -1,6 +1,6 @@
 # Bitrix CI Build
 
-[![PHPUnit](https://github.com/bitrix-toolkit/bitrix-ci/workflows/PHPUnit/badge.svg?branch=master)](https://github.com/bitrix-toolkit/bitrix-ci/actions)
+[![PHPUnit](https://github.com/bitrix-toolkit/bitrix-ci/actions/workflows/php-unit.yml/badge.svg?branch=dev%2Fv22.600)](https://github.com/bitrix-toolkit/bitrix-ci/actions/workflows/php-unit.yml)
 [![Code Size](https://img.shields.io/github/languages/code-size/bitrix-toolkit/bitrix-ci.svg)](https://packagist.org/packages/bitrix-toolkit/bitrix-ci)
 
 Минимальный сборка [Bitrix](https://www.1c-bitrix.ru/products/cms/index.php) для использования в тестировании.
