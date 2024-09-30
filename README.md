@@ -1,7 +1,7 @@
 # Bitrix CI Build
 
-[![pipeline status](https://gitlab.com/bitrix-toolkit/bitrix-ci/badges/master/pipeline.svg)](https://gitlab.com/bitrix-toolkit/bitrix-ci/pipelines)
-[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/bitrix-toolkit/bitrix-ci.svg)](https://packagist.org/packages/bitrix-toolkit/bitrix-ci)
+[![PHPUnit](https://github.com/bitrix-toolkit/bitrix-ci/workflows/PHPUnit/badge.svg?branch=v18.5)](https://github.com/bitrix-toolkit/bitrix-ci/actions)
+[![Code Size](https://img.shields.io/github/languages/code-size/bitrix-toolkit/bitrix-ci.svg)](https://packagist.org/packages/bitrix-toolkit/bitrix-ci)
 
 Минимальный сборка [Bitrix](https://www.1c-bitrix.ru/products/cms/index.php) для использования в тестировании.
 
