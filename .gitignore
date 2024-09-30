@@ -1,4 +1,9 @@
-vendor/
+/vendor/
+/var/
 /composer.lock
 *.zip
 /public/
+/files/bitrix/managed_cache/
+*.php~
+/.idea/
+.phpunit.result.cache

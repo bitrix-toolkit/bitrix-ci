@@ -1,6 +1,6 @@
 <?php
 
-namespace Sheerockoff\BitrixCi\Test;
+namespace BitrixToolkit\BitrixCi\Test;
 
 use Bitrix\Highloadblock\HighloadBlockTable;
 use Bitrix\Main\ORM\Data\AddResult;

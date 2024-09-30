@@ -1,27 +1,38 @@
-version: "2.1"
 services:
   bitrix:
-    image: webdevops/php-nginx-dev:${PHP-7.1}
+    image: docker.io/webdevops/php-apache-dev:${PHP-7.1}
     volumes:
       - ./:/app/
     working_dir: /app/
     depends_on:
       - mysql
     ports:
-      - 80:80
+      - ${HTTP_PORT-8080}:80
     environment:
       WEB_DOCUMENT_ROOT: /app/public/
       php.short_open_tag: 1
       php.mbstring.func_overload: 2
       php.display_errors: 1
+      php.max_input_vars: 10000
+      php.memory_limit: "256M"
+      php.date.timezone: "Europe/Moscow"
       MYSQL_HOST: mysql
       MYSQL_DATABASE: bitrix-ci
       MYSQL_USER: bitrix-ci
       MYSQL_PASSWORD: bitrix-ci
   mysql:
-    image: mysql:5.7
+    image: docker.io/library/mysql:5.7
+    volumes:
+      - ./var/mysql/:/var/lib/mysql/
+    ports:
+      - ${MYSQL_PORT-3306}:3306
+    command: >-
+      --default-time-zone=Europe/Moscow
+      --character-set-server=utf8
+      --collation-server=utf8_unicode_ci
+      --skip-innodb-strict-mode
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-      MYSQL_DATABASE: bitrix-ci
-      MYSQL_USER: bitrix-ci
-      MYSQL_PASSWORD: bitrix-ci
+      MYSQL_DATABASE: "bitrix-ci"
+      MYSQL_USER: "bitrix-ci"
+      MYSQL_PASSWORD: "bitrix-ci"
