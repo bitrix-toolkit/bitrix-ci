@@ -1,6 +1,6 @@
 <?php
 
-use Sheerockoff\BitrixCi\Bootstrap;
+use BitrixToolkit\BitrixCi\Bootstrap;
 
 require __DIR__ . '/../vendor/autoload.php';
 

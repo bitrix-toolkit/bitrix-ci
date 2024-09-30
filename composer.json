@@ -1,5 +1,5 @@
 {
-  "name": "sheerockoff/bitrix-ci",
+  "name": "bitrix-toolkit/bitrix-ci",
   "description": "Minimal build of Bitrix for CI",
   "type": "library",
   "license": "Unlicense",
@@ -15,7 +15,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Sheerockoff\\BitrixCi\\": "src/"
+      "BitrixToolkit\\BitrixCi\\": "src/"
     }
   },
   "require": {
@@ -24,7 +24,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Sheerockoff\\BitrixCi\\Test\\": "tests/"
+      "BitrixToolkit\\BitrixCi\\Test\\": "tests/"
     }
   },
   "require-dev": {

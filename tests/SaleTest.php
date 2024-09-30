@@ -1,6 +1,6 @@
 <?php
 
-namespace Sheerockoff\BitrixCi\Test;
+namespace BitrixToolkit\BitrixCi\Test;
 
 use Bitrix\Sale\Basket;
 use Bitrix\Sale\Order;
