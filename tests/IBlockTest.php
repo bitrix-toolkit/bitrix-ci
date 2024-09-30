@@ -1,6 +1,6 @@
 <?php
 
-namespace Sheerockoff\BitrixCi\Test;
+namespace BitrixToolkit\BitrixCi\Test;
 
 use CIBlock;
 use CIBlockElement;
