@@ -11,11 +11,6 @@ use CModule;
 
 class IBlockTest extends TestCase
 {
-    public static function tearDownAfterClass(): void
-    {
-        CIBlockType::Delete('bitrix_ci_test');
-    }
-
     public function testCanLoadModule()
     {
         global $APPLICATION;
@@ -27,6 +22,8 @@ class IBlockTest extends TestCase
      */
     public function testCanAddIBlockType()
     {
+        CIBlockType::Delete('bitrix_ci_test');
+
         $cIBlockType = new CIBlockType();
         $isAdded = $cIBlockType->Add([
             'ID' => 'bitrix_ci_test',

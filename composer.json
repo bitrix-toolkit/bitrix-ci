@@ -19,7 +19,7 @@
     }
   },
   "require": {
-    "php": ">=7.4",
+    "php": "^7.4||^8.0",
     "ext-mysqli": "*"
   },
   "autoload-dev": {
@@ -28,7 +28,6 @@
     }
   },
   "require-dev": {
-    "phpunit/phpunit": "^9.0",
-    "symfony/var-dumper": "^3.4"
+    "phpunit/phpunit": "*"
   }
 }

@@ -3,6 +3,7 @@
 namespace BitrixToolkit\BitrixCi\Test;
 
 use Bitrix\Highloadblock\HighloadBlockTable;
+use Bitrix\Main\Application;
 use Bitrix\Main\ORM\Data\AddResult;
 use Bitrix\Main\ORM\Data\DeleteResult;
 use Bitrix\Main\ORM\Data\UpdateResult;
@@ -14,14 +15,6 @@ use Exception;
 
 class HighloadBlockTest extends TestCase
 {
-    public static function tearDownAfterClass(): void
-    {
-        $exist = HighloadBlockTable::getList(['filter' => ['TABLE_NAME' => 'test_data']])->fetch();
-        if (!empty($exist['ID'])) {
-            HighloadBlockTable::delete($exist['ID']);
-        }
-    }
-
     public function testCanLoadModule()
     {
         global $APPLICATION;
@@ -34,6 +27,13 @@ class HighloadBlockTest extends TestCase
      */
     public function testCanAddHighloadBlock()
     {
+        $exist = HighloadBlockTable::getList(['filter' => ['TABLE_NAME' => 'test_data']])->fetch();
+        if (!empty($exist['ID'])) {
+            HighloadBlockTable::delete($exist['ID']);
+        }
+
+        Application::getConnection()->query('DROP TABLE IF EXISTS test_data');
+
         $result = HighloadBlockTable::add([
             'NAME' => 'TestData',
             'TABLE_NAME' => 'test_data'
