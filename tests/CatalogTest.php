@@ -15,22 +15,6 @@ use CPrice;
 
 class CatalogTest extends TestCase
 {
-    public static function tearDownAfterClass()
-    {
-        CIBlockType::Delete('bitrix_ci_test');
-
-        $cCatalogGroup = new CCatalogGroup();
-        if ($catalogGroup = CCatalogGroup::GetList(null, ['NAME' => 'OUTLET'])->Fetch()) {
-            $cCatalogGroup->Delete($catalogGroup['ID']);
-        }
-
-        CCurrency::Delete('CAP');
-
-        if ($catalogStore = CCatalogStore::GetList(null, ['XML_ID' => 'VAULT13'])->Fetch()) {
-            CCatalogStore::Delete($catalogStore['ID']);
-        }
-    }
-
     public function testCanLoadModule()
     {
         global $APPLICATION;
@@ -44,6 +28,19 @@ class CatalogTest extends TestCase
     public function testCanAddCatalog(array $stack = [])
     {
         global $APPLICATION;
+
+        CIBlockType::Delete('bitrix_ci_test');
+
+        $cCatalogGroup = new CCatalogGroup();
+        if ($catalogGroup = CCatalogGroup::GetList(null, ['NAME' => 'OUTLET'])->Fetch()) {
+            $cCatalogGroup->Delete($catalogGroup['ID']);
+        }
+
+        CCurrency::Delete('CAP');
+
+        if ($catalogStore = CCatalogStore::GetList(null, ['XML_ID' => 'VAULT13'])->Fetch()) {
+            CCatalogStore::Delete($catalogStore['ID']);
+        }
 
         $cIBlockType = new CIBlockType();
         $isAdded = $cIBlockType->Add([
